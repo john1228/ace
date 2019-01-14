@@ -11,8 +11,10 @@ import org.springframework.context.annotation.Configuration;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import tk.mybatis.spring.annotation.MapperScan;
 
 @Configuration
+@MapperScan(basePackages = "com.ace.dao")
 public class DruidDataSourceConfig {
 	@Bean
 	@ConfigurationProperties(prefix="spring.datasource")

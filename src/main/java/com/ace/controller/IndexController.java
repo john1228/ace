@@ -24,7 +24,7 @@ public class IndexController {
 	public @ResponseBody Map<String,Object> test(RequestType type, Model model){
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		System.out.println("type: " + type);
-		System.out.println("is GET?: " + type.equals(RequestType.GET));
+//		System.out.println("is GET?: " + type.equals(RequestType.GET));
 		returnMap.put("type",type);
 		return returnMap;
 	}

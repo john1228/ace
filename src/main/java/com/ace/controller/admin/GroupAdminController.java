@@ -125,7 +125,7 @@ public class GroupAdminController extends BaseController{
 				Item item = new Item();
 				//查询子节点数量
 				int child_count = permissionService.getCountByParentId(p.getId());
-				item.setName(p.getName());
+				item.setText(p.getName());
 				if(child_count > 0){
 					item.setType("folder");
 					AdditionalParameters adp = new AdditionalParameters();
