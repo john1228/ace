@@ -8,10 +8,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.ace.controller.admin.concerns.DataTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +30,6 @@ import com.ace.service.PermissionService;
 import com.ace.service.UserPermissionService;
 import com.ace.service.UserService;
 import com.ace.util.ImageUtils;
-import com.ace.util.PageCode;
-import com.ace.util.Resource;
-import com.github.pagehelper.PageInfo;
-
 @Controller
 @RequestMapping("/admin/users")
 public class UserAdminController extends BaseController {
@@ -51,12 +47,13 @@ public class UserAdminController extends BaseController {
     private GroupService groupService;
 
     @GetMapping("/")
-    public String dateList(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
-        PageInfo<UserBO> pu = userService.getUserList(page);
-        PageCode pc = new PageCode(page, pu.getPages());
-        model.addAttribute("pu", pu);
-        model.addAttribute("pc", pc);
+    public String index() {
         return INDEX;
+    }
+
+    @GetMapping("/dataList")
+    public DataTable<User> dataList(@RequestParam(value = "page", defaultValue = "1") int page) {
+        return null;
     }
 
     @RequestMapping("/{id}")
@@ -206,13 +203,6 @@ public class UserAdminController extends BaseController {
     public @ResponseBody
     Map<String, Object> updateuser(User us, HttpServletRequest request, Model model) {
         Map<String, Object> returnMap = new HashMap<String, Object>();
-        if (us.getPassword().equals("")) {
-            us.setPassword(null);
-        } else {
-            Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-            String password = md5.encodePassword(Resource.PASSWORD, us.getLoginName());
-            us.setPassword(password);
-        }
 
         int count = userService.updateSelective(us);
         if (count > 0) {

@@ -40,7 +40,6 @@ public class AdminInterceptor implements HandlerInterceptor {
         String parentId = request.getParameter("parentId");
         if (parentId == null) parentId = "";
         session.setAttribute("parentId", parentId);
-
         //菜单组装
         String loginName = request.getRemoteUser();
         if (loginName != null && !loginName.equals("")) {
@@ -85,46 +84,7 @@ public class AdminInterceptor implements HandlerInterceptor {
             request.setAttribute("user", user);
             request.setAttribute("menus", pbos);
         }
-        String method = request.getMethod();
-        String uri = request.getRequestURI();
-        int adminIndex = uri.indexOf(Resource.ADMIN);
-        if (adminIndex >= 0) {
-            uri = uri.replace("/admin/", "");
-            if (uri.equals("login")) {
-                request.setAttribute("url", "admin/login");
-            } else if (uri.length() == 0) {
-                request.setAttribute("url", "admin/main");
-            } else {
-                String resources = uri.substring(0, uri.indexOf("/"));
-                uri = uri.replace(resources + "/", "");
-                switch (method) {
-                    case "GET":
-                        //获取资源列表或者详情
-                        if (uri.length() == 0) {
-                            request.setAttribute("url", "admin/" + resources + "/dataList");
-                        } else if (uri.equals("new")) {
-                            request.setAttribute("url", "admin/" + resources + "/new");
-                        } else {
-                            int other = uri.indexOf("/");
-                            if (other >= 0) {
-                                String action = uri.substring(other);
-                                request.setAttribute("url", "admin/" + resources + "/" + action);
-                            } else {
-                                request.setAttribute("url", "admin/" + resources + "/show");
-                            }
-
-                        }
-                        break;
-                    case "POST":
-                        break;
-                    case "PUT":
-                    case "PATCH":
-                        break;
-                    case "DELETE":
-                        break;
-                }
-            }
-        }
+        //请求处理
         request.setAttribute("company", serverConfig.getCompany());
 
         return true;

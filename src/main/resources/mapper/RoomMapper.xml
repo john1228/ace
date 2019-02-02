@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.RoomMapper">
+    <resultMap type="com.ace.entity.room.Room" id="roomMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="address" property="address"/>
+        <result column="height" property="height"/>
+        <result column="area" property="area"/>
+        <result column="indicative_price" property="indicativePrice"/>
+        <result column="capacity" property="capacity"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_rooms
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="roomMap">
+        select * from bb_rooms
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by id desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_rooms(name,type,discount,min,resume,expired_type,start_date,end_date,duration,limit_pro,limit_org,limit_room)
+        values (#{name},#{type},#{discount},#{min},#{resume},#{expiredType},#{startDate},#{endDate},#{duration},#{limitPro},#{limitOrg},#{limitRoom})
+    </insert>
+
+    <select id="findById" resultMap="roomMap">
+        select * from bb_coupons where id = #{id} limit 1
+    </select>
+
+    <update id="update">
+        update bb_rooms set name = #{name},type = #{type},discount=#{discount},min=#{min},resume=#{resume} where id = #{id}
+    </update>
+
+    <delete id="destroy">
+        delete  from bb_rooms where id = #{id}
+    </delete>
+</mapper>

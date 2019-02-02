@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.DeviceMapper">
+    <resultMap type="com.ace.entity.room.Device" id="deviceMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="unit" property="unit"/>
+        <result column="status" property="status"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_devices
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="deviceMap">
+        select * from bb_devices
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by id desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_devices(name,price,unit,status)
+        values (#{name},#{price},#{unit},#{status})
+    </insert>
+
+    <select id="findById" resultMap="deviceMap">
+        select * from bb_devices where id = #{id} limit 1
+    </select>
+
+    <update id="update">
+        update bb_devices set name = #{name},price = #{price},unit=#{unit},status=#{status} where id = #{id}
+    </update>
+    <delete id="destroy">
+        delete from bb_devices where id = #{id}
+    </delete>
+</mapper>

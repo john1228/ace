@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.OrderMapper">
+    <resultMap type="com.ace.entity.Order" id="orderMap">
+        <id column="id" property="id"/>
+        <result column="account_id" property="accountId"/>
+        <result column="account_name" property="accountName"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="total" property="total"/>
+        <result column="coupon" property="coupon"/>
+        <result column="status" property="status"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="account_id" property="updatedAt"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_orders
+        <where>
+            <if test="keyword != null and keyword != ''">
+                order_no LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="orderMap">
+        select * from bb_orders
+        <where>
+            <if test="keyword != null and keyword != ''">
+                order_no LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by id desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_orders(account_id,account_name,order_no,total,coupon,pay_amount,status)
+        values (#{accountId},#{accountName},#{orderNo},#{total},#{coupon},#{pay_amount},#{status})
+    </insert>
+
+    <select id="findById" resultMap="orderMap">
+        select * from bb_orders where id = #{id} limit 1
+    </select>
+
+    <update id="update">
+        update bb_orders set status = #{status} where order_no = #{order_no}
+    </update>
+</mapper>

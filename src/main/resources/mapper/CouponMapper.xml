@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.CouponMapper">
+    <resultMap type="com.ace.entity.coupon.Coupon" id="couponMap">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="type" property="type"/>
+        <result column="discount" property="discount"/>
+        <result column="min" property="min"/>
+        <result column="resume" property="resume"/>
+        <result column="expired_type" property="expiredType"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="duration" property="duration"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_coupons
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="couponMap">
+        select * from bb_coupons
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by id desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_coupons(name,type,discount,min,resume,expired_type,start_date,end_date,duration,limit_pro,limit_org,limit_room)
+        values (#{name},#{type},#{discount},#{min},#{resume},#{expiredType},#{startDate},#{endDate},#{duration},#{limitPro},#{limitOrg},#{limitRoom})
+    </insert>
+
+    <select id="findById" resultMap="couponMap">
+        select * from bb_coupons where id = #{id} limit 1
+    </select>
+
+    <update id="update">
+        update bb_coupons set name = #{name},type = #{type},discount=#{discount},min=#{min},resume=#{resume} where id = #{id}
+    </update>
+    <delete id="destroy">
+        delete  from bb_coupons where id = #{id}
+    </delete>
+</mapper>

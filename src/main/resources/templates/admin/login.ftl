@@ -54,6 +54,7 @@
                                     </h4>
                                     <div class="space-6"></div>
                                     <form action="/admin/login" method="post" id="login_post">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                         <fieldset>
                                             <label class="block clearfix">
 													<span class="block input-icon input-icon-right">
