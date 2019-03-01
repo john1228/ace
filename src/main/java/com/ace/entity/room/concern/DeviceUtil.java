@@ -4,7 +4,7 @@ import com.ace.entity.concern.IEnum;
 
 public class DeviceUtil {
     public enum Status implements IEnum {
-        ROUND(0, "圆形"), SQUARE(1, "方形");
+        ENABLE(0, "已启用"), DISABLE(1, "已停用");
 
         private int code;
         private String name;

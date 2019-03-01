@@ -1,5 +1,8 @@
 <#import "../layout/application.ftl" as layout>
+<#import "/spring.ftl" as spring />
 <@layout.myLayout>
+<script src="/assets/js/jquery/dataTables.min.js"></script>
+<script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -14,9 +17,9 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/users/">用户管理</a>
+            <a href="/admin/users/">优惠券管理</a>
         </li>
-        <li class="active">用户查看</li>
+        <li class="active">优惠券查看</li>
     </ul>
 
     <div class="nav-search" id="nav-search">
@@ -37,7 +40,7 @@
                 <h1>${coupon.name}
                     <small>
                         <i class="icon-double-angle-right">
-                            详细资料
+                            详情
                         </i>
                     </small>
                 </h1>
@@ -52,72 +55,156 @@
                             <div class="widget-main">
                                 <fieldset class="fixed-border">
                                     <legend class="fixed-border">基础信息</legend>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            名字 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.name}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            类型 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.type.getName()}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            优惠金额 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.discount}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            订单金额 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.min}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            有效期方式 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.expiredType.getName()}</div>
-                                    </div>&nbsp;
+                                    <div class="attribute-table">
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">名字</div>
+                                            <div class="attribute-table-value">
+                                                <span>${coupon.name}</span>
+                                            </div>
+                                        </div>
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">类型</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.type.getName()}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">优惠金额</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.discount}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">订单金额</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.min}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">有效期方式</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.expiredType.getName()}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <#if coupon.expiredType.getName() == "CONVENTION">
+                                             <div class="attribute-table-row">
+                                                 <div class="attribute-table-label">时间</div>
+                                                 <div class="attribute-table-value">
+                                                    <span>
+                                                        ${coupon.start_date?string("yyyy-MM-dd")} - ${coupon.end_date?string("yyyy-MM-dd")}
+                                                    </span>
+                                                 </div>
+                                             </div>
+                                        <#else>
+                                             <div class="attribute-table-row">
+                                                 <div class="attribute-table-label">天数</div>
+                                                 <div class="attribute-table-value">
+                                                    <span>
+                                                        ${coupon.duration}
+                                                    </span>
+                                                 </div>
+                                             </div>
+                                        </#if>
+                                    </div>
                                 </fieldset>
                                 <fieldset class="fixed-border">
                                     <legend class="fixed-border">范围设置</legend>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            项目 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.limitPro!}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            组织 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.limitOrg!}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            会议室 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.limitRoom!}</div>
-                                    </div>&nbsp;
+                                    <div class="attribute-table">
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">项目</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.limitPro!}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">组织</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.limitOrg!}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">会议室</div>
+                                            <div class="attribute-table-value">
+                                                <span>
+                                                    ${coupon.limitRoom!}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </fieldset>
                                 <div class="clearfix form-actions">
                                     <div class="col-md-offset-3 col-md-9">
-                                        <a class="btn btn-info" type="button" href="/admin/coupons/${coupon.id}/edit">
+                                        <a class="btn btn-info" type="button" href="/admin/coupons/${coupon.id}/edit?parent=${parent}">
                                             <i class="icon-ok bigger-110"></i>
                                             修改
                                         </a>
-                                        &nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;
                                         <button class="btn" type="reset" onclick="history.go(-1)">
                                             <i class="icon-undo bigger-110"></i>
                                             返回
                                         </button>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <button class="btn" type="reset" onclick="history.go(-1)">
-                                            <i class="icon-ok bigger-110"></i>
-                                            发放
-                                        </button>
+                                        &nbsp;&nbsp;
+                                        <a href="#my-modal" class="btn" data-toggle="modal">发放</a>
+                                        <div id="my-modal" class="modal fade" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                                aria-hidden="true">&times;
+                                                        </button>
+                                                        <h4 class="smaller lighter blue no-margin">[${coupon.name}
+                                                            ]发放</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/admin/coupons/${coupon.id}/grant" role="form"
+                                                              class="form-horizontal" method="post">
+                                                            <@spring.bind path="grant"/>
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-3 control-label no-padding-right">
+                                                                    发放账号 </label>
+                                                                <div class="col-sm-9">
+                                                                    <@spring.formInput "grant.accounts","class='col-xs-10 col-sm-5'"/>
+                                                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-3 control-label no-padding-right">
+                                                                    发放数量 </label>
+                                                                <div class="col-sm-9">
+                                                                    <@spring.formInput "grant.amount","class='col-xs-10 col-sm-5' placeholder='每个用户发放的数量'"/>
+                                                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-sm btn-danger pull-right"
+                                                                data-dismiss="modal">
+                                                            <i class="ace-icon fa fa-times"></i>
+                                                            Close
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-sm-6">
                     <div class="widget-box">
@@ -128,50 +215,82 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <ul class="list-unstyled spaced">
-                                            <li>
-                                                <i class="ace-icon fa fa-bell-o bigger-110 purple"></i>
-                                                List with custom icons and more space
-                                            </li>
-
-                                            <li>
-                                                <i class="ace-icon fa fa-check bigger-110 green"></i>
-                                                Unordered List Item # 2
-                                            </li>
-
-                                            <li>
-                                                <i class="ace-icon fa fa-times bigger-110 red"></i>
-                                                Unordered List Item # 3
-                                            </li>
-                                        </ul>
-
-                                        <ul class="list-unstyled spaced2">
-                                            <li>
-                                                <i class="ace-icon fa fa-circle green"></i>
-                                                Even more space
-                                            </li>
-
-                                            <li class="text-warning bigger-110 orange">
-                                                <i class="ace-icon fa fa-exclamation-triangle"></i>
-                                                Unordered List Item # 5
-                                            </li>
-
-                                            <li class="muted">
-                                                <i class="ace-icon fa fa-angle-right bigger-110"></i>
-                                                Unordered List Item # 6
-                                            </li>
-
-                                            <li>
-                                                <ul class="list-inline">
-                                                    <li>
-                                                        <i class="ace-icon fa fa-share green bigger-110"></i>
-                                                        Inline List Item # 1
-                                                    </li>
-                                                    <li>List Item # 2</li>
-                                                    <li>List Item # 3</li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                        <table id="mcList" class="table table-striped table-bordered" cellspacing="0"
+                                               width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th class="center">编号</th>
+                                                <th class="center">有效期</th>
+                                                <th class="center">状态</th>
+                                                <th class="center">操作</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $('#mcList').DataTable({
+                                                    language: {
+                                                        sProcessing: "处理中...",
+                                                        sLengthMenu: "显示 _MENU_ 项结果",
+                                                        sZeroRecords: "没有匹配结果",
+                                                        sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                                                        sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
+                                                        sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+                                                        sInfoPostFix: "",
+                                                        sSearch: "搜索:",
+                                                        sUrl: "",
+                                                        sEmptyTable: "表中数据为空",
+                                                        sLoadingRecords: "载入中...",
+                                                        sInfoThousands: ",",
+                                                        oPaginate: {
+                                                            sFirst: "首页",
+                                                            sPrevious: "上一页",
+                                                            sNext: "下一页",
+                                                            sLast: "末页"
+                                                        }
+                                                    },
+                                                    processing: true,
+                                                    serverSide: true,
+                                                    autoWidth: false,
+                                                    ordering: false,
+                                                    ajax: {
+                                                        url: "/admin/coupons/${coupon.id}/member_coupons/dataList",
+                                                        type: "GET"
+                                                    },
+                                                    columns: [
+                                                        {data: "id", className: 'center'},
+                                                        {
+                                                            data: "startDate",
+                                                            className: 'center',
+                                                            render: function (data) {
+                                                                '111'
+                                                            }
+                                                        },
+                                                        {
+                                                            data: "status",
+                                                            className: 'center',
+                                                            render: function (data) {
+                                                                switch (data) {
+                                                                    case "PENDING":
+                                                                        return "未使用";
+                                                                    case "USED":
+                                                                        return "已使用";
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            data: "id",
+                                                            render: function (data) {
+                                                                return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                                                        '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                                                        '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
+                                                            },
+                                                            className: 'center'
+                                                        }
+                                                    ]
+                                                });
+                                            })
+                                        </script>
                                     </div>
                                 </div>
                             </div>

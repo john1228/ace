@@ -14,7 +14,6 @@ import javax.annotation.Resource;
 
 @Service("deviceService")
 public class DeviceServiceImpl implements DeviceService {
-    Logger logger = LoggerFactory.getLogger(DeviceServiceImpl.class);
 
     @Resource
     private DeviceMapper deviceMapper;
@@ -40,7 +39,9 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public void update(Device device) { deviceMapper.update(device); }
+    public void update(Device device) {
+        deviceMapper.update(device);
+    }
 
     @Override
     public void delete(int id) {

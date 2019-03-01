@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.ReceiptMapper">
+    <resultMap type="com.ace.entity.Receipt" id="receiptMap">
+        <id column="id" property="id"/>
+        <result column="no" property="no"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="buyer" property="buyer"/>
+        <result column="price" property="price"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="account_id" property="updatedAt"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_receipts
+        <where>
+            <if test="keyword != null and keyword != ''">
+                order_no LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="receiptMap">
+        select * from bb_receipts
+        <where>
+            <if test="keyword != null and keyword != ''">
+                order_no LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by id desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_receipts(no,order_no,buyer,price) values (#{no},#{orderNo},#{buyer},#{price})
+    </insert>
+
+
+    <select id="findById" resultMap="receiptMap">
+        select * from bb_receipts where id = #{id} limit 1
+    </select>
+</mapper>

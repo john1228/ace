@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 import com.ace.entity.GroupPermission;
 
 public interface GroupPermissionMapper extends TKMapper<GroupPermission> {
-	public int deletePermissionByGroupId(@Param("groupId") Integer groupId);
+    int deletePermissionByGroupId(@Param("groupId") Integer groupId);
 }

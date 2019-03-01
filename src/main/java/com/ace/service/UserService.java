@@ -3,8 +3,6 @@ package com.ace.service;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.ace.controller.admin.bo.UserBO;
@@ -14,10 +12,11 @@ import com.ace.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import javax.annotation.Resource;
+
 @Service("userService")
 public class UserService extends BaseService<User> {
-    @Autowired
-    @Qualifier("userMapper")
+    @Resource
     private UserMapper userMapper;
 
     public User getUserToLoginName(String loginName) {

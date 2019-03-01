@@ -2,7 +2,7 @@ package com.ace.controller.admin;
 
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.Order;
-import com.ace.entity.concern.OrderStatus;
+import com.ace.entity.concern.OrderUtil;
 import com.ace.service.OrderService;
 import com.ace.util.CollectionUtil;
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class OrdersController extends BaseController {
 
     @GetMapping("/new")
     public String add(Model model) {
-        model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderStatus.class));
+        model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderUtil.Status.class));
         model.addAttribute("Order", new Order());
         return viewPath + "new";
     }

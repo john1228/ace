@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service("memberCouponService")
+@Service("mcService")
 public class MemberCouponServiceImpl implements MemberCouponService {
     Logger logger = LoggerFactory.getLogger(MemberCouponServiceImpl.class);
 
@@ -18,12 +18,12 @@ public class MemberCouponServiceImpl implements MemberCouponService {
     private MemberCouponMapper mcMapper;
 
     @Override
-    public DataTable<MemberCoupon> dataTable(int start, int length, String keyword) {
+    public DataTable<MemberCoupon> dataTable(int couponId, int start, int length, String keyword) {
         DataTable<MemberCoupon> dataTable = new DataTable<>();
         dataTable.setStart(start);
         dataTable.setLength(length);
-        dataTable.setRecordsTotal(mcMapper.recordsTotal(keyword));
-        dataTable.setData(mcMapper.dataList(start, length, keyword));
+        dataTable.setRecordsTotal(mcMapper.recordsTotal(couponId, keyword));
+        dataTable.setData(mcMapper.dataList(couponId, start, length, keyword));
         return dataTable;
     }
 

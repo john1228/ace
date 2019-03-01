@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 import com.ace.dao.PermissionMapper;
 import com.ace.entity.Permission;
 
+import javax.annotation.Resource;
+
 @Service("permissionService")
 public class PermissionService extends BaseService<Permission> {
-    @Autowired
-    @Qualifier("permissionMapper")
+    @Resource
     private PermissionMapper permissionMapper;
 
     public List<Permission> getParentMenu() {

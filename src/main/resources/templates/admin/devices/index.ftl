@@ -34,11 +34,11 @@
                     <h3 class="header smaller lighter blue">
                         <span>设备列表</span>
                         <a class="btn btn-primary" style="float:right;margin-top: -12px;"
-                           href="/admin/coupons/new"><i
+                           href="/admin/rooms/new"><i
                                 class="icon-pencil align-top bigger-125"></i>新增</a>
                     </h3>
                     <div>
-                        <table id="siteList" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="roomList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="center">
@@ -59,7 +59,7 @@
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#siteList').DataTable({
+                            $('#roomList').DataTable({
                                 language: {
                                     sProcessing: "处理中...",
                                     sLengthMenu: "显示 _MENU_ 项结果",
@@ -85,7 +85,7 @@
                                 autoWidth: false,
                                 ordering: false,
                                 ajax: {
-                                    url: "/admin/rooms/0/devices/dataList",
+                                    url: "/admin/devices/dataList",
                                     type: "GET"
                                 },
                                 columns: [
@@ -101,25 +101,26 @@
                                     },
                                     {data: "id", className: 'center'},
                                     {data: "name", className: 'center'},
+                                    {data: "price", className: 'center'},
+                                    {data: "unit", className: 'center'},
                                     {
-                                        data: "type",
+                                        data: "status",
                                         className: 'center',
                                         render: function (data) {
                                             switch (data) {
-                                                case "Cash":
-                                                    return "现金抵用券";
+                                                case "ENABLE":
+                                                    return "已启用";
+                                                case "DISABLE":
+                                                    return "已停用"
 
                                             }
                                         }
                                     },
-                                    {data: "price", className: 'center'},
-                                    {data: "unit", className: 'center'},
-                                    {data: "status", className: 'center'},
                                     {
                                         data: "id",
                                         render: function (data) {
-                                            return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                            return '<a class="btn btn-xs btn-info" href="/admin/devices/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/devices/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
                                                     '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
                                         },
                                         className: 'center'

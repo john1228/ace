@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
-@Service("siteAttributeService")
+@Service("attributeService")
 public class AttributeServiceImpl implements AttributeService {
     Logger logger = LoggerFactory.getLogger(AttributeServiceImpl.class);
 

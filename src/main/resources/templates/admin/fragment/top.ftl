@@ -14,7 +14,7 @@
             <a href="index.html" class="navbar-brand">
                 <small>
                     <i class="fa fa-leaf"></i>
-                    ${company}
+                ${company}
                 </small>
             </a>
         </div>
@@ -182,7 +182,8 @@
                             <ul class="dropdown-menu dropdown-navbar">
                                 <li>
                                     <a href="#" class="clearfix">
-                                        <img src="/assets/images/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
+                                        <img src="/assets/images/avatars/avatar.png" class="msg-photo"
+                                             alt="Alex's Avatar"/>
                                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Alex:</span>
@@ -199,7 +200,8 @@
 
                                 <li>
                                     <a href="#" class="clearfix">
-                                        <img src="/assets/images/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
+                                        <img src="/assets/images/avatars/avatar3.png" class="msg-photo"
+                                             alt="Susan's Avatar"/>
                                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Susan:</span>
@@ -216,7 +218,8 @@
 
                                 <li>
                                     <a href="#" class="clearfix">
-                                        <img src="/assets/images/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
+                                        <img src="/assets/images/avatars/avatar4.png" class="msg-photo"
+                                             alt="Bob's Avatar"/>
                                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Bob:</span>
@@ -233,7 +236,8 @@
 
                                 <li>
                                     <a href="#" class="clearfix">
-                                        <img src="/assets/images/avatars/avatar2.png" class="msg-photo" alt="Kate's Avatar" />
+                                        <img src="/assets/images/avatars/avatar2.png" class="msg-photo"
+                                             alt="Kate's Avatar"/>
                                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Kate:</span>
@@ -250,7 +254,8 @@
 
                                 <li>
                                     <a href="#" class="clearfix">
-                                        <img src="/assets/images/avatars/avatar5.png" class="msg-photo" alt="Fred's Avatar" />
+                                        <img src="/assets/images/avatars/avatar5.png" class="msg-photo"
+                                             alt="Fred's Avatar"/>
                                         <span class="msg-body">
 													<span class="msg-title">
 														<span class="blue">Fred:</span>
@@ -278,14 +283,14 @@
 
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <#--<#if user.portrait == ''>-->
+                    <#--<#if user.portrait == ''>-->
                         <img class="nav-user-photo" src="/assets/images/avatars/user.jpg" alt=""/>
-                        <#--<#else>-->
-                        <#--<img class="nav-user-photo" src="/${user.portrait}" alt=""/>-->
-                        <#--</#if>-->
+                    <#--<#else>-->
+                    <#--<img class="nav-user-photo" src="/${user.portrait}" alt=""/>-->
+                    <#--</#if>-->
                         <span class="user-info">
                             <small>欢迎,</small>
-                            ${user.userName}
+                        ${username}
                         </span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>

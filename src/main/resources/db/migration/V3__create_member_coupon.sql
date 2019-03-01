@@ -10,12 +10,10 @@ CREATE TABLE bb_member_coupons (
   resume          text,
   start_date      date                         DEFAULT NULL,
   end_date        date                         DEFAULT NULL,
-  limit_pro       varchar(32),
-  limit_pro_name  varchar(128),
-  limit_org       varchar(32),
-  limit_org_name  varchar(128),
-  limit_room      varchar(32),
-  limit_room_name varchar(128),
+  limit_pro    text,
+  limit_org    text,
+  limit_room   text,
+  status          tinyint(1)                   DEFAULT 0,
   order_no        varchar(32)                  DEFAULT NULL,
   PRIMARY KEY (id)
 )

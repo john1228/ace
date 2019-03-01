@@ -4,7 +4,7 @@ import com.ace.entity.concern.IEnum;
 
 public class CouponUtil {
     public enum Status implements IEnum {
-        PENDING(0, "未试用"), USED(1, "已试用");;
+        PENDING(0, "未使用"), USED(1, "已使用");
 
         private int code;
         private String name;
@@ -78,7 +78,7 @@ public class CouponUtil {
     }
 
     public enum Expired implements IEnum {
-        Convention(0, "约定时间"), Assignment(1, "发放");
+        CONVENTION(0, "约定时间"), ASSIGNMENT(1, "发放");
         private int code;
         private String name;
 

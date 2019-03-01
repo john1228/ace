@@ -249,3 +249,55 @@
 .ui-slider-vertical .ui-slider-range-max {
     top: 0
 }
+
+.attribute-table {
+    display: table;
+    width: calc(100% - 24px);
+    margin: 0 auto;
+}
+
+.attribute-table-row {
+    display: table-row;
+}
+
+.attribute-table-label, .attribute-table-value {
+    display: table-cell;
+    border-top: 1px dotted #D5E4F1
+}
+
+.attribute-table-label {
+    text-align: right;
+    padding: 6px 10px 6px 4px;
+    font-weight: 400;
+    color: #667E99;
+    background-color: transparent;
+    width: 110px;
+    vertical-align: middle;
+    color: #336199;
+    background-color: #EDF3F4;
+    border-top: 1px solid #F7FBFF
+}
+
+.attribute-table-value {
+    padding: 6px 4px 6px 6px;
+    border-top: 1px dotted #DCEBF7;
+    padding-left: 12px
+}
+
+.attribute-table-value > span + span:before {
+    display: inline;
+    content: ",";
+    margin-left: 1px;
+    margin-right: 3px;
+    color: #666;
+    border-bottom: 1px solid #FFF
+}
+
+.attribute-table-value > span + span.editable-container:before {
+    display: none
+}
+
+.attribute-table-row:first-child .attribute-table-label,
+.attribute-table-row:first-child .attribute-table-value {
+    border-top: none
+}

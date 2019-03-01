@@ -16,40 +16,61 @@
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Integer">
-        SELECT count(1) AS recordsTotal FROM bb_coupons
+        SELECT count(1) AS recordsTotal FROM bb_member_coupons
         <where>
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
+            </if>
+            <if test="couponId != 0">
+                and coupon_id = ${couponId}
             </if>
         </where>
     </select>
 
     <select id="dataList" resultMap="mcMap">
-        select * from bb_coupons
+        select * from bb_member_coupons
         <where>
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
             </if>
-            <if test="coupon_id != null and coupon_id != ''">
-                and coupon_id = ${coupon_id}
+            <if test="couponId != null and couponId != '' and couponId != 0">
+                and coupon_id = ${couponId}
             </if>
         </where>
         order by id desc LIMIT #{start},#{length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_coupons(name,type,discount,min,resume,expired_type,start_date,end_date,duration,limit_pro,limit_org,limit_room)
-        values (#{name},#{type},#{discount},#{min},#{resume},#{expiredType},#{startDate},#{endDate},#{duration},#{limitPro},#{limitOrg},#{limitRoom})
+        insert into
+        bb_member_coupons(name,type,discount,min,resume,expired_type,start_date,end_date,duration,limit_pro,limit_org,limit_room)
+        values
+        <foreach collection="list" item="mc" index="index" separator=",">
+            (
+            #{mc.name},
+            #{mc.type},
+            #{mc.discount},
+            #{mc.min},
+            #{mc.resume},
+            #{mc.expiredType},
+            #{mc.startDate},
+            #{mc.endDate},
+            #{mc.duration},
+            #{mc.limitPro},
+            #{mc.limitOrg},
+            #{mc.limitRoom}
+            )
+        </foreach>
+
     </insert>
 
     <select id="findById" resultMap="mcMap">
-        select * from bb_coupons where id = #{id} limit 1
+        select * from bb_member_coupons where id = #{id} limit 1
     </select>
 
     <update id="update">
-        update bb_coupons set name = #{name},type = #{type},discount=#{discount},min=#{min},resume=#{resume} where id = #{id}
+        update bb_member_coupons set name = #{name},type = #{type},discount=#{discount},min=#{min},resume=#{resume} where id = #{id}
     </update>
     <delete id="destroy">
-        delete  from bb_coupons where id = #{id}
+        delete  from bb_member_coupons where id = #{id}
     </delete>
 </mapper>

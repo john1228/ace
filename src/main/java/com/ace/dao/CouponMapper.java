@@ -1,23 +1,23 @@
 package com.ace.dao;
 
-import com.ace.entity.coupon.Coupon;
-import com.ace.entity.room.Attribute;
+import com.ace.entity.coupon.SystemCoupon;
+import com.ace.entity.Staff;
 import com.ace.tk.TKMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 
-public interface CouponMapper extends TKMapper<Attribute> {
-    List<Coupon> dataList(@Param("start") int start, @Param("length") int length, @Param("keyword") String keyword);
+public interface CouponMapper extends TKMapper<SystemCoupon> {
+    List<SystemCoupon> dataList(@Param("staff") Staff staff, @Param("start") int start, @Param("length") int length, @Param("keyword") String keyword);
 
-    Integer recordsTotal(@Param("keyword") String keyword);
+    Integer recordsTotal(@Param("staff") Staff staff, @Param("keyword") String keyword);
 
-    void create(Coupon coupon);
+    void create(SystemCoupon coupon);
 
-    Coupon findById(@Param("id") int id);
+    SystemCoupon findById(@Param("id") int id);
 
-    void update(Coupon Coupon);
+    void update(SystemCoupon Coupon);
 
     void destroy(int id);
 }

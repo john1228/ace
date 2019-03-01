@@ -2,6 +2,7 @@ package com.ace.controller.admin.room;
 
 import com.ace.controller.admin.BaseController;
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.entity.User;
 import com.ace.entity.coupon.concern.CouponUtil;
 import com.ace.entity.room.Device;
 import com.ace.entity.room.Room;
@@ -11,6 +12,7 @@ import com.ace.service.room.RoomService;
 import com.ace.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +24,7 @@ import javax.validation.Valid;
 
 
 @Controller
-@RequestMapping("/admin/rooms")
+@RequestMapping("/admin/devices")
 public class DevicesController extends BaseController {
     Logger logger = LoggerFactory.getLogger(DevicesController.class);
     static String viewPath = "/admin/devices/";
@@ -30,13 +32,13 @@ public class DevicesController extends BaseController {
     private DeviceService deviceService;
 
 
-    @GetMapping({"/0/devices", "/0/devices/"})
+    @GetMapping({"", "/"})
     public String index() {
         return viewPath + "index";
     }
 
     @ResponseBody
-    @GetMapping("/0/devices/dataList")
+    @GetMapping("/dataList")
     public DataTable<Device> dataList(
             @RequestParam(value = "draw", defaultValue = "1") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
@@ -48,15 +50,15 @@ public class DevicesController extends BaseController {
         return dataTable;
     }
 
-    @GetMapping("/0/devices/new")
+    @GetMapping("/new")
     public String add(Model model) {
         model.addAttribute("device", new Device());
-        model.addAttribute("status", CollectionUtil.toCollection(DeviceUtil.Status.class));
+        model.addAttribute("statuses", CollectionUtil.toCollection(DeviceUtil.Status.class));
         return viewPath + "new";
     }
 
 
-    @PostMapping({"/0/devices", "/0/devices/"})
+    @PostMapping({"", "/"})
     public String create(@Valid Device device, BindingResult result, Model model) {
         model.addAttribute("device", device);
         if (result.hasErrors()) {
@@ -67,21 +69,22 @@ public class DevicesController extends BaseController {
         }
     }
 
-    @GetMapping("/0/devices/{id}")
+    @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         Device device = deviceService.findById(id);
         model.addAttribute("device", device);
         return viewPath + "show";
     }
 
-    @GetMapping("/0/devices/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
         Device device = deviceService.findById(id);
         model.addAttribute("device", device);
+        model.addAttribute("statuses", CollectionUtil.toCollection(DeviceUtil.Status.class));
         return viewPath + "edit";
     }
 
-    @PutMapping("/0/devices/{id}/update")
+    @PutMapping("/{id}/update")
     public String update(@Valid Device device, BindingResult result, HttpServletRequest request, @PathVariable("id") int id, Model model) {
         model.addAttribute("device", device);
         if (result.hasErrors()) {
@@ -93,7 +96,7 @@ public class DevicesController extends BaseController {
 
     }
 
-    @DeleteMapping("/0/devices/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         return viewPath + "index";
     }

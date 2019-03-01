@@ -1,6 +1,7 @@
 package com.ace.entity;
 
 
+import com.ace.entity.concern.OrderUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,7 @@ public class Order {
     private long total;
     private double payAmount;
     private double coupon;
-    private long status;
+    private OrderUtil.Status status;
     private Date createdAt;
     private Date updatedAt;
 

@@ -9,8 +9,11 @@
         <result column="status" property="status"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Integer">
-        SELECT count(1) AS recordsTotal FROM bb_devices
+        SELECT count(1) AS recordsTotal FROM bb_devices LEFT JOIN bb_staffs ON bb_coupons.staff_id = bb_staffs.id
         <where>
+            <if test="staff != null">
+                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
+            </if>
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
             </if>
@@ -18,18 +21,21 @@
     </select>
 
     <select id="dataList" resultMap="deviceMap">
-        select * from bb_devices
+        select * from bb_devices LEFT JOIN bb_staffs ON bb_coupons.staff_id = bb_staffs.id
         <where>
+            <if test="staff != null">
+                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
+            </if>
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
             </if>
         </where>
-        order by id desc LIMIT #{start},#{length}
+        order by bb_devices.id desc LIMIT #{start},#{length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_devices(name,price,unit,status)
-        values (#{name},#{price},#{unit},#{status})
+        insert into bb_devices(staff_id, name, price, unit,status)
+        values (#{staffId},#{accountId},#{name},#{price},#{unit},#{status})
     </insert>
 
     <select id="findById" resultMap="deviceMap">

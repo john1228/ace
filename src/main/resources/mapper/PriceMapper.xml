@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.PriceMapper">
+    <resultMap type="com.ace.entity.room.Price" id="priceMap">
+        <id column="id" property="id"/>
+        <result column="project_id" property="projectId"/>
+        <result column="project_name" property="projectName"/>
+        <result column="room_id" property="roomId"/>
+        <result column="room_name" property="roomName"/>
+        <result column="rental" property="rental"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="wday" property="wday"/>
+        <result column="price" property="price"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_prices
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and room_name LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="priceMap">
+        select * from bb_prices
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and name LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by id desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_prices (project_id,project_name,room_id,room_name,rental,start_date,end_date,wday,price)
+        values (#{projectId}, #{projectName},#{roomId}, #{roomName},#{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},#{startDate},#{endDate},#{wday,typeHandler=com.ace.dao.handler.ListTypeHandler},#{price})
+    </insert>
+
+    <select id="findById" resultMap="priceMap">
+        select *
+        from bb_prices
+        where id = #{id}
+        limit 1
+    </select>
+
+    <update id="update">
+        update bb_prices
+        set rental = #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            wday = #{wday,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+            price = #{price}
+        where id = #{id}
+    </update>
+
+    <delete id="destroy">
+        delete
+        from bb_prices
+        where id = #{id}
+    </delete>
+</mapper>

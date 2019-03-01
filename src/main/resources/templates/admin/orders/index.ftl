@@ -34,11 +34,11 @@
                     <h3 class="header smaller lighter blue">
                         <span>订单列表</span>
                         <a class="btn btn-primary" style="float:right;margin-top: -12px;"
-                           href="/admin/coupons/new"><i
+                           href="/admin/orders/new"><i
                                 class="icon-pencil align-top bigger-125"></i>新增</a>
                     </h3>
                     <div>
-                        <table id="siteList" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="orderList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="center">
@@ -63,7 +63,7 @@
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#siteList').DataTable({
+                            $('#orderList').DataTable({
                                 language: {
                                     sProcessing: "处理中...",
                                     sLengthMenu: "显示 _MENU_ 项结果",
@@ -109,17 +109,47 @@
                                     {data: "total", className: 'center'},
                                     {data: "coupon", className: 'center'},
                                     {data: "payAmount", className: 'center'},
-                                    {data: "status", className: 'center'},
-                                    {data: "createdAt", className: 'center'},
-                                    {data: "updatedAt", className: 'center'},
+                                    {
+                                        data: "status",
+                                        className: 'center',
+                                        render: function (data) {
+                                            switch (data) {
+                                                case "CANCELED":
+                                                    return "已取消";
+                                                case "PENDING":
+                                                    return "待付款";
+                                                case "PAID":
+                                                    return "已付款";
+                                                case "REFUNDED":
+                                                    return "已退款";
+
+                                            }
+                                        }
+                                    },
+                                    {
+                                        data: "createdAt",
+                                        className: 'center',
+                                        render: function (data) {
+                                            return moment(data).format("YYYY-MM-DD HH:mm:ss");
+                                        }
+                                    },
+                                    {
+                                        data: "updatedAt",
+                                        className: 'center',
+                                        render: function (data) {
+                                            return moment(data).format("YYYY-MM-DD HH:mm:ss");
+                                        }
+                                    },
                                     {
                                         data: "id",
+                                        className: 'center',
                                         render: function (data) {
-                                            return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
-                                        },
-                                        className: 'center'
+                                            return '<div class="hidden-sm hidden-xs btn-group">' +
+                                                    '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/orders/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>'　+
+                                                    '</div>';
+                                        }
                                     }
                                 ]
                             });

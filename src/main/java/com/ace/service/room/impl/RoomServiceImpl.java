@@ -2,6 +2,7 @@ package com.ace.service.room.impl;
 
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.dao.RoomMapper;
+import com.ace.entity.Staff;
 import com.ace.entity.room.Room;
 import com.ace.service.room.RoomService;
 import org.slf4j.Logger;
@@ -18,12 +19,12 @@ public class RoomServiceImpl implements RoomService {
     private RoomMapper roomMapper;
 
     @Override
-    public DataTable<Room> dataTable(int start, int length, String keyword) {
+    public DataTable<Room> dataTable(Staff staff, int start, int length, String keyword) {
         DataTable<Room> dataTable = new DataTable<>();
         dataTable.setStart(start);
         dataTable.setLength(length);
-        dataTable.setRecordsTotal(roomMapper.recordsTotal(keyword));
-        dataTable.setData(roomMapper.dataList(start, length, keyword));
+        dataTable.setRecordsTotal(roomMapper.recordsTotal(staff.getId(), keyword));
+        dataTable.setData(roomMapper.dataList(staff.getId(), start, length, keyword));
         return dataTable;
     }
 

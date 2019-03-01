@@ -38,7 +38,7 @@
                                 class="icon-pencil align-top bigger-125"></i>新增</a>
                     </h3>
                     <div>
-                        <table id="siteList" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="siteList" class="table  table-bordered table-hover" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="center">
@@ -120,21 +120,23 @@
                                         className: 'center',
                                         render: function (data) {
                                             switch (data) {
-                                                case "Convention":
+                                                case "CONVENTION":
                                                     return "约定";
-                                                case "Assignment":
+                                                case "ASSIGNMENT":
                                                     return "发放";
                                             }
                                         }
                                     },
                                     {
                                         data: "id",
+                                        className: 'center',
                                         render: function (data) {
-                                            return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
-                                        },
-                                        className: 'center'
+                                            return '<div class="hidden-sm hidden-xs btn-group">' +
+                                                    '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
+                                                    '</div>';
+                                        }
                                     }
                                 ]
                             });

@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class MemberCoupon extends Base {
+public class MemberCoupon extends Coupon {
     private String accountId;
     private CouponUtil.Status status;
     private Date createdAt;

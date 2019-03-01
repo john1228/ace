@@ -14,9 +14,9 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/users/">用户管理</a>
+            <a href="/admin/users/">订单管理</a>
         </li>
-        <li class="active">用户查看</li>
+        <li class="active">订单查看</li>
     </ul>
 
     <div class="nav-search" id="nav-search">
@@ -33,57 +33,83 @@
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="page-header">
-                <h1>${coupon.name}
-                    <small>
-                        <i class="icon-double-angle-right">
-                            详细资料
-                        </i>
-                    </small>
-                </h1>
-            </div>
             <div class="row">
                 <div class="col-sm-6">
                     <div class="widget-box">
                         <div class="widget-header widget-header-flat">
-                            <h4 class="widget-title">优惠券详情</h4>
+                            <h4 class="widget-title">订单详情</h4>
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
-                                <fieldset class="fixed-border">
-                                    <legend class="fixed-border">基础信息</legend>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            名字 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.name}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            类型 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.type.getName()}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            优惠金额 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.discount}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            订单金额 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.min}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                            有效期方式 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.expiredType.getName()}</div>
-                                    </div>&nbsp;
-                                </fieldset>
-                                <fieldset class="fixed-border">
-                                    <legend class="fixed-border">限定信息</legend>
-                                </fieldset>
+                                <div class="attribute-table">
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">账号编号</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.accountId!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">账号名字</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.accountName!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">订单号</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.orderNo!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">订单金额</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.total!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">优惠金额</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.coupon!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">实付金额</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.payAmount!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">状态</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.status!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">下单时间</div>
+                                        <div class="attribute-table-value">
+                                                <span>
+                                                    ${order.accountName!}
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="clearfix form-actions">
                                     <div class="col-md-offset-3 col-md-9">
-                                        <a class="btn btn-info" type="button" href="/admin/coupons/${coupon.id}/edit">
+                                        <a class="btn btn-info" type="button" href="/admin/orders/${order.id}/edit">
                                             <i class="icon-ok bigger-110"></i>
                                             修改
                                         </a>
@@ -97,12 +123,11 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="col-sm-6">
                     <div class="widget-box">
                         <div class="widget-header widget-header-flat">
-                            <h4 class="widget-title">Lists</h4>
+                            <h4 class="widget-title">预约信息</h4>
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">

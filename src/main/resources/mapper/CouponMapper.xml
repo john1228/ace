@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.dao.CouponMapper">
-    <resultMap type="com.ace.entity.coupon.Coupon" id="couponMap">
+    <resultMap type="com.ace.entity.coupon.SystemCoupon" id="couponMap">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="type" property="type"/>
@@ -14,37 +14,78 @@
         <result column="duration" property="duration"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Integer">
-        SELECT count(1) AS recordsTotal FROM bb_coupons
+        SELECT count(1) AS recordsTotal FROM bb_coupons LEFT JOIN bb_staffs ON bb_coupons.staff_id = bb_staffs.id
         <where>
+            <if test="staff != null">
+                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
+            </if>
             <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
+                AND name LIKE "%#{keyword}%"
             </if>
         </where>
     </select>
 
     <select id="dataList" resultMap="couponMap">
-        select * from bb_coupons
+        select * from bb_coupons LEFT JOIN bb_staffs ON bb_coupons.staff_id = bb_staffs.id
         <where>
+            <if test="staff != null">
+                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
+            </if>
             <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
+                and name LIKE "%#{keyword}%"
             </if>
         </where>
-        order by id desc LIMIT #{start},#{length}
+        order by bb_coupons.id desc LIMIT #{start},#{length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_coupons(name,type,discount,min,resume,expired_type,start_date,end_date,duration,limit_pro,limit_org,limit_room)
-        values (#{name},#{type},#{discount},#{min},#{resume},#{expiredType},#{startDate},#{endDate},#{duration},#{limitPro},#{limitOrg},#{limitRoom})
+        insert into bb_coupons (staff_id,
+                                name,
+                                type,
+                                discount,
+                                min,
+                                resume,
+                                amount,
+                                expired_type,
+                                start_date,
+                                end_date,
+                                duration,
+                                limit_org,
+                                limit_room)
+        values (#{staffId},
+                #{name},
+                #{type},
+                #{discount},
+                #{min},
+                #{resume},
+                #{amount},
+                #{expiredType,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{startDate},
+                #{endDate},
+                #{duration},
+                #{limitOrg,typeHandler=com.ace.dao.handler.RefTypeHandler},
+                #{limitRoom,typeHandler=com.ace.dao.handler.RefTypeHandler})
     </insert>
 
     <select id="findById" resultMap="couponMap">
-        select * from bb_coupons where id = #{id} limit 1
+        select *
+        from bb_coupons
+        where id = #{id}
+        limit 1
     </select>
 
     <update id="update">
-        update bb_coupons set name = #{name},type = #{type},discount=#{discount},min=#{min},resume=#{resume} where id = #{id}
+        update bb_coupons
+        set name     = #{name},
+            type     = #{type},
+            discount = #{discount},
+            min      = #{min},
+            resume   = #{resume}
+        where id = #{id}
     </update>
     <delete id="destroy">
-        delete  from bb_coupons where id = #{id}
+        delete
+        from bb_coupons
+        where id = #{id}
     </delete>
 </mapper>

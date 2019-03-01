@@ -1,7 +1,7 @@
 <#import "../layout/application.ftl" as layout>
 <#import "/spring.ftl" as spring />
 <@layout.myLayout>
-
+<script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -44,104 +44,103 @@
                     <form action="/admin/coupons/" role="form" class="form-horizontal" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <@spring.bind path="coupon"/>
-                        <fieldset class="fixed-border">
-                            <legend class="fixed-border">基础信息</legend>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        请输入名字 </label>
-                                    <div class="col-sm-9">
-                                        <@spring.formInput "coupon.name" "class='col-xs-10 col-sm-5' placeholder='请填写优惠券名字'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                        <@spring.formHiddenInput "coupon.staffId"/>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <fieldset class="fixed-border">
+                                    <legend class="fixed-border">基础信息</legend>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            请输入名字 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formInput "coupon.name" "class='col-xs-10 col-sm-5' placeholder='请填写优惠券名字'"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        请选择类型</label>
-                                    <div class="col-sm-9">
-                                        <@spring.formSingleSelect "coupon.type",couponType,"class='col-xs-10 col-sm-5'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            请选择类型</label>
+                                        <div class="col-sm-9">
+                                            <@spring.formSingleSelect "coupon.type",couponType,"class='col-xs-10 col-sm-5'"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                        </div>
                                     </div>
-                                </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            请输入数量</label>
+                                        <div class="col-sm-9">
+                                            <@spring.formInput "coupon.amount","class='col-xs-10 col-sm-5' placeholder='请输入优惠券数量'"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            优惠金额 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-5' placeholder='请填写优惠券优惠金额'"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            订单金额 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-5' placeholder='请填写可使用优惠券的最小订单金额'"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            有效期类型 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formSingleSelect "coupon.expiredType",expiredType,"class='col-xs-10 col-sm-5''"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="dayDiv" hidden>
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            有效天数 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formInput "coupon.duration","class='col-xs-10 col-sm-5' placeholder='请填写优惠券领取后的有效天数'"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="dateDiv" hidden>
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            有效期 </label>
+                                        <div class="col-sm-9">
+                                            <input type="text" id="dateRange" class="col-xs-10 col-sm-8">
+                                            <@spring.formHiddenInput "coupon.startDate"/>
+                                            <@spring.formHiddenInput "coupon.endDate"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
-                            <div class="space-4"></div>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        优惠金额 </label>
-                                    <div class="col-sm-9">
-                                        <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-5' placeholder='请填写优惠券优惠金额'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                            <div class="col-lg-6">
+                                <fieldset class="fixed-border">
+                                    <legend class="fixed-border">限定</legend>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            指定组织 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formMultiSelect "coupon.limitOrg",expiredType,"class='multiselect col-xs-10 col-sm-8''"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        订单金额 </label>
-                                    <div class="col-sm-9">
-                                        <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-5' placeholder='请填写可使用优惠券的最小订单金额'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                    <div class="form-group row">
+                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                            指定会场 </label>
+                                        <div class="col-sm-9">
+                                            <@spring.formMultiSelect "coupon.limitRoom",expiredType,"class='multiselect col-xs-10 col-sm-8''"/>
+                                            <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                        </div>
                                     </div>
-                                </div>
+                                </fieldset>
                             </div>
-                            <div class="space-4"></div>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        有效期类型 </label>
-                                    <div class="col-sm-9">
-                                        <@spring.formSingleSelect "coupon.expiredType",expiredType,"class='col-xs-10 col-sm-5''"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" id="dayDiv" hidden>
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        有效天数 </label>
-                                    <div class="col-sm-9">
-                                        <@spring.formInput "coupon.duration","class='col-xs-10 col-sm-5' placeholder='请填写优惠券领取后的有效天数'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" id="dateDiv" hidden>
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        有效期 </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="dateRange" class="col-xs-10 col-sm-8">
-                                        <@spring.formHiddenInput "coupon.startDate"/>
-                                        <@spring.formHiddenInput "coupon.endDate"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset class="fixed-border">
-                            <legend class="fixed-border">限定</legend>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        指定组织 </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="form-field-1" placeholder="属性名"
-                                               class="col-xs-10 col-sm-5"
-                                               name="limit_org"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
-                                        指定会场 </label>
-                                    <div class="col-sm-9">
-                                        <input type="text" id="form-field-1" placeholder="属性名"
-                                               class="col-xs-10 col-sm-5"
-                                               name="limit_room"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </fieldset>
-
-                        <div class="space-4"></div>
-
+                        </div>
                         <div class="clearfix form-actions">
                             <div class="col-md-offset-3 col-md-9">
                                 <button class="btn btn-info" type="submit">
@@ -164,9 +163,28 @@
 </div>
 <script type="text/javascript">
     $(function () {
+        $('.multiselect').multiselect({
+            nonSelectedText: "请选择",
+            nSelectedText: "已选择",
+            allSelectedText: "全选",
+            enableFiltering: true,
+            enableHTML: true,
+            buttonContainer: '<div class="col-xs-10 col-sm-8" />',
+            buttonClass: 'btn btn-white btn-primary col-xs-12 col-sm-12',
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
+                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                li: '<li><a tabindex="0"><label></label></a></li>',
+                divider: '<li class="multiselect-item divider"></li>',
+                liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
+            }
+        });
+
         $("#expiredType").on("change", function () {
             var selectedVal = $(this).val();
-            if (selectedVal == "convention") {
+            if (selectedVal == "CONVENTION") {
                 $("#dateDiv").show();
                 $("#dayDiv").hide();
             } else {

@@ -1,9 +1,8 @@
 package com.ace.dao.handler;
 
 import com.ace.entity.concern.IEnum;
-import com.ace.entity.concern.OrderStatus;
+import com.ace.entity.concern.OrderUtil;
 import com.ace.entity.coupon.concern.CouponUtil;
-import com.ace.entity.coupon.concern.MemberCouponStatus;
 import com.ace.entity.room.concern.DeviceUtil;
 import com.ace.entity.room.concern.RoomUtil;
 import org.apache.ibatis.type.BaseTypeHandler;
@@ -21,11 +20,12 @@ import java.util.Map;
  * Created by john on 16-10-21.
  */
 @MappedTypes(value = {
-        OrderStatus.class,
-        MemberCouponStatus.class,
+        OrderUtil.Status.class,
         CouponUtil.Status.class,
         CouponUtil.Type.class,
         CouponUtil.Expired.class,
+        RoomUtil.Week.class,
+        RoomUtil.Rental.class,
         RoomUtil.Type.class,
         RoomUtil.Layout.class,
         DeviceUtil.Status.class
@@ -34,8 +34,7 @@ public class EnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E> {
     private Class<E> type;
     private Map<Integer, E> map = new HashMap<Integer, E>();
 
-    public EnumTypeHandler() {
-    }
+    public EnumTypeHandler() { }
 
     public EnumTypeHandler(Class<E> type) {
         if (type == null) {

@@ -34,7 +34,7 @@
                     <h3 class="header smaller lighter blue">
                         <span>会议室列表</span>
                         <a class="btn btn-primary" style="float:right;margin-top: -12px;"
-                           href="/admin/rooms/new"><i
+                           href="/admin/rooms/new?parent=${parent}"><i
                                 class="icon-pencil align-top bigger-125"></i>新增</a>
                     </h3>
                     <div>
@@ -123,8 +123,8 @@
                                     {
                                         data: "id",
                                         render: function (data) {
-                                            return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                            return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '?parent=${parent}"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
                                                     '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
                                         },
                                         className: 'center'
