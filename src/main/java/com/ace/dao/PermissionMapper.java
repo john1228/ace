@@ -5,9 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.ace.entity.Permission;
-import com.ace.tk.TKMapper;
 
-public interface PermissionMapper extends TKMapper<Permission> {
+public interface PermissionMapper {
     List<Permission> getParentMenu();
 
     List<Permission> getChildPermissionByGroupId(@Param("groupId") Integer groupId);

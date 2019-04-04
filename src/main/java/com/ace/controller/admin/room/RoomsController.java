@@ -16,6 +16,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
 
 @Controller
@@ -49,24 +52,26 @@ public class RoomsController extends BaseController {
     @GetMapping("/new")
     public String add(Model model) {
         model.addAttribute("room", new Room());
+        model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));
         model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
         model.addAttribute("confirmations", CollectionUtil.toCollection(RoomUtil.Confirmation.class));
-        model.addAttribute("payments", CollectionUtil.toCollection(RoomUtil.Payment.class));
+        model.addAttribute("payable", CollectionUtil.trueOrFalseCollection("是", "否"));
         return viewPath + "new";
     }
 
 
     @PostMapping("")
-    public String create(@Valid Room room, BindingResult result, Model model) {
-        model.addAttribute("room", room);
+    public String create(@RequestParam("parent") String parent, @Valid Room room, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
             model.addAttribute("confirmations", CollectionUtil.toCollection(RoomUtil.Confirmation.class));
             model.addAttribute("payments", CollectionUtil.toCollection(RoomUtil.Payment.class));
+            model.addAttribute("room", room);
             return viewPath + "new";
         } else {
             roomService.create(room);
-            return viewPath + "show";
+            model.addAttribute("room", room);
+            return "redirect:" + "/admin/rooms/" + room.getId() + "/show?parent=" + parent;
         }
     }
 

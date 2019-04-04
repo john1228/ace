@@ -3,7 +3,6 @@ package com.ace.dao.handler;
 import com.ace.dao.handler.types.Ref;
 import com.ace.entity.concern.Organize;
 import com.ace.entity.concern.Project;
-import com.ace.entity.concern.Site;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -24,8 +23,7 @@ import java.util.List;
  */
 @MappedTypes(value = {
         Project.class,
-        Organize.class,
-        Site.class
+        Organize.class
 })
 public class RefTypeHandler extends BaseTypeHandler<List<Ref>> {
     private static Gson gson = new Gson();

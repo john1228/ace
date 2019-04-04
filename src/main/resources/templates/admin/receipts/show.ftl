@@ -45,7 +45,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="widget-box">
-                        <div class="widget-header widget-header-flat">
+                        <div class="widget-header widget-header-custom">
                             <h4 class="widget-title">优惠券详情</h4>
                         </div>
                         <div class="widget-body">
@@ -101,7 +101,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="widget-box">
-                        <div class="widget-header widget-header-flat">
+                        <div class="widget-header widget-header-custom">
                             <h4 class="widget-title">Lists</h4>
                         </div>
                         <div class="widget-body">

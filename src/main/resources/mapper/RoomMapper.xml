@@ -61,7 +61,7 @@
         #{buildingNo},
         #{floorNo},
         #{roomNo},
-        #{layHeight},
+        #{layerHeight},
         #{layerArea},
         #{quota},
         #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},

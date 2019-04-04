@@ -14,20 +14,10 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/users/">用户管理</a>
+            <a href="/admin/supports/">服务管理</a>
         </li>
-        <li class="active">用户查看</li>
+        <li class="active">服务查看</li>
     </ul>
-
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-			<span class="input-icon">
-				<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                       autocomplete="off"/>
-				<i class="icon-search nav-search-icon"></i>
-			</span>
-        </form>
-    </div>
 </div>
 
 <div class="page-content">
@@ -45,7 +35,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="widget-box">
-                        <div class="widget-header widget-header-flat">
+                        <div class="widget-header widget-header-custom">
                             <h4 class="widget-title">优惠券详情</h4>
                         </div>
                         <div class="widget-body">
@@ -121,7 +111,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="widget-box">
-                        <div class="widget-header widget-header-flat">
+                        <div class="widget-header widget-header-custom">
                             <h4 class="widget-title">领取列表</h4>
                         </div>
                         <div class="widget-body">

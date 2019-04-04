@@ -2,9 +2,8 @@ package com.ace.entity.coupon;
 
 
 import com.ace.entity.concern.Base;
-import com.ace.entity.concern.Organize;
+import com.ace.entity.concern.EnumUtils;
 import com.ace.entity.coupon.concern.CouponUtil;
-import com.ace.entity.concern.Site;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +32,24 @@ public abstract class Coupon extends Base {
     private Date startDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date endDate;
-    private List<Organize> limitOrg;
-    private List<Site> limitRoom;
+    private List<EnumUtils.Week> limitWday;
+    private List<Integer> limitRoom;
+
+    private String weekList;
+
+    public String getWeekList() {
+        if (limitWday != null) {
+            StringBuilder builder = new StringBuilder();
+            limitWday.forEach(wday -> {
+                if (builder.length() == 0) {
+                    builder.append(wday);
+                } else {
+                    builder.append("、").append(wday.toString());
+                }
+            });
+            return builder.toString();
+        } else {
+            return null;
+        }
+    }
 }

@@ -24,7 +24,6 @@ import java.util.Map;
         CouponUtil.Status.class,
         CouponUtil.Type.class,
         CouponUtil.Expired.class,
-        RoomUtil.Week.class,
         RoomUtil.Rental.class,
         RoomUtil.Type.class,
         RoomUtil.Layout.class,

@@ -1,13 +1,12 @@
 package com.ace.dao;
 
 import com.ace.entity.Staff;
-import com.ace.tk.TKMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 
-public interface StaffMapper extends TKMapper<Staff> {
+public interface StaffMapper {
 
     void create(List<Staff> staffList);
 

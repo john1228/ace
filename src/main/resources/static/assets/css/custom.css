@@ -14,3 +14,73 @@ legend.fixed-border {
     padding: 0 10px;
     border-bottom: none;
 }
+
+.widget-header-custom {
+    background: #009688;
+    color: #ffffff;
+}
+
+.widget-header-custom > .widget-title > h1, h2, h3, h4, h5 {
+    color: #ffffff;
+}
+
+.single {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.single > .dz-message {
+    padding-top: 30px;
+}
+
+.multiple {
+    width: 100%;
+}
+
+.theme-color {
+    color: #009688;
+}
+
+.table-header {
+    background: #009688;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.avatar {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+
+.avatar {
+    display: inline-block;
+}
+
+.avatar .file-input {
+    display: table-cell;
+    width: 213px;
+}

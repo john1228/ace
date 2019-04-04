@@ -2,7 +2,6 @@
 <#import "/spring.ftl" as spring />
 <@layout.myLayout>
 <script src="/assets/js/bootstrap/multiselect.min.js"></script>
-<script src="/assets/js/select2.min.js"></script>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -16,7 +15,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/prices/">价格管理</a>
+            <a href="/admin/prices/?parent=${parent}">价格管理</a>
         </li>
         <li class="active">价格新增</li>
     </ul>
@@ -32,19 +31,19 @@
                 <div class="col-xs-12">
                     <form action="/admin/prices?parent=${parent}" role="form" class="form-horizontal" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="accountId" value="${currentAdminUser.id}">
+                        <input type="hidden" name="staffId" value="${current_operator.getId()}">
                         <@spring.bind path="price"/>
                         <div class="form-group row">
                             <label class="col-sm-3 control-label no-padding-right">会议室</label>
                             <div class="col-sm-9">
-                                <@spring.formSingleSelect "price.roomId",rooms,"class='chosen-select col-xs-10 col-sm-5' data-placeholder='请选择会议室'"/>
+                                <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-8'"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 control-label no-padding-right">出租方式</label>
                             <div class="col-sm-9">
-                                <@spring.formSingleSelect "price.rental",rentals,"class='chosen-select col-xs-10 col-sm-5' data-placeholder='请选择出租方式'"/>
+                                <@spring.formSingleSelect "price.rental",rentals,"class='col-xs-10 col-sm-8' data-placeholder='请选择出租方式'"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                             </div>
                         </div>
@@ -62,7 +61,7 @@
                         <div class="form-group row">
                             <label class="col-sm-3 control-label no-padding-right">周</label>
                             <div class="col-sm-9">
-                                <@spring.formMultiSelect "price.wday",weeks,"class='multiselect　col-xs-10 col-sm-5'"/>
+                                <@spring.formMultiSelect "price.wday",weeks,"class='multiselect col-xs-10 col-sm-8'"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                             </div>
                         </div>
@@ -116,7 +115,7 @@
                 $('#endTime').val(ui.values[1]);
             }
         });
-        $('#wday').multiselect({
+        $('.multiselect').multiselect({
             nonSelectedText: "请选择",
             nSelectedText: "已选择",
             allSelectedText: "全选",

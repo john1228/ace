@@ -30,15 +30,8 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li class="${(requestUri?starts_with("/admin/devices"))?string("active","")}">
-                <a href="/admin/devices?parent=site">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>设备</text>
-                </a>
-                <b class="arrow"></b>
-            </li>
-            <li class="${(requestUri?starts_with("/admin/services"))?string("active","")}">
-                <a href="/admin/services?parent=site">
+            <li class="${(requestUri?starts_with("/admin/supports"))?string("active","")}">
+                <a href="/admin/supports?parent=site">
                     <i class="menu-icon fa fa-caret-right"></i>
                     <text>服务</text>
                 </a>
@@ -51,10 +44,10 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li>
+            <li class="${(requestUri?starts_with("/admin/schedules"))?string("active","")}">
                 <a href="/admin/schedules?parent=site">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    <text>日程</text>
+                    <text>服务</text>
                 </a>
                 <b class="arrow"></b>
             </li>

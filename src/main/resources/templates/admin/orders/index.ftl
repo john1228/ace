@@ -30,6 +30,16 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="row">
+                <form>
+                    <div class="col-lg-4">
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                    <div class="col-lg-4">
+                    </div>
+                </form>
+            </div>
+            <div class="row">
                 <div class="col-xs-12">
                     <h3 class="header smaller lighter blue">
                         <span>订单列表</span>
@@ -147,7 +157,7 @@
                                             return '<div class="hidden-sm hidden-xs btn-group">' +
                                                     '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
                                                     '<a class="btn btn-xs btn-danger" href="/admin/orders/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>'　+
+                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
                                                     '</div>';
                                         }
                                     }

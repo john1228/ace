@@ -8,7 +8,7 @@ import com.ace.entity.GroupPermission;
 import javax.annotation.Resource;
 
 @Service("groupPermissionService")
-public class GroupPermissionService extends BaseService<GroupPermission> {
+public class GroupPermissionService {
     @Resource
     private GroupPermissionMapper groupPermissionMapper;
 

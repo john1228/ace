@@ -16,15 +16,6 @@
         </li>
         <li class="active">优惠券管理</li>
     </ul>
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-				<span class="input-icon">
-					<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                           autocomplete="off"/>
-					<i class="icon-search nav-search-icon"></i>
-				</span>
-        </form>
-    </div>
 </div>
 <div class="page-content">
     <div class="row">
@@ -32,36 +23,50 @@
             <div class="row">
                 <div class="col-xs-12">
                     <h3 class="header smaller lighter blue">
-                        <span>会议室列表</span>
-                        <a class="btn btn-primary" style="float:right;margin-top: -12px;"
-                           href="/admin/rooms/new?parent=${parent}"><i
-                                class="icon-pencil align-top bigger-125"></i>新增</a>
+                        <span>场地列表</span>
                     </h3>
-                    <div>
-                        <table id="siteList" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th class="center">
-                                    <label>
-                                        <input type="checkbox" class="ace" onclick="checkAll(this)"/>
-                                        <span class="lbl"></span>
-                                    </label>
-                                </th>
-                                <th class="center">编号</th>
-                                <th class="center">名字</th>
-                                <th class="center">类型</th>
-                                <th class="center">高度</th>
-                                <th class="center">面积</th>
-                                <th class="center">人数</th>
-                                <th class="center">独自性</th>
-                                <th class="center">操作</th>
-                            </tr>
-                            </thead>
-                        </table>
+                    <div class="row">
+                        <div class="clearfix">
+                            <div class="tableTools-container col-sm-6">
+                                <div class="input-group pull-left">
+                                    <input class="form-control" placeholder="Search" aria-label="Search" id="search">
+                                    <div class="input-group-addon" id="searchBtn">
+                                        <i class="ace-icon fa fa-search"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tableTools-container col-sm-6">
+                                <a class="btn btn-primary pull-right " href="/admin/rooms/new?parent=${parent}">新增场地</a>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="table-header">会议室列表</div>
+                            <table id="roomList" class="table table-striped table-bordered" cellspacing="0"
+                                   width="100%">
+                                <thead>
+                                <tr>
+                                    <th class="center">
+                                        <label>
+                                            <input type="checkbox" class="ace" onclick="checkAll(this)"/>
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </th>
+                                    <th class="center">编号</th>
+                                    <th class="center">名字</th>
+                                    <th class="center">类型</th>
+                                    <th class="center">高度</th>
+                                    <th class="center">面积</th>
+                                    <th class="center">人数</th>
+                                    <th class="center">独自性</th>
+                                    <th class="center">操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#siteList').DataTable({
+                            var table = $('#roomList').DataTable({
                                 language: {
                                     sProcessing: "处理中...",
                                     sLengthMenu: "显示 _MENU_ 项结果",
@@ -82,6 +87,7 @@
                                         sLast: "末页"
                                     }
                                 },
+                                searching: false,
                                 processing: true,
                                 serverSide: true,
                                 autoWidth: false,
@@ -131,6 +137,12 @@
                                     }
                                 ]
                             });
+                            $("#searchBtn").on("click", function () {
+                                var searchVal = $("#search").val();
+                                console.log("输入内容:" + !searchVal || /^\s*$/.test(searchVal));
+                                if (!(!searchVal || /^\s*$/.test(searchVal)))
+                                    table.search(searchVal).draw();
+                            })
                         })
                     </script>
                 </div>

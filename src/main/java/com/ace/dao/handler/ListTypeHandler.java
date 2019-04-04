@@ -4,6 +4,7 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,16 +20,32 @@ public class ListTypeHandler extends BaseTypeHandler<List<String>> {
 
     @Override
     public List<String> getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        return Arrays.asList(rs.getString(columnName).split(","));
+        String values = rs.getString(columnName);
+        if (values == null) {
+            return new ArrayList<>();
+        } else {
+            return Arrays.asList(values);
+        }
+
     }
 
     @Override
     public List<String> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        return Arrays.asList(rs.getString(columnIndex).split(","));
+        String values = rs.getString(columnIndex);
+        if (values == null) {
+            return new ArrayList<>();
+        } else {
+            return Arrays.asList(values);
+        }
     }
 
     @Override
     public List<String> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        return Arrays.asList(cs.getString(columnIndex).split(","));
+        String values = cs.getString(columnIndex);
+        if (values == null) {
+            return new ArrayList<>();
+        } else {
+            return Arrays.asList(values);
+        }
     }
 }

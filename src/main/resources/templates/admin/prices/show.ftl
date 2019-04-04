@@ -45,7 +45,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div class="widget-box">
-                        <div class="widget-header widget-header-flat">
+                        <div class="widget-header widget-header-custom">
                             <h4 class="widget-title">价格详情</h4>
                         </div>
                         <div class="widget-body">

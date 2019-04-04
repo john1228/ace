@@ -4,43 +4,6 @@ import com.ace.entity.concern.IEnum;
 
 
 public class RoomUtil {
-
-    public enum Week implements IEnum {
-        MONDAY(2, "周一"), TUESDAY(3, "周二"), WEDNESDAY(4, "周三"), THURSDAY(5, "周四"), FRIDAY(6, "周五"), SATURDAY(7, "周六"), SUNDAY(1, "周日");
-        private int code;
-        private String name;
-
-        Week(int code, String name) {
-            this.code = code;
-            this.name = name;
-        }
-
-        @Override
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-        @Override
-        public int getCode() {
-            return code;
-        }
-
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
-        @Override
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-    }
-
     public enum Rental implements IEnum {
         HOUR(0, "小时"), PERIOD(1, "整段");
         private int code;

@@ -3,26 +3,21 @@ package com.ace.entity.room;
 import com.ace.entity.concern.Base;
 import com.ace.entity.room.concern.DeviceUtil;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
+import java.util.Date;
 
-@Setter
 @Getter
-@OverrideC
-public class Device extends Base {
+@Setter
+public class Support extends Base {
     private Integer id;
     @NotEmpty(message = "不能为空")
     private String name;
-    @Min(value = 0, message = "优惠金额不能小于0元")
-    private BigDecimal price;
+    private String cover;
     @NotEmpty(message = "不能为空")
     private String unit;
-    private DeviceUtil.Status status;
-
-    public static void main(String[] args) {
-        Device device = new Device(1);
-    }
+    private Date createdAt;
+    private Date updatedAt;
 }

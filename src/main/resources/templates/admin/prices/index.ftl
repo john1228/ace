@@ -16,15 +16,6 @@
         </li>
         <li class="active">价格管理</li>
     </ul>
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-				<span class="input-icon">
-					<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                           autocomplete="off"/>
-					<i class="icon-search nav-search-icon"></i>
-				</span>
-        </form>
-    </div>
 </div>
 <div class="page-content">
     <div class="row">
@@ -33,12 +24,13 @@
                 <div class="col-xs-12">
                     <h3 class="header smaller lighter blue">
                         <span>价格列表</span>
-                        <a class="btn btn-primary" style="float:right;margin-top: -12px;"
+                        <a class="btn btn-primary pull-right"
                            href="/admin/prices/new?parent=${parent}"><i
-                                class="icon-pencil align-top bigger-125"></i>新增</a>
+                                class="icon-pencil align-top bigger-125"></i>新建价格</a>
                     </h3>
                     <div>
-                        <table id="roomList" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                        <div class="table-header">价格体系</div>
+                        <table id="priceList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th class="center">
@@ -60,7 +52,7 @@
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#roomList').DataTable({
+                            $('#priceList').DataTable({
                                 language: {
                                     sProcessing: "处理中...",
                                     sLengthMenu: "显示 _MENU_ 项结果",
@@ -81,6 +73,7 @@
                                         sLast: "末页"
                                     }
                                 },
+                                searching: false,
                                 processing: true,
                                 serverSide: true,
                                 autoWidth: false,

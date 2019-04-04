@@ -1,8 +1,7 @@
 DROP TABLE IF EXISTS `bb_prices`;
 CREATE TABLE bb_prices (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  project_id   varchar(32)         NOT NULL COMMENT '项目编号',
-  project_name varchar(64)         NOT NULL COMMENT '项目名称',
+  staff_id     bigint(11)          NOT NULL COMMENT '管理员工',
   room_id      varchar(32)         NOT NULL COMMENT '会议室编号',
   room_name    varchar(64)         NOT NULL COMMENT '会议室名字',
   rental       tinyint(1)          DEFAULT 0 COMMENT '出租方式',
@@ -19,3 +18,4 @@ CREATE TABLE bb_prices (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+CREATE INDEX bb_prices_staff_id on bb_prices (staff_id)

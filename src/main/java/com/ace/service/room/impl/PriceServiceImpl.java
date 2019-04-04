@@ -2,6 +2,7 @@ package com.ace.service.room.impl;
 
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.dao.PriceMapper;
+import com.ace.entity.Staff;
 import com.ace.entity.room.Price;
 import com.ace.service.room.PriceService;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ public class PriceServiceImpl implements PriceService {
     private PriceMapper priceMapper;
 
     @Override
-    public DataTable<Price> dataTable(int start, int length, String keyword) {
+    public DataTable<Price> dataTable(Staff staff, int start, int length, String keyword) {
         DataTable<Price> dataTable = new DataTable<>();
         dataTable.setStart(start);
         dataTable.setLength(length);
-        dataTable.setRecordsTotal(priceMapper.recordsTotal(keyword));
-        dataTable.setData(priceMapper.dataList(start, length, keyword));
+        dataTable.setRecordsTotal(priceMapper.recordsTotal(staff, keyword));
+        dataTable.setData(priceMapper.dataList(staff, start, length, keyword));
         return dataTable;
     }
 

@@ -15,9 +15,9 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/sites/attributes/">属性管理</a>
+            <a href="/admin/sites/attributes/">场地管理</a>
         </li>
-        <li class="active">属性修改</li>
+        <li class="active">新增场地</li>
     </ul><!-- .breadcrumb -->
 
     <div class="nav-search" id="nav-search">
@@ -32,81 +32,200 @@
 </div>
 
 <div class="page-content">
-    <div class="row">
-        <div class="col-xs-12">
-            <!-- PAGE CONTENT BEGINS -->
-            <div class="page-header">
-                <h1>属性修改
-                    <small>
-                        <i class="icon-double-angle-right">
-                            请编辑属性最新资料
-                        </i>
-                    </small>
-                </h1>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <form action="/admin/sites/attributes/${attribute.id}/update" role="form" class="form-horizontal"
-                          method="post" 　name="attribute">
-                        <#--<input type="hidden" name="_method" value="put">-->
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <@spring.bind path="attribute"/>
-                        <@spring.formHiddenInput "attribute.id"/>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入属性名 </label>
-                            <div class="col-sm-9">
-                                <@spring.bind "attribute.name" />
-                                <@spring.formInput "attribute.name"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                </span>
+    <div class="widget-box">
+        <div class="widget-header widget-header-custom">
+            <h4 class="widget-title">场地新增</h4>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form action="/admin/rooms/${coupon.id}" role="form" class="form-horizontal" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <input type="hidden" name="staffId" value="${current_operator.getId()}">
+                            <@spring.bind path="room"/>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <fieldset class="fixed-border">
+                                        <legend class="fixed-border">基础信息</legend>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">名字</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formInput "room.name","class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">编号</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.serialNo" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">幢号</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.buildingNo" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">楼层</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.floorNo" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">房号</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.floorNo" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">层高</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.layerHeight" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">面积</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.layerArea" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">容纳人数</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formInput "room.quota" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">介绍</label>
+                                            <div class="col-sm-9">
+                                            <@spring.formTextarea "room.resume" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-6">
+                                    <fieldset class="fixed-border">
+                                        <legend class="fixed-border">其他</legend>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">负责人</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formSingleSelect "room.rental",rentals,"class='col-xs-10 col-sm-5'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">负责人</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formInput "room.supervisor" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">负责人电话</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formInput "room.supervisorMobile" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">负责人邮箱</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formInput "room.supervisorEmail" "class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">确认方式</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formSingleSelect "room.confirmation",confirmations,"class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 control-label no-padding-right"
+                                                   for="form-field-1">支付方式</label>
+                                            <div class="col-sm-9">
+                                                <@spring.formSingleSelect "room.supervisor",payments,"class='col-xs-10 col-sm-5' placeholder='会议室名称'"/>
+                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
+                                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
                             </div>
-                        </div>
-                        <div class="space-4"></div>
 
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择属性类型 </label>
-                            <div class="col-sm-9">
-                                <@spring.formSingleSelect "attribute.type",['请选择类型','选择',"输入"]/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                </span>
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="icon-ok bigger-110"></i>
+                                        提交
+                                    </button>
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset" onclick="history.go(-1)">
+                                        <i class="icon-undo bigger-110"></i>
+                                        返回
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="space-4"></div>
-
-
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入属性值 </label>
-                            <div class="col-sm-9">
-                                <@spring.formInput "attribute.value"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="space-4"></div>
-
-
-                        <div class="clearfix form-actions">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button class="btn btn-info" type="submit">
-                                    <i class="icon-ok bigger-110"></i>
-                                    提交
-                                </button>
-                                &nbsp; &nbsp; &nbsp;
-                                <button class="btn" type="reset" onclick="go_back()">
-                                    <i class="icon-undo bigger-110"></i>
-                                    返回
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <!-- PAGE CONTENT ENDS -->
-        </div><!-- /.col -->
-    </div><!-- /.row -->
+        </div>
+    </div>
 </div><!-- /.page-content -->
 </@layout.myLayout>

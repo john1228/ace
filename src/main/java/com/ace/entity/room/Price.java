@@ -1,7 +1,10 @@
 package com.ace.entity.room;
 
+import com.ace.entity.concern.Base;
+import com.ace.entity.concern.EnumUtils;
 import com.ace.entity.room.concern.RoomUtil;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,12 +15,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Price {
+@NoArgsConstructor
+public class Price extends Base {
     private Long id;
-    private String projectId;
-    private String projectName;
-    private String roomId;
-    private String roomName;
+    private List<String> roomId;
+    private List<String> roomName;
     private RoomUtil.Rental rental;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date startDate;
@@ -25,14 +27,13 @@ public class Price {
     private Date endDate;
     private String startTime;
     private String endTime;
-    private List<String> wday;
+    private List<EnumUtils.Week> wday;
     private BigDecimal price;
     private Date createdAt;
     private Date updatedAt;
 
-    public List<RoomUtil.Week> weeks() {
-        List<RoomUtil.Week> wList = new ArrayList<>();
-        wday.forEach(item -> wList.add(RoomUtil.Week.valueOf(item)));
-        return wList;
+    public Price(Integer staffId) {
+        setStaffId(staffId);
     }
+
 }

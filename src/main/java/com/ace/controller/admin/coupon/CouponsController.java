@@ -3,6 +3,7 @@ package com.ace.controller.admin.coupon;
 import com.ace.controller.admin.BaseController;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.Grant;
+import com.ace.entity.concern.EnumUtils;
 import com.ace.entity.coupon.SystemCoupon;
 import com.ace.entity.coupon.concern.CouponUtil;
 import com.ace.entity.Staff;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 @RequestMapping("/admin/coupons")
 public class CouponsController extends BaseController {
     Logger logger = LoggerFactory.getLogger(CouponsController.class);
-    static String viewPath = "/admin/coupons/";
+    static String viewPath = "/admin/system_coupons/";
     @Resource
     private CouponService couponService;
 
@@ -50,26 +51,26 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/new")
-    public String add(Model model, HttpSession session) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+    public String add(Model model) {
         model.addAttribute("couponType", CollectionUtil.toCollection(CouponUtil.Type.class));
         model.addAttribute("expiredType", CollectionUtil.toCollection(CouponUtil.Expired.class));
-        model.addAttribute("coupon", new SystemCoupon(staff.getId()));
+        model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
+        model.addAttribute("coupon", new SystemCoupon());
         return viewPath + "new";
     }
 
 
     @PostMapping(value = {"", "/"})
-    public String create(@Valid SystemCoupon coupon, BindingResult result, Model model) {
+    public String create(@Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("couponType", CollectionUtil.toCollection(CouponUtil.Type.class));
             model.addAttribute("expiredType", CollectionUtil.toCollection(CouponUtil.Expired.class));
-            model.addAttribute("coupon", coupon);
+            model.addAttribute("coupon", systemCoupon);
             return viewPath + "new";
         } else {
-            couponService.create(coupon);
-            model.addAttribute("coupon", coupon);
-            return viewPath + "show";
+            couponService.create(systemCoupon);
+            model.addAttribute("coupon", systemCoupon);
+            return "redirect:" + viewPath + systemCoupon.getId() + "/show";
         }
     }
 
@@ -91,13 +92,13 @@ public class CouponsController extends BaseController {
     }
 
     @PutMapping("/{id}/update")
-    public String update(@Valid SystemCoupon coupon, BindingResult result, Model model) {
+    public String update(@PathVariable("id") int id, @Valid SystemCoupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return viewPath + "edit";
         } else {
             couponService.update(coupon);
             model.addAttribute("coupon", coupon);
-            return viewPath + "show";
+            return "redirect:" + "/admin/rooms/" + id + "/show";
         }
 
     }

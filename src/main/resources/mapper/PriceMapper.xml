@@ -16,22 +16,28 @@
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Integer">
-        SELECT count(1) AS recordsTotal FROM bb_prices
+        SELECT count(1) AS recordsTotal FROM bb_prices LEFT JOIN bb_staffs ON bb_prices.staff_id = bb_staffs.id
         <where>
+            <if test="staff != null">
+                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
+            </if>
             <if test="keyword != null and keyword != ''">
-                and room_name LIKE "%${keyword}%"
+                and price LIKE "%${keyword}%"
             </if>
         </where>
     </select>
 
     <select id="dataList" resultMap="priceMap">
-        select * from bb_prices
+        select * from bb_prices LEFT JOIN bb_staffs ON bb_prices.staff_id = bb_staffs.id
         <where>
+            <if test="staff != null">
+                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
+            </if>
             <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
+                and price LIKE "%${keyword}%"
             </if>
         </where>
-        order by id desc LIMIT #{start},#{length}
+        order by bb_prices.id desc LIMIT #{start},#{length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">

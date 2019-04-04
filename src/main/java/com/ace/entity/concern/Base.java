@@ -1,12 +1,12 @@
 package com.ace.entity.concern;
 
+
 import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
-public abstract class Base {
+public class Base {
     @NonNull
-    private Integer staffId;
+    Integer staffId;
 }

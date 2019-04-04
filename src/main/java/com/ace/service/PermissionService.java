@@ -12,7 +12,7 @@ import com.ace.entity.Permission;
 import javax.annotation.Resource;
 
 @Service("permissionService")
-public class PermissionService extends BaseService<Permission> {
+public class PermissionService {
     @Resource
     private PermissionMapper permissionMapper;
 

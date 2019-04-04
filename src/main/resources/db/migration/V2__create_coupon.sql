@@ -12,8 +12,8 @@ CREATE TABLE bb_coupons (
   start_date   date                COMMENT '指定日期的开始日期',
   end_date     date                COMMENT '指定日期的结束日期',
   duration     int(11)             COMMENT '发放指定的有效天数',
-  limit_org    varchar(32)         COMMENT '限定的组织',
-  limit_room   varchar(32)         COMMENT '限定的房间',
+  limit_wday   varchar(120)        COMMENT '指定星期',
+  limit_room   varchar(120)        COMMENT '指定房间',
   PRIMARY KEY (id)
 )
   ENGINE = InnoDB

@@ -8,7 +8,7 @@ import com.ace.entity.Group;
 import javax.annotation.Resource;
 
 @Service("groupService")
-public class GroupService extends BaseService<Group> {
+public class GroupService {
     @Resource
     private GroupMapper groupMapper;
 

@@ -11,11 +11,8 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class SystemCoupon extends Coupon {
-    @NonNull
-    private Integer staffId;
-    private CouponUtil.Expired expiredType;
+    private CouponUtil.Expired expiredType = CouponUtil.Expired.CONVENTION;
     private Integer amount;
     private Integer duration;
 
