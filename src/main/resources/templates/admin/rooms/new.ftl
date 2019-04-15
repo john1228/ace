@@ -1,5 +1,6 @@
 <#import "../layout/application.ftl" as layout>
 <#import "/spring.ftl" as spring />
+<#import "../formBuilder.ftl" as formBuilder />
 <@layout.myLayout>
 <link href="/assets/css/bootstrap/fileinput.css" media="all" rel="stylesheet" type="text/css">
 <script src="/assets/js/bootstrap/fileinput.js"></script>
@@ -25,12 +26,14 @@
 </div>
 
 <div class="page-content">
-    <h3 class="header smaller lighter blue">
+    <h4 class="header smaller lighter blue">
         <span>新增场地</span>
-    </h3>
-    <form action="/admin/rooms" role="form" class="form-horizontal" method="post">
+    </h4>
+    <form action="/admin/rooms" role="form" class="form-horizontal" enctype="multipart/form-data"
+          data-toggle="validator" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="staffId" value="${current_operator.getId()}">
+        <input type="hidden" name="parent" value="${parent}">
         <div class="row">
             <div class="col-xs-12 col-sm-12 widget-container-col">
                 <div class="widget-box">
@@ -44,43 +47,56 @@
                                 <div class="col-sm-10">
                                     <div class="avatar">
                                         <div class="file-loading">
-                                            <input id="avatar-1" name="avatar-1" type="file" required>
+                                            <input id="cover" name="cover" type="file" required>
                                         </div>
                                     </div>
 
                                 </div>
                                 <script type="text/javascript">
-                                    $("#avatar-1").fileinput({
+                                    $("#cover").fileinput({
                                         overwriteInitial: true,
                                         maxFileSize: 1500,
                                         showClose: false,
                                         showCaption: false,
-                                        browseLabel: '',
+                                        showBrowse: false,
+                                        browseOnZoneClick: true,
                                         removeLabel: '',
-                                        browseIcon: none,
                                         removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
                                         removeTitle: 'Cancel or reset changes',
                                         elErrorContainer: '#kv-avatar-errors-1',
                                         msgErrorClass: 'alert alert-block alert-danger',
-                                        defaultPreviewContent: '<img src="/samples/default-avatar-male.png" alt="Your Avatar">',
-                                        layoutTemplates: {main2: '{preview} {remove} {browse}'},
-                                        allowedFileExtensions: ["jpg", "png", "gif"]
+                                        defaultPreviewContent: '<img src="/assets/images/avatars/profile-pic.jpg" alt="Your Avatar">',
+                                        layoutTemplates: {main2: '{preview} {browse}'},
+                                        allowedFileExtensions: ["jpg", "png"]
                                     });
                                 </script>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-2 control-label no-padding-right">场地图片</div>
                                 <div class="col-sm-10">
-                                    <div class="file-loading" id="image">
-                                        <input id="input-file-1" name="input-file-1[]" multiple type="file"
-                                               accept="image/*">
+                                    <div class="file-loading">
+                                        <input id="image" name="image[]" type="file" multiple>
                                     </div>
                                 </div>
                                 <script type="text/javascript">
-                                    $("#input-file-1").fileinput({
-                                        uploadUrl: "/file-upload-batch/2",
-                                        autoOrientImage: true
-                                    });
+                                    $(function () {
+                                        $("#image").fileinput({
+                                            overwriteInitial: true,
+                                            maxFileSize: 1500,
+                                            showClose: false,
+                                            showCaption: false,
+                                            showBrowse: false,
+                                            browseOnZoneClick: true,
+                                            removeLabel: '',
+                                            removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
+                                            removeTitle: 'Cancel or reset changes',
+                                            elErrorContainer: '#kv-avatar-errors-1',
+                                            msgErrorClass: 'alert alert-block alert-danger',
+                                            defaultPreviewContent: '<img src="/assets/images/avatars/profile-pic.jpg" alt="Your Avatar">',
+                                            layoutTemplates: {main2: '{preview} {browse}'},
+                                            allowedFileExtensions: ["jpg", "png"]
+                                        });
+                                    })
                                 </script>
                             </div>
                         </div>
@@ -95,53 +111,43 @@
                     <div class="widget-body">
                         <div class="widget-main padding-8">
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">编号</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.serialNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right">
+                                    <span style="color: red">*</span>编号
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.serialNo","class='col-xs-12 col-sm-9' required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">名字</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.name","class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right">
+                                    <span style="color: red">*</span>名称
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.name","class='col-xs-10 col-sm-9' required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">幢号</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.buildingNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right">
+                                    <span style="color: red">*</span>幢号
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.buildingNo","class='col-xs-12 col-sm-9' required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">楼层</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.floorNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right">
+                                    <span style="color: red">*</span>楼层
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.floorNo","class='col-xs-12 col-sm-9' required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">房号</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.floorNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right">
+                                    <span style="color: red">*</span>房号
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.roomNo","class='col-xs-12 col-sm-9' required"/>
                                 </div>
                             </div>
                         </div>
@@ -156,52 +162,36 @@
                     <div class="widget-body">
                         <div class="widget-main padding-8">
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">层高</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.layerHeight" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>层高</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.layerHeight" "class='col-xs-10 col-sm-9'"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">类型</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.name","class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>场地类型</label>
+                                <div class="col-sm-10">
+                                    <@formBuilder.formRadioButtons "room.type",types,"required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">幢号</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.buildingNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>发布类型</label>
+                                <div class="col-sm-10">
+                                    <@formBuilder.formRadioButtons "room.publish",publish,"required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">楼层</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.floorNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>面积</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.layerArea" "class='col-xs-10 col-sm-9' required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">房号</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.floorNo" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>容纳人数</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.quota" "class='col-xs-10 col-sm-9' required"/>
                                 </div>
                             </div>
                         </div>
@@ -218,58 +208,44 @@
                     <div class="widget-body padding-6">
                         <div class="widget-main padding-6">
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">出租收费</label>
-                                <div class="col-sm-9">
-                                    <@spring.formRadioButtons "room.free",free,"&nbsp;",""/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>出租收费</label>
+                                <div class="col-sm-10">
+                                    <@formBuilder.formRadioButtons "room.free",free,"required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">出租方式</label>
-                                <div class="col-sm-9">
-                                    <@spring.formRadioButtons "room.rental",rentals,"&nbsp;",""/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>出租方式</label>
+                                <div class="col-sm-10">
+                                    <@formBuilder.formRadioButtons "room.rental",rentals,"required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">开放日期</label>
-                                <div class="col-sm-9">
-                                    <span class="input-icon input-icon-right">
-                                        <input type="text" id="dateRange">
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>开放日期</label>
+                                <div class="col-sm-10">
+                                    <div class="input-icon input-icon-right col-xs-10 col-sm-9"
+                                         style="padding-left: 0 !important;padding-right: 0 !important; ">
+                                        <input type="text" id="dateRange" style="width: 100%" autocomplete="off">
                                         <i class="ace-icon fa fa-calendar blue"></i>
-                                    </span>
+                                    </div>
                                     <@spring.formHiddenInput "room.openDate"/>
                                     <@spring.formHiddenInput "room.closeDate"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">起租时间</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.unit" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>起租时间</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.unit" "class='col-xs-10 col-sm-9'"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">续租时间</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.renew" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>续租时间</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.renew" "class='col-xs-10 col-sm-9'"/>
                                 </div>
                             </div>
                         </div>
@@ -284,34 +260,88 @@
                     <div class="widget-body">
                         <div class="widget-main padding-6">
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">负责人</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.supervisor","class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
-                                       for="form-field-1">负责人电话</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.supervisorMobile" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>负责人</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.supervisor","class='col-xs-10 col-sm-9' required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right"
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>负责人电话</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.supervisorMobile","class='col-xs-10 col-sm-9' required"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label no-padding-right"
                                        for="form-field-1">负责人邮箱</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "room.supervisorEmail" "class='col-xs-10 col-sm-5'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "room.supervisorEmail","class='col-xs-10 col-sm-9'","email"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 widget-container-col">
+                <div class="widget-box">
+                    <div class="widget-header widget-header-custom">
+                        <h5 class="widget-title">订单相关</h5>
+                    </div>
+                    <div class="widget-body padding-6">
+                        <div class="widget-main padding-6">
+                            <div class="row">
+                                <div class="form-group row col-xs-12 col-sm-6">
+                                    <label class="col-sm-2 control-label no-padding-right"
+                                           for="form-field-1"><span style="color: red">*</span>是否支付</label>
+                                    <div class="col-sm-10">
+                                    <@formBuilder.formRadioButtons "room.payable",payable,"required"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row col-xs-12 col-sm-6">
+                                    <label class="col-sm-2 control-label no-padding-right"
+                                           for="form-field-1"><span style="color: red">*</span>确认方式</label>
+                                    <div class="col-sm-10">
+                                        <@formBuilder.formRadioButtons "room.confirmation",confirmations,"required"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group row col-xs-12 col-sm-6">
+                                    <label class="col-sm-2 control-label no-padding-right"
+                                           for="form-field-1"><span style="color: red">*</span>退款时限</label>
+                                    <div class="col-sm-10">
+                                        <@spring.formInput "room.confirmation","class='col-xs-10 col-sm-9' required"/>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 widget-container-col">
+                <div class="widget-box">
+                    <div class="widget-header widget-header-custom">
+                        <h5 class="widget-title">会场介绍</h5>
+                    </div>
+                    <div class="widget-body">
+                        <div class="widget-main padding-6">
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label no-padding-right"
+                                       for="form-field-1"><span style="color: red">*</span>会场简介</label>
+                                <div class="col-sm-10">
+                                    <@spring.formTextarea "room.resume","class='col-xs-10 col-sm-9'"/>
+                                    <script src="/assets/js/ckeditor.js"></script>
+                                    <script type="text/javascript">
+                                        ClassicEditor.create(document.querySelector("#resume"))
+                                    </script>
                                 </div>
                             </div>
                         </div>

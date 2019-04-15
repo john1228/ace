@@ -45,19 +45,19 @@
             <div class="row">
                 <div class="col-xs-12">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 属性名 </label>
+                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 属性名 </label>
                         <div class="col-sm-9" style="padding:5px;">${attribute.name}</div>
                     </div>&nbsp;
                     <div class="space-4"></div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 类型 </label>
+                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 类型 </label>
                         <div class="col-sm-9" style="padding:5px;">${attribute.type}</div>
                     </div>&nbsp;
                     <div class="space-4"></div>
 
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 值 </label>
+                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 值 </label>
                         <div class="col-sm-9" style="padding:5px;">${attribute.value}</div>
                     </div>&nbsp;
                     <div class="space-4"></div>

@@ -6,7 +6,7 @@
             <input type="hidden" name="redirectUri" value="${requestUri}">
             <select class="form-control" name="operator" onchange="submit();">
                 <#list current_account.getStaffList() as staff>
-                    <#if staff==current_operator>
+                    <#if staff == (current_operator)>
                         <option value="${staff.id}" selected>${staff}</option>
                     <#else>
                         <option value="${staff.id}">${staff}</option>
@@ -30,10 +30,10 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li class="${(requestUri?starts_with("/admin/supports"))?string("active","")}">
-                <a href="/admin/supports?parent=site">
+            <li class="${(requestUri?starts_with("/admin/schedules"))?string("active","")}">
+                <a href="/admin/schedules?parent=site">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    <text>服务</text>
+                    <text>排期查询</text>
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -44,10 +44,10 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li class="${(requestUri?starts_with("/admin/schedules"))?string("active","")}">
-                <a href="/admin/schedules?parent=site">
+            <li class="${(requestUri?starts_with("/admin/coupons"))?string("active","")}">
+                <a href="/admin/coupons?parent=site">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    <text>服务</text>
+                    <text>优惠券</text>
                 </a>
                 <b class="arrow"></b>
             </li>
@@ -79,30 +79,6 @@
                 <a href="/admin/receipts?parent=order">
                     <i class="menu-icon fa fa-caret-right"></i>
                     <text>支付流水</text>
-                </a>
-                <b class="arrow"></b>
-            </li>
-        </ul>
-    </li>
-    <li class="${(parent == "coupon")?string("active open","")}">
-        <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fa fa-gift"></i>
-            <span class="menu-text"> 优惠券 </span>
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-        <b class="arrow"></b>
-        <ul class="submenu">
-            <li class="${(requestUri?starts_with("/admin/coupons"))?string("active","")}">
-                <a href="/admin/coupons?parent=coupon">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>列表</text>
-                </a>
-                <b class="arrow"></b>
-            </li>
-            <li class="${(requestUri?starts_with("/admin/member_coupons"))?string("active","")}">
-                <a href="/admin/member_coupons?parent=coupon">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>领取</text>
                 </a>
                 <b class="arrow"></b>
             </li>

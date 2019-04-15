@@ -31,6 +31,11 @@ public class AdminUserAdvice {
             return null;
         } else {
             Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+            if (staff == null) {
+                AdminUserDetails userDetails = (AdminUserDetails) authentication.getPrincipal();
+                staff = userDetails.getAccount().getStaffList().get(0);
+                session.setAttribute(CURRENT_OPERATOR, staff);
+            }
             return staff;
         }
     }

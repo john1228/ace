@@ -22,12 +22,19 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 class="header smaller lighter blue">
-                        <span>价格列表</span>
-                        <a class="btn btn-primary pull-right"
-                           href="/admin/prices/new?parent=${parent}"><i
-                                class="icon-pencil align-top bigger-125"></i>新建价格</a>
-                    </h3>
+                    <div class="clearfix">
+                        <div class="tableTools-container col-sm-6">
+                            <div class="input-group pull-left">
+                                <input class="form-control" placeholder="Search" aria-label="Search" id="search">
+                                <div class="input-group-addon" id="searchBtn">
+                                    <i class="ace-icon fa fa-search"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tableTools-container col-sm-6">
+                            <a class="btn btn-primary pull-right " href="/admin/prices/new?parent=${parent}">新增价格</a>
+                        </div>
+                    </div>
                     <div>
                         <div class="table-header">价格体系</div>
                         <table id="priceList" class="table table-striped table-bordered" cellspacing="0" width="100%">

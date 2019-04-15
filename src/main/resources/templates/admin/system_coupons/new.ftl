@@ -23,9 +23,9 @@
 </div>
 
 <div class="page-content">
-    <h3 class="header smaller lighter blue">
+    <h4 class="header smaller lighter blue">
         <span>优惠券新增</span>
-    </h3>
+    </h4>
     <form action="/admin/coupons/" role="form" class="form-horizontal" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="staffId" value="${current_operator.getId()}">
@@ -34,54 +34,42 @@
             <div class="col-xs-12 col-sm-12 widget-container-col">
                 <div class="widget-box">
                     <div class="widget-header widget-header-custom">
-                        <h5 class="widget-title">场地图片</h5>
+                        <h5 class="widget-title">优惠券信息</h5>
                     </div>
                     <div class="widget-body">
                         <div class="widget-main padding-8">
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">请输入名字 </label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "coupon.name" "class='col-xs-10 col-sm-8' placeholder='请填写优惠券名字'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">请选择类型</label>
-                                <div class="col-sm-9">
-                                    <@spring.formSingleSelect "coupon.type",couponType,"class='col-xs-10 col-sm-8'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">请输入数量</label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "coupon.amount","class='col-xs-10 col-sm-8' placeholder='请输入优惠券数量'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">优惠金额 </label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-8' placeholder='请填写优惠券优惠金额'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">订单金额 </label>
-                                <div class="col-sm-9">
-                                    <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-8' placeholder='请填写可使用优惠券的最小订单金额'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>优惠券名</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "coupon.name","class='col-xs-10 col-sm-8' placeholder='请填写优惠券名字'"/>
                                 </div>
                             </div>
                             <div class="form-group row" id="dateDiv">
-                                <label class="col-sm-3 control-label no-padding-right">有效期</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>有效期</label>
+                                <div class="col-sm-10">
                                     <input type="text" id="dateRange" class="col-xs-10 col-sm-8">
                                     <@spring.formHiddenInput "coupon.startDate"/>
                                     <@spring.formHiddenInput "coupon.endDate"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                        <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>抵扣金额
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-8' placeholder='请填写优惠券优惠金额'"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>抵扣条件
+                                </label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-8' placeholder='请填写可使用优惠券的最小订单金额'"/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>数量</label>
+                                <div class="col-sm-10">
+                                    <@spring.formInput "coupon.amount","class='col-xs-10 col-sm-8' placeholder='请输入优惠券数量'"/>
                                 </div>
                             </div>
                         </div>
@@ -98,17 +86,15 @@
                     <div class="widget-body">
                         <div class="widget-main padding-8">
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">使用周数</label>
-                                <div class="col-sm-9">
-                                    <@spring.formMultiSelect "coupon.limitWday",weeks,"class='multiselect col-xs-10 col-sm-8'"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                <label class="col-sm-2 control-label no-padding-right">使用周数</label>
+                                <div class="col-sm-10">
+                                    <@spring.formMultiSelect "coupon.limitWday",weeks,"class='multiselect form-control col-xs-10 col-sm-8'"/>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-3 control-label no-padding-right">可使用场地</label>
-                                <div class="col-sm-9">
-                                    <@spring.formMultiSelect "coupon.limitRoom",expiredType,"class='multiselect col-xs-10 col-sm-8''"/>
-                                    <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                <label class="col-sm-2 control-label no-padding-right">可使用场地</label>
+                                <div class="col-sm-10">
+                                    <@spring.formMultiSelect "coupon.limitRoom",expiredType,"class='multiselect form-control col-xs-10 col-sm-8''"/>
                                 </div>
                             </div>
                         </div>

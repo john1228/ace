@@ -53,27 +53,27 @@
                                 <fieldset class="fixed-border">
                                     <legend class="fixed-border">基础信息</legend>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
                                             名字 </label>
                                         <div class="col-sm-9" style="padding:5px;">${coupon.name}</div>
                                     </div>&nbsp;
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
                                             类型 </label>
                                         <div class="col-sm-9" style="padding:5px;">${coupon.type.getName()}</div>
                                     </div>&nbsp;
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
                                             优惠金额 </label>
                                         <div class="col-sm-9" style="padding:5px;">${coupon.discount}</div>
                                     </div>&nbsp;
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
                                             订单金额 </label>
                                         <div class="col-sm-9" style="padding:5px;">${coupon.min}</div>
                                     </div>&nbsp;
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">
+                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
                                             有效期方式 </label>
                                         <div class="col-sm-9" style="padding:5px;">${coupon.expiredType.getName()}</div>
                                     </div>&nbsp;

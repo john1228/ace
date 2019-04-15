@@ -52,15 +52,15 @@
                             <legend class="fixed-border">设备信息</legend>
                             <div class="form-group row">
                                 <div class="col-sm-6 form-group">
-                                    <label class="col-sm-3 control-label no-padding-right">设备名字</label>
-                                    <div class="col-sm-9">
+                                    <label class="col-sm-2 control-label no-padding-right">设备名字</label>
+                                    <div class="col-sm-10">
                                         <@spring.formInput "device.name" "class='col-xs-10 col-sm-5' placeholder='请填写设备名字'"/>
                                         <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <label class="col-sm-3 control-label no-padding-right">设备单价</label>
-                                    <div class="col-sm-9">
+                                    <label class="col-sm-2 control-label no-padding-right">设备单价</label>
+                                    <div class="col-sm-10">
                                         <@spring.formInput "device.price","class='col-xs-10 col-sm-5' placeholder='请填写设备单价'"/>
                                         <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                                     </div>
@@ -68,15 +68,15 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 form-group">
-                                    <label class="col-sm-3 control-label no-padding-right">设备单位</label>
-                                    <div class="col-sm-9">
+                                    <label class="col-sm-2 control-label no-padding-right">设备单位</label>
+                                    <div class="col-sm-10">
                                         <@spring.formInput "device.unit","class='col-xs-10 col-sm-5' placeholder='请填写设备单位'"/>
                                         <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 form-group">
-                                    <label class="col-sm-3 control-label no-padding-right">设备状态</label>
-                                    <div class="col-sm-9">
+                                    <label class="col-sm-2 control-label no-padding-right">设备状态</label>
+                                    <div class="col-sm-10">
                                         <@spring.formSingleSelect "device.status",statuses,"class='col-xs-10 col-sm-5' placeholder='请填写设备单价'"/>
                                         <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
                                     </div>

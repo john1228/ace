@@ -53,8 +53,8 @@
                         <@spring.bind path="attribute"/>
                         <@spring.formHiddenInput "attribute.id"/>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入属性名 </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入属性名 </label>
+                            <div class="col-sm-10">
                                 <@spring.bind "attribute.name" />
                                 <@spring.formInput "attribute.name"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
@@ -66,8 +66,8 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择属性类型 </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请选择属性类型 </label>
+                            <div class="col-sm-10">
                                 <@spring.formSingleSelect "attribute.type",['请选择类型','选择',"输入"]/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
                                     <b>&nbsp;*<@spring.showErrors "<br>"/></b>
@@ -78,8 +78,8 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入属性值 </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入属性值 </label>
+                            <div class="col-sm-10">
                                 <@spring.formInput "attribute.value"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
                                     <b>&nbsp;*<@spring.showErrors "<br>"/></b>

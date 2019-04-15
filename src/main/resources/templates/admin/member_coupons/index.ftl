@@ -31,12 +31,12 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 class="header smaller lighter blue">
+                    <h4 class="header smaller lighter blue">
                         <span>用户列表</span>
                         <a class="btn btn-primary" style="float:right;margin-top: -12px;"
                            href="/admin/coupons/new"><i
                                 class="icon-pencil align-top bigger-125"></i>新增</a>
-                    </h3>
+                    </h4>
                     <div>
                         <table id="siteList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>

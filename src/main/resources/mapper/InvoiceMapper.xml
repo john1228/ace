@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.InvoiceMapper">
+    <resultMap type="com.ace.entity.Invoice" id="invoiceMap">
+        <id column="id" property="id"/>
+        <result column="order_no" property="orderNo"/>
+        <result column="type" property="type"/>
+        <result column="content" property="content"/>
+        <result column="name" property="name"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="address" property="address"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <select id="recordsTotal" resultType="java.lang.Integer">
+        SELECT count(1) AS recordsTotal FROM bb_invoices
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and price LIKE "%${keyword}%"
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="invoiceMap">
+        select * from bb_invoices
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and price LIKE "%${keyword}%"
+            </if>
+        </where>
+        order by bb_invoices.created_at desc LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_invoices (order_no,type,content,name,mobile,email,address,remark)
+        values (#{staffId},#{roomId}, #{roomName},#{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},#{startDate},#{endDate},#{wday,typeHandler=com.ace.dao.handler.ListTypeHandler},#{price})
+    </insert>
+
+    <select id="findById" resultMap="invoiceMap">
+        select *
+        from bb_prices
+        where id = #{id}
+        limit 1
+    </select>
+
+    <update id="update">
+        update bb_prices
+        set rental = #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            wday = #{wday,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+            price = #{price}
+        where id = #{id}
+    </update>
+</mapper>

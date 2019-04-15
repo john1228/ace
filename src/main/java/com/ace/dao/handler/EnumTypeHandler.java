@@ -26,7 +26,6 @@ import java.util.Map;
         CouponUtil.Expired.class,
         RoomUtil.Rental.class,
         RoomUtil.Type.class,
-        RoomUtil.Layout.class,
         DeviceUtil.Status.class
 })
 public class EnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E> {

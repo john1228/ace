@@ -41,7 +41,7 @@ public class RoomUtil {
     }
 
     public enum Type implements IEnum {
-        Clazz1(0, "类型1"), Clazz2(1, "类型２");
+        INDOOR(0, "室内"), OUTDOOR(1, "室外");
 
         private int code;
         private String name;
@@ -77,13 +77,13 @@ public class RoomUtil {
         }
     }
 
-    public enum Layout implements IEnum {
-        ROUND(0, "圆形"), SQUARE(1, "方形");
+    public enum Publish implements IEnum {
+        PRIVATE(0, "自有"), PUBLIC(1, "公开");
 
         private int code;
         private String name;
 
-        Layout(int code, String name) {
+        Publish(int code, String name) {
             this.code = code;
             this.name = name;
         }
@@ -114,13 +114,13 @@ public class RoomUtil {
         }
     }
 
-    public enum Confirmation implements IEnum {
-        AUTO(0, "自动"), ARTIFICIAL(1, "人工");
+    public enum Charge implements IEnum {
+        FREE(0, "免费"), TOLL(1, "收费");
 
         private int code;
         private String name;
 
-        Confirmation(int code, String name) {
+        Charge(int code, String name) {
             this.code = code;
             this.name = name;
         }
@@ -151,13 +151,50 @@ public class RoomUtil {
         }
     }
 
-    public enum Payment implements IEnum {
-        ONLINE(0, "线上"), OFFLINE(1, "线下");
+    public enum CFM implements IEnum {
+        AUTO(0, "无需确认"), BEFORE(1, "确认后付款"), AFTER(2, "付款后确认");
 
         private int code;
         private String name;
 
-        Payment(int code, String name) {
+        CFM(int code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        @Override
+        public void setCode(int code) {
+            this.code = code;
+        }
+
+        @Override
+        public int getCode() {
+            return code;
+        }
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+
+        @Override
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return this.name;
+        }
+    }
+
+    public enum Payable implements IEnum {
+        ENABLE(0, "是"), DISABLE(1, "否");
+
+        private int code;
+        private String name;
+
+        Payable(int code, String name) {
             this.code = code;
             this.name = name;
         }

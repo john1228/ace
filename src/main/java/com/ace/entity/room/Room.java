@@ -45,6 +45,8 @@ public class Room extends Base {
     @NotEmpty(message = "场地面积不能为空")
     private double layerArea;
     @JsonView(View.Base.class)
+    private RoomUtil.Type type;
+    private RoomUtil.Publish publish;
     private Integer quota;
     private boolean free;
     private Date openDate;
@@ -55,7 +57,7 @@ public class Room extends Base {
     private String supervisor;
     private String supervisorMobile;
     private String supervisorEmail;
-    private RoomUtil.Confirmation confirmation;
-    private RoomUtil.Payment payable;
+    private RoomUtil.Payable payable;
+    private RoomUtil.CFM confirmation;
     private String resume;
 }

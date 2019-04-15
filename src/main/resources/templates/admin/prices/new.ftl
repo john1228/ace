@@ -1,5 +1,6 @@
 <#import "../layout/application.ftl" as layout>
 <#import "/spring.ftl" as spring />
+<#import "../formBuilder.ftl" as formBuilder />
 <@layout.myLayout>
 <script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <div class="breadcrumbs" id="breadcrumbs">
@@ -34,53 +35,45 @@
                         <input type="hidden" name="staffId" value="${current_operator.getId()}">
                         <@spring.bind path="price"/>
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label no-padding-right">会议室</label>
-                            <div class="col-sm-9">
-                                <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-8'"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                            <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>会议室</label>
+                            <div class="col-sm-10">
+                                <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-9'"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label no-padding-right">出租方式</label>
-                            <div class="col-sm-9">
-                                <@spring.formSingleSelect "price.rental",rentals,"class='col-xs-10 col-sm-8' data-placeholder='请选择出租方式'"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                            <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>出租方式</label>
+                            <div class="col-sm-10">
+                                <@formBuilder.formRadioButtons "price.rental",rentals,"class='col-xs-10 col-sm-9' required data-placeholder='请选择出租方式'"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label no-padding-right">适用日期</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="dateRange" class="col-xs-10 col-sm-8">
+                            <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>适用日期</label>
+                            <div class="col-sm-10">
+                                <input type="text" id="dateRange" class="col-xs-10 col-sm-9" required>
                                 <@spring.formHiddenInput "price.startDate"/>
                                 <@spring.formHiddenInput "price.endDate"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                </span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label no-padding-right">周</label>
-                            <div class="col-sm-9">
-                                <@spring.formMultiSelect "price.wday",weeks,"class='multiselect col-xs-10 col-sm-8'"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                            <label class="col-sm-2 control-label no-padding-right"><span
+                                    style="color: red">*</span>周</label>
+                            <div class="col-sm-10">
+                                <@spring.formMultiSelect "price.wday",weeks,"class='multiselect col-xs-10 col-sm-9'"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label no-padding-right">适用时间</label>
-                            <div class="col-sm-9">
-                                <div id="slider" class="col-xs-10 col-sm-8" style="margin-top: 10px"></div>
+                            <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>适用时间</label>
+                            <div class="col-sm-10">
+                                <div id="slider" class="col-xs-10 col-sm-9" style="margin-top: 10px"></div>
                                 <@spring.formHiddenInput "price.startTime"/>
                                 <@spring.formHiddenInput "price.endTime"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
-                                    <b>&nbsp;*<@spring.showErrors "<br>"/></b>
-                                </span>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-3 control-label no-padding-right">价格</label>
-                            <div class="col-sm-9">
-                                <@spring.formInput "price.price" "class='col-xs-10 col-sm-5' placeholder='请填写价格'"/>
-                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                            <label class="col-sm-2 control-label no-padding-right"><span
+                                    style="color: red">*</span>价格</label>
+                            <div class="col-sm-10">
+                                <@spring.formInput "price.price" "class='col-xs-10 col-sm-9' placeholder='请填写价格'"/>
                             </div>
                         </div>
                         <div class="clearfix form-actions">
@@ -110,10 +103,12 @@
             max: 48,
             step: 1,
             values: [18, 42],
+            showLabels: true,
             slide: function (event, ui) {
                 $('#startTime').val(ui.values[0]);
                 $('#endTime').val(ui.values[1]);
             }
+
         });
         $('.multiselect').multiselect({
             nonSelectedText: "请选择",

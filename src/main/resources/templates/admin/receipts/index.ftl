@@ -31,9 +31,9 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 class="header smaller lighter blue">
+                    <h4 class="header smaller lighter blue">
                         <span>流水列表</span>
-                    </h3>
+                    </h4>
                     <div>
                         <table id="receiptList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>

@@ -102,7 +102,7 @@
     font-size: 13px;
     font-variant: small-caps;
     color: #999;
-    background: transparent url(../img/loading.gif) top left no-repeat;
+    background: transparent url(../../images/loading.gif) top left no-repeat;
 }
 
 .file-object {
@@ -233,7 +233,7 @@
 }
 
 .krajee-default.file-preview-frame .file-thumbnail-footer {
-    height: 70px;
+    height: 53px;
 }
 
 .krajee-default.file-preview-frame:not(.file-preview-error):hover {
@@ -272,7 +272,6 @@
     padding-top: 4px;
     font-size: 11px;
     color: #777;
-    margin-bottom: 30px;
 }
 
 .file-upload-stats {
@@ -397,7 +396,7 @@
 }
 
 .file-thumb-loading {
-    background: transparent url(../img/loading.gif) no-repeat scroll center center content-box !important;
+    background: transparent url(../../images/loading.gif) no-repeat scroll center center content-box !important;
 }
 
 .file-drop-zone {
@@ -434,7 +433,7 @@
 }
 
 .file-uploading {
-    background: url(../img/loading-sm.gif) no-repeat center bottom 10px;
+    background: url(../../images/loading-sm.gif) no-repeat center bottom 10px;
     opacity: 0.65;
 }
 
@@ -527,7 +526,7 @@
 }
 
 .file-loading[dir=rtl]:before {
-    background: transparent url(../img/loading.gif) top right no-repeat;
+    background: transparent url(../../images/loading.gif) top right no-repeat;
     padding-left: 0;
     padding-right: 20px;
 }

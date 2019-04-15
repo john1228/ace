@@ -39,8 +39,8 @@
 					<div class="col-xs-12">
 						<form th:action="@{/admin/permission/save}" role="form" class="form-horizontal" method="post" id="form_post">
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择父权限ID </label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请选择父权限ID </label>
+								<div class="col-sm-10">
 									<select name="parentId">
 										<option value="admin">请选择</option>
 										<option th:text="${p.name}" th:value="${p.id}" th:each="p,stat:${parents}"></option>
@@ -51,8 +51,8 @@
 							<div class="space-4"></div>
 							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入权限ID </label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入权限ID </label>
+								<div class="col-sm-10">
 									<input type="text" id="form-field-1" placeholder="权限ID" class="col-xs-10 col-sm-5" name="id"  />
 									<font style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></font>
 								</div>
@@ -60,8 +60,8 @@
 							<div class="space-4"></div>
 							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入权限名称 </label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入权限名称 </label>
+								<div class="col-sm-10">
 									<input type="text" id="form-field-1" placeholder="权限名称" class="col-xs-10 col-sm-5" name="name"  />
 									<font style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></font>
 								</div>
@@ -69,32 +69,32 @@
 							<div class="space-4"></div>
 							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入ClassName</label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入ClassName</label>
+								<div class="col-sm-10">
 									<input type="text" id="form-field-1" placeholder="ClassName" class="col-xs-10 col-sm-5" name="className"  />
 								</div>
 							</div>
 							<div class="space-4"></div>
 							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入权限坐标</label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入权限坐标</label>
+								<div class="col-sm-10">
 									<input type="text" id="form-field-1" placeholder="权限坐标" class="col-xs-10 col-sm-5" name="menuIndex"  />
 								</div>
 							</div>
 							<div class="space-4"></div>
 							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入URL</label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入URL</label>
+								<div class="col-sm-10">
 									<input type="text" id="form-field-1" placeholder="URL" class="col-xs-10 col-sm-5" name="url"  />
 								</div>
 							</div>
 							<div class="space-4"></div>
 							
 							<div class="form-group">
-								<label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 是否为菜单</label>
-								<div class="col-sm-9">
+								<label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 是否为菜单</label>
+								<div class="col-sm-10">
 									<select name="isMenu">
 										<option value="Y" >是</option>
 										<option value="N" >否</option>

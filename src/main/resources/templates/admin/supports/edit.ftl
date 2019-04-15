@@ -23,9 +23,9 @@
 </div>
 
 <div class="page-content">
-    <h3 class="header smaller lighter blue">
+    <h4 class="header smaller lighter blue">
         <span>修改服务</span>
-    </h3>
+    </h4>
     <form action="/admin/supports/${support.id}?parent=${parent}" role="form" class="form-horizontal" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="_method" value="put">
@@ -40,8 +40,8 @@
                     <div class="widget-body">
                         <div class="widget-main padding-8">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">名称</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-2 control-label no-padding-right">名称</label>
+                                <div class="col-sm-10">
                                     <@spring.formInput "support.name" "class='col-xs-10 col-sm-5' placeholder='请填写服务名字'"/>
                                     <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
                                         <b>&nbsp;*<@spring.showErrors "<br>"/></b>
@@ -49,8 +49,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">单位</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-2 control-label no-padding-right">单位</label>
+                                <div class="col-sm-10">
                                     <@spring.formInput "support.unit","class='col-xs-10 col-sm-5' placeholder='请填写服务单位'"/>
                                     <span style="color:red; height:25px;line-height:25px;overflow:hidden;">
                                         <b>&nbsp;*<@spring.showErrors "<br>"/></b>
@@ -58,8 +58,8 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">图片</label>
-                                <div class="col-sm-9">
+                                <label class="col-sm-2 control-label no-padding-right">图片</label>
+                                <div class="col-sm-10">
                                     <@spring.formHiddenInput "support.cover","value=''"/>
                                     <div class="dropzone single" id="cover"></div>
                                     <script type="text/javascript">

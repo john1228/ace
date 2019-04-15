@@ -43,8 +43,8 @@
                     <form action="/admin/sites/attributes" role="form" class="form-horizontal" method="post"
                           id="form_post">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入属性名 </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入属性名 </label>
+                            <div class="col-sm-10">
                                 <input type="text" id="form-field-1" placeholder="属性名" class="col-xs-10 col-sm-5"
                                        name="name"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
@@ -54,8 +54,8 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请选择属性类型 </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请选择属性类型 </label>
+                            <div class="col-sm-10">
                                 <select name="type">
                                     <option selected>请选择类型</option>
                                     <option>选择</option>
@@ -68,8 +68,8 @@
 
 
                         <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 请输入属性值 </label>
-                            <div class="col-sm-9">
+                            <label class="col-sm-2 control-label no-padding-right" for="form-field-1"> 请输入属性值 </label>
+                            <div class="col-sm-10">
                                 <input type="text" id="form-field-1" placeholder="属性值" class="col-xs-10 col-sm-5"
                                        name="value"/>
                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>

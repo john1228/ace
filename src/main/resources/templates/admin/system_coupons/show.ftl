@@ -43,10 +43,17 @@
                 </h1>
             </div>
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-12">
                     <div class="widget-box">
                         <div class="widget-header widget-header-custom">
-                            <h4 class="widget-title">优惠券详情</h4>
+                            <h5 class="widget-title">
+                                优惠券详情
+                            </h5>
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
@@ -95,7 +102,12 @@
                     </div>
                     <div class="widget-box">
                         <div class="widget-header widget-header-custom">
-                            <h4 class="widget-title">使用范围</h4>
+                            <h5 class="widget-title">使用范围</h5>
+                            <div class="widget-toolbar">
+                                <a href="#" data-action="collapse">
+                                    <i class="ace-icon fa fa-chevron-down"></i>
+                                </a>
+                            </div>
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
@@ -121,10 +133,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-12">
                     <div class="widget-box">
                         <div class="widget-header widget-header-custom">
-                            <h4 class="widget-title">领取列表</h4>
+                            <h5 class="widget-title">领取列表</h5>
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
@@ -241,17 +253,17 @@
                                               class="form-horizontal" method="post">
                                                             <@spring.bind path="grant"/>
                                             <div class="form-group row">
-                                                <label class="col-sm-3 control-label no-padding-right">
+                                                <label class="col-sm-2 control-label no-padding-right">
                                                     发放账号 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-10">
                                                                     <@spring.formInput "grant.accounts","class='col-xs-10 col-sm-5'"/>
                                                     <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-sm-3 control-label no-padding-right">
+                                                <label class="col-sm-2 control-label no-padding-right">
                                                     发放数量 </label>
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-10">
                                                                     <@spring.formInput "grant.amount","class='col-xs-10 col-sm-5' placeholder='每个用户发放的数量'"/>
                                                     <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
                                                 </div>
