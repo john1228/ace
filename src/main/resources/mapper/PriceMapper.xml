@@ -34,8 +34,15 @@
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_prices (staff_id,room_id,room_name,rental,start_date,end_date,wday,price)
-        values (#{staffId},#{roomId}, #{roomName},#{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},#{startDate},#{endDate},#{wday,typeHandler=com.ace.dao.handler.ListTypeHandler},#{price})
+        insert into bb_prices (staff_id, room_id, room_name, rental, start_date, end_date, wday, price)
+        values (#{staffId},
+                #{roomId,typeHandler=com.ace.dao.handler.ListTypeHandler},
+                #{roomName,typeHandler=com.ace.dao.handler.ListTypeHandler},
+                #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{startDate},
+                #{endDate},
+                #{wday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
+                #{price})
     </insert>
 
     <select id="findById" resultMap="priceMap">
@@ -47,11 +54,11 @@
 
     <update id="update">
         update bb_prices
-        set rental = #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+        set rental     = #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
             start_date = #{startDate},
-            end_date = #{endDate},
-            wday = #{wday,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-            price = #{price}
+            end_date   = #{endDate},
+            wday       = #{wday,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+            price      = #{price}
         where id = #{id}
     </update>
 

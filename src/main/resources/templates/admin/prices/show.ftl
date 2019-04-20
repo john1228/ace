@@ -55,7 +55,9 @@
                                         <div class="attribute-table-label">会议室</div>
                                         <div class="attribute-table-value ">
                                         <span>
-                                            ${price.roomName!}
+                                            <#list price.roomName as item>
+                                                ${item}
+                                            </#list>
                                         </span>
                                         </div>
                                     </div>
@@ -79,8 +81,8 @@
                                         <div class="attribute-table-label">周</div>
                                         <div class="attribute-table-value">
                                         <span>
-                                            <#list price.weeks() as wday>
-                                                ${wday.getName()}
+                                            <#list price.wday as week>
+                                                ${  week}
                                             </#list>
                                         </span>
                                         </div>

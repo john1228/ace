@@ -45,19 +45,16 @@
                                    width="100%">
                                 <thead>
                                 <tr>
-                                    <th class="center">
-                                        <label>
-                                            <input type="checkbox" class="ace" onclick="checkAll(this)"/>
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </th>
                                     <th class="center">编号</th>
-                                    <th class="center">名字</th>
-                                    <th class="center">类型</th>
-                                    <th class="center">高度</th>
+                                    <th class="center">名称</th>
+                                    <th class="center">发布类型</th>
+                                    <th class="center">出租方式</th>
+                                    <th class="center">楼层</th>
                                     <th class="center">面积</th>
-                                    <th class="center">人数</th>
-                                    <th class="center">独自性</th>
+                                    <th class="center">容纳人数</th>
+                                    <th class="center">负责人</th>
+                                    <th class="center">联系电话</th>
+                                    <th class="center">邮箱</th>
                                     <th class="center">操作</th>
                                 </tr>
                                 </thead>
@@ -97,35 +94,45 @@
                                     type: "GET"
                                 },
                                 columns: [
-                                    {
-                                        data: "id",
-                                        render: function (data) {
-                                            return '<label>' +
-                                                    '<input type="checkbox" class="ace" name="checks[]" value="' + data + '"  />' +
-                                                    '<span class="lbl"></span>' +
-                                                    '</label>';
-                                        },
-                                        className: 'center'
-                                    },
-                                    {data: "id", className: 'center'},
+                                    {data: "serialNo", className: 'center'},
                                     {data: "name", className: 'center'},
                                     {
-                                        data: "type",
+                                        data: "publish",
                                         className: 'center',
                                         render: function (data) {
                                             switch (data) {
-                                                case "Clazz1":
-                                                    return "类型1";
-                                                case "Clazz2":
-                                                    return "类型2";
+                                                case "PRIVATE":
+                                                    return "自有";
+                                                case "PUBLIC":
+                                                    return "公开";
 
                                             }
                                         }
                                     },
-                                    {data: "height", className: 'center'},
-                                    {data: "area", className: 'center'},
-                                    {data: "capacity", className: 'center'},
-                                    {data: "oneself", className: 'center'},
+                                    {
+                                        data: "rental",
+                                        className: 'center',
+                                        render: function (data) {
+                                            switch (data) {
+                                                case "HOUR":
+                                                    return "小时";
+                                                case "PERIOD":
+                                                    return "整段";
+                                            }
+                                        }
+                                    },
+                                    {
+                                        data: "buildingNo",
+                                        className: 'center',
+                                        render: function (data, type, row) {
+                                            return row.buildingNo + "幢" + row.floorNo + "层" + row.roomNo + "室";
+                                        }
+                                    },
+                                    {data: "layerArea", className: 'center'},
+                                    {data: "quota", className: 'center'},
+                                    {data: "supervisor", className: 'center'},
+                                    {data: "supervisorMobile", className: 'center'},
+                                    {data: "supervisorEmail", className: 'center'},
                                     {
                                         data: "id",
                                         render: function (data) {

@@ -31,9 +31,4 @@ public class Price extends Base {
     private BigDecimal price;
     private Date createdAt;
     private Date updatedAt;
-
-    public Price(Integer staffId) {
-        setStaffId(staffId);
-    }
-
 }

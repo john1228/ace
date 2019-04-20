@@ -18,7 +18,7 @@ public enum Aliyun {
     private OSS client;
 
     Aliyun() {
-        client = new OSSClientBuilder().build("http://oss-cn-hangzhou.aliyuncs.com", "", "");
+        client = new OSSClientBuilder().build("http://oss-cn-hangzhou.aliyuncs.com", "123", "132");
     }
 
 

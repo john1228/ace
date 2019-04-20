@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 public abstract class Coupon extends Base {
     private Integer id;
-    private CouponUtil.Type type;
+    private CouponUtil.Type type = CouponUtil.Type.Cash;
     @NotEmpty(message = "不能为空")
     private String name;
     @NotNull(message = "不能为空")
@@ -28,6 +28,7 @@ public abstract class Coupon extends Base {
     @Min(value = 0, message = "订单金额不能小于０元")
     private Integer min;
     private String resume;
+    private CouponUtil.Expired expiredType = CouponUtil.Expired.CONVENTION;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date startDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

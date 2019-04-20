@@ -188,40 +188,7 @@ public class RoomUtil {
         }
     }
 
-    public enum Payable implements IEnum {
-        ENABLE(0, "是"), DISABLE(1, "否");
-
-        private int code;
-        private String name;
-
-        Payable(int code, String name) {
-            this.code = code;
-            this.name = name;
-        }
-
-        @Override
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-        @Override
-        public int getCode() {
-            return code;
-        }
-
-        @Override
-        public String getName() {
-            return this.name;
-        }
-
-        @Override
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
+    public static void main(String[] args) {
+        System.err.println(Enum.valueOf(RoomUtil.CFM.class, "AUTO"));
     }
 }

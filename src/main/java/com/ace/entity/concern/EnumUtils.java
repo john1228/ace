@@ -9,7 +9,6 @@ public class EnumUtils {
         private String name;
 
         Week(String name) {
-
             this.name = name;
         }
 

@@ -204,17 +204,16 @@
 }
 
 .krajee-default.file-preview-frame {
-    margin: 8px;
     border: 1px solid rgba(0,0,0,0.2);
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
-    padding: 6px;
     float: left;
     text-align: center;
+    padding: 6px;
 }
 
 .krajee-default.file-preview-frame .kv-file-content {
-    width: 213px;
-    height: 160px;
+    width: 183px;
+    height: 113px;
 }
 
 .krajee-default .file-preview-other-frame {
@@ -404,7 +403,6 @@
     border-radius: 4px;
     text-align: center;
     vertical-align: middle;
-    margin: 12px 15px 12px 12px;
     padding: 5px;
 }
 
@@ -422,8 +420,8 @@
 
 .file-drop-zone-title {
     color: #aaa;
-    font-size: 1.6em;
-    padding: 85px 10px;
+    font-size: 1.1rem;
+    padding: 65px 10px;
     cursor: default;
 }
 

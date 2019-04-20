@@ -8,20 +8,24 @@
         <result column="cover" property="cover"/>
         <result column="image" property="image"/>
         <result column="serial_no" property="serialNo"/>
-        <result column="address" property="address"/>
         <result column="building_no" property="buildingNo"/>
         <result column="floor_no" property="floorNo"/>
         <result column="room_no" property="roomNo"/>
         <result column="layer_height" property="layerHeight"/>
+        <result column="type" property="type"/>
+        <result column="publish" property="publish"/>
         <result column="layer_area" property="layerArea"/>
         <result column="quota" property="quota"/>
+        <result column="free" property="free"/>
+        <result column="free_org" property="freeOrg" typeHandler="com.ace.dao.handler.JSONHandler"/>
+        <result column="open_date" property="openDate"/>
+        <result column="close_date" property="closeDate"/>
         <result column="rental" property="rental"/>
         <result column="supervisor" property="supervisor"/>
         <result column="supervisor_mobile" property="supervisorMobile"/>
         <result column="supervisor_email" property="supervisorEmail"/>
-        <result column="confirmation" property="confirmation"/>
-        <result column="payment" property="payment"/>
-        <result column="layout" property="layout"/>
+        <result column="cfm" property="confirmation"/>
+        <result column="payable" property="payable"/>
         <result column="resume" property="resume"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Integer">
@@ -37,7 +41,9 @@
     </select>
 
     <select id="dataList" resultMap="roomMap">
-        select * from bb_rooms
+        select
+        id,serial_no,name,publish,rental,building_no,floor_no,room_no,layer_area,quota,supervisor,supervisor_mobile,supervisor_email
+        from bb_rooms
         <where>
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
@@ -46,44 +52,87 @@
                 and staff_id = #{staff}
             </if>
         </where>
-        order by id desc LIMIT #{start},#{length}
+        order by id desc
+        <if test="length!=0">
+            LIMIT #{start},#{length}
+        </if>
+
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_rooms(staff_id,name,cover,image,serial_no,address,building_no,floor_no,room_no,layer_height,layer_area,quota,rental,supervisor,supervisor_mobile,supervisor_email,confirmation,payment,layout,resume)
-        values (
-        #{staffId},
-        #{name},
-        #{cover},
-        #{image,typeHandler=com.ace.dao.handler.ListTypeHandler},
-        #{serialNo},
-        #{address},
-        #{buildingNo},
-        #{floorNo},
-        #{roomNo},
-        #{layerHeight},
-        #{layerArea},
-        #{quota},
-        #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-        #{supervisor},
-        #{supervisorMobile},
-        #{supervisorEmail},
-        #{confirmation,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-        #{payment,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-        #{layout,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-        #{resume}
-        )
+        insert into bb_rooms (staff_id,
+                              name,
+                              cover,
+                              image,
+                              serial_no,
+                              building_no,
+                              floor_no,
+                              room_no,
+                              layer_height,
+                              type,
+                              publish,
+                              layer_area,
+                              quota,
+                              free,
+                              free_org,
+                              open_date,
+                              close_date,
+                              unit,
+                              renew,
+                              rental,
+                              supervisor,
+                              supervisor_mobile,
+                              supervisor_email,
+                              payable,
+                              cfm,
+                              refund_limit_time,
+                              resume)
+        values (#{staffId},
+                #{name},
+                #{cover},
+                #{image,typeHandler=com.ace.dao.handler.ListTypeHandler},
+                #{serialNo},
+                #{buildingNo},
+                #{floorNo},
+                #{roomNo},
+                #{layerHeight},
+                #{type,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{publish,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{layerArea},
+                #{quota},
+                #{free},
+                #{freeOrg},
+                #{openDate},
+                #{closeDate},
+                #{unit},
+                #{renew},
+                #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{supervisor},
+                #{supervisorMobile},
+                #{supervisorEmail},
+                #{payable},
+                #{confirmation,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{rlt},
+                #{resume})
     </insert>
 
     <select id="findById" resultMap="roomMap">
-        select * from bb_coupons where id = #{id} limit 1
+        select *
+        from bb_coupons
+        where id = #{id}
+        limit 1
     </select>
 
     <update id="update">
-        update bb_rooms set name = #{name},resume=#{resume} where id = #{id}
+        update bb_rooms
+        set name   = #{name},
+            resume = #{resume}
+        where id = #{id}
     </update>
 
     <delete id="destroy">
-        delete  from bb_rooms where id = #{id}
+        delete
+        from bb_rooms
+        where id = #{id}
     </delete>
 </mapper>

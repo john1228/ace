@@ -3,7 +3,6 @@ package com.ace.service;
 
 import org.springframework.stereotype.Service;
 
-import com.ace.controller.admin.bo.UserBO;
 import com.ace.dao.UserMapper;
 import com.ace.entity.User;
 
@@ -19,9 +18,6 @@ public class UserService {
     }
 
 
-    public UserBO getUserById(Integer id) {
-        return userMapper.getUserById(id);
-    }
 
 
 }

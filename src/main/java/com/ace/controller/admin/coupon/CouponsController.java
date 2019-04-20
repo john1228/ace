@@ -8,6 +8,7 @@ import com.ace.entity.coupon.SystemCoupon;
 import com.ace.entity.coupon.concern.CouponUtil;
 import com.ace.entity.Staff;
 import com.ace.service.coupon.CouponService;
+import com.ace.service.room.RoomService;
 import com.ace.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -28,6 +30,8 @@ public class CouponsController extends BaseController {
     static String viewPath = "/admin/system_coupons/";
     @Resource
     private CouponService couponService;
+    @Resource
+    private RoomService roomService;
 
 
     @GetMapping({"", "/"})
@@ -51,11 +55,12 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/new")
-    public String add(Model model) {
-        model.addAttribute("couponType", CollectionUtil.toCollection(CouponUtil.Type.class));
-        model.addAttribute("expiredType", CollectionUtil.toCollection(CouponUtil.Expired.class));
-        model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
+    public String add(HttpSession session, Model model) {
+        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
         model.addAttribute("coupon", new SystemCoupon());
+        model.addAttribute("couponType", CollectionUtil.toCollection(CouponUtil.Type.class));
+        model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
+        model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(x -> x.getId(), x -> x.getName())));
         return viewPath + "new";
     }
 
@@ -64,7 +69,7 @@ public class CouponsController extends BaseController {
     public String create(@Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("couponType", CollectionUtil.toCollection(CouponUtil.Type.class));
-            model.addAttribute("expiredType", CollectionUtil.toCollection(CouponUtil.Expired.class));
+            model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
             model.addAttribute("coupon", systemCoupon);
             return viewPath + "new";
         } else {
@@ -83,22 +88,24 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
+    public String edit(HttpSession session, @PathVariable("id") int id, Model model) {
+        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
         SystemCoupon coupon = couponService.findById(id);
         model.addAttribute("coupon", coupon);
         model.addAttribute("couponType", CollectionUtil.toCollection(CouponUtil.Status.class));
-        model.addAttribute("expiredType", CollectionUtil.toCollection(CouponUtil.Expired.class));
+        model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
+        model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(x -> x.getId(), x -> x.getName())));
         return viewPath + "edit";
     }
 
-    @PutMapping("/{id}/update")
-    public String update(@PathVariable("id") int id, @Valid SystemCoupon coupon, BindingResult result, Model model) {
+    @PutMapping("/{id}")
+    public String update(@PathVariable("id") int id, @RequestParam("parent") String parent, @Valid SystemCoupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return viewPath + "edit";
         } else {
             couponService.update(coupon);
             model.addAttribute("coupon", coupon);
-            return "redirect:" + "/admin/rooms/" + id + "/show";
+            return "redirect:" + "/admin/coupons/" + id + "?parent=" + parent;
         }
 
     }

@@ -24,15 +24,19 @@ import java.util.Map;
         CouponUtil.Status.class,
         CouponUtil.Type.class,
         CouponUtil.Expired.class,
-        RoomUtil.Rental.class,
+        RoomUtil.CFM.class,
+        RoomUtil.Publish.class,
         RoomUtil.Type.class,
+        RoomUtil.Rental.class,
+        RoomUtil.Charge.class,
         DeviceUtil.Status.class
 })
 public class EnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E> {
     private Class<E> type;
     private Map<Integer, E> map = new HashMap<Integer, E>();
 
-    public EnumTypeHandler() { }
+    public EnumTypeHandler() {
+    }
 
     public EnumTypeHandler(Class<E> type) {
         if (type == null) {

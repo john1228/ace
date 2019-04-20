@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("roomService")
 public class RoomServiceImpl implements RoomService {
@@ -26,6 +27,11 @@ public class RoomServiceImpl implements RoomService {
         dataTable.setRecordsTotal(roomMapper.recordsTotal(staff.getId(), keyword));
         dataTable.setData(roomMapper.dataList(staff.getId(), start, length, keyword));
         return dataTable;
+    }
+
+    @Override
+    public List<Room> roomList(Staff staff) {
+        return roomMapper.dataList(staff.getId(), 0, 0, null);
     }
 
     @Override

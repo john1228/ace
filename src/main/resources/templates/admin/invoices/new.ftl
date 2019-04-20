@@ -41,9 +41,9 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <form action="/admin/coupons/" role="form" class="form-horizontal" method="post">
+                    <form action="/admin/invoices/" role="form" class="form-horizontal" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <@spring.bind path="coupon"/>
+                        <@spring.bind path="invoice"/>
                         <fieldset class="fixed-border">
                             <legend class="fixed-border">基础信息</legend>
                             <div class="form-group">

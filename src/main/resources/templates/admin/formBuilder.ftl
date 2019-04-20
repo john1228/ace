@@ -26,7 +26,7 @@ kind of variable. This temp value is only used in this macro lib -->
         </label>
         <#else>
           <label class="btn btn-primary">
-              <input type="radio" id="${id}" name="${status.expression}" autocomplete="off"> ${options[value]}
+              <input type="radio" id="${id}" name="${status.expression}"　value="${value}"> ${options[value]}
           </label>
         </#if>
     </#list>

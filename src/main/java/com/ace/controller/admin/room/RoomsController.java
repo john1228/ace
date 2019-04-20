@@ -2,12 +2,16 @@ package com.ace.controller.admin.room;
 
 import com.ace.controller.admin.BaseController;
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.api.concerns.View;
 import com.ace.entity.Staff;
 import com.ace.entity.room.Room;
 import com.ace.entity.room.concern.RoomUtil;
 import com.ace.service.room.RoomService;
 import com.ace.util.Aliyun;
 import com.ace.util.CollectionUtil;
+import com.fasterxml.jackson.annotation.JsonView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,6 +30,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/rooms")
 public class RoomsController extends BaseController {
+    Logger logger = LoggerFactory.getLogger(RoomsController.class);
     static String viewPath = "/admin/rooms/";
     @Resource
     private RoomService roomService;
@@ -67,27 +72,28 @@ public class RoomsController extends BaseController {
     @PostMapping("")
     public String create(
             @RequestParam("parent") String parent,
-            @RequestParam("cover") MultipartFile avatar,
-            @RequestParam("image") MultipartFile[] image,
+            @RequestParam("coverFile") MultipartFile avatar,
+            @RequestParam("imageFile") MultipartFile[] image,
             @Valid Room room,
             BindingResult result,
             Model model
     ) {
-        try {
-            String fileName = Aliyun.Instance.upload("", avatar);
-            room.setCover(fileName);
-        } catch (Exception exp) {
-            result.addError(new ObjectError("cover", "上传列表图片失败"));
-        }
-
-        try {
-            List<String> images = new ArrayList<>();
-            for (MultipartFile tmp : image) {
-                images.add(Aliyun.Instance.upload("", tmp));
-            }
-        } catch (Exception exp) {
-            result.addError(new ObjectError("image", "上传图片失败"));
-        }
+//        try {
+//            String fileName = Aliyun.Instance.upload("", avatar);
+//            room.setCover(fileName);
+//        } catch (Exception exp) {
+//            result.addError(new ObjectError("cover", "上传列表图片失败"));
+//        }
+//
+//        try {
+//            List<String> images = new ArrayList<>();
+//            room.setImage(images);
+//            for (MultipartFile tmp : image) {
+//                images.add(Aliyun.Instance.upload("", tmp));
+//            }
+//        } catch (Exception exp) {
+//            result.addError(new ObjectError("image", "上传图片失败"));
+//        }
         if (result.hasErrors()) {
             model.addAttribute("types", CollectionUtil.toCollection(RoomUtil.Type.class));
             model.addAttribute("publish", CollectionUtil.toCollection(RoomUtil.Publish.class));
@@ -98,9 +104,12 @@ public class RoomsController extends BaseController {
             model.addAttribute("room", room);
             return viewPath + "new";
         } else {
+            room.setCover("图片");
+            room.setImage(new ArrayList<>());
             roomService.create(room);
             model.addAttribute("room", room);
-            return "redirect:" + "/admin/rooms/" + room.getId() + "/show?parent=" + parent;
+            return "redirect:" + "/admin/rooms/" + room.getId() + "?parent=" + parent;
+
         }
     }
 
@@ -117,7 +126,7 @@ public class RoomsController extends BaseController {
         model.addAttribute("room", room);
         model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
         model.addAttribute("confirmations", CollectionUtil.toCollection(RoomUtil.CFM.class));
-        model.addAttribute("payments", CollectionUtil.toCollection(RoomUtil.Payable.class));
+        model.addAttribute("payments", CollectionUtil.trueOrFalseCollection("是", "否"));
         return viewPath + "edit";
     }
 
@@ -127,7 +136,7 @@ public class RoomsController extends BaseController {
         if (result.hasErrors()) {
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
             model.addAttribute("confirmations", CollectionUtil.toCollection(RoomUtil.CFM.class));
-            model.addAttribute("payments", CollectionUtil.toCollection(RoomUtil.Payable.class));
+            model.addAttribute("payments", CollectionUtil.trueOrFalseCollection("是", "否"));
             return viewPath + "edit";
         } else {
             roomService.update(room);

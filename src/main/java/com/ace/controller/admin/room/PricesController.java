@@ -5,8 +5,10 @@ import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.EnumUtils;
 import com.ace.entity.room.Price;
+import com.ace.entity.room.Room;
 import com.ace.entity.room.concern.RoomUtil;
 import com.ace.service.room.PriceService;
+import com.ace.service.room.RoomService;
 import com.ace.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +21,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -29,7 +33,8 @@ public class PricesController extends BaseController {
     static String viewPath = "/admin/prices/";
     @Resource
     private PriceService priceService;
-
+    @Resource
+    private RoomService roomService;
 
     @GetMapping({"", "/"})
     public String index() {
@@ -52,9 +57,10 @@ public class PricesController extends BaseController {
     }
 
     @GetMapping("/new")
-    public String add(Model model) {
+    public String add(HttpSession session, Model model) {
+        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
         model.addAttribute("price", new Price());
-        model.addAttribute("rooms", new LinkedHashMap<>());
+        model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
         model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
         model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
         return viewPath + "new";
@@ -62,16 +68,17 @@ public class PricesController extends BaseController {
 
 
     @PostMapping({"", "/"})
-    public String create(@Valid Price price, BindingResult result, Model model) {
+    public String create(HttpSession session, HttpServletRequest request, @Valid Price price, BindingResult result, Model model, @RequestParam("parent") String parent) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
-            model.addAttribute("rooms", new LinkedHashMap<>());
+            Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+            model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
             model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
             return viewPath + "new";
         } else {
             priceService.create(price);
-            return viewPath + "show";
+            return "redirect:" + "/admin/prices/" + price.getId() + "?parent=" + parent;
         }
     }
 
@@ -84,10 +91,13 @@ public class PricesController extends BaseController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
+    public String edit(HttpSession session, @PathVariable("id") int id, Model model) {
+        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
         Price price = priceService.findById(id);
         model.addAttribute("price", price);
+        model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
         model.addAttribute("rentals", CollectionUtil.toCollection(RoomUtil.Rental.class));
+        model.addAttribute("weeks", CollectionUtil.toCollection(EnumUtils.Week.class));
         return viewPath + "edit";
     }
 
