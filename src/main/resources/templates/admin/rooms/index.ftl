@@ -2,6 +2,8 @@
 <@layout.myLayout>
 <script src="/assets/js/jquery/dataTables.min.js"></script>
 <script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
+<script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -20,25 +22,12 @@
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
+            <#include "search.ftl"/>
+        </div>
+        <div class="col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <h4 class="header smaller lighter blue">
-                        <span>场地列表</span>
-                    </h4>
                     <div class="row">
-                        <div class="clearfix">
-                            <div class="tableTools-container col-sm-6">
-                                <div class="input-group pull-left">
-                                    <input class="form-control" placeholder="Search" aria-label="Search" id="search">
-                                    <div class="input-group-addon" id="searchBtn">
-                                        <i class="ace-icon fa fa-search"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tableTools-container col-sm-6">
-                                <a class="btn btn-primary pull-right " href="/admin/rooms/new?parent=${parent}">新增场地</a>
-                            </div>
-                        </div>
                         <div>
                             <div class="table-header">会议室列表</div>
                             <table id="roomList" class="table table-striped table-bordered" cellspacing="0"
@@ -93,6 +82,16 @@
                                     url: "/admin/rooms/dataList",
                                     type: "GET"
                                 },
+                                dom: 'Bfltip',
+                                buttons: [
+                                    {
+                                        text: '新建场地',
+                                        className: 'btn btn-primary pull-right',
+                                        action: function (e, dt, node, config) {
+                                            window.location.href = '/admin/rooms/new?parent=${parent}';
+                                        }
+                                    }
+                                ],
                                 columns: [
                                     {data: "serialNo", className: 'center'},
                                     {data: "name", className: 'center'},
@@ -125,7 +124,8 @@
                                         data: "buildingNo",
                                         className: 'center',
                                         render: function (data, type, row) {
-                                            return row.buildingNo + "幢" + row.floorNo + "层" + row.roomNo + "室";
+                                            console.log(row);
+                                            return data + "幢" + row.floorNo + "层" + row.roomNo + "室";
                                         }
                                     },
                                     {data: "layerArea", className: 'center'},

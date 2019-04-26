@@ -52,10 +52,15 @@
     <!-- basic scripts -->
     <script src="/assets/js/jquery/2.1.4.min.js"></script>
     <script src="/assets/js/jquery/mobile.custom.min.js"></script>
+    <script src="/assets/js/jquery/restful.js"></script>
 
     <!--[if IE]>
     <script type="text/javascript">
         window.jQuery || document.write("<script src='https://code.jquery.com/jquery-1.10.2.js' integrity='sha256-it5nQKHTz+34HijZJQkpNBIHsjpV8b6QzMJs9tmOBSo=' crossorigin='anonymous'>" + "<" + "/script>");
+
     </script>
     <![endif]-->
+    <script>
+        $(".rest").restful();
+    </script>
 </head>

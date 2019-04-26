@@ -1,5 +1,6 @@
 package com.ace.config;
 
+import com.ace.interceptor.ApiInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -10,8 +11,13 @@ import com.ace.interceptor.AdminInterceptor;
 @Configuration
 public class WebConfigurer implements WebMvcConfigurer {
     @Bean
-    AdminInterceptor adminInterceptor() {
+    public AdminInterceptor adminInterceptor() {
         return new AdminInterceptor();
+    }
+
+    @Bean
+    public ApiInterceptor apiInterceptor() {
+        return new ApiInterceptor();
     }
 
     public void addInterceptors(InterceptorRegistry registry) {
@@ -19,6 +25,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         // addPathPatterns 用于添加拦截规则
         // excludePathPatterns 用户排除拦截
         registry.addInterceptor(adminInterceptor()).addPathPatterns("/admin/**");
+        registry.addInterceptor(apiInterceptor()).addPathPatterns("/api/**");
     }
 
 }

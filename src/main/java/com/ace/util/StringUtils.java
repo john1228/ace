@@ -89,9 +89,4 @@ public class StringUtils {
 			return 0;
 		}
 	}
-	/*
-	public static void main(String[] args) {
-		//long time = getLongByString("2016-12-31 23:59:59","yyyy-MM-dd HH:mm:ss");
-		//System.out.println(time);
-	}*/
 }

@@ -12,6 +12,7 @@ import com.ace.service.room.RoomService;
 import com.ace.util.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -68,7 +69,7 @@ public class PricesController extends BaseController {
 
 
     @PostMapping({"", "/"})
-    public String create(HttpSession session, HttpServletRequest request, @Valid Price price, BindingResult result, Model model, @RequestParam("parent") String parent) {
+    public String create(HttpSession session, @Valid Price price, BindingResult result, Model model, @RequestParam("parent") String parent) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
             Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
@@ -115,7 +116,7 @@ public class PricesController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
-        return viewPath + "index";
+    public void delete(@PathVariable("id") int id) {
+        priceService.delete(id);
     }
 }

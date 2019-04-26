@@ -118,7 +118,7 @@
 
     <select id="findById" resultMap="roomMap">
         select *
-        from bb_coupons
+        from bb_rooms
         where id = #{id}
         limit 1
     </select>

@@ -44,7 +44,8 @@ legend.fixed-border {
 }
 
 .theme-color {
-    color: #009688;
+    background-color: #009688 !important;
+    color: #ffffff;
 }
 
 .table-header {
@@ -95,4 +96,41 @@ legend.fixed-border {
     height: 34px;
     padding: 6px 12px;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.dataTables_length {
+    padding: 5px;
+}
+
+.dt-buttons {
+    padding: 5px;
+}
+
+.bootstrap-select .bs-placeholder {
+    background-color: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+.btn, .btn-default, .btn-default.focus, .btn-default:focus, .btn.focus, .btn:focus {
+    background-color: #009688 !important;
+    border-color: #009688 !important;
+}
+
+.btn-default.focus:hover, .btn-default:active:hover, .btn-default:focus:active, .btn-default:focus:hover, .btn-default:hover, .btn.focus:hover, .btn:active:hover, .btn:focus:active, .btn:focus:hover, .btn:hover, .open > .btn-default.dropdown-toggle, .open > .btn-default.dropdown-toggle.focus, .open > .btn-default.dropdown-toggle:active, .open > .btn-default.dropdown-toggle:focus, .open > .btn-default.dropdown-toggle:hover, .open > .btn.dropdown-toggle, .open > .btn.dropdown-toggle.focus, .open > .btn.dropdown-toggle:active, .open > .btn.dropdown-toggle:focus, .open > .btn.dropdown-toggle:hover {
+    background-color: #009688 !important;
+    border-color: #009688 !important;
+}
+
+.dataTables_wrapper .dataTables_info {
+    padding-top: 5px;
+    width: 50%;
+    line-height: 1.42857143;
+    float: left;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: 5px;
+    width: 50%;
+    float: right;
 }

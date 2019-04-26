@@ -3,23 +3,15 @@ package com.ace.interceptor;
 import java.security.Principal;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ace.config.ServerConfig;
 
 public class AdminInterceptor implements HandlerInterceptor {
-    Logger logger = LoggerFactory.getLogger(AdminInterceptor.class);
-
-    @Resource
-    private ServerConfig serverConfig;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
@@ -27,7 +19,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
         //处理请求内容前
         AtomicReference<String> parent = new AtomicReference<>(request.getParameter("parent"));
-        if (parent.get() == null) parent.set("");
+        if (parent.get() == null) parent.set(request.getHeader("PARENT"));
         session.setAttribute("parent", parent);
         //菜单组装
         Principal principal = request.getUserPrincipal();
@@ -35,8 +27,7 @@ public class AdminInterceptor implements HandlerInterceptor {
             request.setAttribute("userName", request.getRemoteUser());
         }
         //请求处理
-        request.setAttribute("company", serverConfig.getCompany());
-
+        request.setAttribute("company", "爱测试");
         return true;
     }
 

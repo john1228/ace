@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Date;
 
 @SpringBootApplication
 public class Application {
@@ -14,6 +13,7 @@ public class Application {
     public ObjectMapper myMapper() {
         return new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

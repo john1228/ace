@@ -2,6 +2,8 @@
 <@layout.myLayout>
 <script src="/assets/js/jquery/dataTables.min.js"></script>
 <script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
+<script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -20,53 +22,11 @@
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="row">
-                <div class="col-xs-12">
-                    <h4 class="header smaller lighter blue">
-                        <span><i class="fa fa-filter"></i> 筛选条件</span>
-                    </h4>
-                    <div class="col-xs-12">
-                        <div class="row">
-                            <div class="form-group row col-xs-12 col-sm-6">
-                                <label class="col-sm-2 control-label no-padding-right">名称</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control col-xs-10 col-sm-9"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group row  col-xs-12 col-sm-6">
-                                <label class="col-sm-2 control-label no-padding-right">名称</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control col-xs-10 col-sm-9"/>
-                                </div>
-                            </div>
-                            <div class="form-group row  col-xs-12 col-sm-6">
-                                <label class="col-sm-2 control-label no-padding-right">名称</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control col-xs-10 col-sm-9"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row form-actions">
-                            <button class="btn btn-info" type="submit">
-                                <i class="icon-ok bigger-110"></i>
-                                提交
-                            </button>
-                            <button class="btn btn-info" type="submit">
-                                <i class="icon-remove-circle bigger-110"></i>
-                                重置
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <#include 'search.ftl'/>
         </div>
         <div class="col-xs-12">
-            <div class="table-header">
+            <div class="table-header padding-2">
                 优惠券列表
-                <a class="btn btn-success pull-right line-height-150"
-                   href="/admin/coupons/new?parent=${parent}">新增优惠券</a>
             </div>
             <table id="couponList" class="table table-bordered table-hover" cellspacing="0"
                    width="100%">
@@ -85,6 +45,12 @@
             </table>
             <script type="text/javascript">
                 $(function () {
+                    $.fn.dataTable.ext.buttons.reload = {
+                        text: 'Reload',
+                        action: function (e, dt, node, config) {
+                            dt.ajax.reload();
+                        }
+                    };
                     $('#couponList').DataTable({
                         language: {
                             sProcessing: "处理中...",
@@ -115,6 +81,16 @@
                             url: "/admin/coupons/dataList",
                             type: "GET"
                         },
+                        dom: 'Bfltip',
+                        buttons: [
+                            {
+                                text: '新增优惠券',
+                                className: 'btn btn-primary pull-right',
+                                action: function (e, dt, node, config) {
+                                    window.location.href = '/admin/coupons/new?parent=${parent}';
+                                }
+                            }
+                        ],
                         columns: [
                             {data: "name", className: 'center'},
                             {

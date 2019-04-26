@@ -2,6 +2,8 @@
 <@layout.myLayout>
 <script src="/assets/js/jquery/dataTables.min.js"></script>
 <script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
+<script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -22,30 +24,14 @@
         <div class="col-xs-12">
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="clearfix">
-                        <div class="tableTools-container col-sm-6">
-                            <div class="input-group pull-left">
-                                <input class="form-control" placeholder="Search" aria-label="Search" id="search">
-                                <div class="input-group-addon" id="searchBtn">
-                                    <i class="ace-icon fa fa-search"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tableTools-container col-sm-6">
-                            <a class="btn btn-primary pull-right " href="/admin/prices/new?parent=${parent}">新增价格</a>
-                        </div>
-                    </div>
+                    <#include "search.ftl"/>
+                </div>
+                <div class="col-xs-12">
                     <div>
                         <div class="table-header">价格体系</div>
                         <table id="priceList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                             <tr>
-                                <th class="center">
-                                    <label>
-                                        <input type="checkbox" class="ace" onclick="checkAll(this)"/>
-                                        <span class="lbl"></span>
-                                    </label>
-                                </th>
                                 <th class="center">场地</th>
                                 <th class="center">出租方式</th>
                                 <th class="center">适用日期</th>
@@ -89,17 +75,17 @@
                                     url: "/admin/prices/dataList",
                                     type: "GET"
                                 },
-                                columns: [
+                                dom: 'Bfltip',
+                                buttons: [
                                     {
-                                        data: "id",
-                                        render: function (data) {
-                                            return '<label>' +
-                                                    '<input type="checkbox" class="ace" name="checks[]" value="' + data + '"  />' +
-                                                    '<span class="lbl"></span>' +
-                                                    '</label>';
-                                        },
-                                        className: 'center'
-                                    },
+                                        text: '新建价格',
+                                        className: 'btn btn-primary pull-right',
+                                        action: function (e, dt, node, config) {
+                                            window.location.href = '/admin/prices/new?parent=${parent}';
+                                        }
+                                    }
+                                ],
+                                columns: [
                                     {data: "roomName", className: 'center'},
                                     {
                                         data: "rental",
@@ -117,7 +103,7 @@
                                     {
                                         data: 'startDate',
                                         className: 'center',
-                                        render: function (data) {
+                                        render: function (data,fu) {
                                             return ''
                                         }
                                     },
@@ -125,9 +111,11 @@
                                         data: 'wday',
                                         className: 'center',
                                         render: function (data) {
-                                            var weekStr = "";
-                                            for (var i = 0; i < data.length; i++) {
-                                                switch (data[i]) {
+                                            console.log(data[0]);
+                                            var weeks = String(data).split(',');
+                                            var weekStr = '';
+                                            for (var i = 0; i < weeks.length; i++) {
+                                                switch (weeks[i]) {
                                                     case "MONDAY":
                                                         weekStr += "周一 "
                                                         break;
@@ -165,7 +153,7 @@
                                             return '<div class="hidden-sm hidden-xs btn-group">' +
                                                     '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
                                                     '<a class="btn btn-xs btn-danger" href="/admin/prices/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-warning rest"　href="/admin/prices/' + data + '" data-method="DELETE"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
                                                     '</div>';
                                         },
                                         className: 'center'

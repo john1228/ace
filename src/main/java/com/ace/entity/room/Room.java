@@ -3,7 +3,7 @@ package com.ace.entity.room;
 import com.ace.controller.api.concerns.View;
 import com.ace.entity.concern.Base;
 import com.ace.entity.room.concern.RoomUtil;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,8 +16,9 @@ import java.util.List;
 
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Room extends Base {
-    @JsonView(View.Base.class)
+    @JsonView({View.Base.class})
     private long id;
     @JsonView(View.Base.class)
     @NotEmpty(message = "场地名字不能为空")
@@ -28,7 +29,6 @@ public class Room extends Base {
     @NotEmpty(message = "场地编号不能为空")
     private String serialNo;
     @JsonView(View.Base.class)
-    @JsonProperty("building_no")
     @NotEmpty(message = "幢号不能为空")
     private String buildingNo;
     @JsonView(View.Base.class)

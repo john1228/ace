@@ -34,7 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
                 "/", // 首页
-                "/druid/**", // durid数据库连接池监控
+                "/api/**",//app接口
+                "/druid/**", //数据库连接池监控
                 "/assets/**", // 后台静态资源
                 "/css/**", // 样式表资源
                 "/js/**" // 页面脚本资源
