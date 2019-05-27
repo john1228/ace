@@ -1,9 +1,9 @@
 package com.ace.interceptor;
 
 import com.ace.annotation.Authorization;
+import com.ace.entity.Account;
 import com.ace.entity.Staff;
 import com.ace.service.TokenService;
-import com.alibaba.druid.util.StringUtils;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ApiInterceptor implements HandlerInterceptor {
     Logger logger = LoggerFactory.getLogger(ApiInterceptor.class);
@@ -34,17 +36,28 @@ public class ApiInterceptor implements HandlerInterceptor {
             if (annotation == null) {
                 return true;
             } else {
-                Staff staff = new Staff();
-                staff.setId(1);
-                staff.setAccountId("001");
-                staff.setAccountName("001-NAME");
-                staff.setProjectId("001-P-1");
-                staff.setProjectName("001-PN-1");
-                staff.setOrgId("001-O-1");
-                staff.setOrgName("001-ON-1");
-                staff.setEmpId("001-E-1");
-                staff.setEmpName("001-EM-1");
-                request.setAttribute("STAFF", staff);
+
+                Account account = new Account();
+                account.setAccountId("001");
+                account.setAccountName("001-NAME");
+                List<Staff> staffList = new ArrayList<>();
+                for (int i = 1; i <= 5; i++) {
+                    Staff staff = new Staff();
+                    staff.setId(Long.valueOf(i));
+                    staff.setAccountId("001");
+                    staff.setAccountName("001-NAME");
+                    staff.setProjectId("001-P-" + i);
+                    staff.setProjectName("001-PN-" + i);
+                    staff.setOrgId("001-O-" + i);
+                    staff.setOrgName("001-ON" + i);
+                    staff.setEmpId("001-E-" + i);
+                    staff.setEmpName("001-EM-" + i);
+                    staffList.add(staff);
+                }
+                account.setStaffList(staffList);
+
+                request.setAttribute("ACCOUNT", account);
+                logger.info(request.getAttribute("ACCOUNT").getClass().getName());
                 return true;
 
 //                String authorization = request.getHeader("");
@@ -66,13 +79,6 @@ public class ApiInterceptor implements HandlerInterceptor {
         }
     }
 
-    @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with");
-    }
 
     private void returnJson(HttpServletResponse response, String message) throws Exception {
         PrintWriter writer = null;

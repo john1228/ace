@@ -1,16 +1,18 @@
 package com.ace.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class Staff implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
+    private Long id;
     private String accountId;
     private String accountName;
     private String projectId;

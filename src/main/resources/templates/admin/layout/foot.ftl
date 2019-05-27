@@ -22,7 +22,6 @@
 <script src="/assets/js/jquery/autosize.min.js"></script>
 <script src="/assets/js/jquery/input-limiter.min.js"></script>
 <script src="/assets/js/jquery/masked-input.min.js"></script>
-<script src="/assets/js/bootstrap/tag.min.js"></script>
 
 <script src="/assets/js/markdown/markdown.min.js"></script>
 <script src="/assets/js/markdown/bootstrap-markdown.min.js"></script>
@@ -49,6 +48,12 @@
     }
 
     $(document).ready(function () {
+
+        $('a.delete').on('click', function (e) {
+            console.log("abbb");
+            e.preventDefault();
+        });
+
         $('[data-toggle="buttons"] .btn').on('click', function (e) {
             var target = $(this).find('input[type=radio]');
             var which = parseInt(target.val());
@@ -60,7 +65,6 @@
             }
         });
         if (typeof jQuery.ui !== 'undefined' && /applewebkit/.test(navigator.userAgent.toLowerCase())) {
-
             var lastResizableImg = null;
 
             function destroyResizable() {
@@ -100,6 +104,52 @@
             }
             enableImageResize();
         }
+
+        if (!ace.vars['touch']) {
+            $('.chosen-select').chosen({allow_single_deselect: true});
+            $(window)
+                    .off('resize.chosen')
+                    .on('resize.chosen', function () {
+                        $('.chosen-select').each(function () {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    }).trigger('resize.chosen');
+            $(document).on('settings.ace.chosen', function (e, event_name, event_val) {
+                if (event_name != 'sidebar_collapsed') return;
+                $('.chosen-select').each(function () {
+                    var $this = $(this);
+                    $this.next().css({'width': $this.parent().width()});
+                })
+            });
+
+
+            $('#chosen-multiple-style .btn').on('click', function (e) {
+                var target = $(this).find('input[type=radio]');
+                var which = parseInt(target.val());
+                if (which == 2) $('#form-field-select-4').addClass('tag-input-style');
+                else $('#form-field-select-4').removeClass('tag-input-style');
+            });
+        }
+
+
+        if (!ace.vars['old_ie']) $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm',
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-arrows ',
+                clear: 'fa fa-trash',
+                close: 'fa fa-times'
+            }
+        }).next().on(ace.click_event, function () {
+            $(this).prev().focus();
+        });
+
 
     });
     /*]]>*/

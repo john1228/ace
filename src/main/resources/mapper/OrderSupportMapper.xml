@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.OrderSupportMapper">
+    <insert id="create">
+        INSERT INTO bb_order_supports (order_id, support_id, support_name, support_cover,
+        support_unit,support_price,support_amount)
+        VALUES
+        <foreach collection="supports" item="support" separator=",">
+            (#{support.orderId}, #{support.supportId},
+            #{support.name},#{support.cover},#{support.unit},#{support.price},#{support.amount})
+        </foreach>
+    </insert>
+
+    <select id="supportList" resultType="com.ace.entity.OrderSupport">
+        SELECT id,
+               support_name   AS name,
+               support_cover  AS cover,
+               support_unit   AS unit,
+               support_price  AS price,
+               support_amount AS amount
+        FROM bb_order_supports
+        WHERE bb_order_supports.order_id = #{order}
+    </select>
+</mapper>

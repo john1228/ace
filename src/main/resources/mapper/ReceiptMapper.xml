@@ -10,7 +10,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="account_id" property="updatedAt"/>
     </resultMap>
-    <select id="recordsTotal" resultType="java.lang.Integer">
+    <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_receipts
         <where>
             <if test="keyword != null and keyword != ''">

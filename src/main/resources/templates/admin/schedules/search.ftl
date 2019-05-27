@@ -11,11 +11,10 @@
                 <div class="form-group row col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">会议室</label>
                     <div class="col-sm-10">
-                        <select class="selectpicker form-control col-xs-12 col-sm-9" data-container="body"
-                                data-live-search="true"
-                                title="请选择会议室" data-hide-disabled="true">
+                        <select id="room" class="chosen-select form-control"
+                                data-placeholder="请选择会议室">
                             <#list rooms as room>
-                                <option id="${room.id}">${room.name}</option>
+                                <option value="${room.id}">${room.name}</option>
                             </#list>
                         </select>
                     </div>
@@ -25,7 +24,7 @@
                     <div class="col-sm-10">
                         <input name="name" id="date" class="form-control col-xs-10 col-sm-9" autocomplete="off"/>
                         <script>
-                            $("#date").datepicker({dateFormat: 'yyyy-mm-dd'});
+                            $("#date").datepicker({format: 'yyyy-mm-dd'});
                         </script>
                     </div>
                 </div>
@@ -34,7 +33,7 @@
                 <div class="form-group row col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">&nbsp;</label>
                     <div class="col-sm-10">
-                        <button class="btn btn-info" type="submit">
+                        <button class="btn btn-info" type="submit" id="query">
                             <i class="icon-ok bigger-110"></i>
                             查询
                         </button>

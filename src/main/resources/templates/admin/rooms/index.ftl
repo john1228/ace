@@ -16,7 +16,7 @@
             <i class="icon-home home-icon"></i>
             <a href="/admin/">Home</a>
         </li>
-        <li class="active">优惠券管理</li>
+        <li class="active">会议室管理</li>
     </ul>
 </div>
 <div class="page-content">
@@ -52,18 +52,18 @@
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            var table = $('#roomList').DataTable({
+                            var $table = $('#roomList');
+                            $table.DataTable({
                                 language: {
                                     sProcessing: "处理中...",
                                     sLengthMenu: "显示 _MENU_ 项结果",
                                     sZeroRecords: "没有匹配结果",
                                     sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
                                     sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                    sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    sInfoFiltered: "",
                                     sInfoPostFix: "",
-                                    sSearch: "搜索:",
                                     sUrl: "",
-                                    sEmptyTable: "表中数据为空",
+                                    sEmptyTable: "暂无数据",
                                     sLoadingRecords: "载入中...",
                                     sInfoThousands: ",",
                                     oPaginate: {
@@ -80,15 +80,22 @@
                                 ordering: false,
                                 ajax: {
                                     url: "/admin/rooms/dataList",
-                                    type: "GET"
+                                    type: "POST",
+                                    data: function (data) {
+                                        data.name = $("#name").val();
+                                        data.layerAreaFrom = $("#layerAreaFrom").val();
+                                        data.layerAreaTo = $("#layerAreaTo").val();
+                                        data.quotaFrom = $("#quotaFrom").val();
+                                        data.quotaTo = $("#quotaTo").val();
+                                    }
                                 },
                                 dom: 'Bfltip',
                                 buttons: [
                                     {
                                         text: '新建场地',
                                         className: 'btn btn-primary pull-right',
-                                        action: function (e, dt, node, config) {
-                                            window.location.href = '/admin/rooms/new?parent=${parent}';
+                                        action: function () {
+                                            window.location.href = '/admin/rooms/new';
                                         }
                                     }
                                 ],
@@ -101,10 +108,9 @@
                                         render: function (data) {
                                             switch (data) {
                                                 case "PRIVATE":
-                                                    return "自有";
+                                                    return '自有';
                                                 case "PUBLIC":
                                                     return "公开";
-
                                             }
                                         }
                                     },
@@ -124,7 +130,6 @@
                                         data: "buildingNo",
                                         className: 'center',
                                         render: function (data, type, row) {
-                                            console.log(row);
                                             return data + "幢" + row.floorNo + "层" + row.roomNo + "室";
                                         }
                                     },
@@ -136,21 +141,18 @@
                                     {
                                         data: "id",
                                         render: function (data) {
-                                            return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '?parent=${parent}"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
+                                            return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-warning" data-method="delete"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
                                         },
                                         className: 'center'
                                     }
                                 ]
                             });
-                            $("#searchBtn").on("click", function () {
-                                var searchVal = $("#search").val();
-                                console.log("输入内容:" + !searchVal || /^\s*$/.test(searchVal));
-                                if (!(!searchVal || /^\s*$/.test(searchVal)))
-                                    table.search(searchVal).draw();
+                            $('#query').on("click", function () {
+                                $table.DataTable().draw(true);
                             })
-                        })
+                        });
                     </script>
                 </div>
             </div>

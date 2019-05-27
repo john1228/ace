@@ -22,7 +22,6 @@
 <script src="/assets/js/jquery/autosize.min.js"></script>
 <script src="/assets/js/jquery/input-limiter.min.js"></script>
 <script src="/assets/js/jquery/masked-input.min.js"></script>
-<script src="/assets/js/bootstrap/tag.min.js"></script>
 
 <script src="/assets/js/markdown/markdown.min.js"></script>
 <script src="/assets/js/markdown/bootstrap-markdown.min.js"></script>

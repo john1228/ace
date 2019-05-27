@@ -14,7 +14,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/supports/?parent=${parent}">服务管理</a>
+            <a href="/admin/supports">服务管理</a>
         </li>
         <li class="active">服务详情</li>
     </ul>
@@ -56,14 +56,14 @@
                                     <div class="attribute-table-row">
                                         <div class="attribute-table-label">图片</div>
                                         <div class="attribute-table-value">
-                                            <span>${support.cover}</span>
+                                            <img src="${image + "/" + support.cover}"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="clearfix form-actions">
                                     <div class="col-md-offset-3 col-md-9">
                                         <a class="btn btn-info" type="button"
-                                           href="/admin/supports/${support.id}/edit?parent=${parent}">
+                                           href="/admin/supports/${support.id}/edit">
                                             <i class="icon-ok bigger-110"></i>
                                             修改
                                         </a>

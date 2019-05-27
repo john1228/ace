@@ -1,44 +1,61 @@
 package com.ace.controller.api;
 
 import com.ace.annotation.Authorization;
+import com.ace.controller.api.concerns.Query;
 import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
-import com.ace.controller.api.concerns.View;
-import com.ace.controller.api.concerns.View.Detail;
-import com.ace.entity.Staff;
-import com.ace.entity.room.Room;
-import com.ace.service.room.RoomService;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.ace.controller.api.concerns.ApiView;
+import com.ace.entity.Account;
+import com.ace.entity.Schedule;
+import com.ace.service.api.RoomService;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpHeaders;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.Date;
 import java.util.List;
 
+@Api(tags = "会议室列表")
 @RestController("api_room")
 @RequestMapping("/api/rooms")
-public class RoomsController {
+public class RoomsController extends BaseController {
 
     @Resource
     RoomService roomService;
 
-    @JsonView(View.Base.class)
-    @GetMapping({"", "/"})
+    @GetMapping({""})
     @Authorization
-    public Result list(@RequestAttribute("STAFF") Staff staff) {
-        return new Success(roomService.roomList(staff));
+    @JsonView(ApiView.Base.class)
+    @ApiOperation(value = "查询会议室")
+    public Result list(
+            @ApiParam(hidden = true)
+            @RequestAttribute("ACCOUNT") Account account,
+            Query query
+    ) {
+        return new Success(roomService.query(account, query));
     }
 
-    @JsonView(View.Detail.class)
-    @GetMapping({"/{id}", "/{id}/"})
+    @JsonView(ApiView.Detail.class)
+    @GetMapping("/{id}")
     @Authorization
-    public Result detail(@PathVariable("id") int id) {
-        return new Success("abc");
+    @ApiOperation(value = "会议室详情")
+    public Result show(@PathVariable("id") Long id) {
+        return new Success(roomService.show(id));
     }
+
+    @JsonView(ApiView.Base.class)
+    @GetMapping("/{id}/schedule")
+    @Authorization
+    @ApiOperation(value = "会议室排期")
+    public Result schedule(@PathVariable("id") Long id, @RequestParam("date") Date date) {
+        List<Schedule> scheduleList = roomService.schedule(id, date);
+        for (Schedule schedule : scheduleList) {
+            System.err.println(schedule.getDate().toString());
+        }
+        return new Success(scheduleList);
+    }
+
 }

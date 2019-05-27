@@ -1,12 +1,15 @@
 package com.ace.interceptor;
 
 import java.security.Principal;
+import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ace.util.Menu;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,10 +20,14 @@ public class AdminInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
         HttpSession session = request.getSession();
-        //处理请求内容前
-        AtomicReference<String> parent = new AtomicReference<>(request.getParameter("parent"));
-        if (parent.get() == null) parent.set(request.getHeader("PARENT"));
-        session.setAttribute("parent", parent);
+        //处理菜单
+        String path = request.getServletPath();
+        Optional<Menu> selected = Arrays.stream(Menu.values()).filter(menu -> menu.contain(path)).findFirst();
+        if (selected.isPresent()) {
+            request.setAttribute("menu", selected.get().name());
+        } else {
+            request.setAttribute("menu", Menu.room.name());
+        }
         //菜单组装
         Principal principal = request.getUserPrincipal();
         if (principal != null) {

@@ -52,7 +52,7 @@
                                     sZeroRecords: "没有匹配结果",
                                     sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
                                     sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                    sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    sInfoFiltered: "",
                                     sInfoPostFix: "",
                                     sSearch: "搜索:",
                                     sUrl: "",
@@ -80,8 +80,8 @@
                                     {
                                         text: '新建价格',
                                         className: 'btn btn-primary pull-right',
-                                        action: function (e, dt, node, config) {
-                                            window.location.href = '/admin/prices/new?parent=${parent}';
+                                        action: function () {
+                                            window.location.href = '/admin/prices/new';
                                         }
                                     }
                                 ],
@@ -93,25 +93,25 @@
                                         render: function (data) {
                                             switch (data) {
                                                 case "HOUR":
-                                                    return "每小时";
+                                                    return "小时";
                                                 case "PERIOD":
-                                                    return "已停用"
-
+                                                    return "整段";
+                                                default:
+                                                    return "";
                                             }
                                         }
                                     },
                                     {
                                         data: 'startDate',
                                         className: 'center',
-                                        render: function (data,fu) {
-                                            return ''
+                                        render: function (data, type, row) {
+                                            return row.startDate + "--" + row.endDate;
                                         }
                                     },
                                     {
                                         data: 'wday',
                                         className: 'center',
                                         render: function (data) {
-                                            console.log(data[0]);
                                             var weeks = String(data).split(',');
                                             var weekStr = '';
                                             for (var i = 0; i < weeks.length; i++) {
@@ -144,15 +144,19 @@
                                     },
                                     {
                                         data: 'startTime',
-                                        className: 'center'
+                                        className: 'center',
+                                        render: function (data, type, row) {
+                                            return row.startTime + "--" + row.endTime;
+                                        }
+
                                     },
                                     {data: "price", className: 'center'},
                                     {
                                         data: "id",
                                         render: function (data) {
                                             return '<div class="hidden-sm hidden-xs btn-group">' +
-                                                    '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/prices/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/prices/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
                                                     '<a class="btn btn-xs btn-warning rest"　href="/admin/prices/' + data + '" data-method="DELETE"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
                                                     '</div>';
                                         },

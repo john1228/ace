@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.dao.SupportMapper">
-    <resultMap type="com.ace.entity.room.Support" id="deviceMap">
+    <resultMap type="com.ace.entity.Support" id="supMap">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="cover" property="cover"/>
         <result column="unit" property="unit"/>
     </resultMap>
-    <select id="recordsTotal" resultType="java.lang.Integer">
+    <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_supports LEFT JOIN bb_staffs ON bb_supports.staff_id = bb_staffs.id
         <where>
             <if test="staff != null">
@@ -19,7 +19,7 @@
         </where>
     </select>
 
-    <select id="dataList" resultMap="deviceMap">
+    <select id="dataList" resultMap="supMap">
         select * from bb_supports LEFT JOIN bb_staffs ON bb_supports.staff_id = bb_staffs.id
         <where>
             <if test="staff != null">
@@ -32,19 +32,36 @@
         order by bb_supports.id desc LIMIT #{start},#{length}
     </select>
 
+    <select id="all" resultMap="supMap">
+        SELECT *
+        FROM bb_supports
+                 LEFT JOIN bb_staffs ON bb_supports.staff_id = bb_staffs.id
+        where bb_staffs.project_id = #{staff.projectId}
+          AND bb_staffs.org_id = #{staff.orgId}
+    </select>
+
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_supports(staff_id, name,cover, unit)
-        values (#{staffId},#{name},#{cover},#{unit})
+        insert into bb_supports (staff_id, name, cover, unit)
+        values (#{staffId}, #{name}, #{cover}, #{unit})
     </insert>
 
-    <select id="findById" resultMap="deviceMap">
-        select * from bb_supports where id = #{id} limit 1
+    <select id="findById" resultMap="supMap">
+        select *
+        from bb_supports
+        where id = #{id}
+        limit 1
     </select>
 
     <update id="update">
-        update bb_supports set name = #{name},cover = #{cover},unit=#{unit} where id = #{id}
+        update bb_supports
+        set name  = #{name},
+            cover = #{cover},
+            unit  = #{unit}
+        where id = #{id}
     </update>
     <delete id="destroy">
-        delete from bb_supports where id = #{id}
+        delete
+        from bb_supports
+        where id = #{id}
     </delete>
 </mapper>

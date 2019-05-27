@@ -1,34 +1,21 @@
 package com.ace.controller.api.concerns;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by john on 17-10-9.
  */
+@Getter
+@Setter
 public class Failure extends Result {
-    private int status;
+    @JsonView(ApiView.Base.class)
+    private int status = 0;
+    @JsonView(ApiView.Base.class)
     private String message;
 
-    public Failure() {
-        this.status = 0;
-    }
-
     public Failure(String message) {
-        this.status = 0;
-        this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
     }
 }

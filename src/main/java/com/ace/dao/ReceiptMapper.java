@@ -9,7 +9,7 @@ import java.util.List;
 public interface ReceiptMapper {
     List<Receipt> dataList(@Param("start") int start, @Param("length") int length, @Param("keyword") String keyword);
 
-    Integer recordsTotal(@Param("keyword") String keyword);
+    Long recordsTotal(@Param("keyword") String keyword);
 
     void create(Receipt receipt);
 

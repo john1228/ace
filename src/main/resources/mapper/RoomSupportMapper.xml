@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.RoomSupportMapper">
+    <insert id="create">
+        INSERT INTO bb_rooms_supports (staff_id, room_id, support_id, remark, price)
+        VALUES
+        <foreach collection="supports" item="support" separator=",">
+            (#{staff.id}, #{support.roomId}, #{support.supportId},#{support.remark},#{support.price})
+        </foreach>
+    </insert>
+
+    <select id="supportList" resultType="com.ace.entity.RoomSupport">
+        SELECT bb_rooms_supports.id,
+               bb_supports.name  as name,
+               bb_supports.cover as cover,
+               bb_supports.unit  as unit,
+               price
+        FROM bb_rooms_supports
+                 LEFT JOIN bb_supports ON bb_rooms_supports.support_id = bb_supports.id
+        where bb_rooms_supports.room_id = #{room}
+    </select>
+</mapper>

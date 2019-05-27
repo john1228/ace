@@ -1,13 +1,11 @@
 package com.ace.controller.admin;
 
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.admin.concerns.InvoiceCriteria;
 import com.ace.entity.Invoice;
-import com.ace.entity.Order;
-import com.ace.entity.concern.InvoiceUtil;
-import com.ace.entity.concern.OrderUtil;
-import com.ace.service.InvoiceService;
-import com.ace.service.OrderService;
-import com.ace.util.CollectionUtil;
+import com.ace.entity.InvoiceOrder;
+import com.ace.entity.Staff;
+import com.ace.service.admin.InvoiceService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,58 +29,48 @@ public class InvoicesController extends BaseController {
     }
 
     @ResponseBody
-    @GetMapping("/dataList")
-    public DataTable<Invoice> dataList(
-            @RequestParam(value = "draw", defaultValue = "1") int draw,
-            @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "search[value]", defaultValue = "") String keyword
+    @PostMapping("/dataList")
+    public DataTable<InvoiceOrder> dataList(
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            InvoiceCriteria criteria
     ) {
-        DataTable<Invoice> dataTable = invoiceService.dataTable(start, length, keyword);
-        dataTable.setDraw(draw);
+        DataTable<InvoiceOrder> dataTable = invoiceService.dataTable(staff, criteria);
         return dataTable;
     }
+
     @GetMapping("/new")
-    public String add(Model model) {
-        model.addAttribute("type", CollectionUtil.toCollection(InvoiceUtil.Type.class));
+    public String add(@RequestParam("orderNo") String orderNo, Model model) {
+        model.addAttribute("orderNo", orderNo);
         model.addAttribute("invoice", new Invoice());
         return viewPath + "new";
     }
 
 
     @PostMapping(value = {"", "/"})
-    public String create(@Valid Invoice invoice, BindingResult result, Model model) {
+    public String create(@RequestParam("orderNo") String orderNo, @Valid Invoice invoice, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("orderNo", orderNo);
+            model.addAttribute("invoice", invoice);
             return viewPath + "new";
         } else {
+            invoiceService.create(orderNo, invoice);
             model.addAttribute("invoice", invoice);
-            return viewPath + "show";
+            return "redirect:" + viewPath + orderNo;
         }
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        Invoice invoice = invoiceService.findById(id);
+    public String show(@PathVariable("id") String orderNo, Model model) {
+        InvoiceOrder iOrder = invoiceService.findOrder(orderNo);
+        Invoice invoice = invoiceService.findById(orderNo);
+        model.addAttribute("order", iOrder);
         model.addAttribute("invoice", invoice);
         return viewPath + "show";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
-        Invoice invoice = invoiceService.findById(id);
-        model.addAttribute("invoice", invoice);
-        return viewPath + "edit";
-    }
-
-    @PutMapping("/{id}/update")
-    public String update(@Valid Invoice invoice, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return viewPath + "edit";
-        } else {
-            invoiceService.update(invoice);
-            model.addAttribute("invoice", invoice);
-            return viewPath + "show";
-        }
-
+    @PostMapping("/{orderNo}/mail")
+    public String update(@PathVariable("orderNo") String orderNo, Invoice invoice) {
+        invoiceService.mail(orderNo, invoice);
+        return "redirect:" + viewPath + orderNo;
     }
 }

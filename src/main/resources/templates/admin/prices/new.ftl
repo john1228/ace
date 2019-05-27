@@ -14,7 +14,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/prices/?parent=${parent}">价格管理</a>
+            <a href="/admin/prices">价格管理</a>
         </li>
         <li class="active">价格新增</li>
     </ul>
@@ -23,12 +23,12 @@
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="page-header">
+            <div class="page-title">
                 <h1>新增价格</h1>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <form action="/admin/prices?parent=${parent}" role="form" class="form-horizontal" method="post">
+                    <form action="/admin/prices" role="form" class="form-horizontal" method="post">
                        <#include "form.ftl"/>
                     </form>
                 </div>

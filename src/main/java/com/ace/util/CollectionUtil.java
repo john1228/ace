@@ -1,10 +1,11 @@
 package com.ace.util;
 
-import com.ace.entity.concern.EnumUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CollectionUtil {
@@ -12,9 +13,15 @@ public class CollectionUtil {
 
     public static <E extends Enum<E>> Map<String, String> toCollection(Class<E> enumData) {
         Map<String, String> collection = new LinkedHashMap<>();
-        for (Enum<E> enumVal : enumData.getEnumConstants()) {
-            collection.put(enumVal.name(), enumVal.toString());
+        try {
+            for (Enum<E> entity : enumData.getEnumConstants()) {
+                Method method = enumData.getMethod("getName", null);
+                collection.put(entity.name(), (String) method.invoke(entity, null));
+            }
+        } catch (Exception exp) {
+            logger.info("转换筛选出错");
         }
+
         return collection;
     }
 
@@ -25,8 +32,11 @@ public class CollectionUtil {
         return collection;
     }
 
-    public static void main(String[] args) {
-        System.err.println(EnumUtils.Week.FRIDAY.name() + ":" + EnumUtils.Week.FRIDAY.toString());
-        System.err.println(EnumUtils.Week.valueOf("FRIDAY").toString());
+    public static Map<String, String> toCollection(String... args) {
+        Map<String, String> collection = new LinkedHashMap<>();
+        for (String str : args) {
+            collection.put(str, str);
+        }
+        return collection;
     }
 }

@@ -1,109 +1,36 @@
 package com.ace.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+@Getter
+@Setter
+@NoArgsConstructor
+public class User implements Serializable {
+    private Integer id;
+    private Integer groupId;
+    private String userName;
+    private String loginName;
+    private String password;
+    private String portrait;
+    private String remark;
+    private String isAdmin;
+    private Long createTime;
+    private List<Permission> pers;
 
-@Table(name="tbl_user")
-public class User implements Serializable{
-	@Id
-	private Integer id;
-	@Column
-	private Integer groupId;
-	@Column
-	private String userName;
-	@Column
-	private String loginName;
-	@Column
-	private String password;
-	@Column
-	private String portrait;
-	@Column
-	private String remark;
-	@Column
-	private String isAdmin;
-	@Column
-	private Long createTime;
-	@Transient
-	private List<Permission> pers;
-	
-	public User(){}
-	public User(User user){
-		this.id = user.getId();
-		this.groupId = user.getGroupId();
-		this.userName = user.getUserName();
-		this.loginName = user.getLoginName();
-		this.password = user.getPassword();
-		this.portrait = user.getPortrait();
-		this.remark = user.getRemark();
-		this.isAdmin = user.getIsAdmin();
-		this.createTime = user.getCreateTime();
-	}
-	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public Integer getGroupId() {
-		return groupId;
-	}
-	public void setGroupId(Integer groupId) {
-		this.groupId = groupId;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getLoginName() {
-		return loginName;
-	}
-	public void setLoginName(String loginName) {
-		this.loginName = loginName;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public String getPortrait() {
-		return portrait;
-	}
-	public void setPortrait(String portrait) {
-		this.portrait = portrait;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	public String getIsAdmin() {
-		return isAdmin;
-	}
-	public void setIsAdmin(String isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-	public Long getCreateTime() {
-		return createTime;
-	}
-	public void setCreateTime(Long createTime) {
-		this.createTime = createTime;
-	}
-	public List<Permission> getPers() {
-		return pers;
-	}
-	public void setPers(List<Permission> pers) {
-		this.pers = pers;
-	}
-	
-	
+    public User(User user) {
+        this.id = user.getId();
+        this.groupId = user.getGroupId();
+        this.userName = user.getUserName();
+        this.loginName = user.getLoginName();
+        this.password = user.getPassword();
+        this.portrait = user.getPortrait();
+        this.remark = user.getRemark();
+        this.isAdmin = user.getIsAdmin();
+        this.createTime = user.getCreateTime();
+    }
 }

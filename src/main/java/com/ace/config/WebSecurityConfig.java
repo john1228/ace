@@ -1,5 +1,7 @@
 package com.ace.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +17,7 @@ import com.ace.security.AdminAuthenticationProvider;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//允许进入页面方法前检验
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    Logger logger = LoggerFactory.getLogger(WebSecurity.class);
     @Autowired
     private AdminAuthenticationProvider provider;//自定义验证
 
@@ -32,8 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
+        logger.info("配置");
         web.ignoring().antMatchers(
-                "/", // 首页
                 "/api/**",//app接口
                 "/druid/**", //数据库连接池监控
                 "/assets/**", // 后台静态资源

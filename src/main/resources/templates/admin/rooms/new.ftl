@@ -1,9 +1,5 @@
 <#import "../layout/application.ftl" as layout>
-
 <@layout.myLayout>
-<link href="/assets/css/bootstrap/fileinput.css" media="all" rel="stylesheet" type="text/css">
-<script src="/assets/js/bootstrap/fileinput.js"></script>
-<script src="/assets/js/bootstrap/locales/zh.js"></script>
 
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
@@ -19,7 +15,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/rooms/?parent=${parent}">场地管理</a>
+            <a href="/admin/rooms">场地管理</a>
         </li>
         <li class="active">新增场地</li>
     </ul>

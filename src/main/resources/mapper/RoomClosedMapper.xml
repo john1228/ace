@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.RoomClosedMapper">
+    <resultMap id="rcMap" type="com.ace.entity.RoomClosed">
+        <id column="id" property="id"/>
+        <id column="start_date" property="startDate"/>
+        <id column="end_date" property="endDate"/>
+        <id column="start_time" property="startTime"/>
+        <id column="end_time" property="endTime"/>
+        <id column="remark" property="remark"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Long">
+        SELECT count(1) AS recordsTotal
+        FROM bb_room_closed
+        WHERE room_id = #{room}
+    </select>
+
+    <select id="dataList" resultMap="rcMap">
+        SELECT id, start_date, end_date, start_time, end_time, remark
+        FROM bb_room_closed
+        WHERE room_id = #{room}
+        ORDER BY start_date DESC
+    </select>
+    <!--客户端查询会议室，包含自有和开放的-->
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        insert into bb_room_closed (room_id, start_date, end_date, start_time, end_time, remark)
+        values (#{roomId}, #{startDate}, #{endDate}, #{startTime}, #{endTime}, #{remark})
+    </insert>
+
+    <delete id="delete">
+        delete
+        from bb_room_closed
+        where id = #{id}
+    </delete>
+</mapper>

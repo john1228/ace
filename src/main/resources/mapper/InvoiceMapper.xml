@@ -1,57 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.dao.InvoiceMapper">
-    <resultMap type="com.ace.entity.Invoice" id="invoiceMap">
-        <id column="id" property="id"/>
+    <resultMap type="com.ace.entity.InvoiceOrder" id="ioMap">
         <result column="order_no" property="orderNo"/>
+        <result column="room_name" property="roomName"/>
+        <result column="contact_name" property="contactName"/>
+        <result column="contact_mobile" property="contactMobile"/>
+        <result column="appoint_time" property="appointTime"/>
+        <result column="total" property="total"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="status" property="status"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+    <resultMap type="com.ace.entity.Invoice" id="iMap">
+        <id column="id" property="id"/>
         <result column="type" property="type"/>
         <result column="content" property="content"/>
-        <result column="name" property="name"/>
-        <result column="mobile" property="mobile"/>
-        <result column="email" property="email"/>
+        <result column="method" property="method"/>
         <result column="address" property="address"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+        <result column="express" property="express"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
 
-    <select id="recordsTotal" resultType="java.lang.Integer">
-        SELECT count(1) AS recordsTotal FROM bb_invoices
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and price LIKE "%${keyword}%"
-            </if>
-        </where>
+    <select id="recordsTotal" resultType="java.lang.Long">
+        SELECT count(1) AS recordsTotal
+        FROM bb_invoices
+        LEFT JOIN bb_orders ON bb_invoices.order_id = bb_orders.id
+        INNER JOIN bb_order_appointments ON bb_order_appointments.order_id = bb_orders.id
+        INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
+        INNER JOIN bb_staffs ON bb_staffs.id = bb_rooms.staff_id
+        WHERE bb_staffs.project_id = #{staff.projectId}
+        <if test="criteria.orderNo!=null and criteria.orderNo!=''">
+            AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
+            CONCAT('%',#{criteria.orderNo},'%')
+        </if>
+        <if test="criteria.startDate!=null">
+            AND bb_orders.created_at >= #{criteria.startDate}
+        </if>
+        <if test="criteria.startDate!=null">
+            AND #{criteria.endDate} >= bb_orders.created_at
+        </if>
+        <if test="criteria.mobile!=null and criteria.mobile != ''">
+            AND bb_invoices.mobile LIKE CONCAT('%',#{criteria.mobile},'%')
+        </if>
     </select>
 
-    <select id="dataList" resultMap="invoiceMap">
-        select * from bb_invoices
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and price LIKE "%${keyword}%"
-            </if>
-        </where>
-        order by bb_invoices.created_at desc LIMIT #{start},#{length}
+    <select id="dataList" resultMap="ioMap">
+        SELECT CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) AS order_no,
+        bb_rooms.name AS room_name,
+        bb_order_appointments.contact_name AS contact_name,
+        bb_order_appointments.contact_mobile AS contact_mobile,
+        CONCAT(DATE_FORMAT(bb_order_appointments.start_time, '%Y/%m/%d %H:%m'), '-',
+        DATE_FORMAT(bb_order_appointments.end_time,
+        '%H:%m')) AS appoint_time,
+        bb_orders.pay_amount AS pay_amount,
+        CASE
+        WHEN bb_invoices.status IS NULL THEN 0
+        ELSE bb_invoices.status
+        END AS status,
+        bb_orders.status as status,
+        bb_orders.created_at as created_at
+        FROM bb_orders
+        LEFT JOIN bb_invoices ON bb_orders.id = bb_invoices.order_id
+        LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
+        INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
+        INNER JOIN bb_staffs ON bb_staffs.id = bb_rooms.staff_id
+        WHERE bb_staffs.project_id = #{staff.projectId}
+        <if test="criteria.orderNo!=null and criteria.orderNo!=''">
+            AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
+            CONCAT('%',#{criteria.orderNo},'%')
+        </if>
+        <if test="criteria.startDate!=null">
+            AND bb_orders.created_at >= #{criteria.startDate}
+        </if>
+        <if test="criteria.startDate!=null">
+            AND #{criteria.endDate} >= bb_orders.created_at
+        </if>
+        <if test="criteria.mobile!=null and criteria.mobile != ''">
+            AND bb_invoices.mobile LIKE CONCAT('%',#{criteria.mobile},'%')
+        </if>
+        ORDER BY bb_invoices.created_at DESC
+        LIMIT #{criteria.start},#{criteria.length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_invoices (order_no,type,content,name,mobile,email,address,remark)
-        values (#{staffId},#{roomId}, #{roomName},#{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},#{startDate},#{endDate},#{wday,typeHandler=com.ace.dao.handler.ListTypeHandler},#{price})
+        insert into bb_invoices (order_id, type, content, method, address, status)
+        values (#{orderId},
+                #{type,typeHandler=com.ace.dao.handler.EnumHandler},
+                #{content,typeHandler=com.ace.dao.handler.MapHandler},
+                #{method,typeHandler=com.ace.dao.handler.EnumHandler},
+                #{address,typeHandler=com.ace.dao.handler.MapHandler},
+                #{status,typeHandler=com.ace.dao.handler.EnumHandler})
     </insert>
 
-    <select id="findById" resultMap="invoiceMap">
-        select *
-        from bb_prices
-        where id = #{id}
-        limit 1
+    <select id="findBy" resultMap="iMap">
+        SELECT bb_invoices.id,
+               bb_invoices.type,
+               bb_invoices.content,
+               bb_invoices.method,
+               bb_invoices.address,
+               bb_invoices.remark,
+               bb_invoices.status,
+               bb_invoices.created_at,
+               bb_invoices.updated_at
+        FROM bb_invoices
+                 LEFT JOIN bb_orders ON bb_invoices.order_id = bb_orders.id
+        WHERE (CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0))) = #{orderNo}
+        LIMIT 1
+
+    </select>
+
+    <select id="findOrder" resultMap="ioMap">
+        SELECT (CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0))) AS order_no,
+               bb_rooms.name                                                                   AS room_name,
+               bb_order_appointments.contact_name                                              AS contact_name,
+               bb_order_appointments.contact_mobile                                            AS contact_mobile,
+               CONCAT(DATE_FORMAT(bb_order_appointments.start_time, '%Y/%m/%d %H:%m'), '-',
+                      DATE_FORMAT(bb_order_appointments.end_time,
+                                  '%H:%m'))                                                    AS appoint_time,
+               bb_orders.total                                                                 AS total,
+               bb_orders.pay_amount                                                            AS pay_amount,
+               bb_orders.created_at                                                            AS created_at
+        FROM bb_orders
+                 LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
+                 INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
+        WHERE (CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0))) = #{orderNo}
+        LIMIT 1
     </select>
 
     <update id="update">
-        update bb_prices
-        set rental = #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-            start_date = #{startDate},
-            end_date = #{endDate},
-            wday = #{wday,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-            price = #{price}
-        where id = #{id}
+        UPDATE bb_invoices
+        SET status = #{status,typeHandler=com.ace.dao.handler.EnumHandler}
+        WHERE id = #{id}
+    </update>
+    <update id="mail">
+        UPDATE bb_invoices
+        SET status  = #{status},
+            express = #{invoice.express}
+        WHERE id = #{invoice.id}
     </update>
 </mapper>

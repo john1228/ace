@@ -1,7 +1,6 @@
 <#import "../layout/application.ftl" as layout>
 <#import "/spring.ftl" as spring />
 <@layout.myLayout>
-
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -9,148 +8,188 @@
         } catch (e) {
         }
     </script>
-
     <ul class="breadcrumb">
         <li>
             <i class="icon-home home-icon"></i>
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/coupons/">优惠券管理</a>
+            <a href="/admin/orders/">订单管理</a>
         </li>
-        <li class="active">优惠券新增</li>
+        <li class="active">订单新增</li>
     </ul>
-
-
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-            <span class="input-icon">
-                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                       autocomplete="off"/>
-                <i class="icon-search nav-search-icon"></i>
-            </span>
-        </form>
-    </div>
 </div>
-
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
-            <div class="page-header">
-                <h1>优惠券新增</h1>
+            <div class="page-title">
+                <h1>订单新增</h1>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <form action="/admin/coupons/" role="form" class="form-horizontal" method="post">
+                    <form action="/admin/orders/" role="form" class="form-horizontal" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <@spring.bind path="coupon"/>
-                        <fieldset class="fixed-border">
-                            <legend class="fixed-border">基础信息</legend>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        请输入名字 </label>
-                                    <div class="col-sm-10">
-                                        <@spring.formInput "coupon.name" "class='col-xs-10 col-sm-5' placeholder='请填写优惠券名字'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                        <input type="hidden" name="staffId" value="${current_operator.getId()}">
+                        <@spring.bind path="order"/>
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-custom">
+                                <h5 class="widget-title">订单信息</h5>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>会议室</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <select id="roomId" name="appointment.roomId"
+                                                    class="chosen-select col-xs-12 col-sm-9"
+                                                    data-placeholder="请选择会议室">
+                                            <#list rooms as room>
+                                                <option value="${room.id}">${room.name}</option>
+                                            </#list>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        请选择类型</label>
-                                    <div class="col-sm-10">
-                                        <@spring.formSingleSelect "coupon.type",couponType,"class='col-xs-10 col-sm-5'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>预约时间</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <div class="input-group">
+                                                <input type="text" class="input-sm form-control datetimepicker"
+                                                       name="appointment.startTime">
+                                                <span class="input-group-addon"><i class="fa fa-exchange"></i></span>
+                                                <input type="text" class="input-sm form-control datetimepicker"
+                                                       name="appointment.endTime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>原价格</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.total","class='form-control' required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>优惠金额</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.coupon","class='form-control' required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>支付金额</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.payAmount","class='form-control' required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>支付方式</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.payAmount","class='form-control' required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>第三方流水号</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.payAmount","class='form-control' required"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="space-4"></div>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        优惠金额 </label>
-                                    <div class="col-sm-10">
-                                        <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-5' placeholder='请填写优惠券优惠金额'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                    </div>
+                        </div>
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-custom">
+                                <h5 class="widget-title">服务</h5>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <table id="supportList" class="table table-striped table-bordered" cellspacing="0"
+                                           width="100%">
+                                        <thead>
+                                        <tr>
+                                            <td class="center">
+                                                <input type="checkbox" class="checkAll"/>
+                                                <script>
+                                                    $(function () {
+                                                        $(".checkAll").change(function () {
+                                                            $(".spItem").prop('checked', this.checked);
+                                                        })
+                                                    })
+                                                </script>
+                                            </td>
+                                            <th class="center">名称</th>
+                                            <th class="center">图片</th>
+                                            <th class="center">价格</th>
+                                            <th class="center">数量</th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            var $support = $('#supportList');
+                                            $support.DataTable({
+                                                ajax: {
+                                                    url: "/admin/rooms/supportList",
+                                                    type: "POST",
+                                                    data: function (data) {
+                                                        data.orderId = $("#roomId").val();
+                                                    }
+                                                },
+                                                columns: [
+                                                    {data: "name", className: 'center'},
+                                                    {data: "cover", className: 'center'},
+                                                    {data: "price", className: 'price'},
+                                                    {data: "id", className: 'center'}
+                                                ]
+                                            });
+                                        })
+                                    </script>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        订单金额 </label>
-                                    <div class="col-sm-10">
-                                        <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-5' placeholder='请填写可使用优惠券的最小订单金额'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
+                            </div>
+                        </div>
+                        <div class="widget-box">
+                            <div class="widget-header widget-header-custom">
+                                <h5 class="widget-title">预订信息</h5>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-main padding-8">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>联系人</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.appointment.contactName","class='form-control' required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>联系电话</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.appointment.contactMobile","class='form-control' required"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>会议</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.appointment.meetingName","class='form-control' required"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="space-4"></div>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        有效期类型 </label>
-                                    <div class="col-sm-10">
-                                        <@spring.formSingleSelect "coupon.expiredType",expiredType,"class='col-xs-10 col-sm-5''"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*<@spring.showErrors "<br>"/></b></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" id="dayDiv" hidden>
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        有效天数 </label>
-                                    <div class="col-sm-10">
-                                        <@spring.formInput "coupon.duration","class='col-xs-10 col-sm-5' placeholder='请填写优惠券领取后的有效天数'"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6" id="dateDiv" hidden>
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        有效期 </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="dateRange" class="col-xs-10 col-sm-8">
-                                        <@spring.formHiddenInput "coupon.startDate"/>
-                                        <@spring.formHiddenInput "coupon.endDate"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset class="fixed-border">
-                            <legend class="fixed-border">限定</legend>
-                            <div class="form-group">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        指定组织 </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="form-field-1" placeholder="属性名"
-                                               class="col-xs-10 col-sm-5"
-                                               name="limit_org"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                        指定会场 </label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="form-field-1" placeholder="属性名"
-                                               class="col-xs-10 col-sm-5"
-                                               name="limit_room"/>
-                                        <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </fieldset>
-
-                        <div class="space-4"></div>
-
-                        <div class="clearfix form-actions">
+                        </div>
+                        <div class="row clearfix form-actions">
                             <div class="col-md-offset-3 col-md-9">
                                 <button class="btn btn-info" type="submit">
-                                    <i class="icon-ok bigger-110"></i>
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
                                     提交
                                 </button>
                                 &nbsp; &nbsp; &nbsp;
                                 <button class="btn" type="reset" onclick="history.go(-1)">
-                                    <i class="icon-undo bigger-110"></i>
+                                    <i class="ace-icon fa fa-undo bigger-110"></i>
                                     返回
                                 </button>
                             </div>
@@ -158,45 +197,7 @@
                     </form>
                 </div>
             </div>
-            <!-- PAGE CONTENT ENDS -->
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(function () {
-        $("#expiredType").on("change", function () {
-            var selectedVal = $(this).val();
-            if (selectedVal == "convention") {
-                $("#dateDiv").show();
-                $("#dayDiv").hide();
-            } else {
-                $("#dateDiv").hide();
-                $("#dayDiv").show();
-            }
-        })
-
-        $("#dateRange").daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-                format: "YYYY/MM/DD",
-                separator: " - ",
-                applyLabel: "确认",
-                cancelLabel: "清空",
-                fromLabel: "开始时间",
-                toLabel: "结束时间",
-                customRangeLabel: "自定义",
-                daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
-                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
-            }
-        }).on('cancel.daterangepicker', function (ev, picker) {
-            $("#dateRange").val("请选择日期");
-            $("#startDate").val("");
-            $("#endDate").val("");
-        }).on('apply.daterangepicker', function (ev, picker) {
-            $("#startDate").val(picker.startDate.format('YYYY-MM-DD'));
-            $("#endDate").val(picker.endDate.format('YYYY-MM-DD'));
-            $("#dateRange").val(picker.startDate.format('YYYY-MM-DD') + " 至 " + picker.endDate.format('YYYY-MM-DD'));
-        });
-    })
-</script>
 </@layout.myLayout>

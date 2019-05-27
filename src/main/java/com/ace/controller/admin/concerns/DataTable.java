@@ -1,72 +1,25 @@
 package com.ace.controller.admin.concerns;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 /**
  * Created by john on 17-5-13.
  */
+@Getter
+@Setter
 public class DataTable<T> {
+    @JsonView(AdminView.Table.class)
     private int start;
+    @JsonView(AdminView.Table.class)
     private int length;
-    private String keyword;
+    @JsonView(AdminView.Table.class)
     private int draw;
-    private int recordsTotal;
-    private int recordsFiltered;
+    @JsonView(AdminView.Table.class)
+    private Long recordsFiltered;
+    @JsonView(AdminView.Table.class)
     private List<T> data;
-
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public int getDraw() {
-        return draw;
-    }
-
-    public void setDraw(int draw) {
-        this.draw = draw;
-    }
-
-    public int getRecordsTotal() {
-        return recordsTotal;
-    }
-
-    public void setRecordsTotal(int recordsTotal) {
-        this.recordsTotal = recordsTotal;
-    }
-
-    public int getRecordsFiltered() {
-        return recordsFiltered;
-    }
-
-    public void setRecordsFiltered(int recordsFiltered) {
-        this.recordsFiltered = recordsFiltered;
-    }
-
-    public List<T> getData() {
-        return data;
-    }
-
-    public void setData(List<T> data) {
-        this.data = data;
-    }
 }

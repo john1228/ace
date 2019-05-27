@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.dao.RoomMapper">
-    <resultMap type="com.ace.entity.room.Room" id="roomMap">
+    <resultMap id="lMap" type="com.ace.entity.Room">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="serial_no" property="serialNo"/>
+        <result column="publish" property="publish"/>
+        <result column="rental" property="rental"/>
+    </resultMap>
+    <resultMap id="dMap" type="com.ace.entity.Room">
         <id column="id" property="id"/>
         <result column="staff_id" property="staffId"/>
+        <result column="project_name" property="projectName"/>
         <result column="name" property="name"/>
         <result column="cover" property="cover"/>
         <result column="image" property="image"/>
@@ -17,46 +25,119 @@
         <result column="layer_area" property="layerArea"/>
         <result column="quota" property="quota"/>
         <result column="free" property="free"/>
-        <result column="free_org" property="freeOrg" typeHandler="com.ace.dao.handler.JSONHandler"/>
+        <result column="free_org" property="freeOrg"/>
         <result column="open_date" property="openDate"/>
         <result column="close_date" property="closeDate"/>
         <result column="rental" property="rental"/>
         <result column="supervisor" property="supervisor"/>
         <result column="supervisor_mobile" property="supervisorMobile"/>
         <result column="supervisor_email" property="supervisorEmail"/>
-        <result column="cfm" property="confirmation"/>
+        <result column="cfm" property="cfm"/>
+        <result column="refund_limit_time" property="rlt"/>
         <result column="payable" property="payable"/>
         <result column="resume" property="resume"/>
+        <result column="free_service" property="freeService"/>
+        <result column="charge_service" property="chargeService"/>
+        <association property="supportList" select="com.ace.dao.RoomSupportMapper.supportList" column="id"/>
     </resultMap>
-    <select id="recordsTotal" resultType="java.lang.Integer">
-        SELECT count(1) AS recordsTotal FROM bb_rooms
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
-            </if>
-            <if test="staff != null and staff != ''">
-                and staff_id = #{staff}
-            </if>
-        </where>
+    <select id="recordsTotal" resultType="java.lang.Long">
+        SELECT count(1) AS recordsTotal FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        WHERE bb_staffs.project_id = #{staff.projectId}
+        <if test="criteria.name!=null and criteria.name!=''">
+            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+        </if>
+        <if test="criteria.layerAreaFrom!=null">
+            AND bb_rooms.layer_area >= #{criteria.layerAreaFrom}
+        </if>
+        <if test="criteria.layerAreaTo!=null">
+            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+        </if>
+        <if test="criteria.quotaFrom!=null">
+            AND bb_rooms.quota >= #{criteria.layerAreaFrom}
+        </if>
+        <if test="criteria.quotaTo!=null">
+            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+        </if>
     </select>
 
-    <select id="dataList" resultMap="roomMap">
-        select
-        id,serial_no,name,publish,rental,building_no,floor_no,room_no,layer_area,quota,supervisor,supervisor_mobile,supervisor_email
-        from bb_rooms
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
-            </if>
-            <if test="staff != null and staff != ''">
-                and staff_id = #{staff}
-            </if>
-        </where>
-        order by id desc
+    <select id="dataList" resultType="com.ace.entity.Room">
+        SELECT
+        bb_rooms.id,
+        bb_rooms.serial_no AS serialNo,
+        bb_rooms.name,
+        bb_rooms.type,
+        bb_rooms.publish,
+        bb_rooms.rental,
+        bb_rooms.building_no AS buildingNo,
+        bb_rooms.floor_no AS floorNo,
+        bb_rooms.room_no AS roomNo,
+        bb_rooms.price,
+        bb_rooms.layer_area AS layerArea,
+        bb_rooms.quota,
+        bb_rooms.supervisor,
+        bb_rooms.supervisor_mobile AS supervisorMobile,
+        bb_rooms.supervisor_email AS supervisorEmail,
+        bb_rooms.free_service AS freeService
+        FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        WHERE bb_staffs.project_id = #{staff.projectId}
+        <if test="criteria.name!=null and criteria.name!=''">
+            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+        </if>
+        <if test="criteria.layerAreaFrom!=null">
+            AND bb_rooms.layer_area >= #{criteria.layerAreaFrom}
+        </if>
+        <if test="criteria.layerAreaTo!=null">
+            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+        </if>
+        <if test="criteria.quotaFrom!=null">
+            AND bb_rooms.quota >= #{criteria.layerAreaFrom}
+        </if>
+        <if test="criteria.quotaTo!=null">
+            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+        </if>
+        ORDER BY id DESC
         <if test="length!=0">
             LIMIT #{start},#{length}
         </if>
-
+    </select>
+    <!--筛选用户下的管理的所有会议室，用于筛选-->
+    <select id="roomList" resultType="com.ace.entity.Room">
+        SELECT bb_rooms.id, bb_rooms.name
+        FROM bb_rooms
+                 LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        WHERE bb_staffs.project_id = #{staff.projectId}
+    </select>
+    <!--客户端查询会议室，包含自有和开放的-->
+    <select id="query" resultType="com.ace.entity.Room">
+        SELECT
+        bb_staffs.project_name AS projectName,
+        bb_rooms.id,
+        bb_rooms.serial_no AS serialNo,
+        bb_rooms.name,
+        bb_rooms.type,
+        bb_rooms.publish,
+        bb_rooms.rental,
+        bb_rooms.building_no AS buildingNo,
+        bb_rooms.floor_no AS floorNo,
+        bb_rooms.room_no AS roomNo,
+        bb_rooms.price,
+        bb_rooms.layer_area AS layerArea,
+        bb_rooms.quota,
+        bb_rooms.supervisor,
+        bb_rooms.supervisor_mobile AS supervisorMobile,
+        bb_rooms.supervisor_email AS supervisorEmail,
+        bb_rooms.free_service AS freeService
+        FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        WHERE (bb_rooms.publish = 1) OR (
+        bb_staffs.project_id IN
+        <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.projectId}
+        </foreach>
+        )
+        <if test="query.keyword != null and query.keyword != ''">
+            AND name LIKE CONCAT('%',#{query.keyword},'%')
+        </if>
+        ORDER BY ${query.sort.column} ${query.sort.order} LIMIT #{query.start},#{query.pageSize}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
@@ -73,6 +154,7 @@
                               publish,
                               layer_area,
                               quota,
+                              price,
                               free,
                               free_org,
                               open_date,
@@ -86,41 +168,45 @@
                               payable,
                               cfm,
                               refund_limit_time,
-                              resume)
+                              resume,
+                              free_service)
         values (#{staffId},
                 #{name},
                 #{cover},
-                #{image,typeHandler=com.ace.dao.handler.ListTypeHandler},
+                #{image,typeHandler=com.ace.dao.handler.StringListHandler},
                 #{serialNo},
                 #{buildingNo},
                 #{floorNo},
                 #{roomNo},
                 #{layerHeight},
-                #{type,typeHandler=com.ace.dao.handler.EnumTypeHandler},
-                #{publish,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{type},
+                #{publish},
                 #{layerArea},
                 #{quota},
+                #{price},
                 #{free},
                 #{freeOrg},
                 #{openDate},
                 #{closeDate},
                 #{unit},
                 #{renew},
-                #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{rental},
                 #{supervisor},
                 #{supervisorMobile},
                 #{supervisorEmail},
                 #{payable},
-                #{confirmation,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{cfm},
                 #{rlt},
-                #{resume})
+                #{resume},
+                #{freeService})
     </insert>
 
-    <select id="findById" resultMap="roomMap">
-        select *
-        from bb_rooms
-        where id = #{id}
-        limit 1
+    <select id="findById" resultMap="dMap">
+        SELECT *
+        FROM bb_rooms
+                 LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        WHERE bb_rooms.id = #{id}
+        LIMIT 1
     </select>
 
     <update id="update">

@@ -1,5 +1,6 @@
 package com.ace.controller.api.concerns;
 
+import com.ace.controller.admin.concerns.AdminView;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -8,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonView;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Success<T> extends Result {
-    @JsonView(View.Base.class)
+    @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private int status;
-    @JsonView(View.Base.class)
+    @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private T data;
 
     public Success(T data) {

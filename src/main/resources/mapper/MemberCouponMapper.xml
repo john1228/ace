@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.dao.MemberCouponMapper">
-    <resultMap type="com.ace.entity.coupon.MemberCoupon" id="mcMap">
+    <resultMap type="com.ace.entity.MemberCoupon" id="mcMap">
         <id column="id" property="id"/>
         <result column="account_id" property="accountId"/>
         <result column="name" property="name"/>
@@ -15,7 +15,7 @@
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
-    <select id="recordsTotal" resultType="java.lang.Integer">
+    <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_member_coupons
         <where>
             <if test="keyword != null and keyword != ''">

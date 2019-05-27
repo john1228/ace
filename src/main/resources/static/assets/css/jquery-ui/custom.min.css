@@ -257,12 +257,12 @@
 }
 
 .attribute-table-row {
-    display: table-row;
+    display: flex;
+    flex-direction: row;
 }
 
 .attribute-table-label, .attribute-table-value {
     display: table-cell;
-    border-top: 1px dotted #D5E4F1
 }
 
 .attribute-table-label {
@@ -280,8 +280,9 @@
 
 .attribute-table-value {
     padding: 6px 4px 6px 6px;
-    border-top: 1px dotted #DCEBF7;
-    padding-left: 12px
+    border-bottom: 1px dotted #DCEBF7;
+    padding-left: 12px;
+    width: calc(100% - 122px) !important;
 }
 
 .attribute-table-value > span + span:before {

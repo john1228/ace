@@ -7,7 +7,7 @@
 <div class="form-group row">
     <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>会议室</label>
     <div class="col-sm-10">
-        <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-9'"/>
+        <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-9' required"/>
     </div>
 </div>
 <div class="form-group row">
@@ -38,12 +38,15 @@
         <@spring.formHiddenInput "price.startTime"/>
         <@spring.formHiddenInput "price.endTime"/>
     </div>
+    <div class="col-sm-10" style="margin-top: 10px">
+        <span id="display">09:00 ~ 21:00</span>
+    </div>
 </div>
 <div class="form-group row">
     <label class="col-sm-2 control-label no-padding-right"><span
             style="color: red">*</span>价格</label>
     <div class="col-sm-10">
-        <@spring.formInput "price.price" "class='col-xs-10 col-sm-9' placeholder='请填写价格'"/>
+        <@spring.formInput "price.price" "class='col-xs-10 col-sm-9' placeholder='请填写价格' required"/>
     </div>
 </div>
 <div class="clearfix form-actions">
@@ -63,16 +66,33 @@
     $(function () {
         $("#slider").slider({
             range: true,
-            min: 0,
-            max: 48,
+            min: 16,
+            max: 40,
             step: 1,
-            values: [18, 42],
+            values: [16, 40],
             showLabels: true,
             slide: function (event, ui) {
-                $('#startTime').val(ui.values[0]);
-                $('#endTime').val(ui.values[1]);
-            }
+                var startH = parseInt(ui.values[0] / 2);
+                var endH = parseInt(ui.values[1] / 2);
+                var startM = ui.values[0] % 2;
+                var endM = ui.values[1] % 2;
+                if (startH < 10) startH = '0' + startH;
+                if (startM == 0) {
+                    startH = startH + ":00"
+                } else {
+                    startH = startH + ":30"
+                }
 
+                if (endH == 10) startH = '0' + startH;
+                if (endM == 0) {
+                    endH = endH + ":00"
+                } else {
+                    endH = endH + ":30"
+                }
+                $("#display").html(startH + " ~ " + endH);
+                $('#startTime').val(startH);
+                $('#endTime').val(endH);
+            }
         });
         $('.multiselect').multiselect({
             nonSelectedText: "请选择",

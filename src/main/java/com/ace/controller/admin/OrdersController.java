@@ -1,10 +1,16 @@
 package com.ace.controller.admin;
 
+import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.admin.concerns.OrderCriteria;
+import com.ace.entity.Appointment;
 import com.ace.entity.Order;
-import com.ace.entity.concern.OrderUtil;
-import com.ace.service.OrderService;
+import com.ace.entity.Staff;
+import com.ace.entity.concern.enums.OrderStatus;
+import com.ace.service.admin.OrderService;
+import com.ace.service.admin.RoomService;
 import com.ace.util.CollectionUtil;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,9 +18,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
-
 
 @Controller
 @RequestMapping("/admin/orders")
@@ -23,6 +29,8 @@ public class OrdersController extends BaseController {
     static String viewPath = "/admin/orders/";
     @Resource
     private OrderService orderService;
+    @Resource
+    private RoomService roomService;
 
 
     @GetMapping({"", "/"})
@@ -31,22 +39,23 @@ public class OrdersController extends BaseController {
     }
 
     @ResponseBody
-    @GetMapping("/dataList")
+    @PostMapping("/dataList")
+    @JsonView(AdminView.Table.class)
     public DataTable<Order> dataList(
-            @RequestParam(value = "draw", defaultValue = "1") int draw,
-            @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "search[value]", defaultValue = "") String keyword
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            OrderCriteria criteria,
+            DataTable<Order> dataTable
     ) {
-        DataTable<Order> dataTable = orderService.dataTable(start, length, keyword);
-        dataTable.setDraw(draw);
+
+        orderService.dataTable(staff, criteria, dataTable);
         return dataTable;
     }
 
     @GetMapping("/new")
-    public String add(Model model) {
-        model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderUtil.Status.class));
-        model.addAttribute("Order", new Order());
+    public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+        model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderStatus.class));
+        model.addAttribute("rooms", roomService.roomList(staff));
+        model.addAttribute("order", new Order());
         return viewPath + "new";
     }
 
@@ -56,40 +65,40 @@ public class OrdersController extends BaseController {
         if (result.hasErrors()) {
             return viewPath + "new";
         } else {
+            orderService.create(order);
             logger.info("创建记录");
-            model.addAttribute("order", order);
-            return viewPath + "show";
+            return "redirect:" + viewPath + order.getOrderNo();
         }
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        Order order = orderService.findById(id);
+    public String show(@PathVariable("id") String orderNo, Model model) {
+        Order order = orderService.findById(orderNo);
         model.addAttribute("order", order);
         return viewPath + "show";
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") int id, Model model) {
-        Order order = orderService.findById(id);
+    public String edit(@PathVariable("id") String orderNo, Model model) {
+        Order order = orderService.findById(orderNo);
         model.addAttribute("order", order);
         return viewPath + "edit";
     }
 
     @PutMapping("/{id}/update")
-    public String update(@Valid Order order, BindingResult result, Model model) {
+    public String update(@PathVariable("id") String orderNo, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return viewPath + "edit";
         } else {
-            orderService.update(order);
-            model.addAttribute("order", order);
-            return viewPath + "show";
+            orderService.update(orderNo, OrderStatus.CONFIRMING);
+            return "redirect:" + viewPath + orderNo;
         }
 
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
-        return viewPath + "index";
+    public String delete(@PathVariable("id") String id) {
+        orderService.delete(id);
+        return "redirect:" + viewPath;
     }
 }

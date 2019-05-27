@@ -58,9 +58,8 @@
                             sZeroRecords: "没有匹配结果",
                             sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
                             sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                            sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+                            sInfoFiltered: "",
                             sInfoPostFix: "",
-                            sSearch: "搜索:",
                             sUrl: "",
                             sEmptyTable: "表中数据为空",
                             sLoadingRecords: "载入中...",
@@ -87,7 +86,7 @@
                                 text: '新增优惠券',
                                 className: 'btn btn-primary pull-right',
                                 action: function (e, dt, node, config) {
-                                    window.location.href = '/admin/coupons/new?parent=${parent}';
+                                    window.location.href = '/admin/coupons/new';
                                 }
                             }
                         ],
@@ -110,8 +109,8 @@
                                 className: 'center',
                                 render: function (data) {
                                     return '<div class="hidden-sm hidden-xs btn-group">' +
-                                            '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
-                                            '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                            '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                            '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
                                             '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
                                             '</div>';
                                 }

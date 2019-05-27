@@ -7,37 +7,26 @@
         } catch (e) {
         }
     </script>
-
     <ul class="breadcrumb">
         <li>
             <i class="icon-home home-icon"></i>
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/users/">用户管理</a>
+            <a href="/admin/users/">发票管理</a>
         </li>
-        <li class="active">用户查看</li>
+        <li class="active">发票查看</li>
     </ul>
-
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-			<span class="input-icon">
-				<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                       autocomplete="off"/>
-				<i class="icon-search nav-search-icon"></i>
-			</span>
-        </form>
-    </div>
 </div>
 
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
             <div class="page-header">
-                <h1>${coupon.name}
+                <h1>
                     <small>
                         <i class="icon-double-angle-right">
-                            详细资料
+                            发票资料
                         </i>
                     </small>
                 </h1>
@@ -46,119 +35,249 @@
                 <div class="col-sm-6">
                     <div class="widget-box">
                         <div class="widget-header widget-header-custom">
-                            <h4 class="widget-title">优惠券详情</h4>
+                            订单信息
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
-                                <fieldset class="fixed-border">
-                                    <legend class="fixed-border">基础信息</legend>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                            名字 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.name}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                            类型 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.type.getName()}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                            优惠金额 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.discount}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                            订单金额 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.min}</div>
-                                    </div>&nbsp;
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label no-padding-right" for="form-field-1">
-                                            有效期方式 </label>
-                                        <div class="col-sm-9" style="padding:5px;">${coupon.expiredType.getName()}</div>
-                                    </div>&nbsp;
-                                </fieldset>
-                                <fieldset class="fixed-border">
-                                    <legend class="fixed-border">限定信息</legend>
-                                </fieldset>
-                                <div class="clearfix form-actions">
-                                    <div class="col-md-offset-3 col-md-9">
-                                        <a class="btn btn-info" type="button" href="/admin/coupons/${coupon.id}/edit">
-                                            <i class="icon-ok bigger-110"></i>
-                                            修改
-                                        </a>
-                                        &nbsp;&nbsp;&nbsp;
-                                        <button class="btn" type="reset" onclick="history.go(-1)">
-                                            <i class="icon-undo bigger-110"></i>
-                                            返回
-                                        </button>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">订单号</div>
+                                    <div class="attribute-table-value">
+                                        ${order.orderNo!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">会议室</div>
+                                    <div class="attribute-table-value">
+                                        ${order.roomName!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">预订人</div>
+                                    <div class="attribute-table-value">
+                                        ${order.contactName!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">预订人电话</div>
+                                    <div class="attribute-table-value">
+                                        ${order.contactMobile!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">使用时间</div>
+                                    <div class="attribute-table-value">
+                                        ${order.appointTime!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">订单金额</div>
+                                    <div class="attribute-table-value">
+                                        ${order.total!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">实付金额</div>
+                                    <div class="attribute-table-value">
+                                        ${order.payAmount!}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">下单时间</div>
+                                    <div class="attribute-table-value">
+                                        ${order.createdAt?string("yyyy-MM-dd HH:mm:ss")}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
+                <#if invoice??>
                 <div class="col-sm-6">
                     <div class="widget-box">
                         <div class="widget-header widget-header-custom">
-                            <h4 class="widget-title">Lists</h4>
+                            发票信息
                         </div>
                         <div class="widget-body">
                             <div class="widget-main">
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <ul class="list-unstyled spaced">
-                                            <li>
-                                                <i class="ace-icon fa fa-bell-o bigger-110 purple"></i>
-                                                List with custom icons and more space
-                                            </li>
-
-                                            <li>
-                                                <i class="ace-icon fa fa-check bigger-110 green"></i>
-                                                Unordered List Item # 2
-                                            </li>
-
-                                            <li>
-                                                <i class="ace-icon fa fa-times bigger-110 red"></i>
-                                                Unordered List Item # 3
-                                            </li>
-                                        </ul>
-
-                                        <ul class="list-unstyled spaced2">
-                                            <li>
-                                                <i class="ace-icon fa fa-circle green"></i>
-                                                Even more space
-                                            </li>
-
-                                            <li class="text-warning bigger-110 orange">
-                                                <i class="ace-icon fa fa-exclamation-triangle"></i>
-                                                Unordered List Item # 5
-                                            </li>
-
-                                            <li class="muted">
-                                                <i class="ace-icon fa fa-angle-right bigger-110"></i>
-                                                Unordered List Item # 6
-                                            </li>
-
-                                            <li>
-                                                <ul class="list-inline">
-                                                    <li>
-                                                        <i class="ace-icon fa fa-share green bigger-110"></i>
-                                                        Inline List Item # 1
-                                                    </li>
-                                                    <li>List Item # 2</li>
-                                                    <li>List Item # 3</li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">发票类型</div>
+                                    <div class="attribute-table-value">
+                                        ${invoice.type.getName()} -- ${(invoice.type.name() == "VATI")?string("等","不等")} -- ${invoice.type.name()}
+                                    </div>
+                                </div>
+                                <#if invoice.type.name() == "VATI">
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">类型</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["type"]!}
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">抬头</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["title"]!}
+                                        </div>
+                                    </div>
+                                    <#if invoice.content["type"] == "公司">
+                                        <div class="attribute-table-row">
+                                            <div class="attribute-table-label">纳税人识别号</div>
+                                            <div class="attribute-table-value">
+                                                ${invoice.content["taxpayer"]!}
+                                            </div>
+                                        </div>
+                                    </#if>
+                                <#else>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">抬头</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["title"]!}
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">纳税人识别号</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["taxpayer"]!}
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">开户行</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["bank"]!}
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">账户</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["bankNo"]!}
+                                        </div>
+                                    </div>
+                                    <div class="attribute-table-row">
+                                        <div class="attribute-table-label">地址电话</div>
+                                        <div class="attribute-table-value">
+                                            ${invoice.content["contact"]!}
+                                        </div>
+                                    </div>
+                                </#if>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">备注</div>
+                                    <div class="attribute-table-value">
+                                        ${invoice.remark!}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="widget-box">
+                        <div class="widget-header widget-header-custom">
+                            邮寄信息
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main">
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">邮寄方式</div>
+                                    <div class="attribute-table-value">
+                                        ${invoice.method.getName()}
+                                    </div>
+                                </div>
+                                <#if invoice.method.name() ="EMAIL">
+                                 <div class="attribute-table-row">
+                                     <div class="attribute-table-label">邮寄地址</div>
+                                     <div class="attribute-table-value">
+                                         ${invoice.address["address"]}
+                                     </div>
+                                 </div>
+                                <#else>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">收件人</div>
+                                    <div class="attribute-table-value">
+                                        ${invoice.address["name"]}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">联系电话</div>
+                                    <div class="attribute-table-value">
+                                        ${invoice.address["mobile"]}
+                                    </div>
+                                </div>
+                                <div class="attribute-table-row">
+                                    <div class="attribute-table-label">收货地址</div>
+                                    <div class="attribute-table-value">
+                                        ${invoice.address["address"]}
+                                    </div>
+                                </div>
+                                </#if>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                </#if>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <button class="btn" type="reset" onclick="history.go(-1)">
+                    返回
+                </button>
+                <#if invoice??>
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn" type="reset" id="mail">
+                    邮寄
+                </button>
+                <div id="closedModal" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form action="/admin/invoices/${order.orderNo}/mail" role="form" class="form-horizontal"
+                                  enctype="multipart/form-data"
+                                  data-toggle="validator" method="post" id="closedFrm">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                    <h5 class="smaller lighter blue no-margin">寄送</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <input type="hidden" name="staffId" value="${current_operator.getId()}">
+                                    <div class="form-group row">
+                                        <div class="col-sm-2 control-label no-padding-right">快递公司</div>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="express[快递公司]" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-2 control-label no-padding-right">快递单号</div>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="express[快递单号]" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-primary pull-right" type="submit">
+                                        提交
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $("#mail").on("click", function () {
+                            $('#closedModal').modal('show');
+                        })
+                    })
+                </script>
+                <#else>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/admin/invoices/new?orderNo=${order.orderNo!}" class="btn">
+                        登记开票
+                    </a>
+                </#if>
+            </div>
+        </div>
+    </div>
+</div>
 </@layout.myLayout>

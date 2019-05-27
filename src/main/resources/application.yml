@@ -11,6 +11,9 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.ace.entity
   type-handlers-package: com.ace.dao.handler
+  configuration:
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: true
 pagehelper:
   helperDialect: mysql
   params: count=countSql
@@ -18,7 +21,7 @@ pagehelper:
   supportMethodsArguments: true
 server:
   company: 爱测试
-  port: 8080
+  port: 9001
   servlet:
     context-path: /
     session:
@@ -48,7 +51,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: ace
-    validationQuery: 'SELECT 1 FROM DUAL  '
+    validationQuery: 'SELECT 1 FROM DUAL'
   freemarker:
     cache: false
     charset: UTF-8

@@ -16,7 +16,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/rooms/0/devices/">价格管理</a>
+            <a href="/admin/prices/">价格管理</a>
         </li>
         <li class="active">价格修改</li>
     </ul>

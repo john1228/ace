@@ -1,10 +1,8 @@
 package com.ace.controller.admin;
 
 import com.ace.controller.admin.concerns.DataTable;
-import com.ace.entity.Order;
 import com.ace.entity.Receipt;
-import com.ace.service.OrderService;
-import com.ace.service.ReceiptService;
+import com.ace.service.admin.ReceiptService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +32,6 @@ public class ReceiptsController extends BaseController {
             @RequestParam(value = "search[value]", defaultValue = "") String keyword
     ) {
         DataTable<Receipt> dataTable = receiptService.dataTable(start, length, keyword);
-        dataTable.setDraw(draw);
         return dataTable;
     }
 

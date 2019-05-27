@@ -3,6 +3,7 @@ package com.ace.controller.admin.concerns;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
 import com.ace.security.AdminUserDetails;
+import com.ace.util.Aliyun;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,5 +39,10 @@ public class AdminUserAdvice {
             }
             return staff;
         }
+    }
+
+    @ModelAttribute("image")
+    public String getImgHost() {
+        return Aliyun.Instance.endPoint;
     }
 }

@@ -14,7 +14,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/prices?parent=${parent}">设备管理</a>
+            <a href="/admin/prices">设备管理</a>
         </li>
         <li class="active">设备详情</li>
     </ul>
@@ -34,13 +34,7 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="page-header">
-                <h1>价格
-                    <small>
-                        <i class="icon-double-angle-right">
-                            详情
-                        </i>
-                    </small>
-                </h1>
+                <h3>价格</h3>
             </div>
             <div class="row">
                 <div class="col-sm-12">
@@ -115,7 +109,7 @@
                                 <div class="clearfix form-actions">
                                     <div class="col-md-offset-3 col-md-9">
                                         <a class="btn btn-info" type="button"
-                                           href="/admin/prices/${price.id}/edit?parent=${parent}">
+                                           href="/admin/prices/${price.id}/edit">
                                             <i class="icon-ok bigger-110"></i>
                                             修改
                                         </a>

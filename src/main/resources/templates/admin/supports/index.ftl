@@ -2,6 +2,8 @@
 <@layout.myLayout>
 <script src="/assets/js/jquery/dataTables.min.js"></script>
 <script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
+<script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {
@@ -35,10 +37,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tableTools-container col-sm-6">
-                                <a class="btn btn-primary pull-right "
-                                   href="/admin/supports/new?parent=${parent}">新增服务</a>
-                            </div>
                         </div>
                         <div>
                             <div class="table-header">服务列表</div>
@@ -64,6 +62,7 @@
                     </div>
                     <script type="text/javascript">
                         $(function () {
+                            $.ajaxSetup({headers: {'X-CSRF-Token': $('meta[name="_csrf"]').attr('content')}});
                             $('#supportList').DataTable({
                                 language: {
                                     sProcessing: "处理中...",
@@ -71,11 +70,10 @@
                                     sZeroRecords: "没有匹配结果",
                                     sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
                                     sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                                    sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+                                    sInfoFiltered: "",
                                     sInfoPostFix: "",
-                                    sSearch: "搜索:",
                                     sUrl: "",
-                                    sEmptyTable: "表中数据为空",
+                                    sEmptyTable: "暂无数据",
                                     sLoadingRecords: "载入中...",
                                     sInfoThousands: ",",
                                     oPaginate: {
@@ -92,8 +90,18 @@
                                 ordering: false,
                                 ajax: {
                                     url: "/admin/supports/dataList",
-                                    type: "GET"
+                                    type: "POST"
                                 },
+                                dom: 'Bfltip',
+                                buttons: [
+                                    {
+                                        text: '新建服务',
+                                        className: 'btn btn-primary pull-right',
+                                        action: function () {
+                                            window.location.href = '/admin/supports/new';
+                                        }
+                                    }
+                                ],
                                 columns: [
                                     {
                                         data: "id",
@@ -107,14 +115,20 @@
                                     },
                                     {data: "id", className: 'center'},
                                     {data: "name", className: 'center'},
-                                    {data: "cover", className: 'center'},
+                                    {
+                                        data: "cover",
+                                        className: 'center',
+                                        render: function (data) {
+                                            return '<img src="${image}/' + data + '"/>';
+                                        }
+                                    },
                                     {data: "unit", className: 'center'},
                                     {
                                         data: "id",
                                         render: function (data) {
                                             return '<div class="hidden-sm hidden-xs btn-group">' +
-                                                    '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '?parent=${parent}"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit?parent=${parent}"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
                                                     '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
                                                     '</div>';
                                         },

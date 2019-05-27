@@ -7,6 +7,7 @@ import com.ace.dao.UserMapper;
 import com.ace.entity.User;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 @Service("userService")
 public class UserService {
@@ -16,8 +17,4 @@ public class UserService {
     public User getUserToLoginName(String loginName) {
         return userMapper.getUserToLoginName(loginName);
     }
-
-
-
-
 }

@@ -16,14 +16,14 @@
                         <label class="col-sm-2 control-label no-padding-right"><span
                                 style="color: red">*</span>优惠券名</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "coupon.name","class='col-xs-10 col-sm-8' placeholder='请填写优惠券名字'"/>
+                            <@spring.formInput "coupon.name","class='col-xs-10 col-sm-9' placeholder='请填写优惠券名字'"/>
                         </div>
                     </div>
                     <div class="form-group row" id="dateDiv">
                         <label class="col-sm-2 control-label no-padding-right"><span
                                 style="color: red">*</span>有效期</label>
                         <div class="col-sm-10">
-                            <input type="text" id="dateRange" class="col-xs-10 col-sm-8">
+                            <input type="text" id="dateRange" class="col-xs-10 col-sm-9" readonly required>
                             <@spring.formHiddenInput "coupon.startDate"/>
                             <@spring.formHiddenInput "coupon.endDate"/>
                         </div>
@@ -32,21 +32,21 @@
                         <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>抵扣金额
                         </label>
                         <div class="col-sm-10">
-                            <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-8' placeholder='请填写优惠券优惠金额'"/>
+                            <@spring.formInput "coupon.discount" "class='col-xs-10 col-sm-9' placeholder='请填写优惠券优惠金额'"/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>抵扣条件
                         </label>
                         <div class="col-sm-10">
-                            <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-8' placeholder='请填写可使用优惠券的最小订单金额'"/>
+                            <@spring.formInput "coupon.min" "class='col-xs-10 col-sm-9' placeholder='请填写可使用优惠券的最小订单金额'"/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"><span
                                 style="color: red">*</span>数量</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "coupon.amount","class='col-xs-10 col-sm-8' placeholder='请输入优惠券数量'"/>
+                            <@spring.formInput "coupon.amount","class='col-xs-10 col-sm-9' placeholder='请输入优惠券数量'"/>
                         </div>
                     </div>
                 </div>
@@ -65,13 +65,13 @@
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right">使用周数</label>
                         <div class="col-sm-10">
-                            <@spring.formMultiSelect "coupon.limitWday",weeks,"class='multiselect form-control'"/>
+                            <@spring.formMultiSelect "coupon.limitWday",weeks,"class='multiselect col-xs-10 col-sm-9'"/>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right">可使用场地</label>
                         <div class="col-sm-10">
-                            <@spring.formMultiSelect "coupon.limitRoom",rooms,"class='multiselect form-control''"/>
+                            <@spring.formMultiSelect "coupon.limitRoom",rooms,"class='multiselect col-xs-10 col-sm-9'"/>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
         });
 
         $("#dateRange").daterangepicker({
-            autoUpdateInput: false,
+            forceUpdate: true,
             locale: {
                 format: "YYYY/MM/DD",
                 separator: " - ",
@@ -124,6 +124,10 @@
                 customRangeLabel: "自定义",
                 daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
                 monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
+            },
+            callback: function (startDate, endDate, period) {
+                console.log(startDate);
+                $(this).val(startDate + ' 至 ' + endDate);
             }
         }).on('cancel.daterangepicker', function (ev, picker) {
             $("#dateRange").val("请选择日期");

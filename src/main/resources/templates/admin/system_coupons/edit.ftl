@@ -14,7 +14,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/coupons/?parent=${parent}">优惠券管理</a>
+            <a href="/admin/coupons">优惠券管理</a>
         </li>
         <li class="active">优惠券修改</li>
     </ul><!-- .breadcrumb -->
@@ -34,13 +34,9 @@
     <div class="row">
         <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
-            <div class="page-header">
-                <h4>${coupon.name}修改
-                    <small>
-                        <i class="icon-double-angle-right">
-                            请编辑属性最新资料
-                        </i>
-                    </small>
+            <div class="page-title">
+                <h4>
+                    优惠券修改
                 </h4>
             </div>
             <div class="row">

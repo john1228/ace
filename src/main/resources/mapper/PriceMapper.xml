@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ace.dao.PriceMapper">
-    <resultMap type="com.ace.entity.room.Price" id="priceMap">
+    <resultMap type="com.ace.entity.Price" id="priceMap">
         <id column="id" property="id"/>
         <result column="staff_id" property="staffId"/>
         <result column="room_id" property="roomId"/>
@@ -9,12 +9,18 @@
         <result column="rental" property="rental"/>
         <result column="start_date" property="startDate"/>
         <result column="end_date" property="endDate"/>
-        <result column="wday" property="wday"/>
+        <result column="wday" property="wday" typeHandler="com.ace.dao.handler.WeekListTypeHandler"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
         <result column="price" property="price"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
-    <select id="recordsTotal" resultType="java.lang.Integer">
+    <resultMap id="roomMap" type="com.ace.entity.Room">
+        <result column="room_id" property="id"/>
+        <result column="room_name" property="name"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_prices LEFT JOIN bb_staffs ON bb_prices.staff_id = bb_staffs.id
         <where>
             <if test="keyword != null and keyword != ''">
@@ -33,18 +39,44 @@
         order by bb_prices.id desc LIMIT #{start},#{length}
     </select>
 
+    <!--获取日期有效的价格-->
+    <select id="priceList" resultMap="priceMap">
+        select * FROM bb_prices LEFT JOIN bb_prices_ref ON bb_prices.id = bb_prices_ref.price_id
+        WHERE bb_prices_ref.room_id in
+        <foreach collection="rooms" item="item" index="index"
+                 open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+        AND #{date} BETWEEN bb_prices.start_date AND bb_prices.end_date
+    </select>
+    <!--获取日期有效的价格-->
+    <select id="prices" resultMap="priceMap">
+        select *
+        FROM bb_prices
+                 LEFT JOIN bb_prices_ref ON bb_prices.id = bb_prices_ref.price_id
+        WHERE bb_prices_ref.room_id = #{room}
+          AND #{date} BETWEEN bb_prices.start_date AND bb_prices.end_date
+    </select>
+
+
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_prices (staff_id, room_id, room_name, rental, start_date, end_date, wday, price)
+        insert into bb_prices (staff_id, room_name, rental, start_date, end_date, start_time, end_time, wday, price)
         values (#{staffId},
-                #{roomId,typeHandler=com.ace.dao.handler.ListTypeHandler},
-                #{roomName,typeHandler=com.ace.dao.handler.ListTypeHandler},
-                #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+                #{roomName,typeHandler=com.ace.dao.handler.StringListHandler},
+                #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
                 #{startDate},
                 #{endDate},
+                #{startTime},
+                #{endTime},
                 #{wday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
                 #{price})
     </insert>
-
+    <insert id="createRef" useGeneratedKeys="true">
+        insert into bb_prices_ref (price_id,room_id) values
+        <foreach collection="rooms" item="item" index="index" separator=",">
+            (#{priceId},#{item})
+        </foreach>
+    </insert>
     <select id="findById" resultMap="priceMap">
         select *
         from bb_prices
@@ -52,17 +84,29 @@
         limit 1
     </select>
 
+    <select id="findRefById" resultType="java.lang.Integer">
+        select *
+        from bb_prices_ref
+        where price_id = #{id}
+    </select>
+
     <update id="update">
         update bb_prices
-        set rental     = #{rental,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+        set rental     = #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
             start_date = #{startDate},
             end_date   = #{endDate},
-            wday       = #{wday,typeHandler=com.ace.dao.handler.EnumTypeHandler},
+            wday       = #{wday,typeHandler=com.ace.dao.handler.EnumHandler},
             price      = #{price}
         where id = #{id}
     </update>
+    <!--删除引用-->
+    <update id="deleteRef">
+        delete
+        from bb_prices_ref
+        where price_id = #{id}
+    </update>
 
-    <delete id="destroy">
+    <delete id="delete">
         delete
         from bb_prices
         where id = #{id}

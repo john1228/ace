@@ -3,15 +3,16 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+<head>
     <#include "head.ftl">
+</head>
 <body class="no-skin">
     <#include "top.ftl">
 <div class="main-container" id="main-container">
     <script type="text/javascript">
+        $.ajaxSetup({headers: {'X-CSRF-Token': $('meta[name="_csrf"]').attr('content')}});
         try {
-            ace.settings.check('main-container', 'fixed')
+            ace.settings.check('main-container', 'fixed');
         } catch (e) {
         }
     </script>

@@ -48,7 +48,7 @@ public class AdminUserDetailsService implements UserDetailsService {
                 List<Staff> staffList = new ArrayList<>();
                 for (int i = 1; i <= 10; i++) {
                     Staff staff = new Staff();
-                    staff.setId(i);
+                    staff.setId(Long.valueOf(i));
                     staff.setAccountId("001");
                     staff.setAccountName("001-NAME");
                     staff.setProjectId("001-P-" + i);

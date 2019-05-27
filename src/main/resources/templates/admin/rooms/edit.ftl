@@ -40,7 +40,7 @@
             <div class="widget-main">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="/admin/rooms/${coupon.id}" role="form" class="form-horizontal" method="post">
+                        <form action="/admin/rooms/${room.id}" role="form" class="form-horizontal" method="post">
                             <input type="hidden" name="_method" value="put">
                             <#include "form.ftl">
                         </form>

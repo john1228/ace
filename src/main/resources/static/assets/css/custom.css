@@ -1,3 +1,11 @@
+body {
+    font: 14px/1.3em Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+    background: #2FB1B0;
+}
+
 fieldset.fixed-border {
     border: 1px groove #ddd !important;
     padding: 0 1.4em 1.4em 1.4em !important;
@@ -16,16 +24,29 @@ legend.fixed-border {
 }
 
 .widget-header-custom {
-    background: #009688;
-    color: #ffffff;
+    background: #F3FBFB;
+    color: #37B0AE;
+    vertical-align: middle;
+    line-height: 40px;
+    font-size: 16px;
 }
 
 .widget-header-custom > .widget-title > h1, h2, h3, h4, h5 {
-    color: #ffffff;
+    color: #ffffff !important;
+}
+
+.page-title {
+    margin: 0 0 12px;
+    border-bottom: 1px dotted #E2E2E2;
+    padding-top: 7px;
+}
+
+.page-title > h1, h2, h3, h4, h5 {
+    color: #2FB1B0 !important;
 }
 
 .page-header > h1, h2, h3, h4, h5 {
-    color: #009688;
+    color: #ffffff;
 }
 
 .single {
@@ -44,12 +65,12 @@ legend.fixed-border {
 }
 
 .theme-color {
-    background-color: #009688 !important;
+    background-color: #2FB1B0 !important;
     color: #ffffff;
 }
 
 .table-header {
-    background: #009688;
+    background: #2FB1B0;
 }
 
 .btn-file {
@@ -113,13 +134,13 @@ legend.fixed-border {
 }
 
 .btn, .btn-default, .btn-default.focus, .btn-default:focus, .btn.focus, .btn:focus {
-    background-color: #009688 !important;
-    border-color: #009688 !important;
+    background-color: #2FB1B0 !important;
+    border-color: #2FB1B0 !important;
 }
 
 .btn-default.focus:hover, .btn-default:active:hover, .btn-default:focus:active, .btn-default:focus:hover, .btn-default:hover, .btn.focus:hover, .btn:active:hover, .btn:focus:active, .btn:focus:hover, .btn:hover, .open > .btn-default.dropdown-toggle, .open > .btn-default.dropdown-toggle.focus, .open > .btn-default.dropdown-toggle:active, .open > .btn-default.dropdown-toggle:focus, .open > .btn-default.dropdown-toggle:hover, .open > .btn.dropdown-toggle, .open > .btn.dropdown-toggle.focus, .open > .btn.dropdown-toggle:active, .open > .btn.dropdown-toggle:focus, .open > .btn.dropdown-toggle:hover {
-    background-color: #009688 !important;
-    border-color: #009688 !important;
+    background-color: #2FB1B0 !important;
+    border-color: #2FB1B0 !important;
 }
 
 .dataTables_wrapper .dataTables_info {
@@ -133,4 +154,12 @@ legend.fixed-border {
     padding-top: 5px;
     width: 50%;
     float: right;
+}
+
+td .btn {
+    margin: 1px;
+}
+
+.tags{
+    width: 80% !important;
 }

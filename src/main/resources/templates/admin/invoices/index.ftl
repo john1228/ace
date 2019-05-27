@@ -30,25 +30,22 @@
     <div class="row">
         <#include "search.ftl"/>
         <div class="col-xs-12">
-            <h4 class="header smaller lighter blue">
-                <span>订单列表</span>
-                <a class="btn btn-primary" style="float:right;margin-top: -12px;"
-                   href="/admin/invoices/new?parent=${parent}"><i
-                        class="icon-pencil align-top bigger-125"></i>新增</a>
-            </h4>
+            <div class="table-header padding-2">
+                发票订单
+            </div>
             <div>
                 <table id="orderList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
+                        <th class="center">订单日期</th>
                         <th class="center">订单号</th>
-                        <th class="center">下单日期</th>
-                        <th class="center">下单账户名</th>
+                        <th class="center">会议室</th>
+                        <th class="center">预订人</th>
+                        <th class="center">预订人手机号</th>
+                        <th class="center">使用时间</th>
                         <th class="center">订单金额</th>
-                        <th class="center">优惠券抵用金额</th>
-                        <th class="center">实付金额</th>
-                        <th class="center">订单状态</th>
-                        <th class="center">下单时间</th>
-                        <th class="center">更新时间</th>
+                        <th class="center">支付金额</th>
+                        <th class="center">状态</th>
                         <th class="center">操作</th>
                     </tr>
                     </thead>
@@ -56,18 +53,24 @@
             </div>
             <script type="text/javascript">
                 $(function () {
-                    $('#orderList').DataTable({
+                    $.fn.dataTable.ext.buttons.reload = {
+                        text: 'Reload',
+                        action: function (e, dt) {
+                            dt.ajax.reload();
+                        }
+                    };
+                    var $table = $('#orderList');
+                    $table.DataTable({
                         language: {
                             sProcessing: "处理中...",
                             sLengthMenu: "显示 _MENU_ 项结果",
                             sZeroRecords: "没有匹配结果",
                             sInfo: "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
                             sInfoEmpty: "显示第 0 至 0 项结果，共 0 项",
-                            sInfoFiltered: "(由 _MAX_ 项结果过滤)",
+                            sInfoFiltered: "",
                             sInfoPostFix: "",
-                            sSearch: "搜索:",
                             sUrl: "",
-                            sEmptyTable: "表中数据为空",
+                            sEmptyTable: "暂无数据",
                             sLoadingRecords: "载入中...",
                             sInfoThousands: ",",
                             oPaginate: {
@@ -77,37 +80,74 @@
                                 sLast: "末页"
                             }
                         },
+                        searching: false,
                         processing: true,
                         serverSide: true,
                         autoWidth: false,
                         ordering: false,
                         ajax: {
-                            url: "/admin/orders/dataList",
-                            type: "GET"
+                            url: "/admin/invoices/dataList",
+                            type: "POST",
+                            data: function (data) {
+                                console.log(data);
+                                data.orderNo = $("#orderNo").val();
+                                data.startDate = $("#startDate").val();
+                                data.endDate = $("#endDate").val();
+                                data.mobile = $("#mobile").val()
+                            }
                         },
                         columns: [
-                            {data: "orderNo", className: 'center'},
-                            {data: "accountId", className: 'center'},
-                            {data: "accountName", className: 'center'},
-                            {data: "total", className: 'center'},
-                            {data: "coupon", className: 'center'},
-                            {data: "payAmount", className: 'center'},
-                            {data: "status", className: 'center'},
                             {data: "createdAt", className: 'center'},
-                            {data: "updatedAt", className: 'center'},
+                            {data: "orderNo", className: 'center'},
+                            {data: "roomName", className: 'center'},
+                            {data: "contactName", className: 'center'},
+                            {data: "contactMobile", className: 'center'},
+                            {data: "appointTime", className: 'center'},
+                            {data: "total", className: 'center'},
+                            {data: "payAmount", className: 'center'},
                             {
-                                data: "id",
+                                data: "status",
+                                className: 'center',
                                 render: function (data) {
-                                    return '<div class="hidden-sm hidden-xs btn-group">' +
-                                            '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                            '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                            '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
-                                            '</div>';
-                                },
-                                className: 'center'
+                                    switch (data) {
+                                        case "PENDING":
+                                            return "未开";
+                                        case "APPLYING":
+                                            return "待开";
+                                        case "INVOICED":
+                                            return "已开";
+                                        case "SHIPPED":
+                                            return "已邮寄";
+
+                                    }
+                                }
+                            },
+                            {
+                                data: "status",
+                                className: 'center',
+                                render: function (data, type, row) {
+                                    console.log(data);
+                                    console.log(row.orderNo);
+                                    var _html = '<div class="hidden-sm hidden-xs btn-group">' +
+                                            '<a class="btn btn-xs btn-info" href="/admin/invoices/' + row.orderNo + '">查看</a>';
+                                    switch (data) {
+                                        case "APPLYING":
+                                            _html += '<a class="btn btn-xs btn-info" href="/admin/invoices/' + row.orderNo + '">开票</a>';
+                                            break;
+                                        case "INVOICED":
+                                            _html += '<a class="btn btn-xs btn-info" href="/admin/invoices/' + row.orderNo + '">邮寄</a>';
+                                            break;
+                                    }
+                                    _html += '</div>';
+                                    return _html;
+                                }
                             }
                         ]
-                    });
+                    })
+                    ;
+                    $('#query').on("click", function () {
+                        $table.DataTable().draw(true);
+                    })
                 })
             </script>
         </div>

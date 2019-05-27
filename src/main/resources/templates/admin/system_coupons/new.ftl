@@ -14,7 +14,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/coupons/?parent=${parent}">优惠券管理</a>
+            <a href="/admin/coupons">优惠券管理</a>
         </li>
         <li class="active">优惠券新增</li>
     </ul>

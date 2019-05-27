@@ -1,9 +1,15 @@
 <#import "/spring.ftl" as spring />
 <#import "../formBuilder.ftl" as formBuilder />
+<script src="/assets/js/jquery/dataTables.min.js"></script>
+<script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
+<link href="/assets/css/bootstrap/fileinput.css" media="all" rel="stylesheet" type="text/css">
+<script src="/assets/js/bootstrap/fileinput.js"></script>
+<link href="/assets/css/bootstrap/tags-input.css" media="all" rel="stylesheet" type="text/css">
+<script src="/assets/js/bootstrap/tags-input.js"></script>
+<script src="/assets/js/bootstrap/locales/zh.js"></script>
 <@spring.bind path="room"/>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <input type="hidden" name="staffId" value="${current_operator.getId()}">
-<input type="hidden" name="parent" value="${parent}">
 <div class="row">
     <div class="col-xs-12 col-sm-12 widget-container-col">
         <div class="widget-box">
@@ -20,7 +26,6 @@
                                     <input id="cover" name="coverFile" type="file" required>
                                 </div>
                             </div>
-
                         </div>
                         <script type="text/javascript">
                             $("#cover").fileinput({
@@ -45,7 +50,7 @@
                         <div class="col-sm-2 control-label no-padding-right">场地图片</div>
                         <div class="col-sm-10">
                             <div class="file-loading">
-                                <input id="image" name="imageFiles[]" type="file" multiple>
+                                <input id="image" name="imageFiles" type="file" multiple>
                             </div>
                         </div>
                         <script type="text/javascript">
@@ -163,7 +168,7 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>容纳人数</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "room.quota" "class='col-xs-10 col-sm-9' required"/>
+                            <@spring.formInput "room.quota","class='col-xs-10 col-sm-9' required"/>
                         </div>
                     </div>
                 </div>
@@ -179,6 +184,13 @@
             </div>
             <div class="widget-body padding-6">
                 <div class="widget-main padding-6">
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label no-padding-right"
+                               for="form-field-1"><span style="color: red">*</span>参考价</label>
+                        <div class="col-sm-10 form-radio-group">
+                            <@spring.formInput "room.price" "class='col-xs-10 col-sm-9' required" "number"/>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>出租收费</label>
@@ -303,7 +315,7 @@
                             <label class="col-sm-2 control-label no-padding-right"
                                    for="form-field-1"><span style="color: red">*</span>确认方式</label>
                             <div class="col-sm-10 form-radio-group">
-                                <@spring.formRadioButtons "room.confirmation",confirmations,""/>
+                                <@spring.formRadioButtons "room.cfm",confirmations,""/>
                             </div>
                         </div>
                     </div>
@@ -333,6 +345,13 @@
                 <div class="widget-main padding-6">
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
+                               for="form-field-1"><span style="color: red">*</span>免费服务</label>
+                        <div class="col-sm-10">
+                            <@spring.formInput "room.freeService","class='col-xs-12 col-sm-12' data-role='tagsinput' "/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>会场简介</label>
                         <div class="col-sm-10">
                             <@spring.formTextarea "room.resume","class='col-xs-10 col-sm-9'"/>
@@ -342,11 +361,68 @@
                             </script>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 control-label no-padding-right"
+                               for="form-field-1"><span style="color: red">*</span>收费服务</label>
+                        <div class="col-sm-10">
+                            <table id="supportList" class="table table-striped table-bordered" cellspacing="0"
+                                   width="100%">
+                                <thead>
+                                <tr>
+                                    <td class="center">
+                                        <input type="checkbox" class="checkAll"/>
+                                        <script>
+                                            $(function () {
+                                                $(".checkAll").change(function () {
+                                                    $(".spItem").prop('checked', this.checked);
+                                                })
+                                            })
+                                        </script>
+                                    </td>
+                                    <th class="center">名称</th>
+                                    <th class="center">图片</th>
+                                    <th class="center">备注</th>
+                                    <th class="center">价格</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <#list supports as support>
+                                <tr>
+                                    <td class="center">
+                                        <input type="checkbox" name="supportList[${support_index}].supportId"
+                                               value="${support.id}"
+                                               class="spItem"/>
+                                    </td>
+                                    <td class="center">${support.name}</td>
+                                    <td class="center">${support.cover}</td>
+                                    <td class="center">
+                                        <input name="supportList[${support_index}].remark"
+                                               class="col-xs-12 col-sm-12">
+                                    </td>
+                                    <td class="center">
+                                        <input name="supportList[${support_index}].price"
+                                               class="col-xs-12 col-sm-12">
+                                    </td>
+                                </tr>
+                                </#list>
+                                </tbody>
+                            </table>
+                            <script>
+                                $(function () {
+                                    $('#supportList').DataTable({
+                                        searching: false,
+                                        lengthChange: false
+                                    });
+                                })
+                            </script>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="row clearfix form-actions">
     <div class="col-md-offset-3 col-md-9">
         <button class="btn btn-info" type="submit">
