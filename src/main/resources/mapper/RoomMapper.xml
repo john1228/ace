@@ -90,10 +90,10 @@
             AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
         </if>
         <if test="criteria.quotaFrom!=null">
-            AND bb_rooms.quota >= #{criteria.layerAreaFrom}
+            AND bb_rooms.quota >= #{criteria.quotaFrom}
         </if>
         <if test="criteria.quotaTo!=null">
-            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+            AND #{criteria.quotaTo} >= bb_rooms.quota
         </if>
         ORDER BY id DESC
         <if test="length!=0">

@@ -1,8 +1,7 @@
-DROP TABLE IF EXISTS `bb_prices`;
-CREATE TABLE bb_prices (
+DROP TABLE IF EXISTS `bb_room_prices`;
+CREATE TABLE bb_room_prices (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   staff_id     bigint(11)          NOT NULL COMMENT '管理员工',
-  room_name    varchar(4096)       NOT NULL COMMENT '会议室',
   rental       tinyint(1)          DEFAULT 0 COMMENT '出租方式',
   start_date   date                COMMENT '开始日期',
   end_date     date                COMMENT '结束日期',
@@ -17,10 +16,10 @@ CREATE TABLE bb_prices (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-CREATE INDEX bb_prices_staff_id on bb_prices (staff_id);
+CREATE INDEX bb_room_prices_staff_id on bb_room_prices (staff_id);
 
-DROP TABLE IF EXISTS `bb_prices_ref`;
-CREATE TABLE bb_prices_ref (
+DROP TABLE IF EXISTS `bb_room_prices_ref`;
+CREATE TABLE bb_room_prices_ref (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   price_id     bigint(11)          NOT NULL COMMENT '关联价格编号',
   room_id      bigint(11)          NOT NULL COMMENT '关联会议室编号',
@@ -28,5 +27,5 @@ CREATE TABLE bb_prices_ref (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-CREATE INDEX bb_prices_ref_price_id on bb_prices_ref (price_id);
-CREATE INDEX bb_prices_ref_room_id on bb_prices_ref (room_id);
+CREATE INDEX bb_room_prices_ref_price_id on bb_room_prices_ref (price_id);
+CREATE INDEX bb_room_prices_ref_room_id on bb_room_prices_ref (room_id);

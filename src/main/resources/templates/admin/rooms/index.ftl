@@ -142,8 +142,8 @@
                                         data: "id",
                                         render: function (data) {
                                             return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '"><i class="ace-icon fa fa-pencil bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning" data-method="delete"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
+                                                    '<a class="btn btn-xs btn-warning" data-method="delete">删除</a>';
                                         },
                                         className: 'center'
                                     }

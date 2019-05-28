@@ -24,7 +24,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-exchange"></i>
                                 </span>
-                                <input type="text" class="input-sm form-control" name="layerAreaTo">
+                                <input type="text" class="input-sm form-control" id="layerAreaTo">
                             </div>
                         </div>
                     </div>
@@ -32,11 +32,11 @@
                         <label class="col-sm-2 no-padding-right text-right">名额</label>
                         <div class="col-sm-10">
                             <div class="input-group">
-                                <input type="text" class="input-sm form-control" name="quotaFrom">
+                                <input type="text" class="input-sm form-control" id="quotaFrom">
                                 <span class="input-group-addon">
                                     <i class="fa fa-exchange"></i>
                                 </span>
-                                <input type="text" class="input-sm form-control" name="quotaTo">
+                                <input type="text" class="input-sm form-control" id="quotaTo">
                             </div>
                         </div>
                     </div>

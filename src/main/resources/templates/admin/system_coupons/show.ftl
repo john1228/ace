@@ -208,9 +208,9 @@
                                                         {
                                                             data: "id",
                                                             render: function (data) {
-                                                                return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
-                                                                        '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                                        '<a class="btn btn-xs btn-warning" href="javascript:void(0)"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
+                                                                return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '">查看</a>' +
+                                                                        '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit">编辑</a>' +
+                                                                        '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>';
                                                             },
                                                             className: 'center'
                                                         }

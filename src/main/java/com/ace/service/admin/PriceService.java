@@ -13,8 +13,6 @@ public interface PriceService {
 
     DataTable<Price> dataTable(Staff staff, int start, int length, String keyword);
 
-    List<Price> priceList(List<Room> rooms, Date date);
-
     Price findById(Long id);
 
     void create(Price price);

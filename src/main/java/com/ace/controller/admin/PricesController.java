@@ -82,7 +82,6 @@ public class PricesController extends BaseController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Price price = priceService.findById(id);
-        logger.info(String.valueOf(price.getWday().get(0)));
         model.addAttribute("price", price);
         return viewPath + "show";
     }

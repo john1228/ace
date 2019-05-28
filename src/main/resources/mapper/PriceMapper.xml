@@ -4,8 +4,8 @@
     <resultMap type="com.ace.entity.Price" id="priceMap">
         <id column="id" property="id"/>
         <result column="staff_id" property="staffId"/>
-        <result column="room_id" property="roomId"/>
-        <result column="room_name" property="roomName"/>
+        <result column="room_id" property="roomId" typeHandler="com.ace.dao.handler.StringListHandler"/>
+        <result column="room_name" property="roomName" typeHandler="com.ace.dao.handler.StringListHandler"/>
         <result column="rental" property="rental"/>
         <result column="start_date" property="startDate"/>
         <result column="end_date" property="endDate"/>
@@ -21,48 +21,47 @@
         <result column="room_name" property="name"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
-        SELECT count(1) AS recordsTotal FROM bb_prices LEFT JOIN bb_staffs ON bb_prices.staff_id = bb_staffs.id
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and price LIKE "%${keyword}%"
-            </if>
-        </where>
+        SELECT count(1) AS recordsTotal
+        FROM bb_room_prices
+                 LEFT JOIN bb_staffs ON bb_room_prices.staff_id = bb_staffs.id
+        WHERE bb_staffs.project_id = #{staff.projectId}
     </select>
 
     <select id="dataList" resultMap="priceMap">
-        select * from bb_prices LEFT JOIN bb_staffs ON bb_prices.staff_id = bb_staffs.id
-        <where>
-            <if test="keyword != null and keyword != ''">
-                and price LIKE "%${keyword}%"
-            </if>
-        </where>
-        order by bb_prices.id desc LIMIT #{start},#{length}
+        SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.name) AS room_name
+        FROM bb_room_prices
+                 LEFT JOIN bb_staffs ON bb_room_prices.staff_id = bb_staffs.id
+                 INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
+                 INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
+        WHERE bb_staffs.project_id = #{staff.projectId}
+        GROUP BY bb_room_prices.id
+        ORDER BY bb_room_prices.id DESC
+        LIMIT #{start},#{length}
     </select>
 
     <!--获取日期有效的价格-->
     <select id="priceList" resultMap="priceMap">
-        select * FROM bb_prices LEFT JOIN bb_prices_ref ON bb_prices.id = bb_prices_ref.price_id
-        WHERE bb_prices_ref.room_id in
+        select * FROM bb_room_prices LEFT JOIN bb_room_prices_ref ON bb_room_prices.id = bb_room_prices_ref.price_id
+        WHERE bb_room_prices_ref.room_id in
         <foreach collection="rooms" item="item" index="index"
                  open="(" separator="," close=")">
             #{item.id}
         </foreach>
-        AND #{date} BETWEEN bb_prices.start_date AND bb_prices.end_date
+        AND #{date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
     </select>
     <!--获取日期有效的价格-->
     <select id="prices" resultMap="priceMap">
         select *
-        FROM bb_prices
-                 LEFT JOIN bb_prices_ref ON bb_prices.id = bb_prices_ref.price_id
-        WHERE bb_prices_ref.room_id = #{room}
-          AND #{date} BETWEEN bb_prices.start_date AND bb_prices.end_date
+        FROM bb_room_prices
+                 LEFT JOIN bb_room_prices_ref ON bb_room_prices.id = bb_room_prices_ref.price_id
+        WHERE bb_room_prices_ref.room_id = #{room}
+          AND #{date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
     </select>
 
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_prices (staff_id, room_name, rental, start_date, end_date, start_time, end_time, wday, price)
+        insert into bb_room_prices (staff_id, rental, start_date, end_date, start_time, end_time, wday, price)
         values (#{staffId},
-                #{roomName,typeHandler=com.ace.dao.handler.StringListHandler},
                 #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
                 #{startDate},
                 #{endDate},
@@ -72,26 +71,30 @@
                 #{price})
     </insert>
     <insert id="createRef" useGeneratedKeys="true">
-        insert into bb_prices_ref (price_id,room_id) values
+        insert into bb_room_prices_ref (price_id,room_id) values
         <foreach collection="rooms" item="item" index="index" separator=",">
             (#{priceId},#{item})
         </foreach>
     </insert>
     <select id="findById" resultMap="priceMap">
-        select *
-        from bb_prices
-        where id = #{id}
+        SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.id) AS room_id, GROUP_CONCAT(bb_rooms.name) AS room_name
+        FROM bb_room_prices
+                 LEFT JOIN bb_staffs ON bb_room_prices.staff_id = bb_staffs.id
+                 INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
+                 INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
+        WHERE bb_room_prices.id = #{id}
+        GROUP BY bb_room_prices.id
         limit 1
     </select>
 
     <select id="findRefById" resultType="java.lang.Integer">
         select *
-        from bb_prices_ref
+        from bb_room_prices_ref
         where price_id = #{id}
     </select>
 
     <update id="update">
-        update bb_prices
+        update bb_room_prices
         set rental     = #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
             start_date = #{startDate},
             end_date   = #{endDate},
@@ -102,13 +105,13 @@
     <!--删除引用-->
     <update id="deleteRef">
         delete
-        from bb_prices_ref
+        from bb_room_prices_ref
         where price_id = #{id}
     </update>
 
     <delete id="delete">
         delete
-        from bb_prices
+        from bb_room_prices
         where id = #{id}
     </delete>
 </mapper>

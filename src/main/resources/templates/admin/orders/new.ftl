@@ -1,6 +1,10 @@
 <#import "../layout/application.ftl" as layout>
 <#import "/spring.ftl" as spring />
 <@layout.myLayout>
+<script src="/assets/js/jquery/dataTables.min.js"></script>
+<script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
+<script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
+<link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {

@@ -155,9 +155,9 @@
                                         data: "id",
                                         render: function (data) {
                                             return '<div class="hidden-sm hidden-xs btn-group">' +
-                                                    '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '"><i class="ace-icon fa fa-eye bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/prices/' + data + '/edit"><i class="ace-icon fa fa-edit bigger-120"></i></a>' +
-                                                    '<a class="btn btn-xs btn-warning rest"　href="/admin/prices/' + data + '" data-method="DELETE"><i class="ace-icon fa fa-trash bigger-120"></i></a>' +
+                                                    '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '">查看</a>' +
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/prices/' + data + '/edit">编辑</a>' +
+                                                    '<a class="btn btn-xs btn-warning rest"　href="/admin/prices/' + data + '" data-method="DELETE">删除</a>' +
                                                     '</div>';
                                         },
                                         className: 'center'

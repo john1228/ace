@@ -30,15 +30,8 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public List<Price> priceList(List<Room> rooms, Date date) {
-        java.sql.Date date1 = java.sql.Date.valueOf("2019-04-22");
-        return priceMapper.priceList(rooms, date1);
-    }
-
-    @Override
     public Price findById(Long id) {
         Price price = priceMapper.findById(id);
-        price.setRoomId(priceMapper.findRefById(id));
         return price;
     }
 

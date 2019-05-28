@@ -437,7 +437,7 @@
                                     data: "id",
                                     className: 'center',
                                     render: function (data) {
-                                        return '<a class="btn btn-xs btn-warning rest"　href="/admin/rooms/${room.id}/closed/' + data + '" data-method="DELETE"><i class="ace-icon fa fa-trash bigger-120"></i></a>';
+                                        return '<a class="btn btn-xs btn-warning rest"　href="/admin/rooms/${room.id}/closed/' + data + '" data-method="DELETE">删除</a>';
                                     }
                                 }
                             ]
