@@ -4,6 +4,9 @@ import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.RoomCriteria;
+import com.ace.controller.api.concerns.Result;
+import com.ace.controller.api.concerns.Success;
+import com.ace.entity.RoomSupport;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.RoomCFM;
 import com.ace.entity.concern.enums.RoomPublish;
@@ -151,5 +154,13 @@ public class RoomsController extends BaseController {
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         return viewPath + "index";
+    }
+
+
+    @ResponseBody
+    @JsonView(AdminView.Table.class)
+    @PostMapping("/supportList")
+    public Result supports(@RequestParam("roomId") Long roomId) {
+        return new Success(roomService.roomSupports(roomId));
     }
 }

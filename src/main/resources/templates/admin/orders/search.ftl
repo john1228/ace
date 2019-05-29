@@ -54,30 +54,11 @@
                 <div class="form-group row col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">&nbsp;</label>
                     <div class="col-sm-10">
-                        <button class="btn btn-info" type="submit" id="queryBtn">
+                        <button class="btn btn-info" type="submit" id="query">
                             <i class="icon-ok bigger-110"></i>
                             查询
                         </button>
                     </div>
-                    <script type="text/javascript">
-                        $("#queryBtn").on("click", function () {
-                            $.post("/api/invoices", {
-                                orderNo: 1,
-                                type: "VATI",
-                                vati: {
-                                    type: "公司",
-                                    title: "测试",
-                                    taxpayer: "123"
-                                },
-                                method: "EMAIL",
-                                email: {
-                                    address: "111"
-                                }
-                            }, function (data) {
-                                console.log(data)
-                            })
-                        })
-                    </script>
                 </div>
             </div>
         </div>

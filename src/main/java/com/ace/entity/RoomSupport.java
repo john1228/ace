@@ -1,5 +1,6 @@
 package com.ace.entity;
 
+import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.api.concerns.ApiView;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author john
@@ -23,7 +26,7 @@ public class RoomSupport extends Support {
     private Long roomId;
     private Long supportId;
     private String remark;
-    @JsonView({ApiView.Base.class, ApiView.Detail.class})
+    @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private BigDecimal price;
 
     public void copyTo(OrderSupport orderSupport) {

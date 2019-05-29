@@ -15,7 +15,7 @@ public interface OrderService {
 
     Order findById(String orderNo);
 
-    void create(Order order);
+    void create(Staff staff, Order order);
 
     void update(String orderNo, OrderStatus status);
 

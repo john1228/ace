@@ -136,20 +136,31 @@
                                         $(function () {
                                             var $support = $('#supportList');
                                             $support.DataTable({
+                                                paging: false,
+                                                searching: false,
+                                                processing: true,
+                                                serverSide: true,
+                                                autoWidth: false,
+                                                ordering: false,
+                                                bInfo: false,
                                                 ajax: {
                                                     url: "/admin/rooms/supportList",
                                                     type: "POST",
                                                     data: function (data) {
-                                                        data.orderId = $("#roomId").val();
+                                                        data.roomId = $("#roomId").val();
                                                     }
                                                 },
                                                 columns: [
                                                     {data: "name", className: 'center'},
                                                     {data: "cover", className: 'center'},
-                                                    {data: "price", className: 'price'},
+                                                    {data: "price", className: 'center'},
+                                                    {data: "unit", className: 'center'},
                                                     {data: "id", className: 'center'}
                                                 ]
                                             });
+                                            $("#roomId").on("change", function () {
+                                                $support.DataTable().draw(true);
+                                            })
                                         })
                                     </script>
                                 </div>

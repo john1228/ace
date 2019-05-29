@@ -66,4 +66,9 @@ public class RoomServiceImpl implements RoomService {
         roomMapper.destroy(id);
     }
 
+    @Override
+    public List<RoomSupport> roomSupports(Long roomId) {
+        return roomSupportMapper.supportList(roomId);
+    }
+
 }

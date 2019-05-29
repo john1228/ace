@@ -85,7 +85,7 @@
                                 <div class="attribute-table-label">状态</div>
                                 <div class="attribute-table-value">
                                                 <span>
-                                                    ${order.status!}
+                                                    ${order.status.getName()}
                                                 </span>
                                 </div>
                             </div>

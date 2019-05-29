@@ -2,6 +2,7 @@ package com.ace.service.admin;
 
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.RoomCriteria;
+import com.ace.entity.RoomSupport;
 import com.ace.entity.Staff;
 import com.ace.entity.Room;
 
@@ -20,4 +21,6 @@ public interface RoomService {
     void update(Staff staff, Room room);
 
     void delete(Staff staff, Long id);
+
+    List<RoomSupport> roomSupports(Long roomId);
 }

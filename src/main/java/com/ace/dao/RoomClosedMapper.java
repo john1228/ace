@@ -1,8 +1,10 @@
 package com.ace.dao;
 
+import com.ace.entity.Room;
 import com.ace.entity.RoomClosed;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -17,4 +19,6 @@ public interface RoomClosedMapper {
     void create(RoomClosed roomClosed);
 
     void delete(Long id);
+
+    List<RoomClosed> closedList(@Param("rooms") List<Room> rooms, @Param("date") Date date);
 }

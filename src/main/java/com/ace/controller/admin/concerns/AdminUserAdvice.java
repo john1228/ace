@@ -43,6 +43,6 @@ public class AdminUserAdvice {
 
     @ModelAttribute("image")
     public String getImgHost() {
-        return Aliyun.Instance.endPoint;
+        return Aliyun.Instance.imgHost;
     }
 }

@@ -21,6 +21,8 @@ public class Staff implements Serializable {
     private String orgName;
     private String empId;
     private String empName;
+    //保存用户操作的错误信息
+    private StringBuilder errMsg;
 
     @Override
     public String toString() {

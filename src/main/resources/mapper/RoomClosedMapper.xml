@@ -22,6 +22,15 @@
         ORDER BY start_date DESC
     </select>
     <!--客户端查询会议室，包含自有和开放的-->
+    <select id="closedList" resultMap="rcMap">
+        select * FROM bb_room_closed
+        WHERE room_id in
+        <foreach collection="rooms" item="item" index="index"
+                 open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+        AND #{date} BETWEEN start_date AND end_date
+    </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
         insert into bb_room_closed (room_id, start_date, end_date, start_time, end_time, remark)

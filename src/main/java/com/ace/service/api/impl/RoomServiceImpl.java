@@ -2,13 +2,11 @@ package com.ace.service.api.impl;
 
 import com.ace.controller.api.concerns.Query;
 import com.ace.dao.PriceMapper;
+import com.ace.dao.RoomClosedMapper;
 import com.ace.dao.RoomMapper;
-import com.ace.entity.Account;
+import com.ace.entity.*;
 import com.ace.entity.concern.Period;
 import com.ace.entity.concern.enums.Week;
-import com.ace.entity.Price;
-import com.ace.entity.Room;
-import com.ace.entity.Schedule;
 import com.ace.service.api.RoomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,9 +24,11 @@ import java.util.stream.Collectors;
 public class RoomServiceImpl extends BaseService implements RoomService {
     Logger logger = LoggerFactory.getLogger(RoomServiceImpl.class);
     @Resource
-    private RoomMapper roomMapper;
+    private RoomMapper rMapper;
     @Resource
-    private PriceMapper priceMapper;
+    private PriceMapper pMapper;
+    @Resource
+    private RoomClosedMapper rcMapper;
     @Resource
     private RedisTemplate<String, Period> redisTemplate;
 
@@ -37,27 +38,60 @@ public class RoomServiceImpl extends BaseService implements RoomService {
         Date date = query.getDate();
         SimpleDateFormat df = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Week week = Week.valueOf(df.format(query.getDate()).toUpperCase());
-        List<Room> roomList = roomMapper.query(account, query);
-        List<Price> priceList = priceMapper.priceList(roomList, date);
+        List<Room> roomList = rMapper.query(account, query);
+        List<Price> priceList = pMapper.priceList(roomList, date);
+        List<RoomClosed> closedList = rcMapper.closedList(roomList, date);
         for (Room room : roomList) {
+            priceList.stream().filter(item -> item.getWday().contains(week)).collect(Collectors.toSet()).forEach(item -> room.getOpen().add(new Period(item.getStartTime(), item.getEndTime())));
+            List<Period> openList = new ArrayList<>();
+
+            room.getOpen().forEach(period -> {
+                Optional<RoomClosed> closed = closedList.stream().filter(item -> {
+                    Timestamp pStart = Timestamp.valueOf(date.toString() + " " + period.getStartTime() + ":00");
+                    Timestamp pEnd = Timestamp.valueOf(date.toString() + " " + period.getEndTime() + ":00");
+
+                    Timestamp start = Timestamp.valueOf(date.toString() + " " + item.getStartTime() + ":00");
+                    Timestamp end = Timestamp.valueOf(date.toString() + " " + item.getEndTime() + ":00");
+                    return start.compareTo(pEnd) < 0 && end.compareTo(pStart) > 0;
+                }).findFirst();
+                if (closed.isPresent()) {
+                    //处理特殊日期关闭
+                    RoomClosed roomClosed = closed.get();
+                    Timestamp pStart = Timestamp.valueOf(date.toString() + " " + period.getStartTime() + ":00");
+                    Timestamp pEnd = Timestamp.valueOf(date.toString() + " " + period.getEndTime() + ":00");
+
+                    Timestamp cStart = Timestamp.valueOf(date.toString() + " " + roomClosed.getStartTime() + ":00");
+                    Timestamp cEnd = Timestamp.valueOf(date.toString() + " " + roomClosed.getEndTime() + ":00");
+                    if (cEnd.compareTo(pStart) < 0 || cStart.compareTo(pEnd) > 0) {
+                        openList.add(period);
+                    } else {
+                        if (cStart.compareTo(pStart) > 0) {
+                            if (cEnd.compareTo(pEnd) > 0) {
+                                openList.add(new Period(period.getStartTime(), roomClosed.getStartTime()));
+                            } else {
+                                openList.add(new Period(period.getStartTime(), roomClosed.getStartTime()));
+                                openList.add(new Period(roomClosed.getEndTime(), period.getEndTime()));
+                            }
+                        } else {
+                            if (cEnd.compareTo(pEnd) < 0) {
+                                openList.add(new Period(roomClosed.getEndTime(), period.getEndTime()));
+                            }
+                        }
+                    }
+
+                } else {
+                    openList.add(period);
+                }
+            });
             Set<Period> appointed = redisTemplate.opsForSet().members("ROOM::" + room.getId() + "::APPOINTED::" + date.toString());
             room.getAppointed().addAll(appointed);
-            Set<Price> prices = priceList.stream().filter(item ->
-                    item.getWday().contains(week)
-            ).collect(Collectors.toSet());
-            List<Period> opens = new ArrayList<>();
-            for (Price price : prices) {
-                opens.add(new Period(price.getStartTime(), price.getEndTime()));
-            }
-            room.getOpen().addAll(opens);
         }
-
         return roomList;
     }
 
     @Override
     public Room show(Long id) {
-        return roomMapper.findById(id);
+        return rMapper.findById(id);
     }
 
     @Override
@@ -70,7 +104,7 @@ public class RoomServiceImpl extends BaseService implements RoomService {
 
             SimpleDateFormat df = new SimpleDateFormat("EEEE", Locale.ENGLISH);
             Week week = Week.valueOf(df.format(date).toUpperCase());
-            Set<Price> prices = priceMapper.prices(room, date).stream().filter(item ->
+            Set<Price> prices = pMapper.prices(room, date).stream().filter(item ->
                     item.getWday().contains(week)
             ).collect(Collectors.toSet());
             List<Period> opens = new ArrayList<>();

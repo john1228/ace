@@ -7,6 +7,8 @@ import com.ace.entity.concern.enums.OrderStatus;
 import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.OrderService;
+import com.ace.service.concerns.OrderTools;
+import com.ace.service.concerns.RoomTools;
 import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -32,19 +35,24 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Resource
     private RoomSupportMapper rsMapper;
     @Resource
+    private RoomClosedMapper rcMapper;
+    @Resource
     private MemberCouponMapper mcMapper;
     @Resource
     private PriceMapper priceMapper;
-
     @Resource
     private OrderMapper orderMapper;
     @Resource
     private AppointmentMapper appointmentMapper;
     @Resource
     private OrderSupportMapper orderSupportMapper;
-
     @Resource
     private RedisTemplate<String, Period> redisTemplate;
+    @Resource
+    private OrderTools orderTools;
+    @Resource
+    private RoomTools roomTools;
+
 
     @Override
     public List<Order> customerOrder(Account account, OrderStatus status, int page) {
@@ -70,25 +78,16 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
             Date appointedDate = new Date(appointment.getStartTime().getTime());
             Week week = Week.valueOf(wf.format(appointedDate).toUpperCase());
+            //校验时间是否有效
+            List<RoomClosed> closedList = rcMapper.closedList(Arrays.asList(new Room[]{room}), appointedDate);
+            if (roomTools.check(closedList, appointment.getStartTime(), appointment.getEndTime())) {
+                account.setErrMsg("该时间段不开放预约");
+                return false;
+            }
+
             //价格计算
             List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
-            Optional<Price> optional = prices.stream().filter(item -> {
-                if (item.getWday().contains(week)) {
-                    Timestamp start = Timestamp.valueOf(appointedDate.toString() + " " + item.getStartTime() + ":00");
-                    Timestamp end = Timestamp.valueOf(appointedDate.toString() + " " + item.getEndTime() + ":00");
-                    switch (room.getRental()) {
-                        case HOUR:
-                            return start.compareTo(appointment.getStartTime()) <= 0 && end.compareTo(appointment.getEndTime()) >= 0;
-                        case PERIOD:
-                            return start.equals(appointment.getStartTime()) && end.equals(appointment.getEndTime());
-                        default:
-                            return false;
-                    }
-                } else {
-                    return false;
-                }
-
-            }).findFirst();
+            Optional<Price> optional = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
             if (optional.isPresent()) {
                 Price price = optional.get();
                 //计算总价
@@ -123,40 +122,36 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 }
                 //计算服务费用
                 List<RoomSupport> roomSupports = rsMapper.supportList(room.getId());
-                appointment.getService().forEach(orderSupport -> {
-                    Optional<RoomSupport> found = roomSupports.stream().filter(roomSupport -> roomSupport.getId() == orderSupport.getSupportId()).findFirst();
-                    if (found.isPresent()) {
-                        RoomSupport roomSupport = found.get();
-                        roomSupport.copyTo(orderSupport);
-                        order.setTotal(order.getTotal().add(roomSupport.getPrice().multiply(new BigDecimal(orderSupport.getAmount()))));
-                    } else {
-                        account.setErrMsg("无效的服务");
-                    }
-                });
-                if (Strings.isBlank(account.getErrMsg())) {
-                    order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
-                    if (order.getPayAmount().compareTo(new BigDecimal(0)) == -1) {
-                        order.setPayAmount(new BigDecimal(0));
-                        order.setStatus(OrderStatus.PAID);
-                    }
-                    orderMapper.create(order);
-                    //创建预约
-                    appointment.setOrderId(order.getId());
-                    appointmentMapper.create(appointment);
-                    //创建服务
-                    if (appointment.getService().size() > 0) {
-                        appointment.getService().forEach(service -> service.setOrderId(order.getId()));
-                        orderSupportMapper.create(appointment.getService());
-                    }
-                    //缓存预约时间
-                    redisTemplate.opsForSet().add("ROOM::" + appointment.getRoomId() + "::APPOINTED::" + appointedDate.toString(), new Period(
-                            hf.format(appointment.getStartTime()),
-                            hf.format(appointment.getEndTime())
-                    ));
-                    return true;
-                } else {
+                StringBuilder errMsg = new StringBuilder();
+                BigDecimal supportFee = orderTools.cacl(appointment.getService(), roomSupports, errMsg);
+                if (errMsg.length() != 0) {
+                    account.setErrMsg(errMsg.toString());
                     return false;
                 }
+                order.setTotal(order.getTotal().add(supportFee));
+                order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
+
+                if (order.getPayAmount().compareTo(new BigDecimal(0)) == -1) {
+                    order.setPayAmount(new BigDecimal(0));
+                    order.setStatus(OrderStatus.PAID);
+                }
+
+
+                orderMapper.create(order);
+                //创建预约
+                appointment.setOrderId(order.getId());
+                appointmentMapper.create(appointment);
+                //创建服务
+                if (appointment.getService().size() > 0) {
+                    appointment.getService().forEach(service -> service.setOrderId(order.getId()));
+                    orderSupportMapper.create(appointment.getService());
+                }
+                //缓存预约时间
+                redisTemplate.opsForSet().add("ROOM::" + appointment.getRoomId() + "::APPOINTED::" + appointedDate.toString(), new Period(
+                        hf.format(appointment.getStartTime()),
+                        hf.format(appointment.getEndTime())
+                ));
+                return true;
             } else {
                 account.setErrMsg("该时间段未开放预约");
                 return false;

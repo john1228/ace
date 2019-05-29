@@ -44,12 +44,6 @@
                                    width="100%">
                                 <thead>
                                 <tr>
-                                    <th class="center">
-                                        <label>
-                                            <input type="checkbox" class="ace" onclick="checkAll(this)"/>
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </th>
                                     <th class="center">编号</th>
                                     <th class="center">名字</th>
                                     <th class="center">图片</th>
@@ -103,23 +97,13 @@
                                     }
                                 ],
                                 columns: [
-                                    {
-                                        data: "id",
-                                        render: function (data) {
-                                            return '<label>' +
-                                                    '<input type="checkbox" class="ace" name="checks[]" value="' + data + '"  />' +
-                                                    '<span class="lbl"></span>' +
-                                                    '</label>';
-                                        },
-                                        className: 'center'
-                                    },
                                     {data: "id", className: 'center'},
                                     {data: "name", className: 'center'},
                                     {
                                         data: "cover",
                                         className: 'center',
                                         render: function (data) {
-                                            return '<img src="${image}/' + data + '"/>';
+                                            return '<img class="table" src="${image}' + data + '"/>';
                                         }
                                     },
                                     {data: "unit", className: 'center'},

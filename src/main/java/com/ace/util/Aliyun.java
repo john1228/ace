@@ -17,10 +17,11 @@ import java.util.UUID;
 public enum Aliyun {
     Instance;
     private OSS client;
-    private final String bucket = "aidondtest";
+    private final String bucket = "bb-platform";
     public final String endPoint = "http://oss-cn-hangzhou.aliyuncs.com";
-    private final String accessKey = "LTAI6v3bIlps307n";
-    private final String secretKey = "TB84UOeBHD2IwJJXy7Cw0t3KXPhDJP";
+    public final String imgHost = "https://bb-platform.oss-cn-hangzhou.aliyuncs.com/";
+    private final String accessKey = "LTAIbq6LWRQxDB88";
+    private final String secretKey = "QNdPhGUuSNGhV2pDFcPu9L3pBg8aPY";
 
     Aliyun() {
         client = new OSSClientBuilder().build(endPoint, accessKey, secretKey);
@@ -37,6 +38,10 @@ public enum Aliyun {
             client.createBucket(createBucketRequest);
         }
         client.putObject(new PutObjectRequest(bucket, filePath + fileName + "." + extension, file.getInputStream()));
-        return bucket + "/" + filePath + fileName + "." + extension;
+        return filePath + fileName + "." + extension;
+    }
+
+    public static String scale(String imgPath, int h, int w) {
+        return String.format("%s?x-oss-process=image/resize,m_fill,h_%d,w_%d", imgPath, h, w);
     }
 }

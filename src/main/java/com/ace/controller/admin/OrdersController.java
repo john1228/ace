@@ -52,21 +52,18 @@ public class OrdersController extends BaseController {
     }
 
     @GetMapping("/new")
-    public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-        model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderStatus.class));
-        model.addAttribute("rooms", roomService.roomList(staff));
+    public String add(Model model) {
         model.addAttribute("order", new Order());
         return viewPath + "new";
     }
 
 
     @PostMapping(value = {"", "/"})
-    public String create(@Valid Order order, BindingResult result, Model model) {
-        if (result.hasErrors()) {
+    public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Order order, Model model) {
+        orderService.create(staff, order);
+        if (staff.getErrMsg().length() != 0) {
             return viewPath + "new";
         } else {
-            orderService.create(order);
-            logger.info("创建记录");
             return "redirect:" + viewPath + order.getOrderNo();
         }
     }
@@ -100,5 +97,11 @@ public class OrdersController extends BaseController {
     public String delete(@PathVariable("id") String id) {
         orderService.delete(id);
         return "redirect:" + viewPath;
+    }
+
+    @ModelAttribute("a")
+    public void globalAttribute(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+        model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderStatus.class));
+        model.addAttribute("rooms", roomService.roomList(staff));
     }
 }
