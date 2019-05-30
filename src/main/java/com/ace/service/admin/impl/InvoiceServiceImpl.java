@@ -44,7 +44,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void create(String orderNo, Invoice invoice) {
         Order order = orderMapper.findById(orderNo);
-        if (order.getStatus() == OrderStatus.PAID || true) {
+        if (order.getStatus() == OrderStatus.PAIDANDCONFIRM || true) {
             invoice.setOrderId(order.getId());
             invoiceMapper.create(invoice);
         }

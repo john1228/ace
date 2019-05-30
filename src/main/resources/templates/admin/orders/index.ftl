@@ -127,10 +127,14 @@
                                                         switch (data) {
                                                             case "CANCELED":
                                                                 return "已取消";
-                                                            case "PENDING":
-                                                                return "待付款";
-                                                            case "PAID":
-                                                                return "已付款";
+                                                            case "UNPAID2CONFIRM":
+                                                                return "未付款未确认";
+                                                            case "CONFIRM2PAID":
+                                                                return "已确认未付款";
+                                                            case "PAID2CONFIRM":
+                                                                return "已付款未确认";
+                                                            case "PAIDANDCONFIRM":
+                                                                return "已付款已确认";
                                                             case "REFUNDED":
                                                                 return "已退款";
 

@@ -30,7 +30,7 @@ public class WxPayClient {
     @NonNull
     private String gateway;
     @NonNull
-    private String appId;
+    private String appId = "wx65004b49fd9e9a2d";
     @NonNull
     private String mchId;
     @NonNull

@@ -36,7 +36,6 @@ public class ApiInterceptor implements HandlerInterceptor {
             if (annotation == null) {
                 return true;
             } else {
-
                 Account account = new Account();
                 account.setAccountId("001");
                 account.setAccountName("001-NAME");
@@ -54,7 +53,7 @@ public class ApiInterceptor implements HandlerInterceptor {
                     staff.setEmpName("001-EM-" + i);
                     staffList.add(staff);
                 }
-                account.setStaffList(staffList);
+                account.setEmployee(staffList);
 
                 request.setAttribute("ACCOUNT", account);
                 logger.info(request.getAttribute("ACCOUNT").getClass().getName());

@@ -174,8 +174,8 @@
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_orders (account_id, account_name, total, coupon, pay_amount, remark, status)
-        values (#{accountId}, #{accountName}, #{total}, #{coupon}, #{payAmount}, #{remark}, #{status})
+        insert into bb_orders (account_id, account_name, total, coupon, pay_amount, status)
+        values (#{accountId}, #{accountName}, #{total}, #{coupon}, #{payAmount}, #{status})
     </insert>
 
     <select id="findById" resultMap="dMap">

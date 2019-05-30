@@ -16,6 +16,7 @@ import java.sql.Date;
 public class Query {
     private Date date = new Date(System.currentTimeMillis());
     private String keyword = "";
+    private Integer quota = 0;
     private Sort sort = new Sort("price", "asc");
     private Integer page = 1;
     private Integer pageSize = 20;

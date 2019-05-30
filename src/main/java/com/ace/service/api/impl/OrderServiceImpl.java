@@ -73,7 +73,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         } else {
             Room room = roomMapper.findById(appointment.getRoomId());
             Order order = new Order(account.getAccountId(), account.getAccountName());
-            order.setOrderNo("");
             SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
             SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
             Date appointedDate = new Date(appointment.getStartTime().getTime());
@@ -84,7 +83,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 account.setErrMsg("该时间段不开放预约");
                 return false;
             }
-
             //价格计算
             List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
             Optional<Price> optional = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
@@ -131,9 +129,32 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 order.setTotal(order.getTotal().add(supportFee));
                 order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
 
-                if (order.getPayAmount().compareTo(new BigDecimal(0)) == -1) {
-                    order.setPayAmount(new BigDecimal(0));
-                    order.setStatus(OrderStatus.PAID);
+
+                if (order.getPayAmount().compareTo(new BigDecimal(0)) == 0) {
+                    switch (room.getCfm()) {
+                        case AUTO:
+                            order.setStatus(OrderStatus.PAIDANDCONFIRM);
+                            break;
+                        case AFTER:
+                            order.setStatus(OrderStatus.PAID2CONFIRM);
+                            break;
+                        case BEFORE:
+                            order.setStatus(OrderStatus.UNPAID2CONFIRM);
+                            break;
+                    }
+
+                } else {
+                    switch (room.getCfm()) {
+                        case AUTO:
+                            order.setStatus(OrderStatus.CONFIRM2PAID);
+                            break;
+                        case AFTER:
+                            order.setStatus(OrderStatus.UNPAID2CONFIRM);
+                            break;
+                        case BEFORE:
+                            order.setStatus(OrderStatus.UNPAID2CONFIRM);
+                            break;
+                    }
                 }
 
 
@@ -171,7 +192,30 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     public void confirm(String orderNo) {
-        orderMapper.update(orderNo, OrderStatus.CONFIRMING);
+        Order order = orderMapper.findById(orderNo);
+        Appointment appointment = appointmentMapper.selectByOrderNo(orderNo);
+        Room room = roomMapper.findById(appointment.getRoomId());
+        switch (room.getCfm()) {
+            case AUTO:
+                break;
+            case BEFORE:
+                switch (order.getStatus()) {
+                    case PAID2CONFIRM:
+                        orderMapper.update(orderNo, OrderStatus.PAIDANDCONFIRM);
+                        break;
+                    case UNPAID2CONFIRM:
+                        orderMapper.update(orderNo, OrderStatus.CONFIRM2PAID);
+                        break;
+                }
+                break;
+            case AFTER:
+                switch (order.getStatus()) {
+                    case PAID2CONFIRM:
+                        orderMapper.update(orderNo, OrderStatus.PAIDANDCONFIRM);
+                        break;
+                }
+                break;
+        }
     }
 
     @Override

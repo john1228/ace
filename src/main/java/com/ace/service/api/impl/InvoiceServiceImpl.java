@@ -31,7 +31,7 @@ public class InvoiceServiceImpl extends BaseService implements InvoiceService {
             if (order == null) {
                 account.setErrMsg("无效的订单");
             } else {
-                if (order.getStatus() == OrderStatus.PAID || true) {
+                if (order.getStatus() == OrderStatus.PAIDANDCONFIRM || true) {
                     invoice.setOrderId(order.getId());
                     invoiceMapper.create(invoice);
                 } else {

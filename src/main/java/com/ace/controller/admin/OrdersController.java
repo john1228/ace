@@ -87,7 +87,6 @@ public class OrdersController extends BaseController {
         if (result.hasErrors()) {
             return viewPath + "edit";
         } else {
-            orderService.update(orderNo, OrderStatus.CONFIRMING);
             return "redirect:" + viewPath + orderNo;
         }
 

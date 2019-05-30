@@ -40,7 +40,7 @@ public class Order {
     private BigDecimal coupon = new BigDecimal(0);
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @NonNull
-    private OrderStatus status = OrderStatus.PENDING;
+    private OrderStatus status;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;

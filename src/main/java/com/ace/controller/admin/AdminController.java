@@ -25,7 +25,7 @@ public class AdminController extends BaseController {
     public String index(Authentication authentication, HttpSession session) {
         if (session.getAttribute(CURRENT_OPERATOR) == null) {
             AdminUserDetails principal = (AdminUserDetails) authentication.getPrincipal();
-            List<Staff> staffList = principal.getAccount().getStaffList();
+            List<Staff> staffList = principal.getAccount().getEmployee();
             Staff staff = staffList.get(0);
             session.setAttribute(CURRENT_OPERATOR, staff);
             List<Staff> relatedStaffList = staffService.relatedStaffs(staff.getProjectId(), staff.getOrgId());
@@ -37,7 +37,7 @@ public class AdminController extends BaseController {
     @PostMapping({"", "/"})
     public String change(@RequestParam("operator") int operator, @RequestParam("redirectUri") String redirectUri, Authentication authentication, HttpSession session) {
         AdminUserDetails principal = (AdminUserDetails) authentication.getPrincipal();
-        List<Staff> staffList = principal.getAccount().getStaffList();
+        List<Staff> staffList = principal.getAccount().getEmployee();
         Staff selected = staffList.stream().filter(staff -> staff.getId() == operator).findAny().get();
         if (selected != null) {
             session.setAttribute(CURRENT_OPERATOR, selected);

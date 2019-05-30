@@ -102,6 +102,13 @@
                                             <@spring.formInput "order.payAmount","class='form-control' required"/>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label no-padding-right"><span
+                                                style="color: red">*</span>备注</label>
+                                        <div class="col-sm-6 col-xs-12">
+                                            <@spring.formInput "order.appointment.remark","class='form-control' required"/>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -128,6 +135,7 @@
                                             <th class="center">名称</th>
                                             <th class="center">图片</th>
                                             <th class="center">价格</th>
+                                            <th class="center">单位</th>
                                             <th class="center">数量</th>
                                         </tr>
                                         </thead>
@@ -151,11 +159,52 @@
                                                     }
                                                 },
                                                 columns: [
-                                                    {data: "name", className: 'center'},
-                                                    {data: "cover", className: 'center'},
-                                                    {data: "price", className: 'center'},
-                                                    {data: "unit", className: 'center'},
-                                                    {data: "id", className: 'center'}
+                                                    {
+                                                        data: "id",
+                                                        className: "center",
+                                                        render: function (data, type, row, meta) {
+                                                            return '<input type="checkbox" name="appointment.service[' + meta.row + '].supportId" value="' + data + '" class="spItem"/>';
+                                                        }
+                                                    },
+                                                    {
+                                                        data: "name",
+                                                        className: 'center',
+                                                        render: function (data, type, row, meta) {
+                                                            return data +
+                                                                    '<input type="hidden" name="appointment.service[' + meta.row + '].name" value="' + data + '"/>';
+                                                        }
+                                                    },
+                                                    {
+                                                        data: "cover",
+                                                        className: 'center',
+                                                        render: function (data, type, row, meta) {
+                                                            return '<img class="table" src="${image}' + data + '"/>' +
+                                                                    '<input type="hidden" name="appointment.service[' + meta.row + '].cover" value="' + data + '"/>';
+                                                        }
+                                                    },
+                                                    {
+                                                        data: "price",
+                                                        className: 'center',
+                                                        render: function (data, type, row, meta) {
+                                                            return data +
+                                                                    '<input type="hidden" name="appointment.service[' + meta.row + '].price" value="' + data + '"/>';
+                                                        }
+                                                    },
+                                                    {
+                                                        data: "unit",
+                                                        className: 'center',
+                                                        render: function (data, type, row, meta) {
+                                                            return data +
+                                                                    '<input type="hidden" name="appointment.service[' + meta.row + '].unit" value="' + data + '"/>';
+                                                        }
+                                                    },
+                                                    {
+                                                        data: "id",
+                                                        className: 'center',
+                                                        render: function (data, type, row, meta) {
+                                                            return '<input type="number" name="appointment.service[' + meta.row + '].amount"　/>';
+                                                        }
+                                                    },
                                                 ]
                                             });
                                             $("#roomId").on("change", function () {
