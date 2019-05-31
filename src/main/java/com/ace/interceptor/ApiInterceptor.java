@@ -3,7 +3,8 @@ package com.ace.interceptor;
 import com.ace.annotation.Authorization;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
-import com.ace.service.TokenService;
+import com.ace.service.concerns.TokenService;
+import org.apache.logging.log4j.util.Strings;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ import java.util.List;
 public class ApiInterceptor implements HandlerInterceptor {
     Logger logger = LoggerFactory.getLogger(ApiInterceptor.class);
     @Resource
-    TokenService tokenManager;
+    TokenService tokenService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -36,6 +37,14 @@ public class ApiInterceptor implements HandlerInterceptor {
             if (annotation == null) {
                 return true;
             } else {
+                String authorization = request.getHeader("token");
+                if (Strings.isEmpty(authorization)) {
+                    returnJson(response, "该接口未认证或者未签名或者不存在此资源");
+                    return false;
+                }else{
+
+                }
+
                 Account account = new Account();
                 account.setAccountId("001");
                 account.setAccountName("001-NAME");

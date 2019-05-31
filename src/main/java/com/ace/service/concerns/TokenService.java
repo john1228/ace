@@ -1,4 +1,4 @@
-package com.ace.service;
+package com.ace.service.concerns;
 
 import com.ace.entity.Account;
 import org.apache.http.HttpEntity;
@@ -10,6 +10,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jettison.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -23,6 +25,7 @@ import java.util.List;
  */
 @Service("api-token-service")
 public class TokenService {
+    Logger logger = LoggerFactory.getLogger(TokenService.class);
     private static final String host = "http://passport.baobanwang.com/login/getAccountData";
 
 
@@ -42,12 +45,19 @@ public class TokenService {
             while ((inputLine = reader.readLine()) != null) {
                 accountInfo.append(inputLine);
             }
-            JSONObject jsonObject = new JSONObject(accountInfo.toString());
-            JSONObject accountObj = jsonObject.getJSONObject("data");
+            logger.info(accountInfo.toString());
+//            JSONObject jsonObject = new JSONObject(accountInfo.toString());
+//            JSONObject accountObj = jsonObject.getJSONObject("data");
+
             return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static void main(String[] args){
+        TokenService tk = new TokenService();
+        tk.account("3e968c13114a49a89f7551c6e81e142d");
     }
 }
