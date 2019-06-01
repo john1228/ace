@@ -37,14 +37,13 @@ public class ApiInterceptor implements HandlerInterceptor {
             if (annotation == null) {
                 return true;
             } else {
-                String authorization = request.getHeader("token");
-                if (Strings.isEmpty(authorization)) {
-                    returnJson(response, "该接口未认证或者未签名或者不存在此资源");
-                    return false;
-                }else{
-
-                }
-
+//                String authorization = request.getHeader("token");
+//                if (Strings.isEmpty(authorization)) {
+//                    returnJson(response, "该接口未认证或者未签名或者不存在此资源");
+//                    return false;
+//                }else{
+//
+//                }
                 Account account = new Account();
                 account.setAccountId("001");
                 account.setAccountName("001-NAME");
@@ -62,7 +61,7 @@ public class ApiInterceptor implements HandlerInterceptor {
                     staff.setEmpName("001-EM-" + i);
                     staffList.add(staff);
                 }
-                account.setEmployee(staffList);
+                account.setStaffList(staffList);
 
                 request.setAttribute("ACCOUNT", account);
                 logger.info(request.getAttribute("ACCOUNT").getClass().getName());

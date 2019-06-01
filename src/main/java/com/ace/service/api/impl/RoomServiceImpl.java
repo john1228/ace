@@ -39,6 +39,7 @@ public class RoomServiceImpl extends BaseService implements RoomService {
         SimpleDateFormat df = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Week week = Week.valueOf(df.format(query.getDate()).toUpperCase());
         List<Room> roomList = rMapper.query(account, query);
+        if (roomList.size() == 0) return new ArrayList<>();
         List<Price> priceList = pMapper.priceList(roomList, date);
         List<RoomClosed> closedList = rcMapper.closedList(roomList, date);
         for (Room room : roomList) {

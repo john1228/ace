@@ -60,7 +60,7 @@ public class AdminUserDetailsService implements UserDetailsService {
                     staffList.add(staff);
                     redisTemplate.opsForList().leftPush(account.getAccountId(), staff);
                 }
-                account.setEmployee(staffList);
+                account.setStaffList(staffList);
                 return new AdminUserDetails(user, role, account);
             } catch (Exception e) {
                 throw new UsernameNotFoundException("user role select fail");
