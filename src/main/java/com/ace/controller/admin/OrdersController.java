@@ -3,7 +3,6 @@ package com.ace.controller.admin;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.OrderCriteria;
-import com.ace.entity.Appointment;
 import com.ace.entity.Order;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.OrderStatus;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -98,7 +96,7 @@ public class OrdersController extends BaseController {
         return "redirect:" + viewPath;
     }
 
-    @ModelAttribute("a")
+    @ModelAttribute
     public void globalAttribute(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
         model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderStatus.class));
         model.addAttribute("rooms", roomService.roomList(staff));

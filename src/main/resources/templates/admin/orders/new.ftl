@@ -5,6 +5,13 @@
 <script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
 <script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
 <link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
+<script type="text/javascript">
+    $(function () {
+        $(".datetimepicker").datetimepicker({
+            format: "yyyy-MM-dd HH:mm"
+        })
+    })
+</script>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {

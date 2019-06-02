@@ -47,10 +47,9 @@ public class RoomServiceImpl extends BaseService implements RoomService {
             List<Period> openList = new ArrayList<>();
 
             room.getOpen().forEach(period -> {
+                Timestamp pStart = Timestamp.valueOf(date.toString() + " " + period.getStartTime() + ":00");
+                Timestamp pEnd = Timestamp.valueOf(date.toString() + " " + period.getEndTime() + ":00");
                 Optional<RoomClosed> closed = closedList.stream().filter(item -> {
-                    Timestamp pStart = Timestamp.valueOf(date.toString() + " " + period.getStartTime() + ":00");
-                    Timestamp pEnd = Timestamp.valueOf(date.toString() + " " + period.getEndTime() + ":00");
-
                     Timestamp start = Timestamp.valueOf(date.toString() + " " + item.getStartTime() + ":00");
                     Timestamp end = Timestamp.valueOf(date.toString() + " " + item.getEndTime() + ":00");
                     return start.compareTo(pEnd) < 0 && end.compareTo(pStart) > 0;
@@ -58,9 +57,6 @@ public class RoomServiceImpl extends BaseService implements RoomService {
                 if (closed.isPresent()) {
                     //处理特殊日期关闭
                     RoomClosed roomClosed = closed.get();
-                    Timestamp pStart = Timestamp.valueOf(date.toString() + " " + period.getStartTime() + ":00");
-                    Timestamp pEnd = Timestamp.valueOf(date.toString() + " " + period.getEndTime() + ":00");
-
                     Timestamp cStart = Timestamp.valueOf(date.toString() + " " + roomClosed.getStartTime() + ":00");
                     Timestamp cEnd = Timestamp.valueOf(date.toString() + " " + roomClosed.getEndTime() + ":00");
                     if (cEnd.compareTo(pStart) < 0 || cStart.compareTo(pEnd) > 0) {

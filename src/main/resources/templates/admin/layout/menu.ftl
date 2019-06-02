@@ -5,7 +5,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <input type="hidden" name="redirectUri" value="${requestUri}">
             <select class="form-control" name="operator" onchange="submit();">
-                <#list current_account.getEmployee() as staff>
+                <#list current_account.getStaffList() as staff>
                     <#if staff == (current_operator)>
                         <option value="${staff.id}" selected>${staff}</option>
                     <#else>
