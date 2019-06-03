@@ -4,7 +4,6 @@ import com.ace.annotation.Authorization;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
 import com.ace.service.concerns.TokenService;
-import org.apache.logging.log4j.util.Strings;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +29,7 @@ public class ApiInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         } else {
+            logger.info("TOKEN值::" + request.getHeader("token"));
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
             //得到该处理器是否需要认证

@@ -1,5 +1,6 @@
 package com.ace.config;
 
+import com.ace.security.TokenAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +13,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.ace.security.AdminAuthenticationProvider;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configurable
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//允许进入页面方法前检验
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    Logger logger = LoggerFactory.getLogger(WebSecurity.class);
+    Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
     @Autowired
     private AdminAuthenticationProvider provider;//自定义验证
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        logger.info("sss");
         http.headers().frameOptions().disable();
-        http.authorizeRequests()
+        http.addFilterAt(new TokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class).authorizeRequests()
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/admin/")
@@ -39,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 "/api/**",//app接口
                 "/druid/**", //数据库连接池监控
+                "/static/**",
                 "/assets/**", // 后台静态资源
                 "/css/**", // 样式表资源
                 "/js/**" // 页面脚本资源
@@ -47,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info("abc");
         auth.authenticationProvider(provider);
     }
 }

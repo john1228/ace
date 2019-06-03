@@ -2,19 +2,22 @@ package com.ace.security;
 
 import java.util.Collection;
 
+import com.ace.service.concerns.TokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdminAuthenticationProvider implements AuthenticationProvider {
+    Logger logger = LoggerFactory.getLogger(AdminAuthenticationProvider.class);
     @Autowired
     private AdminUserDetailsService userService;
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 自定义验证
@@ -22,15 +25,10 @@ public class AdminAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication)
             throws AuthenticationException {
+        logger.info("认证登录");
         String username = authentication.getName();
-        String password = (String) authentication.getCredentials();
-        AdminUserDetails user = (AdminUserDetails) userService.loadUserByUsername(username);
-        if (user == null) {
-            throw new BadCredentialsException("未找到此用户");
-        }
-        //加密过程在这里体现
-        Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
-        return new UsernamePasswordAuthenticationToken(user, password, authorities);
+
+        return new TokenAuthentication("");
     }
 
     @Override

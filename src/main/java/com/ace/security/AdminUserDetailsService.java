@@ -27,12 +27,11 @@ public class AdminUserDetailsService implements UserDetailsService {
     private RedisTemplate<String, Staff> redisTemplate;
 
 
-    public UserDetails loadUserByUsername(String userName)
+    public UserDetails loadUserByToken(String token)
             throws UsernameNotFoundException {
         User user = null;
         try {
-            logger.info("查找");
-            user = userService.getUserToLoginName(userName);
+            logger.info("TOKEN检验");
         } catch (Exception e) {
             throw new UsernameNotFoundException("user select fail");
         }
@@ -66,5 +65,10 @@ public class AdminUserDetailsService implements UserDetailsService {
                 throw new UsernameNotFoundException("user role select fail");
             }
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return null;
     }
 }

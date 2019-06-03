@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -22,13 +23,9 @@ public class AdminController extends BaseController {
     private StaffService staffService;
 
     @RequestMapping("/")
-    public String index(Authentication authentication, HttpSession session) {
-        if (session.getAttribute(CURRENT_OPERATOR) == null) {
-            AdminUserDetails principal = (AdminUserDetails) authentication.getPrincipal();
-            List<Staff> staffList = principal.getAccount().getStaffList();
-            Staff staff = staffList.get(0);
-            session.setAttribute(CURRENT_OPERATOR, staff);
-            List<Staff> relatedStaffList = staffService.relatedStaffs(staff.getProjectId(), staff.getOrgId());
+    public String index(HttpSession session, @SessionAttribute(CURRENT_OPERATOR) Staff staff, @SessionAttribute(CURRENT_RELATED_STAFF) List<Staff> relatedStaffList) {
+        if (relatedStaffList == null) {
+            relatedStaffList = staffService.relatedStaffs(staff.getProjectId(), staff.getOrgId());
             session.setAttribute(CURRENT_RELATED_STAFF, relatedStaffList);
         }
         return INDEX;
