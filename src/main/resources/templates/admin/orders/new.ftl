@@ -8,7 +8,8 @@
 <script type="text/javascript">
     $(function () {
         $(".datetimepicker").datetimepicker({
-            format: "yyyy-MM-dd HH:mm"
+            // locale: 'zh-CN',
+            format: "YYYY-MM-DD HH:mm"
         })
     })
 </script>
