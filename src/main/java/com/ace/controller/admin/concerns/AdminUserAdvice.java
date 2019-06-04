@@ -2,7 +2,6 @@ package com.ace.controller.admin.concerns;
 
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
-import com.ace.security.AdminUserDetails;
 import com.ace.util.Aliyun;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
@@ -21,8 +20,7 @@ public class AdminUserAdvice {
         if (authentication == null) {
             return null;
         } else {
-            AdminUserDetails userDetails = (AdminUserDetails) authentication.getPrincipal();
-            return userDetails.getAccount();
+            return (Account) authentication.getCredentials();
         }
     }
 
@@ -33,8 +31,8 @@ public class AdminUserAdvice {
         } else {
             Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
             if (staff == null) {
-                AdminUserDetails userDetails = (AdminUserDetails) authentication.getPrincipal();
-                staff = userDetails.getAccount().getStaffList().get(0);
+                Account account = (Account) authentication.getCredentials();
+                staff = account.getStaffList().get(0);
                 session.setAttribute(CURRENT_OPERATOR, staff);
             }
             return staff;

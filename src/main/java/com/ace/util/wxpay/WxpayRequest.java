@@ -5,6 +5,8 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 /**
  * @author john
  * @date 19-5-18 下午8:18
@@ -18,5 +20,5 @@ public class WxpayRequest {
     @NonNull
     private String outTradeNo;
     @NonNull
-    private String totalFee;
+    private BigDecimal totalFee;
 }

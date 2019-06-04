@@ -3,6 +3,7 @@ package com.ace.entity;
 
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.api.concerns.ApiView;
+import com.ace.entity.concern.Payment;
 import com.ace.entity.concern.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -56,4 +57,7 @@ public class Order {
         this.accountId = accountId;
         this.accountName = accountName;
     }
+
+    @JsonView(ApiView.Detail.class)
+    private Payment payment;
 }

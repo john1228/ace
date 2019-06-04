@@ -1,13 +1,7 @@
 package com.ace.util.wxpay;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
+
+import com.ace.entity.Order;
 
 /**
  * @author john
@@ -15,13 +9,27 @@ import java.util.SortedMap;
  */
 public enum Wxpay {
     Instance;
-    private final String appId = "wxdb60f3e97a338462"; //"wx365ab323b9269d30";
-    private final String mchId = "1432701802";//"1266307801";
-    private final String notifyUrl = "http://m1.aidong.me/coach/weixin/asynchronousNotify.json";
-    private final String tradeType = "APP";
-    private final String secretKey = "e10adc3949ba59abbe56e057f20f883e";
     private final String getway = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+    private final String appId = "wx65004b49fd9e9a2d"; //"wx365ab323b9269d30";
+    private final String mchId = "1527342701";//"1266307801";
+    private final String secretKey = "9131012033275022XL31687403002649";
+    private final String tradeIp = "58.34.201.235";
+    private final String tradeType = "APP";
+    private final String notifyUrl = "http://open.aidong.me/callback/wx";
 
 
+    private final WxPayClient client;
 
+    Wxpay() {
+        client = new WxPayClient(getway, appId, mchId, secretKey, tradeIp, tradeType, notifyUrl);
+    }
+
+    public WxpayResponse getPay(Order order) {
+        WxpayRequest request = new WxpayRequest(
+                "爱包办-会议室预订-" + order.getOrderNo(),
+                order.getOrderNo(),
+                order.getPayAmount()
+        );
+        return client.makeRequest(request);
+    }
 }

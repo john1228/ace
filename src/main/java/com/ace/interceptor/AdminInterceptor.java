@@ -1,7 +1,9 @@
 package com.ace.interceptor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
 import com.ace.service.concerns.TokenService;
+import com.ace.util.Menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,32 +28,17 @@ public class AdminInterceptor implements HandlerInterceptor {
     private RedisTemplate<String, Staff> redisTemplate;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //TODO: 登录验证
         logger.info("处理登录");
-        Account account = new Account();
-        account.setAccountId("001");
-        account.setAccountName("001-NAME");
-        List<Staff> staffList = new ArrayList<>();
-        for (int i = 1; i <= 11; i++) {
-            Staff staff = new Staff();
-            staff.setId(Long.valueOf(i));
-            staff.setAccountId("001");
-            staff.setAccountName("001-NAME");
-            staff.setProjectId("001-P-" + i);
-            staff.setProjectName("001-PN-" + i);
-            staff.setOrgId("001-O-" + i);
-            staff.setOrgName("001-ON" + i);
-            staff.setEmpId("001-E-" + i);
-            staff.setEmpName("001-EM-" + i);
-            staffList.add(staff);
-            redisTemplate.opsForList().leftPush(account.getAccountId(), staff);
+        //处理菜单
+        String path = request.getServletPath();
+        Optional<Menu> selected = Arrays.stream(Menu.values()).filter(menu -> menu.contain(path)).findFirst();
+        if (selected.isPresent()) {
+            request.setAttribute("menu", selected.get().name());
+        } else {
+            request.setAttribute("menu", "room");
         }
-        account.setStaffList(staffList);
-        HttpSession session = request.getSession();
-        session.setAttribute("CURRENT::OPERATOR", staffList.get(0));
-        session.setAttribute("CURRENT::RELATED::STAFF", staffList.get(1));
         //请求处理
         request.setAttribute("company", "爱测试");
         return true;

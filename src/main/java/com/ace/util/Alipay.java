@@ -1,11 +1,16 @@
 package com.ace.util;
 
+import com.ace.entity.Order;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeAppPayModel;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
 
 import static com.alipay.api.AlipayConstants.CHARSET;
 
@@ -15,8 +20,9 @@ import static com.alipay.api.AlipayConstants.CHARSET;
  */
 public enum Alipay {
     Instance;
+    private static final Logger logger = LoggerFactory.getLogger(Alipay.class);
     private final String getway = "https://openapi.alipay.com/gateway.do";
-    private final String appId = "2019030863456715";
+    private final String sellerId = "2019030863456715";
     private final String privateKey =
             "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDhPypby5r8Z3cu\n" +
                     "RZwRhwO+yikCkHl/w/wZMoEMBirLMqgq9JvD4REmJ2bH8lu+0iB6Ejtoz+DXPEc5\n" +
@@ -51,14 +57,27 @@ public enum Alipay {
     private final String notifyUrl = "";
 
     Alipay() {
-        client = new DefaultAlipayClient(getway, appId, privateKey, format, CHARSET, publicKey, signType);
+        client = new DefaultAlipayClient(getway, sellerId, privateKey);
     }
 
-    public String getPay(AlipayTradeAppPayModel payModel) throws AlipayApiException {
-        AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
-        request.setBizModel(payModel);
-        request.setNotifyUrl(notifyUrl);
-        AlipayTradeAppPayResponse response = client.sdkExecute(request);
-        return response.getBody();
+    public String getPay(Order order) {
+        try {
+            AlipayTradeAppPayModel payModel = new AlipayTradeAppPayModel();
+            payModel.setOutTradeNo(order.getOrderNo());
+            payModel.setSubject("爱包办-会议室预定-" + order.getOrderNo());
+            payModel.setBody("爱包办-会议室预定-" + order.getOrderNo());
+            payModel.setTotalAmount(order.getPayAmount().toString());
+
+
+            AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
+            request.setBizModel(payModel);
+            request.setNotifyUrl(notifyUrl);
+            AlipayTradeAppPayResponse response = client.sdkExecute(request);
+            return response.getBody();
+
+        } catch (AlipayApiException exp) {
+            logger.info("支付宝下单失败", exp.getErrMsg());
+            return "";
+        }
     }
 }

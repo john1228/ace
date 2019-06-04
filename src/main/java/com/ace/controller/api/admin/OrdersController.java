@@ -35,10 +35,10 @@ public class OrdersController extends BaseController {
     @ApiOperation(value = "查询订单")
     public Result index(
             @RequestAttribute("ACCOUNT") Account account,
-            @RequestParam(value = "list", defaultValue = "") OrderStatus status,
+            @RequestParam(value = "list", defaultValue = "") String status,
             @RequestParam(value = "page", defaultValue = "1") int page
     ) {
-        return new Success(orderService.supplierOrder(account, status, page));
+        return new Success(orderService.supplierOrder(account, null, page));
     }
 
 

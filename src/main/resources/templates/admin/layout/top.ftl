@@ -290,7 +290,7 @@
                     <#--</#if>-->
                         <span class="user-info">
                             <small>欢迎,</small>
-                        ${userName}
+                        ${current_account.accountName}
                         </span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
