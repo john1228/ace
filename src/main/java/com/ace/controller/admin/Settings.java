@@ -30,22 +30,22 @@ public class Settings extends BaseController {
     @GetMapping("/wxpay")
     public String wxpay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
         model.addAttribute("wxpay", new Wxpay());
-        return viewPath + "alipay";
+        return viewPath + "wxpay";
     }
 
     @PutMapping("/wxpay")
     public String updateWxpay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-        return viewPath + "alipay";
+        return viewPath + "wxpay";
     }
 
     @GetMapping("/protocol")
     public String protocol(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
         model.addAttribute("protocol", "");
-        return viewPath + "alipay";
+        return viewPath + "protocol";
     }
 
     @PutMapping("/protocol")
     public String updateProtocol(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-        return viewPath + "alipay";
+        return viewPath + "protocol";
     }
 }

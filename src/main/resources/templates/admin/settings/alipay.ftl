@@ -45,14 +45,14 @@
                             <label class="col-sm-2 control-label no-padding-right"><span
                                     style="color: red">*</span>密钥</label>
                             <div class="col-sm-10">
-                                <@spring.formTextarea "alipay.privateKey","class='col-xs-10 col-sm-9' placeholder='请填写支付宝密钥' required"/>
+                                <@spring.formTextarea "alipay.privateKey","class='form-control' placeholder='请填写支付宝密钥' rows=5 required"/>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 control-label no-padding-right"><span
                                     style="color: red">*</span>公钥</label>
                             <div class="col-sm-10">
-                                 <@spring.formInput "alipay.publicKey","class='col-xs-10 col-sm-9' placeholder='请填写支付宝公钥' required"/>
+                                 <@spring.formInput "alipay.publicKey","class='form-control' placeholder='请填写支付宝公钥' required"/>
                             </div>
                         </div>
                         <div class="clearfix form-actions row">
