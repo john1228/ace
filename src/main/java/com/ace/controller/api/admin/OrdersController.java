@@ -38,7 +38,7 @@ public class OrdersController extends BaseController {
             @RequestParam(value = "list", defaultValue = "") String status,
             @RequestParam(value = "page", defaultValue = "1") int page
     ) {
-        return new Success(orderService.supplierOrder(account, null, page));
+        return new Success(orderService.supplierOrder(account, status, page));
     }
 
 

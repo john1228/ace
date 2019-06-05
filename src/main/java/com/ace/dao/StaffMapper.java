@@ -12,4 +12,6 @@ public interface StaffMapper {
 
     List<Staff> relatedStaffList(@Param("project") String projectId, @Param("org") String orgId);
 
+    Staff findById(@Param("id") Long staffId);
+
 }

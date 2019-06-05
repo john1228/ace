@@ -10,8 +10,8 @@ import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.OrderService;
 import com.ace.service.concerns.OrderTools;
 import com.ace.service.concerns.RoomTools;
-import com.ace.util.Alipay;
-import com.ace.util.wxpay.Wxpay;
+import com.ace.util.AlipayBuilder;
+import com.ace.util.wxpay.WxpayBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,8 +26,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-
-import com.google.gson.JsonObject;
 
 @Service("api_order_service")
 public class OrderServiceImpl extends BaseService implements OrderService {
@@ -55,6 +53,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     private OrderTools orderTools;
     @Resource
     private RoomTools roomTools;
+    @Resource
+    private ReceiptMapper receiptMapper;
 
 
     @Override
@@ -63,7 +63,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     }
 
     @Override
-    public List<Order> supplierOrder(Account account, OrderStatus status, int page) {
+    public List<Order> supplierOrder(Account account, String status, int page) {
         return orderMapper.supplierOrder(account, status, page, pageSize);
     }
 
@@ -193,8 +193,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
             //支付宝
             Payment payment = new Payment();
-            payment.setAlipay(Alipay.Instance.getPay(order));
-            payment.setWxpay(Wxpay.Instance.getPay(order));
+            payment.setAlipay(AlipayBuilder.instance.getPay(null, order));
+            payment.setWxpay(WxpayBuilder.instance.getPay(null, order));
             order.setPayment(payment);
         }
         return order;
@@ -233,4 +233,18 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         orderMapper.update(orderNo, OrderStatus.CANCELED);
     }
 
+    @Override
+    @Transactional
+    public void paying(Receipt receipt, String payType) {
+        receiptMapper.create(receipt);
+        Order order = orderMapper.findById(receipt.getOrderNo());
+        switch (order.getStatus()) {
+            case UNPAID2CONFIRM:
+                orderMapper.defray(order.getOrderNo(), OrderStatus.PAID2CONFIRM, payType);
+                break;
+            case CONFIRM2PAID:
+                orderMapper.defray(order.getOrderNo(), OrderStatus.PAIDANDCONFIRM, payType);
+                break;
+        }
+    }
 }

@@ -45,7 +45,6 @@ public class RoomsController extends BaseController {
 
     @GetMapping({"", "/"})
     public String index() {
-        logger.info("111");
         return viewPath + "index";
     }
 

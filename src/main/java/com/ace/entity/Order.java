@@ -44,6 +44,9 @@ public class Order {
     private OrderStatus status;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date freeRefundLimit;
+    @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

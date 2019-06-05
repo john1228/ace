@@ -99,17 +99,24 @@
         </a>
         <b class="arrow"></b>
         <ul class="submenu">
-            <li class="${(requestUri?starts_with("/admin/sites/attributes"))?string("active","")}">
-                <a href="/admin/sites/attributes">
+            <li class="${(requestUri?starts_with("/admin/alipay"))?string("active","")}">
+                <a href="/admin/alipay">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    <text>短信配置</text>
+                    <text>支付宝配置</text>
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li>
-                <a href="#">
+            <li class="${(requestUri?starts_with("/admin/wxpay"))?string("active","")}">
+                <a href="/admin/wxpay">
                     <i class="menu-icon fa fa-caret-right"></i>
-                    <text>支付配置</text>
+                    <text>微信配置</text>
+                </a>
+                <b class="arrow"></b>
+            </li>
+            <li class="${(requestUri?starts_with("/admin/protocol"))?string("active","")}">
+                <a href="/admin/protocol">
+                    <i class="menu-icon fa fa-caret-right"></i>
+                    <text>下单协议</text>
                 </a>
                 <b class="arrow"></b>
             </li>

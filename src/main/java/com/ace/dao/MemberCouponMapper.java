@@ -1,6 +1,8 @@
 package com.ace.dao;
 
+import com.ace.entity.Account;
 import com.ace.entity.MemberCoupon;
+import com.ace.entity.Staff;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,4 +18,6 @@ public interface MemberCouponMapper {
     void create(@Param("coupons") List<MemberCoupon> mcList);
 
     void update(MemberCoupon Coupon);
+
+    List<MemberCoupon> couponList(@Param("account") Account account, @Param("staff") Staff staff);
 }

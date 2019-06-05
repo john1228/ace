@@ -19,11 +19,11 @@ import java.util.TreeMap;
  * @date 19-6-4 下午12:29
  */
 public class XMLUtils {
-    public static SortedMap<Object, Object> xmlToMap(String xml) throws JDOMException, IOException {
+    public static SortedMap<String, Object> xmlToMap(String xml) throws JDOMException, IOException {
         if (null == xml || "".equals(xml)) {
             return null;
         }
-        SortedMap<Object, Object> parameters = new TreeMap<Object, Object>();
+        SortedMap<String, Object> parameters = new TreeMap();
         InputStream in = new ByteArrayInputStream(xml.getBytes());
         SAXBuilder builder = new SAXBuilder();
         builder.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -36,7 +36,7 @@ public class XMLUtils {
         while (it.hasNext()) {
             Element e = (Element) it.next();
             String k = e.getName();
-            String v = "";
+            String v;
             List children = e.getChildren();
             if (children.isEmpty()) {
                 v = e.getTextNormalize();
@@ -68,10 +68,5 @@ public class XMLUtils {
             }
         }
         return sb.toString();
-    }
-
-    public static void main(String[] args) {
-        BigDecimal bg = new BigDecimal("0.01");
-        System.err.println(bg.multiply(new BigDecimal(100)).intValue());
     }
 }

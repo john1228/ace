@@ -75,7 +75,7 @@ public class WxPayClient {
             CloseableHttpResponse response = client.execute(post);
             String result = EntityUtils.toString(response.getEntity(), "utf-8");
             logger.info("统一下单结果:" + result);
-            SortedMap<Object, Object> resultMap = XMLUtils.xmlToMap(result);
+            SortedMap<String, Object> resultMap = XMLUtils.xmlToMap(result);
             if ("SUCCESS".equals(resultMap.get("result_code"))) {
                 WxpayResponse wxpay = new WxpayResponse(
                         appId,
@@ -94,6 +94,10 @@ public class WxPayClient {
         }
 
         return null;
+    }
+
+    public boolean signatureCheck(SortedMap<String, Object> params, String sign) throws NoSuchAlgorithmException {
+        return sign.equals(md5(params));
     }
 
     private String md5(SortedMap<String, Object> params) throws NoSuchAlgorithmException {

@@ -25,5 +25,8 @@ public interface OrderMapper {
     List<Order> customerOrder(@Param("account") Account account, @Param("status") OrderStatus status, @Param("page") int page, @Param("length") int length);
 
     //供应商订单
-    List<Order> supplierOrder(@Param("account") Account account, @Param("status") OrderStatus status, @Param("page") int page, @Param("length") int length);
+    List<Order> supplierOrder(@Param("account") Account account, @Param("status") String status, @Param("page") int page, @Param("length") int length);
+
+    //订单付款
+    void defray(@Param("id") String orderNo, @Param("status") OrderStatus status, @Param("payType") String payType);
 }

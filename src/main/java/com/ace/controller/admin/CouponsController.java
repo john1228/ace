@@ -27,7 +27,7 @@ import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 
-@Controller
+@Controller("admin_coupons_controller")
 @RequestMapping("/admin/coupons")
 public class CouponsController extends BaseController {
     Logger logger = LoggerFactory.getLogger(CouponsController.class);

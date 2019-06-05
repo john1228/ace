@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("couponService")
+@Service("admin-coupon-service")
 public class CouponServiceImpl implements CouponService {
     Logger logger = LoggerFactory.getLogger(CouponServiceImpl.class);
 

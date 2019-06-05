@@ -41,21 +41,19 @@ public class PricesController extends BaseController {
     @ResponseBody
     @GetMapping("/dataList")
     public DataTable<Price> dataList(
-            HttpSession session,
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
             @RequestParam(value = "draw", defaultValue = "1") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
             @RequestParam(value = "length", defaultValue = "10") int length,
             @RequestParam(value = "search[value]", defaultValue = "") String keyword
     ) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
         DataTable<Price> dataTable = priceService.dataTable(staff, start, length, keyword);
         dataTable.setDraw(draw);
         return dataTable;
     }
 
     @GetMapping("/new")
-    public String add(HttpSession session, Model model) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+    public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
         model.addAttribute("price", new Price());
         model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
         model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
@@ -65,10 +63,9 @@ public class PricesController extends BaseController {
 
 
     @PostMapping({"", "/"})
-    public String create(HttpSession session, @Valid Price price, BindingResult result, Model model) {
+    public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, Model model) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
-            Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
             model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
             model.addAttribute("weeks", Week.toOptions());
@@ -87,8 +84,8 @@ public class PricesController extends BaseController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(HttpSession session, @PathVariable("id") Long id, Model model) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+    public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id, Model model) {
+
         Price price = priceService.findById(id);
         model.addAttribute("price", price);
         model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
@@ -98,8 +95,7 @@ public class PricesController extends BaseController {
     }
 
     @PutMapping({"/{id}/", "/{id}"})
-    public String update(HttpSession session, @Valid Price price, BindingResult result, HttpServletRequest request, @PathVariable("id") int id, Model model) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+    public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, HttpServletRequest request, @PathVariable("id") int id, Model model) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
             model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
