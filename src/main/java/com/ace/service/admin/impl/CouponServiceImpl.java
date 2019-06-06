@@ -39,8 +39,8 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public void create(SystemCoupon coupon) {
-        couponMapper.create(coupon);
+    public void create(Staff staff, SystemCoupon coupon) {
+        couponMapper.create(staff, coupon);
     }
 
     @Override

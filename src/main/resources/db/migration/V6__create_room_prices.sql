@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS `bb_room_prices`;
 CREATE TABLE bb_room_prices (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  staff_id     bigint(11)          NOT NULL COMMENT '管理员工',
   rental       tinyint(1)          DEFAULT 0 COMMENT '出租方式',
   start_date   date                COMMENT '开始日期',
   end_date     date                COMMENT '结束日期',

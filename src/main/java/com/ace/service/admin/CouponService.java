@@ -12,7 +12,7 @@ public interface CouponService {
 
     SystemCoupon findById(int id);
 
-    void create(SystemCoupon attribute);
+    void create(Staff staff, SystemCoupon attribute);
 
     void update(SystemCoupon attribute);
 

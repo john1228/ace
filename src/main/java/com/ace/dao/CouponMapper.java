@@ -13,7 +13,7 @@ public interface CouponMapper {
 
     Long recordsTotal(@Param("staff") Staff staff, @Param("criteria") CouponCriteria criteria);
 
-    void create(SystemCoupon coupon);
+    void create(@Param("staff") Staff staff, @Param("coupon") SystemCoupon coupon);
 
     SystemCoupon findById(@Param("id") int id);
 

@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `bb_coupons`;
 CREATE TABLE bb_coupons (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  staff_id     bigint(11)          NOT NULL COMMENT '管理员工',
+  project_id   varchar(32)         NOT NULL COMMENT '管理员工',
   name         varchar(64)         NOT NULL COMMENT '名字',
   type         tinyint(1)          NOT NULL COMMENT '类型',
   discount     float               NOT NULL COMMENT '优惠金额',
@@ -18,4 +18,4 @@ CREATE TABLE bb_coupons (
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
-CREATE INDEX bb_coupons_staff_id on bb_coupons (staff_id)
+CREATE INDEX bb_coupons_staff_id on bb_coupons (project_id)

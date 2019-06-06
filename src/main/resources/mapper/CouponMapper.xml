@@ -16,8 +16,8 @@
         <result column="limit_room" property="limitRoom"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
-        SELECT count(1) AS recordsTotal FROM bb_coupons LEFT JOIN bb_staffs ON bb_coupons.staff_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId}
+        SELECT count(1) AS recordsTotal FROM bb_coupons
+        WHERE project_id = #{staff.projectId}
         <if test="criteria.name!=null">
             AND bb_coupons.name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
@@ -30,22 +30,22 @@
     </select>
 
     <select id="dataList" resultMap="couponMap">
-        SELECT * FROM bb_coupons LEFT JOIN bb_staffs ON bb_coupons.staff_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId}
+        SELECT * FROM bb_coupons
+        WHERE project_id = #{staff.projectId}
         <if test="criteria.name!=null">
-            AND bb_coupons.name LIKE CONCAT('%',#{criteria.name},'%')
+            AND name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
         <if test="criteria.startDate!=null">
-            AND #{criteria.startDate} >= bb_coupons.start_date
+            AND #{criteria.startDate} >= start_date
         </if>
         <if test="criteria.endDate!=null">
-            AND bb_coupons.end_date >= #{criteria.endDate}
+            AND end_date >= #{criteria.endDate}
         </if>
-        ORDER BY bb_coupons.id DESC LIMIT #{start},#{length}
+        ORDER BY id DESC LIMIT #{start},#{length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_coupons (staff_id,
+        insert into bb_coupons (project_id,
                                 name,
                                 type,
                                 discount,
@@ -58,19 +58,19 @@
                                 duration,
                                 limit_wday,
                                 limit_room)
-        values (#{staffId},
-                #{name},
-                #{type},
-                #{discount},
-                #{min},
-                #{resume},
-                #{amount},
-                #{expiredType,typeHandler=com.ace.dao.handler.EnumHandler},
-                #{startDate},
-                #{endDate},
-                #{duration},
-                #{limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
-                #{limitRoom})
+        values (#{staff.projectId},
+                #{coupon.name},
+                #{coupon.type},
+                #{coupon.discount},
+                #{coupon.min},
+                #{coupon.resume},
+                #{coupon.amount},
+                #{coupon.expiredType,typeHandler=com.ace.dao.handler.EnumHandler},
+                #{coupon.startDate},
+                #{coupon.endDate},
+                #{coupon.duration},
+                #{coupon.limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
+                #{coupon.limitRoom})
     </insert>
 
     <select id="findById" resultMap="couponMap">

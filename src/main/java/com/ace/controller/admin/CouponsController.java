@@ -56,8 +56,7 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/new")
-    public String add(HttpSession session, Model model) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+    public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
         model.addAttribute("coupon", new SystemCoupon());
         model.addAttribute("couponType", CollectionUtil.toCollection(CouponType.class));
         model.addAttribute("weeks", Week.toOptions());
@@ -67,14 +66,14 @@ public class CouponsController extends BaseController {
 
 
     @PostMapping(value = {"", "/"})
-    public String create(@Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
+    public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("couponType", CollectionUtil.toCollection(CouponType.class));
             model.addAttribute("weeks", Week.toOptions());
             model.addAttribute("coupon", systemCoupon);
             return viewPath + "new";
         } else {
-            couponService.create(systemCoupon);
+            couponService.create(staff, systemCoupon);
             model.addAttribute("coupon", systemCoupon);
             return "redirect:" + viewPath + systemCoupon.getId() + "/show";
         }
@@ -89,8 +88,7 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(HttpSession session, @PathVariable("id") int id, Model model) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
+    public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") int id, Model model) {
         SystemCoupon coupon = couponService.findById(id);
         model.addAttribute("coupon", coupon);
         model.addAttribute("couponType", CollectionUtil.toCollection(CouponStatus.class));

@@ -23,17 +23,17 @@
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal
         FROM bb_room_prices
-                 LEFT JOIN bb_staffs ON bb_room_prices.staff_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
+                 INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
+                 INNER JOIN bb_rooms ON bb_rooms.id = bb_room_prices_ref.room_id
+        WHERE bb_rooms.project_id = #{staff.projectId}
     </select>
 
     <select id="dataList" resultMap="priceMap">
         SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.name) AS room_name
         FROM bb_room_prices
-                 LEFT JOIN bb_staffs ON bb_room_prices.staff_id = bb_staffs.id
                  INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
                  INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
+        WHERE bb_rooms.project_id = #{staff.projectId}
         GROUP BY bb_room_prices.id
         ORDER BY bb_room_prices.id DESC
         LIMIT #{start},#{length}
