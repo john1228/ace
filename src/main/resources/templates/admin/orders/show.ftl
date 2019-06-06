@@ -171,11 +171,6 @@
     <div class="row">
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
-                <a class="btn btn-info" type="button" href="/admin/orders/${order.id}/edit">
-                    <i class="icon-ok bigger-110"></i>
-                    修改
-                </a>
-                &nbsp;&nbsp;&nbsp;
                 <button class="btn" type="reset" onclick="history.go(-1)">
                     <i class="icon-undo bigger-110"></i>
                     返回

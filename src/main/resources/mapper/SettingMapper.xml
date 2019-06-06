@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.SettingMapper">
+    <select id="alipay" resultType="com.ace.entity.Alipay">
+        SELECT seller, private_key AS privateKey, public_key AS publicKey
+        FROM bb_alipay
+        WHERE project_id = #{staff.projectId}
+    </select>
+
+    <insert id="updateAlipay" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT count(1) FROM bb_alipay WHERE project_id = #{staff.projectId}
+        </selectKey>
+        <if test="count > 0">
+            UPDATE bb_alipay
+            SET seller = #{alipay.seller},private_key = #{alipay.privateKey},public_key = #{alipay.publicKey}
+            WHERE project_id = #{staff.projectId}
+        </if>
+        <if test="count==0">
+            INSERT INTO bb_alipay (project_id, seller, private_key, public_key)
+            values(#{staff.projectId},#{alipay.seller},#{alipay.privateKey},#{alipay.publicKey})
+        </if>
+    </insert>
+
+    <select id="wxpay" resultType="com.ace.entity.Wxpay">
+        SELECT app_id AS appId, mch_id AS mchId, secret_key AS secretKey
+        FROM bb_wxpay
+        WHERE project_id = #{staff.projectId}
+    </select>
+
+    <insert id="updateWxpay" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT count(1) FROM bb_wxpay WHERE project_id = #{staff.projectId}
+        </selectKey>
+        <if test="count > 0">
+            UPDATE bb_wxpay
+            SET app_id = #{wxpay.appId},mch_id = #{wxpay.mchId},secret_key = #{alipay.secretKey}
+            WHERE project_id = #{staff.projectId}
+        </if>
+        <if test="count==0">
+            INSERT INTO bb_wxpay (project_id, app_id, mch_id, secret_key)
+            values(#{staff.projectId},#{wxpay.appId},#{wxpay.mchId},#{wxpay.secretKey})
+        </if>
+    </insert>
+
+
+    <select id="protocol" resultType="java.lang.String">
+        SELECT content
+        FROM bb_protocol
+        WHERE project_id = #{staff.projectId}
+    </select>
+
+    <insert id="updateProtocol" useGeneratedKeys="true" keyProperty="id">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            SELECT count(1) FROM bb_protocol WHERE project_id = #{staff.projectId}
+        </selectKey>
+        <if test="count > 0">
+            UPDATE bb_protocol
+            SET content = #{protocol}
+            WHERE project_id = #{staff.projectId}
+        </if>
+        <if test="count==0">
+            INSERT INTO bb_protocol (project_id, content)
+            values(#{staff.projectId},#{protocol})
+        </if>
+    </insert>
+</mapper>

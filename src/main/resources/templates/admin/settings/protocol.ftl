@@ -18,7 +18,7 @@
             <li>
                 <a href="/admin/supports">配置管理</a>
             </li>
-            <li class="active">支付宝配置</li>
+            <li class="active">下单协议</li>
         </ul>
     </div>
 
@@ -26,19 +26,18 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="page-title">
-                    <h1>支付宝设置</h1>
+                    <h1>下单协议</h1>
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="/admin/alipay" role="form" class="form-horizontal" method="post"
-                              enctype="multipart/form-data">
+                        <form action="/admin/settings/protocol" role="form" class="form-horizontal" method="post">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input type="hidden" name="staffId" value="${current_operator.getId()}">
+                            <input type="hidden" name="_method" value="put">
                             <div class="form-group row">
                                 <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>下单协议</label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" rows="10">
-                                        ${protocol}
+                                    <textarea class="form-control" name="protocol" rows="10" placeholder="下单协议">
+                                        ${protocol!}
                                     </textarea>
                                 </div>
                             </div>

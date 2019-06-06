@@ -3,7 +3,7 @@ CREATE TABLE bb_alipay (
   id          bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   project_id  varchar(32)         NOT NULL,
   seller      varchar(32)         NOT NULL,
-  primary_key text                NOT NULL,
+  private_key text                NOT NULL,
   public_key  text                NOT NULL,
   created_at  timestamp                    DEFAULT CURRENT_TIMESTAMP,
   updated_at  timestamp                    DEFAULT CURRENT_TIMESTAMP

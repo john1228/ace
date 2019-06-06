@@ -99,22 +99,22 @@
         </a>
         <b class="arrow"></b>
         <ul class="submenu">
-            <li class="${(requestUri?starts_with("/admin/alipay"))?string("active","")}">
-                <a href="/admin/alipay">
+            <li class="${(requestUri?starts_with("/admin/settings/alipay"))?string("active","")}">
+                <a href="/admin/settings/alipay">
                     <i class="menu-icon fa fa-caret-right"></i>
                     <text>支付宝配置</text>
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li class="${(requestUri?starts_with("/admin/wxpay"))?string("active","")}">
-                <a href="/admin/wxpay">
+            <li class="${(requestUri?starts_with("/admin/settings/wxpay"))?string("active","")}">
+                <a href="/admin/settings/wxpay">
                     <i class="menu-icon fa fa-caret-right"></i>
                     <text>微信配置</text>
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li class="${(requestUri?starts_with("/admin/protocol"))?string("active","")}">
-                <a href="/admin/protocol">
+            <li class="${(requestUri?starts_with("/admin/settings/protocol"))?string("active","")}">
+                <a href="/admin/settings/protocol">
                     <i class="menu-icon fa fa-caret-right"></i>
                     <text>下单协议</text>
                 </a>

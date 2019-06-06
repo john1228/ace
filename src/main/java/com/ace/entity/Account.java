@@ -1,18 +1,16 @@
 package com.ace.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiParam;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@ApiModel
+@NoArgsConstructor
 public class Account implements Serializable {
 
     private static final long serialVersionUID = -2636547406752810026L;
@@ -22,6 +20,10 @@ public class Account implements Serializable {
     //记录操作产生的错误信息
     private String errMsg;
 
+    public Account(String accountId, String accountName) {
+        this.accountId = accountId;
+        this.accountName = accountName;
+    }
 
     //账号内所有员工的编号
     public List<Long> allStaff() {

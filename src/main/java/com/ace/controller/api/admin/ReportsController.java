@@ -2,12 +2,10 @@ package com.ace.controller.api.admin;
 
 import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
+import com.ace.entity.Account;
 import com.ace.entity.RoomReport;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,10 +21,11 @@ import java.util.List;
 @RequestMapping("/api/admin/reports")
 public class ReportsController {
 
+
     @GetMapping
-    public Result index(@RequestParam("from") Date from, @RequestParam("to") Date to) {
+    public Result index(@RequestAttribute("ACCOUNT") Account account, @RequestParam(value = "from", defaultValue = "2019-05-01") Date from, @RequestParam(value = "to", defaultValue = "2019-05-06") Date to) {
         List<RoomReport> reportList = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
+        for (int i = 0; i < 11; i++) {
             RoomReport report = new RoomReport();
             report.setId(Long.valueOf(i));
             report.setName("会议室" + i);

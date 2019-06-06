@@ -24,6 +24,17 @@ public class Staff implements Serializable {
     //保存用户操作的错误信息
     private StringBuilder errMsg;
 
+    public Staff(Account account, String projectId, String projectName, String orgId, String orgName, String empId, String empName) {
+        this.accountId = account.getAccountId();
+        this.accountName = account.getAccountName();
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.orgId = orgId;
+        this.orgName = orgName;
+        this.empId = empId;
+        this.empName = empName;
+    }
+
     @Override
     public String toString() {
         return this.orgName + "@" + this.projectName;

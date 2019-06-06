@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `bb_rooms`;
 CREATE TABLE bb_rooms
 (
   id                 bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  staff_id           bigint(11)          NOT NULL COMMENT '管理员工',
+  project_id         varchar(32)          NOT NULL COMMENT '管理员工',
   name               varchar(64)         NOT NULL COMMENT '场地名字',
   cover              varchar(64)         NOT NULL COMMENT '场地封面图',
   image              varchar(640)        NOT NULL COMMENT '场地详情图',

@@ -69,6 +69,7 @@ public class OrdersController extends BaseController {
     @Authorization
     @ApiOperation(value = "取消订单")
     public Result delete(@PathVariable("id") String orderNo) {
+        orderService.cancel(orderNo);
         return new Success(null);
     }
 }

@@ -30,10 +30,9 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <form action="/admin/alipay" role="form" class="form-horizontal" method="post"
-                          enctype="multipart/form-data">
+                    <form action="/admin/settings/alipay" role="form" class="form-horizontal" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="staffId" value="${current_operator.getId()}">
+                        <input type="hidden" name="_method" value="put">
                         <@spring.bind path="alipay"/>
                         <div class="form-group row">
                             <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>商户号</label>

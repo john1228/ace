@@ -20,7 +20,7 @@
     <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>适用日期</label>
     <div class="col-sm-10">
         <input type="text" id="dateRange" class="col-xs-10 col-sm-9"
-               value="${price.startDate?string('yyyy-MM-dd')} 至 ${price.endDate?string('yyyy-MM-dd')}" required
+               value="${(price.startDate?string('yyyy-MM-dd'))!} 至 ${(price.endDate?string('yyyy-MM-dd'))!}" required
                readonly>
         <@spring.formHiddenInput "price.startDate"/>
         <@spring.formHiddenInput "price.endDate"/>

@@ -14,7 +14,7 @@
             <a href="index.html" class="navbar-brand">
                 <small>
                     <i class="fa fa-leaf"></i>
-                ${company}-${image}
+                ${company}
                 </small>
             </a>
         </div>

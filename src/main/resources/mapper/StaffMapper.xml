@@ -37,4 +37,11 @@
         from bb_staffs
         where id = #{id}
     </select>
+
+    <select id="manager" resultMap="staffMap">
+        SELECT *
+        FROM bb_staffs
+                 LEFT JOIN bb_rooms ON bb_staffs.id = bb_rooms.staff_id
+        WHERE bb_rooms.id = #{room}
+    </select>
 </mapper>

@@ -35,7 +35,7 @@
         values (#{orderId}, #{roomId}, #{meetingName}, #{startTime}, #{endTime}, #{contactName}, #{contactMobile})
     </insert>
     <select id="selectByOrder" resultType="com.ace.entity.Appointment">
-        SELECT room_id,
+        SELECT room_id                    AS roomId,
                bb_rooms.name              AS roomName,
                bb_rooms.supervisor_mobile AS roomMobile,
                bb_rooms.refund_limit_time AS roomRefund,

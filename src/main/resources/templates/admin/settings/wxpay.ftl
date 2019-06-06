@@ -30,10 +30,9 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="/admin/wxpay" role="form" class="form-horizontal" method="post"
-                              enctype="multipart/form-data">
+                        <form action="/admin/settings/wxpay" role="form" class="form-horizontal" method="post">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                            <input type="hidden" name="staffId" value="${current_operator.getId()}">
+                            <input type="hidden" name="_method" value="put">
                             <@spring.bind path="wxpay"/>
                             <div class="form-group row">
                                 <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>应用appId</label>
@@ -43,14 +42,14 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 control-label no-padding-right"><span
-                                            style="color: red">*</span>商户号</label>
+                                        style="color: red">*</span>商户号</label>
                                 <div class="col-sm-10">
                                     <@spring.formInput "wxpay.mchId","class='form-control' placeholder='请填写微信商户号' rows=5 required"/>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 control-label no-padding-right"><span
-                                            style="color: red">*</span>支付密钥</label>
+                                        style="color: red">*</span>支付密钥</label>
                                 <div class="col-sm-10">
                                     <@spring.formInput "wxpay.secretKey","class='form-control' placeholder='请填写微信支付密钥' required"/>
                                 </div>

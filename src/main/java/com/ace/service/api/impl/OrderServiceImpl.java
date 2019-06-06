@@ -55,6 +55,10 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     private RoomTools roomTools;
     @Resource
     private ReceiptMapper receiptMapper;
+    @Resource
+    private SettingMapper settingMapper;
+    @Resource
+    private StaffMapper staffMapper;
 
 
     @Override
@@ -159,7 +163,20 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                             break;
                     }
                 }
-
+                if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
+                    //支付宝
+                    Staff roomManager = staffMapper.manager(room.getId());
+                    Alipay alipay = settingMapper.alipay(roomManager);
+                    Wxpay wxpay = settingMapper.wxpay(roomManager);
+                    Payment payment = new Payment();
+                    if (alipay != null) {
+                        payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
+                    }
+                    if (wxpay != null) {
+                        payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
+                    }
+                    order.setPayment(payment);
+                }
 
                 orderMapper.create(order);
                 //创建预约
@@ -192,9 +209,16 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         order.setAppointment(appointment);
         if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
             //支付宝
+            Staff roomManager = staffMapper.manager(appointment.getRoomId());
+            Alipay alipay = settingMapper.alipay(roomManager);
+            Wxpay wxpay = settingMapper.wxpay(roomManager);
             Payment payment = new Payment();
-            payment.setAlipay(AlipayBuilder.instance.getPay(null, order));
-            payment.setWxpay(WxpayBuilder.instance.getPay(null, order));
+            if (alipay != null) {
+                payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
+            }
+            if (wxpay != null) {
+                payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
+            }
             order.setPayment(payment);
         }
         return order;

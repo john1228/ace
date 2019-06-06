@@ -54,7 +54,7 @@ public class OrdersController extends BaseController {
     @JsonView(ApiView.Base.class)
     @DeleteMapping("/{id}")
     @Authorization
-    @ApiOperation(value = "确认订单")
+    @ApiOperation(value = "取消订单")
     public Result cancel(@PathVariable("id") String orderNo) {
         orderService.cancel(orderNo);
         return new Success(null);

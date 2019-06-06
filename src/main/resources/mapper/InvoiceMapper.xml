@@ -56,6 +56,7 @@
         CONCAT(DATE_FORMAT(bb_order_appointments.start_time, '%Y/%m/%d %H:%m'), '-',
         DATE_FORMAT(bb_order_appointments.end_time,
         '%H:%m')) AS appoint_time,
+        bb_orders.total AS pay_amount,
         bb_orders.pay_amount AS pay_amount,
         CASE
         WHEN bb_invoices.status IS NULL THEN 0

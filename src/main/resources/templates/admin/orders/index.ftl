@@ -161,7 +161,6 @@
                                                     render: function (data) {
                                                         return '<div class="hidden-sm hidden-xs btn-group">' +
                                                                 '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>' +
-                                                                '<a class="btn btn-xs btn-danger" href="/admin/orders/' + data + '/edit">编辑</a>' +
                                                                 '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>' +
                                                                 '</div>';
                                                     }

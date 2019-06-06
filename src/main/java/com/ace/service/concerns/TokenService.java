@@ -1,7 +1,9 @@
 package com.ace.service.concerns;
 
+import com.ace.dao.StaffMapper;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -10,6 +12,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.codehaus.jettison.json.JSONArray;
+import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +35,11 @@ import java.util.List;
 public class TokenService {
     Logger logger = LoggerFactory.getLogger(TokenService.class);
     private static final String host = "http://passport.baobanwang.com/login/getAccountData";
+    private static final String hostT = "http://passport.baobanwang.com/login/getAccountDataTest";
     @Resource
     RedisTemplate<String, Staff> redisTemplate;
+    @Resource
+    StaffMapper staffMapper;
 
     public Account account(String token) {
         HttpClient httpClient = HttpClients.createDefault();
@@ -50,7 +58,30 @@ public class TokenService {
                 accountInfo.append(inputLine);
             }
             logger.info(accountInfo.toString());
+//            JSONObject jsonObject = new JSONObject(accountInfo.toString());
+//            if (jsonObject.getString("code").equals("000000000")) {
+//                JSONObject actObj = jsonObject.getJSONObject("data");
+//                Account account = new Account(actObj.getString("accountId"), actObj.getString("accountName"));
+//
+//                JSONArray empList = actObj.getJSONArray("employee");
+//                List<Staff> staffList = new ArrayList<>();
+//                for (int i = 0; i < empList.length(); i++) {
+//                    JSONObject empObj = empList.getJSONObject(i);
+//                    staffList.add(new Staff(
+//                            account,
+//                            empObj.getString("projectId"),
+//                            empObj.getString("projectName"),
+//                            empObj.getString("orgId"),
+//                            empObj.getString("orgName"),
+//                            empObj.getString("empId"),
+//                            empObj.getString("empName")
+//                    ));
+//                }
+//                account.setStaffList(staffList);
+//                return account;
+//            }
             Account account = new Account();
+
             account.setAccountId("001");
             account.setAccountName("001-NAME");
             List<Staff> staffList = new ArrayList<>();
@@ -69,15 +100,12 @@ public class TokenService {
                 redisTemplate.opsForList().leftPush(account.getAccountId(), staff);
             }
             account.setStaffList(staffList);
+            logger.info("登录成功");
             return account;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
-    public static void main(String[] args) {
-        TokenService tk = new TokenService();
-        tk.account("3e968c13114a49a89f7551c6e81e142d");
-    }
 }
