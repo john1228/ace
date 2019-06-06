@@ -39,5 +39,5 @@ CREATE TABLE bb_rooms
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-CREATE INDEX bb_rooms_staff_id on bb_rooms (staff_id)
+CREATE INDEX bb_rooms_staff_id on bb_rooms (project_id)
 

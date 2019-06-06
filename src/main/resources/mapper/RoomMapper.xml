@@ -41,8 +41,8 @@
         <association property="supportList" select="com.ace.dao.RoomSupportMapper.supportList" column="id"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
-        SELECT count(1) AS recordsTotal FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
+        SELECT count(1) AS recordsTotal FROM bb_rooms
+        WHERE project_id = #{staff.projectId}
         <if test="criteria.name!=null and criteria.name!=''">
             AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
@@ -78,22 +78,22 @@
         bb_rooms.supervisor_mobile AS supervisorMobile,
         bb_rooms.supervisor_email AS supervisorEmail,
         bb_rooms.free_service AS freeService
-        FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
+        FROM bb_rooms
+        WHERE project_id = #{staff.projectId}
         <if test="criteria.name!=null and criteria.name!=''">
-            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+            AND name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
         <if test="criteria.layerAreaFrom!=null">
-            AND bb_rooms.layer_area >= #{criteria.layerAreaFrom}
+            AND layer_area >= #{criteria.layerAreaFrom}
         </if>
         <if test="criteria.layerAreaTo!=null">
-            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+            AND #{criteria.layerAreaTo} >= layer_area
         </if>
         <if test="criteria.quotaFrom!=null">
-            AND bb_rooms.quota >= #{criteria.quotaFrom}
+            AND quota >= #{criteria.quotaFrom}
         </if>
         <if test="criteria.quotaTo!=null">
-            AND #{criteria.quotaTo} >= bb_rooms.quota
+            AND #{criteria.quotaTo} >= quota
         </if>
         ORDER BY id DESC
         <if test="length!=0">
@@ -104,7 +104,7 @@
     <select id="roomList" resultType="com.ace.entity.Room">
         SELECT bb_rooms.id, bb_rooms.name
         FROM bb_rooms
-                 LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+                 LEFT JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE bb_staffs.project_id = #{staff.projectId}
     </select>
     <!--客户端查询会议室，包含自有和开放的-->
@@ -127,9 +127,8 @@
         bb_rooms.supervisor_mobile AS supervisorMobile,
         bb_rooms.supervisor_email AS supervisorEmail,
         bb_rooms.free_service AS freeService
-        FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
-        WHERE (bb_rooms.publish = 1) OR (
-        bb_staffs.project_id IN
+        FROM bb_rooms
+        WHERE (bb_rooms.publish = 1) OR (project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}
         </foreach>
@@ -144,7 +143,7 @@
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_rooms (staff_id,
+        insert into bb_rooms (project_id,
                               name,
                               cover,
                               image,
@@ -173,7 +172,7 @@
                               refund_limit_time,
                               resume,
                               free_service)
-        values (#{staffId},
+        values (#{staff.projectId},
                 #{name},
                 #{cover},
                 #{image,typeHandler=com.ace.dao.handler.StringListHandler},
@@ -207,7 +206,7 @@
     <select id="findById" resultMap="dMap">
         SELECT *
         FROM bb_rooms
-                 LEFT JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+                 LEFT JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE bb_rooms.id = #{id}
         LIMIT 1
     </select>

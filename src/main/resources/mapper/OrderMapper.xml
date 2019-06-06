@@ -56,7 +56,7 @@
         SELECT count(1) AS recordsTotal FROM bb_orders
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
-        INNER JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE bb_staffs.project_id = #{staff.projectId}
         <if test="criteria.orderNo!=null and criteria.orderNo!=''">
             AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
@@ -89,7 +89,7 @@
         LEFT JOIN bb_order_appointments ON bb_orders.id =
         bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
-        INNER JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE bb_staffs.project_id = #{staff.projectId}
         <if test="criteria.orderNo!=null and criteria.orderNo!=''">
             AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
@@ -136,7 +136,7 @@
         LEFT JOIN bb_invoices ON bb_orders.id = bb_invoices.order_id
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
-        INNER JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE bb_orders.account_id = #{account.accountId}
         <if test="status!=null">
             AND status = #{status.code}
@@ -167,7 +167,7 @@
         FROM bb_orders
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
-        INNER JOIN bb_staffs ON bb_rooms.staff_id = bb_staffs.id
+        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE
         bb_staffs.project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">

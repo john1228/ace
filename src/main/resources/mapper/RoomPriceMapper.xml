@@ -60,9 +60,8 @@
 
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_room_prices (staff_id, rental, start_date, end_date, start_time, end_time, wday, price)
-        values (#{staffId},
-                #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
+        insert into bb_room_prices (rental, start_date, end_date, start_time, end_time, wday, price)
+        values (#{rental,typeHandler=com.ace.dao.handler.EnumHandler},
                 #{startDate},
                 #{endDate},
                 #{startTime},
