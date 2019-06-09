@@ -127,23 +127,24 @@
         bb_rooms.supervisor_mobile AS supervisorMobile,
         bb_rooms.supervisor_email AS supervisorEmail,
         bb_rooms.free_service AS freeService
-        FROM bb_rooms
-        WHERE (bb_rooms.publish = 1) OR (project_id IN
+        FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.project_id
+        WHERE (bb_rooms.publish = 1) OR (bb_rooms.project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}
         </foreach>
         )
         <if test="query.keyword != null and query.keyword != ''">
-            AND name LIKE CONCAT('%',#{query.keyword},'%')
+            AND bb_rooms.name LIKE CONCAT('%',#{query.keyword},'%')
         </if>
         <if test="query.quota != 0">
-            AND quota > #{query.quota}
+            AND bb_rooms.quota > #{query.quota}
         </if>
         ORDER BY ${query.sort.column} ${query.sort.order} LIMIT #{query.start},#{query.pageSize}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
         insert into bb_rooms (project_id,
+                              project_name,
                               name,
                               cover,
                               image,
@@ -173,6 +174,7 @@
                               resume,
                               free_service)
         values (#{staff.projectId},
+                #{staff.projectName},
                 #{name},
                 #{cover},
                 #{image,typeHandler=com.ace.dao.handler.StringListHandler},

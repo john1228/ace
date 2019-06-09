@@ -2,8 +2,6 @@
 <script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <@spring.bind path="coupon"/>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<input type="hidden" name="staffId" value="${current_operator.getId()}">
-<input type="hidden" name="parent" value="${parent}"/>
 <div class="row">
     <div class="col-xs-12 col-sm-12 widget-container-col">
         <div class="widget-box">

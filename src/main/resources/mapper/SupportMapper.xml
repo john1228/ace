@@ -8,11 +8,9 @@
         <result column="unit" property="unit"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
-        SELECT count(1) AS recordsTotal FROM bb_supports LEFT JOIN bb_staffs ON bb_supports.staff_id = bb_staffs.id
+        SELECT count(1) AS recordsTotal FROM bb_supports
         <where>
-            <if test="staff != null">
-                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
-            </if>
+            project_id = #{staff.projectId}
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
             </if>
@@ -20,11 +18,9 @@
     </select>
 
     <select id="dataList" resultMap="supMap">
-        select * from bb_supports LEFT JOIN bb_staffs ON bb_supports.staff_id = bb_staffs.id
+        select * from bb_supports
         <where>
-            <if test="staff != null">
-                AND (bb_staffs.project_id = #{staff.projectId} AND bb_staffs.org_id = #{staff.orgId})
-            </if>
+            project_id = #{staff.projectId}
             <if test="keyword != null and keyword != ''">
                 and name LIKE "%${keyword}%"
             </if>
@@ -35,14 +31,12 @@
     <select id="all" resultMap="supMap">
         SELECT *
         FROM bb_supports
-                 LEFT JOIN bb_staffs ON bb_supports.staff_id = bb_staffs.id
-        where bb_staffs.project_id = #{staff.projectId}
-          AND bb_staffs.org_id = #{staff.orgId}
+        WHERE project_id = #{staff.projectId}
     </select>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_supports (staff_id, name, cover, unit)
-        values (#{staffId}, #{name}, #{cover}, #{unit})
+    <insert id="create">
+        insert into bb_supports (project_id, name, cover, unit)
+        values (#{staff.projectId}, #{support.name}, #{support.cover}, #{support.unit})
     </insert>
 
     <select id="findById" resultMap="supMap">
@@ -54,10 +48,10 @@
 
     <update id="update">
         update bb_supports
-        set name  = #{name},
-            cover = #{cover},
-            unit  = #{unit}
-        where id = #{id}
+        set name  = #{support.name},
+            cover = #{support.cover},
+            unit  = #{support.unit}
+        where id = #{support.id}
     </update>
     <delete id="destroy">
         delete

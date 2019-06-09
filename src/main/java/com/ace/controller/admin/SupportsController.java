@@ -5,7 +5,6 @@ import com.ace.entity.Staff;
 import com.ace.entity.Support;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 
@@ -36,12 +34,11 @@ public class SupportsController extends BaseController {
     @ResponseBody
     @PostMapping("/dataList")
     public DataTable<Support> dataList(
-            HttpSession session,
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
             @RequestParam(value = "draw", defaultValue = "1") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
             @RequestParam(value = "length", defaultValue = "10") int length
     ) {
-        Staff staff = (Staff) session.getAttribute(CURRENT_OPERATOR);
         DataTable<Support> dataTable = supportService.dataTable(staff, start, length, "");
         dataTable.setDraw(draw);
         return dataTable;
@@ -55,13 +52,13 @@ public class SupportsController extends BaseController {
 
 
     @PostMapping({"", "/"})
-    public String create(@RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
+    public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
         model.addAttribute("support", support);
         upload(support, cover);
         if (result.hasErrors()) {
             return viewPath + "new";
         } else {
-            supportService.create(support);
+            supportService.create(staff, support);
             return "redirect:" + viewPath + support.getId();
         }
     }
@@ -81,13 +78,13 @@ public class SupportsController extends BaseController {
     }
 
     @PutMapping({"/{id}", "/{id}/"})
-    public String update(@PathVariable("id") int id, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
+    public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") int id, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
         model.addAttribute("support", support);
         upload(support, cover);
         if (result.hasErrors()) {
             return viewPath + "edit";
         } else {
-            supportService.update(support);
+            supportService.update(staff, support);
             return "redirect:" + viewPath + id;
         }
 

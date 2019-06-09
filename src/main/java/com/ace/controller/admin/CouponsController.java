@@ -4,12 +4,12 @@ import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.CouponCriteria;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.Grant;
+import com.ace.entity.Room;
+import com.ace.entity.Staff;
+import com.ace.entity.SystemCoupon;
 import com.ace.entity.concern.enums.CouponStatus;
 import com.ace.entity.concern.enums.CouponType;
 import com.ace.entity.concern.enums.Week;
-import com.ace.entity.SystemCoupon;
-import com.ace.entity.Staff;
-import com.ace.entity.Room;
 import com.ace.service.admin.CouponService;
 import com.ace.service.admin.RoomService;
 import com.ace.util.CollectionUtil;
@@ -22,7 +22,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
@@ -75,7 +74,7 @@ public class CouponsController extends BaseController {
         } else {
             couponService.create(staff, systemCoupon);
             model.addAttribute("coupon", systemCoupon);
-            return "redirect:" + viewPath + systemCoupon.getId() + "/show";
+            return "redirect:" + viewPath + systemCoupon.getId();
         }
     }
 

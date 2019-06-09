@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `bb_supports`;
 CREATE TABLE bb_supports (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  staff_id     varchar(32)         NOT NULL COMMENT '管理人员',
+  project_id   varchar(32)         NOT NULL COMMENT '所属项目',
   name         varchar(64)         NOT NULL COMMENT '名称',
   cover        varchar(128)        NOT NULL COMMENT '图片',
   unit         varchar(32)         NOT NULL COMMENT '单位',

@@ -12,11 +12,11 @@ public interface SupportMapper {
 
     Long recordsTotal(@Param("staff") Staff staff, @Param("keyword") String keyword);
 
-    void create(Support support);
+    void create(@Param("staff") Staff staff, @Param("support") Support support);
 
     Support findById(@Param("id") int id);
 
-    void update(Support support);
+    void update(@Param("staff") Staff staff, @Param("support") Support support);
 
     void destroy(int id);
 

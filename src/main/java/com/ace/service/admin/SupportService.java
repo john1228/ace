@@ -12,9 +12,9 @@ public interface SupportService {
 
     Support findById(int id);
 
-    void create(Support device);
+    void create(Staff staff, Support support);
 
-    void update(Support device);
+    void update(Staff staff, Support support);
 
     void delete(int id);
 

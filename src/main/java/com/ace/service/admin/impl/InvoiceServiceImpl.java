@@ -65,6 +65,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice was = invoiceMapper.findBy(orderNo);
         was.setExpress(invoice.getExpress());
         logger.info("邮寄");
-        invoiceMapper.mail(invoice, InvoiceStatus.SHIPPED);
+        invoiceMapper.mail(was, InvoiceStatus.SHIPPED);
     }
 }

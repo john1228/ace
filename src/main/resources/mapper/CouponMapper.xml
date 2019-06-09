@@ -44,7 +44,7 @@
         ORDER BY id DESC LIMIT #{start},#{length}
     </select>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create">
         insert into bb_coupons (project_id,
                                 name,
                                 type,

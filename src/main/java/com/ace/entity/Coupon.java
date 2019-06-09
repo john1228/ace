@@ -17,6 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -49,9 +50,9 @@ public abstract class Coupon extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private Date endDate;
     @JsonView(ApiView.Detail.class)
-    private List<Week> limitWday;
+    private List<Week> limitWday = new ArrayList<>();
     @JsonView(ApiView.Detail.class)
-    private List<Integer> limitRoom;
+    private List<Integer> limitRoom = new ArrayList<>();
 
     @JsonView(AdminView.Table.class)
     @JsonProperty("weekList")

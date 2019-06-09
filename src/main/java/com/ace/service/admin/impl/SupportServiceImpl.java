@@ -32,13 +32,13 @@ public class SupportServiceImpl implements SupportService {
     }
 
     @Override
-    public void create(Support device) {
-        supportMapper.create(device);
+    public void create(Staff staff, Support support) {
+        supportMapper.create(staff, support);
     }
 
     @Override
-    public void update(Support device) {
-        supportMapper.update(device);
+    public void update(Staff staff, Support support) {
+        supportMapper.update(staff, support);
     }
 
     @Override
