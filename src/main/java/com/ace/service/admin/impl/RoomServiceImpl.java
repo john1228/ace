@@ -49,7 +49,7 @@ public class RoomServiceImpl implements RoomService {
         roomMapper.create(room);
         List<RoomSupport> selectedSupport = room.getSupportList().stream().filter(item -> item.getSupportId() != null).collect(Collectors.toList());
         selectedSupport.forEach(item -> item.setRoomId(room.getId()));
-        roomSupportMapper.create(staff, selectedSupport);
+        roomSupportMapper.create(selectedSupport);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
         roomMapper.update(room);
         List<RoomSupport> selectedSupport = room.getSupportList().stream().filter(item -> item.getSupportId() != null).collect(Collectors.toList());
         selectedSupport.forEach(item -> item.setRoomId(room.getId()));
-        roomSupportMapper.create(staff, selectedSupport);
+//        roomSupportMapper.create(selectedSupport);
     }
 
     @Override

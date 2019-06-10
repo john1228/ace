@@ -136,7 +136,14 @@ public class RoomsController extends BaseController {
     }
 
     @PutMapping({"/{id}/", "/{id}"})
-    public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Room room, BindingResult result, @PathVariable("id") int id, Model model) {
+    public String update(
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @PathVariable("id") Long id,
+            @RequestParam("coverFile") MultipartFile avatar,
+            @RequestParam("imageFiles") MultipartFile[] image,
+            @Valid Room room, BindingResult result,
+            Model model
+    ) {
         model.addAttribute("room", room);
         if (result.hasErrors()) {
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
@@ -144,8 +151,24 @@ public class RoomsController extends BaseController {
             model.addAttribute("payments", CollectionUtil.trueOrFalseCollection("是", "否"));
             return viewPath + "edit";
         } else {
+            try {
+                String fileName = Aliyun.Instance.upload(avatar);
+                room.setCover(fileName);
+            } catch (Exception exp) {
+                result.addError(new ObjectError("cover", "上传列表图片失败"));
+            }
+
+            try {
+                List<String> imageList = new ArrayList<>();
+                for (MultipartFile tmp : image) {
+                    imageList.add(Aliyun.Instance.upload(tmp));
+                }
+                room.setImage(imageList);
+            } catch (Exception exp) {
+                result.addError(new ObjectError("image", "更新图片失败"));
+            }
             roomService.update(staff, room);
-            return viewPath + "show";
+            return "redirect:" + "/admin/rooms/" + id;
         }
 
     }

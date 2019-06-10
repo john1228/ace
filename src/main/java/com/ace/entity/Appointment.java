@@ -44,6 +44,8 @@ public class Appointment {
     //用于显示字段
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private String roomName;
+    @JsonView({ApiView.Base.class, ApiView.Detail.class})
+    private String roomCover;
     @JsonView(ApiView.Detail.class)
     private String roomMobile;
     @JsonView(ApiView.Detail.class)

@@ -19,7 +19,7 @@ public interface AppointmentMapper {
 
     Appointment selectByOrder(@Param("order") Long order);
 
-    Appointment selectByOrderNo(@Param("order") String orderNo);
+    Appointment selectByOrderNo(@Param("orderNo") String orderNo);
 
     List<Appointment> appointList(@Param("criteria") ScheduleCriteria criteria);
 }

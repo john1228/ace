@@ -55,22 +55,22 @@
     </select>
 
     <select id="selectByOrderNo" resultType="com.ace.entity.Appointment">
-        SELECT room_id,
-               bb_rooms.name              AS roomName,
-               bb_rooms.supervisor_mobile AS roomMobile,
-               bb_rooms.refund_limit_time AS roomRefund,
-               bb_rooms.renew             AS roomRenew,
-               CONCAT(bb_staffs.project_name, bb_rooms.building_no, '幢', bb_rooms.floor_no, '层', bb_rooms.room_no,
-                      '室')                AS address,
-               meeting_name               AS meetingName,
-               start_time                 AS startTime,
-               end_time                   AS endTime,
-               contact_name               AS contactName,
-               contact_mobile             AS contactMobile,
-               remark
+        SELECT room_id                      AS roomId,
+               bb_rooms.name                AS roomName,
+               bb_rooms.supervisor_mobile   AS roomMobile,
+               bb_rooms.refund_limit_time   AS roomRefund,
+               bb_rooms.renew               AS roomRenew,
+               CONCAT(bb_rooms.project_name, bb_rooms.building_no, '幢', bb_rooms.floor_no, '层', bb_rooms.room_no,
+                      '室')                  AS address,
+               meeting_name                 AS meetingName,
+               start_time                   AS startTime,
+               end_time                     AS endTime,
+               contact_name                 AS contactName,
+               contact_mobile               AS contactMobile,
+               bb_order_appointments.remark AS remark
         FROM bb_order_appointments
-                 LEFT JOIN bb_rooms on bb_order_appointments.room_id = bb_rooms.id
-                 INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
+                 LEFT JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
+                 LEFT JOIN bb_orders ON bb_orders.id = bb_order_appointments.order_id
         WHERE CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) = #{orderNo}
     </select>
 

@@ -245,8 +245,8 @@
                                     <button type="button" class="close" data-dismiss="modal"
                                             aria-hidden="true">&times;
                                     </button>
-                                    <h4 class="smaller lighter blue no-margin">[${coupon.name}
-                                        ]发放</h4>
+                                    <h4 class="smaller lighter blue no-margin">${coupon.name}
+                                        ---发放</h4>
                                 </div>
                                 <div class="modal-body">
                                     <form action="/admin/coupons/${coupon.id}/grant" role="form"
@@ -254,10 +254,26 @@
                                         <@spring.bind path="grant"/>
                                         <div class="form-group row">
                                             <label class="col-sm-2 control-label no-padding-right">
-                                                发放账号 </label>
+                                                发放组织 </label>
                                             <div class="col-sm-10">
-                                                <@spring.formInput "grant.accounts","class='col-xs-10 col-sm-5'"/>
-                                                <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
+                                                <select id="room" class="chosen-select form-control"
+                                                        data-placeholder="请选择账号">
+                                                    <#list staffList as staff>
+                                                        <option value="${staff.empId}">${staff.empName}</option>
+                                                    </#list>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 control-label no-padding-right">
+                                                发放员工 </label>
+                                            <div class="col-sm-10">
+                                                <select id="room" class="chosen-select form-control"
+                                                        data-placeholder="请选择账号">
+                                                    <#list staffList as staff>
+                                                        <option value="${staff.empId}">${staff.empName}</option>
+                                                    </#list>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">

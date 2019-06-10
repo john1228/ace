@@ -208,15 +208,16 @@
     <select id="findById" resultMap="dMap">
         SELECT *
         FROM bb_rooms
-                 LEFT JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
-        WHERE bb_rooms.id = #{id}
-        LIMIT 1
+        WHERE id = #{id}
     </select>
 
     <update id="update">
         update bb_rooms
-        set name   = #{name},
-            resume = #{resume}
+        set name      = #{name},
+            resume    = #{resume},
+            cover     = #{cover},
+            image     = #{image,typeHandler=com.ace.dao.handler.StringListHandler},
+            serial_no = ${serialNo}
         where id = #{id}
     </update>
 

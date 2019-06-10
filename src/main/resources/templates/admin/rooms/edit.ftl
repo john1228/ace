@@ -17,30 +17,25 @@
         <li>
             <a href="/admin/sites/attributes/">场地管理</a>
         </li>
-        <li class="active">新增场地</li>
+        <li class="active">更新场地</li>
     </ul><!-- .breadcrumb -->
-
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-            <span class="input-icon">
-                <input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                       autocomplete="off"/>
-                <i class="icon-search nav-search-icon"></i>
-            </span>
-        </form>
-    </div>
 </div>
 
 <div class="page-content">
-    <div class="widget-box">
-        <div class="widget-header widget-header-custom">
-            <h4 class="widget-title">场地新增</h4>
+    <div class="row">
+        <div class="page-title">
+            <h4>
+                <i class="ace-icon glyphicon glyphicon-edit"></i>
+                场地更新
+            </h4>
         </div>
         <div class="widget-body">
             <div class="widget-main">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="/admin/rooms/${room.id}" role="form" class="form-horizontal" method="post">
+                        <form action="/admin/rooms/${room.id}" role="form" class="form-horizontal"
+                              enctype="multipart/form-data"
+                              data-toggle="validator" method="post">
                             <input type="hidden" name="_method" value="put">
                             <#include "form.ftl">
                         </form>

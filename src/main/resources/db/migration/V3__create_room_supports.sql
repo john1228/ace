@@ -1,7 +1,6 @@
 DROP TABLE IF EXISTS `bb_rooms_supports`;
 CREATE TABLE bb_rooms_supports (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  staff_id     varchar(32)         NOT NULL COMMENT '管理人员',
   room_id      bigint(11)          NOT NULL COMMENT '会议室',
   support_id   bigint(11)          NOT NULL COMMENT '服务',
   remark       VARCHAR(1024)       COMMENT '备注',

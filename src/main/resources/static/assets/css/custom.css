@@ -43,6 +43,7 @@ legend.fixed-border {
 
 .page-title > h1, h2, h3, h4, h5 {
     color: #2FB1B0 !important;
+    margin-left: 20px;
 }
 
 .page-header > h1, h2, h3, h4, h5 {
@@ -174,4 +175,8 @@ img.show {
     object-fit: fill;
     width: 150px;
     height: 150px;
+}
+
+.modal.fade.in {
+    top: 20%;
 }

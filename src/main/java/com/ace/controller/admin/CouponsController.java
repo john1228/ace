@@ -3,13 +3,11 @@ package com.ace.controller.admin;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.CouponCriteria;
 import com.ace.controller.admin.concerns.DataTable;
-import com.ace.entity.Grant;
-import com.ace.entity.Room;
-import com.ace.entity.Staff;
-import com.ace.entity.SystemCoupon;
+import com.ace.entity.*;
 import com.ace.entity.concern.enums.CouponStatus;
 import com.ace.entity.concern.enums.CouponType;
 import com.ace.entity.concern.enums.Week;
+import com.ace.service.StaffService;
 import com.ace.service.admin.CouponService;
 import com.ace.service.admin.RoomService;
 import com.ace.util.CollectionUtil;
@@ -23,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -35,6 +35,8 @@ public class CouponsController extends BaseController {
     private CouponService couponService;
     @Resource
     private RoomService roomService;
+    @Resource
+    private StaffService staffService;
 
 
     @GetMapping({"", "/"})
@@ -79,10 +81,14 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@SessionAttribute(CURRENT_RELATED_STAFF) List<Staff> staffList, @PathVariable("id") int id, Model model) {
         SystemCoupon coupon = couponService.findById(id);
         model.addAttribute("coupon", coupon);
         model.addAttribute("grant", new Grant());
+
+        Map<String, Double> orgs = staffList.stream().collect(Collectors.groupingBy(Staff::getOrgName, Collectors.averagingLong(Staff::getId)));
+
+        model.addAttribute("staffList", staffList);
         return viewPath + "show";
     }
 

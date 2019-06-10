@@ -57,7 +57,7 @@ public class Room extends Base {
     private Integer quota;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private boolean free;
-    private JSONObject freeOrg = new JSONObject();
+    private List<String> freeOrg = new ArrayList<>();
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date openDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -77,7 +77,6 @@ public class Room extends Base {
     private Integer rlt;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private String freeService;
-    private String chargeService;
     @JsonView(ApiView.Detail.class)
     private String resume;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})

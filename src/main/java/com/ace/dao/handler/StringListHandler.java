@@ -25,7 +25,13 @@ public class StringListHandler extends BaseTypeHandler<List<String>> {
     public void setNonNullParameter(PreparedStatement ps, int i, List<String> params, JdbcType jdbcType) throws SQLException {
         logger.info("设置");
         StringBuilder sb = new StringBuilder();
-        params.forEach(item -> sb.append(item));
+        params.forEach(item -> {
+            if (sb.length() == 0) {
+                sb.append(item);
+            } else {
+                sb.append(",").append(item);
+            }
+        });
         ps.setString(i, sb.toString());
     }
 

@@ -1,5 +1,6 @@
 package com.ace.controller.api.admin;
 
+import com.ace.annotation.Authorization;
 import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
 import com.ace.entity.Account;
@@ -23,6 +24,7 @@ public class ReportsController {
 
 
     @GetMapping
+    @Authorization
     public Result index(@RequestAttribute("ACCOUNT") Account account, @RequestParam(value = "from", defaultValue = "2019-05-01") Date from, @RequestParam(value = "to", defaultValue = "2019-05-06") Date to) {
         List<RoomReport> reportList = new ArrayList<>();
         for (int i = 0; i < 11; i++) {

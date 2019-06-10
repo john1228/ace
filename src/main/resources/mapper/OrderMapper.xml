@@ -43,6 +43,7 @@
         <association property="appointment" javaType="com.ace.entity.Appointment">
             <result column="appointed_room_id" property="roomId"/>
             <result column="appointed_room_name" property="roomName"/>
+            <result column="appointed_room_cover" property="roomCover"/>
             <result column="appointed_start_time" property="startTime"/>
             <result column="appointed_end_time" property="endTime"/>
             <result column="appointed_contact_name" property="contactName"/>
@@ -126,17 +127,17 @@
         END AS invoice,
         bb_rooms.id AS appointed_room_id,
         bb_rooms.name AS appointed_room_name,
+        CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_rooms.cover) AS appointed_room_cover,
         bb_order_appointments.start_time AS appointed_start_time,
         bb_order_appointments.end_time AS appointed_end_time,
         bb_order_appointments.contact_name AS appointed_contact_name,
         bb_order_appointments.contact_mobile AS appointed_contact_mobile,
-        CONCAT(bb_staffs.project_name,bb_rooms.building_no,bb_rooms.floor_no,bb_rooms.room_no) AS
+        CONCAT(bb_rooms.project_name,bb_rooms.building_no,bb_rooms.floor_no,bb_rooms.room_no) AS
         appointed_room_address
         FROM bb_orders
         LEFT JOIN bb_invoices ON bb_orders.id = bb_invoices.order_id
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
-        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE bb_orders.account_id = #{account.accountId}
         <if test="status!=null">
             AND status = #{status.code}
@@ -159,17 +160,17 @@
         bb_orders.updated_at,
         bb_rooms.id AS appointed_room_id,
         bb_rooms.name AS appointed_room_name,
+        CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_rooms.cover) AS appointed_room_cover,
         bb_order_appointments.start_time AS appointed_start_time,
         bb_order_appointments.end_time AS appointed_end_time,
         bb_order_appointments.contact_name AS appointed_contact_name,
         bb_order_appointments.contact_mobile AS appointed_contact_mobile,
-        CONCAT(bb_staffs.project_name,bb_rooms.building_no,bb_rooms.floor_no,bb_rooms.room_no) AS appointed_room_address
+        CONCAT(bb_rooms.project_name,bb_rooms.building_no,bb_rooms.floor_no,bb_rooms.room_no) AS appointed_room_address
         FROM bb_orders
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
-        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE
-        bb_staffs.project_id IN
+        bb_rooms.project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}
         </foreach>
@@ -215,7 +216,7 @@
     <update id="update">
         update bb_orders
         set status = #{status}
-        WHERE CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) = #{id}
+        WHERE CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) = #{orderNo}
     </update>
 
     <update id="defray">
