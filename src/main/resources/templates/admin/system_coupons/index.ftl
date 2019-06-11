@@ -104,7 +104,43 @@
                             {data: "amount", className: 'center'},
                             {data: "startDate", className: 'center'},
                             {data: "endDate", className: 'center'},
-                            {data: "weekList", className: 'center'},
+                            {
+                                data: "limitWday",
+                                className: 'center',
+                                render: function (data) {
+                                    var weeks = '';
+                                    $.each(data, function (item, value) {
+                                        var valName = '';
+                                        switch (value) {
+                                            case 'MONDAY':
+                                                valName = "周一";
+                                                break;
+                                            case 'TUESDAY':
+                                                valName = "周二";
+                                                break;
+                                            case 'WEDNESDAY':
+                                                valName = "周三";
+                                                break;
+                                            case 'THURSDAY':
+                                                valName = "周四";
+                                                break;
+                                            case 'FRIDAY':
+                                                valName = "周五";
+                                                break;
+                                            case 'SATURDAY':
+                                                valName = "周六";
+                                                break;
+                                            case 'SUNDAY':
+                                                valName = "周日";
+                                                break;
+                                        }
+                                        weeks += '<span class="label label-purple arrowed arrowed-right">'
+                                                + valName +
+                                                '</span>';
+                                    })
+                                    return weeks;
+                                }
+                            },
                             {
                                 data: "id",
                                 className: 'center',

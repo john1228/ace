@@ -57,8 +57,10 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void grant(SystemCoupon coupon, Grant grant) {
         List<MemberCoupon> mcList = new ArrayList<>();
-        couponMapper.update(coupon);
+        for (int i = 0; i < grant.getAmount(); i++) {
+            mcList.add(coupon.grant(grant.getOrgId(), grant.getEmpId()));
+        }
         if (mcList.size() > 0)
-            mcMapper.create(mcList);
+            mcMapper.grant(mcList);
     }
 }

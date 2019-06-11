@@ -41,12 +41,12 @@ public class CouponServiceImpl implements CouponService {
         SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Week week = Week.valueOf(wf.format(appointStartTime).toUpperCase());
         Room room = roomMapper.findById(roomId);
-        Staff staff = staffMapper.findById(room.getStaffId());
         Date appointedDate = new Date(appointStartTime.getTime());
         List<Price> prices = priceMapper.prices(roomId, appointedDate);
         Optional<Price> optional = orderTools.fittedPrice(prices, appointStartTime, appointEndTime, room.getRental());
         if (optional.isPresent()) {
-            List<MemberCoupon> couponList = mcMapper.couponList(account, staff);
+            //查找优惠券
+            List<MemberCoupon> couponList = mcMapper.projectCoupons(account, room.getProjectId());
             fittedCoupon = couponList.stream().filter(cp ->
                     (cp.getLimitWday().size() == 0 || cp.getLimitWday().contains(week)) && (cp.getLimitRoom().size() == 0 || cp.getLimitRoom().contains(roomId))
             ).collect(Collectors.toList());

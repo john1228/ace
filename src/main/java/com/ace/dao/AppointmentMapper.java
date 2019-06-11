@@ -4,6 +4,7 @@ import com.ace.controller.admin.concerns.ScheduleCriteria;
 import com.ace.entity.Appointment;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -21,5 +22,7 @@ public interface AppointmentMapper {
 
     Appointment selectByOrderNo(@Param("orderNo") String orderNo);
 
-    List<Appointment> appointList(@Param("criteria") ScheduleCriteria criteria);
+    List<Appointment> weekly(@Param("criteria") ScheduleCriteria criteria);
+
+    List<Appointment> daily(@Param("room") Long room, @Param("date") Date date);
 }

@@ -15,9 +15,9 @@ public interface MemberCouponMapper {
 
     MemberCoupon findById(@Param("id") Long id);
 
-    void create(@Param("coupons") List<MemberCoupon> mcList);
+    void grant(@Param("coupons") List<MemberCoupon> mcList);
 
     void update(MemberCoupon Coupon);
 
-    List<MemberCoupon> couponList(@Param("account") Account account, @Param("staff") Staff staff);
+    List<MemberCoupon> projectCoupons(@Param("account") Account account, @Param("project") String projectId);
 }

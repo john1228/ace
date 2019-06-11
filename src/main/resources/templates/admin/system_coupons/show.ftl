@@ -115,7 +115,9 @@
                                     <div class="attribute-table-label">组织</div>
                                     <div class="attribute-table-value">
                                         <#list coupon.limitWday as wday>
-                                            ${wday}
+                                            <span class="label label-purple arrowed arrowed-right">
+                                                ${wday}
+                                            </span>
                                         </#list>
                                     </div>
                                 </div>
@@ -123,7 +125,9 @@
                                     <div class="attribute-table-label">会议室</div>
                                     <div class="attribute-table-value">
                                         <#list coupon.limitRoom as room>
-                                            ${room}
+                                            <span class="label label-purple arrowed arrowed-right">
+                                                ${room}
+                                            </span>
                                         </#list>
                                     </div>
                                 </div>
@@ -176,6 +180,8 @@
                                                         sLast: "末页"
                                                     }
                                                 },
+                                                bLengthChange: false,
+                                                searching: false,
                                                 processing: true,
                                                 serverSide: true,
                                                 autoWidth: false,
@@ -186,13 +192,8 @@
                                                 },
                                                 columns: [
                                                     {data: "id", className: 'center'},
-                                                    {
-                                                        data: "startDate",
-                                                        className: 'center',
-                                                        render: function (data) {
-                                                            '111'
-                                                        }
-                                                    },
+                                                    {data: "startDate", className: 'center'},
+                                                    {data: "endDate", className: 'center'},
                                                     {
                                                         data: "status",
                                                         className: 'center',
@@ -208,9 +209,7 @@
                                                     {
                                                         data: "id",
                                                         render: function (data) {
-                                                            return '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '">查看</a>' +
-                                                                '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit">编辑</a>' +
-                                                                '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>';
+                                                            return '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>';
                                                         },
                                                         className: 'center'
                                                     }
@@ -248,18 +247,19 @@
                                     <h4 class="smaller lighter blue no-margin">${coupon.name}
                                         ---发放</h4>
                                 </div>
-                                <div class="modal-body">
-                                    <form action="/admin/coupons/${coupon.id}/grant" role="form"
-                                          class="form-horizontal" method="post">
+                                <form action="/admin/coupons/${coupon.id}/grant" role="form"
+                                      class="form-horizontal" method="post">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                    <div class="modal-body">
                                         <@spring.bind path="grant"/>
                                         <div class="form-group row">
                                             <label class="col-sm-2 control-label no-padding-right">
                                                 发放组织 </label>
                                             <div class="col-sm-10">
-                                                <select id="room" class="chosen-select form-control"
+                                                <select id="orgId" name="orgId" class="chosen-select form-control"
                                                         data-placeholder="请选择账号">
-                                                    <#list staffList as staff>
-                                                        <option value="${staff.empId}">${staff.empName}</option>
+                                                    <#list orgs?keys as key>
+                                                        <option value="${key}">${orgs[key]}</option>
                                                     </#list>
                                                 </select>
                                             </div>
@@ -268,9 +268,9 @@
                                             <label class="col-sm-2 control-label no-padding-right">
                                                 发放员工 </label>
                                             <div class="col-sm-10">
-                                                <select id="room" class="chosen-select form-control"
+                                                <select id="empId" name="empId" class="chosen-select form-control"
                                                         data-placeholder="请选择账号">
-                                                    <#list staffList as staff>
+                                                    <#list staffs as staff>
                                                         <option value="${staff.empId}">${staff.empName}</option>
                                                     </#list>
                                                 </select>
@@ -284,16 +284,11 @@
                                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button class="btn btn-sm btn-danger pull-right"
-                                            data-dismiss="modal">
-                                        <i class="ace-icon fa fa-times"></i>
-                                        Close
-                                    </button>
-                                </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" class="btn btn-sm btn-danger pull-right" value="确定"/>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>

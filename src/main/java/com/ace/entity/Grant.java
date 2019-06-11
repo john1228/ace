@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Grant {
-    private String couponId;
-    private String accounts;
+    private String orgId;
+    private String empId;
     private Integer amount;
 }

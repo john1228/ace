@@ -25,7 +25,7 @@ import java.util.List;
 @Setter
 public abstract class Coupon extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
-    private Integer id;
+    private Long id;
     private CouponType type = CouponType.Cash;
     @NotEmpty(message = "不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
@@ -49,26 +49,8 @@ public abstract class Coupon extends Base {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private Date endDate;
-    @JsonView(ApiView.Detail.class)
+    @JsonView({ApiView.Detail.class, AdminView.Table.class})
     private List<Week> limitWday = new ArrayList<>();
     @JsonView(ApiView.Detail.class)
     private List<Integer> limitRoom = new ArrayList<>();
-
-    @JsonView(AdminView.Table.class)
-    @JsonProperty("weekList")
-    public String getWeekList() {
-        if (limitWday != null) {
-            StringBuilder builder = new StringBuilder();
-            limitWday.forEach(wday -> {
-                if (builder.length() == 0) {
-                    builder.append(wday);
-                } else {
-                    builder.append("、").append(wday.toString());
-                }
-            });
-            return builder.toString();
-        } else {
-            return null;
-        }
-    }
 }

@@ -10,11 +10,11 @@
     </resultMap>
     <resultMap id="dMap" type="com.ace.entity.Room">
         <id column="id" property="id"/>
-        <result column="staff_id" property="staffId"/>
+        <result column="project_id" property="projectId"/>
         <result column="project_name" property="projectName"/>
         <result column="name" property="name"/>
         <result column="cover" property="cover"/>
-        <result column="image" property="image"/>
+        <result column="image" property="image" typeHandler="com.ace.dao.handler.StringListHandler"/>
         <result column="serial_no" property="serialNo"/>
         <result column="building_no" property="buildingNo"/>
         <result column="floor_no" property="floorNo"/>
@@ -37,7 +37,6 @@
         <result column="payable" property="payable"/>
         <result column="resume" property="resume"/>
         <result column="free_service" property="freeService"/>
-        <result column="charge_service" property="chargeService"/>
         <association property="supportList" select="com.ace.dao.RoomSupportMapper.supportList" column="id"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">

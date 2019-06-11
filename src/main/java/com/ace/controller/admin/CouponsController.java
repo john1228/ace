@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,7 +76,6 @@ public class CouponsController extends BaseController {
             return viewPath + "new";
         } else {
             couponService.create(staff, systemCoupon);
-            model.addAttribute("coupon", systemCoupon);
             return "redirect:" + viewPath + systemCoupon.getId();
         }
     }
@@ -85,10 +85,15 @@ public class CouponsController extends BaseController {
         SystemCoupon coupon = couponService.findById(id);
         model.addAttribute("coupon", coupon);
         model.addAttribute("grant", new Grant());
+        Map<String, String> orgs = new HashMap<>();
+        staffList.forEach(staff -> {
+            if (!orgs.containsKey(staff.getOrgId())) {
+                orgs.put(staff.getOrgId(), staff.getOrgName());
+            }
+        });
 
-        Map<String, Double> orgs = staffList.stream().collect(Collectors.groupingBy(Staff::getOrgName, Collectors.averagingLong(Staff::getId)));
-
-        model.addAttribute("staffList", staffList);
+        model.addAttribute("orgs", orgs);
+        model.addAttribute("staffs", staffList);
         return viewPath + "show";
     }
 
@@ -116,6 +121,7 @@ public class CouponsController extends BaseController {
 
     @PostMapping("/{id}/grant")
     public String grant(@PathVariable("id") int id, Grant grant, Model model) {
+        logger.info("发放优惠券");
         SystemCoupon coupon = couponService.findById(id);
         couponService.grant(coupon, grant);
         model.addAttribute("coupon", coupon);

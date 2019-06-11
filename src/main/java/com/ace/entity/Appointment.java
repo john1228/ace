@@ -3,6 +3,7 @@ package com.ace.entity;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.api.concerns.ApiView;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Appointment {
     private Long id;
     @JsonView(AdminView.Table.class)

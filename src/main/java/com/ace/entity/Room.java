@@ -26,6 +26,7 @@ import java.util.List;
 public class Room extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private long id;
+    private String projectId;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @NotEmpty(message = "场地名字不能为空")
     private String name;

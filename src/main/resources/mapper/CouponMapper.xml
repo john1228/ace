@@ -13,7 +13,7 @@
         <result column="end_date" property="endDate"/>
         <result column="duration" property="duration"/>
         <result column="limit_wday" property="limitWday" typeHandler="com.ace.dao.handler.WeekListTypeHandler"/>
-        <result column="limit_room" property="limitRoom"/>
+        <result column="limit_room" property="limitRoom" typeHandler="com.ace.dao.handler.IntegerListHandler"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_coupons
@@ -44,7 +44,7 @@
         ORDER BY id DESC LIMIT #{start},#{length}
     </select>
 
-    <insert id="create">
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
         insert into bb_coupons (project_id,
                                 name,
                                 type,
@@ -70,7 +70,7 @@
                 #{coupon.endDate},
                 #{coupon.duration},
                 #{coupon.limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
-                #{coupon.limitRoom})
+                #{coupon.limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler})
     </insert>
 
     <select id="findById" resultMap="couponMap">

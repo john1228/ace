@@ -9,8 +9,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class Base {
-    @NonNull
-    Long staffId;
     @JsonView(ApiView.Detail.class)
     String projectName;
 }

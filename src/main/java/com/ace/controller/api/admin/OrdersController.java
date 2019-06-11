@@ -52,7 +52,7 @@ public class OrdersController extends BaseController {
     }
 
     @JsonView(ApiView.Base.class)
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}/delete")
     @Authorization
     @ApiOperation(value = "取消订单")
     public Result cancel(@PathVariable("id") String orderNo) {

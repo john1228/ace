@@ -3,7 +3,8 @@
 <mapper namespace="com.ace.dao.MemberCouponMapper">
     <resultMap type="com.ace.entity.MemberCoupon" id="mcMap">
         <id column="id" property="id"/>
-        <result column="account_id" property="accountId"/>
+        <result column="org_id" property="orgId"/>
+        <result column="emp_id" property="empId"/>
         <result column="name" property="name"/>
         <result column="type" property="type"/>
         <result column="discount" property="discount"/>
@@ -40,27 +41,24 @@
         order by id desc LIMIT #{start},#{length}
     </select>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <insert id="grant" useGeneratedKeys="true" keyProperty="id">
         insert into
-        bb_member_coupons(name,type,discount,min,resume,expired_type,start_date,end_date,duration,limit_pro,limit_org,limit_room)
+        bb_member_coupons(org_id,emp_id,coupon_id,name,type,discount,min,resume,start_date,end_date,limit_wday,limit_room)
         values
-        <foreach collection="list" item="mc" index="index" separator=",">
-            (
+        <foreach collection="coupons" item="mc" index="index" open="(" separator="," close=")">
+            #{mc.orgId},
+            #{mc.empId},
+            #{mc.couponId},
             #{mc.name},
             #{mc.type},
             #{mc.discount},
             #{mc.min},
             #{mc.resume},
-            #{mc.expiredType},
             #{mc.startDate},
             #{mc.endDate},
-            #{mc.duration},
-            #{mc.limitPro},
-            #{mc.limitOrg},
-            #{mc.limitRoom}
-            )
+            #{mc.limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
+            #{mc.limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler}
         </foreach>
-
     </insert>
 
     <select id="findById" resultMap="mcMap">
@@ -80,12 +78,20 @@
         where id = #{id}
     </update>
 
-    <select id="couponList" resultMap="mcMap">
+    <select id="projectCoupons" resultMap="mcMap">
         SELECT *
         FROM bb_member_coupons
-                 JOIN bb_coupons ON bb_member_coupons.coupon_id = bb_coupons.id
-                 INNER JOIN bb_staffs ON bb_coupons.project_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
-          AND bb_member_coupons.account_id = #{account.accountId}
+        JOIN bb_coupons ON bb_member_coupons.coupon_id = bb_coupons.id
+        WHERE bb_coupons.project_id = #{project} AND ((bb_member_coupons.org_id in
+        <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.orgId}
+        </foreach>
+        AND bb_member_coupons.emp_id IS NULL
+        ) OR (
+        bb_member_coupons.emp_id in
+        <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.empId}
+        </foreach>
+        ))
     </select>
 </mapper>

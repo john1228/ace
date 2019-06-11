@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class SystemCoupon extends Coupon {
+    private String projectId;
     private CouponExpired expiredType = CouponExpired.CONVENTION;
     @JsonView(AdminView.Table.class)
     private Integer amount;
@@ -20,7 +21,7 @@ public class SystemCoupon extends Coupon {
     private Integer duration;
 
 
-    public MemberCoupon grant(String accountId) {
+    public MemberCoupon grant(String orgId, String empId) {
         if (amount > 0) {
             MemberCoupon mc = new MemberCoupon();
             BeanUtils.copyProperties(this, mc);
@@ -28,7 +29,9 @@ public class SystemCoupon extends Coupon {
                 mc.setStartDate(new Date(System.currentTimeMillis()));
                 mc.setEndDate(new Date(System.currentTimeMillis() + (duration - 1) * 24 * 3600 * 1000L));
             }
-            mc.setAccountId(accountId);
+            mc.setOrgId(orgId);
+            mc.setEmpId(empId);
+            mc.setCouponId(getId());
             mc.setStatus(CouponStatus.PENDING);
             this.amount -= 1;
             return mc;

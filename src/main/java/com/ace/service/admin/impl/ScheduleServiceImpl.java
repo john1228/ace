@@ -24,8 +24,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         if (criteria.getDate() == null || criteria.getRoomId() == null) {
             return new ArrayList<>();
         } else {
-            return appointMapper.appointList(criteria);
+            return appointMapper.weekly(criteria);
         }
-
     }
 }

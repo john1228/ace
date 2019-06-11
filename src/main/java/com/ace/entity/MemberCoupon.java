@@ -9,7 +9,9 @@ import java.util.Date;
 @Getter
 @Setter
 public class MemberCoupon extends Coupon {
-    private String accountId;
+    private String orgId;
+    private String empId;
+    private Long couponId;
     private CouponStatus status;
     private Date createdAt;
     private Date updatedAt;

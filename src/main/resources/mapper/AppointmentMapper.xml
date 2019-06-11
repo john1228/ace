@@ -75,7 +75,7 @@
     </select>
 
 
-    <select id="appointList" resultMap="apmMap">
+    <select id="weekly" resultMap="apmMap">
         SELECT order_id,
                room_id,
                bb_rooms.name as room_name,
@@ -89,6 +89,23 @@
                  INNER JOIN bb_orders ON bb_orders.id = bb_order_appointments.order_id
         WHERE bb_orders.status IN (0, 1, 2, 3)
           AND bb_order_appointments.room_id = #{criteria.roomId}
-          AND (bb_orders.created_at BETWEEN #{criteria.date} AND DATE_ADD(#{criteria.date}, interval 1 week))
+          AND (bb_order_appointments.created_at BETWEEN #{criteria.date} AND DATE_ADD(#{criteria.date}, interval 1 week))
+    </select>
+
+    <select id="daily" resultMap="apmMap">
+        SELECT order_id,
+               room_id,
+               bb_rooms.name as room_name,
+               meeting_name,
+               start_time,
+               end_time,
+               contact_name,
+               contact_mobile
+        FROM bb_order_appointments
+                 INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
+                 INNER JOIN bb_orders ON bb_orders.id = bb_order_appointments.order_id
+        WHERE bb_orders.status IN (0, 1, 2, 3)
+          AND bb_order_appointments.room_id = #{room}
+          AND (bb_order_appointments.start_time BETWEEN #{date} AND DATE_ADD(#{date}, interval 1 day))
     </select>
 </mapper>
