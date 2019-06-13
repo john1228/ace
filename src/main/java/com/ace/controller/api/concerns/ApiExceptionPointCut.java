@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiExceptionPointCut {
     Logger logger = LoggerFactory.getLogger(ApiExceptionPointCut.class);
 
-//    @ExceptionHandler(Exception.class)
-//    @JsonView(ApiView.Base.class)
-//    @ResponseBody
-//    public Result handleException(Exception e) {
-//        logger.info("系统异常:" + e.getMessage());
-//        return new Failure(e.getMessage());
-//    }
+    @ExceptionHandler(Exception.class)
+    @JsonView(ApiView.Base.class)
+    @ResponseBody
+    public Result handleException(Exception e) {
+        logger.info("系统异常:" + e.getMessage());
+        return new Failure(e.getMessage());
+    }
 }

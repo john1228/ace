@@ -10,7 +10,8 @@ import java.util.List;
 public enum Menu {
     room(new String[]{"/admin/supports", "/admin/rooms", "/admin/schedules", "/admin/prices", "/admin/coupons"}),
     order(new String[]{"/admin/orders", "/admin/invoices", "/admin/receipts"}),
-    setting(new String[]{"/admin/settings"});
+    setting(new String[]{"/admin/settings"}),
+    log(new String[]{"/admin/oper_logs"});
     private List<String> items;
 
     Menu(String[] items) {

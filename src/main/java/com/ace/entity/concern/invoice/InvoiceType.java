@@ -6,7 +6,7 @@ package com.ace.entity.concern.invoice;
  * @date 19-5-14 下午6:39
  */
 public enum InvoiceType {
-    VATI(0, "普通增值税专用发票"), GVATI(1, "增值税专用发票");
+    VATI(0, "普通增值税专用发票"), GVATI(1, "增值税普通发票");
 
     private final int code;
     private String name;

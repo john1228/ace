@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.Staff;
 import com.ace.entity.Support;
@@ -52,6 +53,7 @@ public class SupportsController extends BaseController {
 
 
     @PostMapping({"", "/"})
+    @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
         model.addAttribute("support", support);
         upload(support, cover);
@@ -78,6 +80,7 @@ public class SupportsController extends BaseController {
     }
 
     @PutMapping({"/{id}", "/{id}/"})
+    @Recordable
     public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") int id, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
         model.addAttribute("support", support);
         upload(support, cover);
@@ -91,7 +94,8 @@ public class SupportsController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @Recordable
+    public String destroy(@PathVariable("id") int id) {
         return viewPath + "index";
     }
 

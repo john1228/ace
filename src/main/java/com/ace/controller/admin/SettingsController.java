@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.entity.Alipay;
 import com.ace.entity.Staff;
 import com.ace.entity.Wxpay;
@@ -31,6 +32,7 @@ public class SettingsController extends BaseController {
     }
 
     @PutMapping("/alipay")
+    @Recordable
     public String updateAlipay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Alipay alipay) {
         settingService.updateAlipay(staff, alipay);
         return "redirect:" + viewPath + "alipay";
@@ -46,6 +48,7 @@ public class SettingsController extends BaseController {
     }
 
     @PutMapping("/wxpay")
+    @Recordable
     public String updateWxpay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Wxpay wxpay) {
         settingService.updateWxpay(staff, wxpay);
         return "redirect:" + viewPath + "wxpay";
@@ -58,6 +61,7 @@ public class SettingsController extends BaseController {
     }
 
     @PutMapping("/protocol")
+    @Recordable
     public String updateProtocol(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("protocol") String protocol) {
         settingService.updateProtocol(staff, protocol);
         return "redirect:" + viewPath + "protocol";

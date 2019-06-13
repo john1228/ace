@@ -102,10 +102,10 @@
                                 <div class="attribute-table-row">
                                     <div class="attribute-table-label">发票类型</div>
                                     <div class="attribute-table-value">
-                                        ${invoice.type.getName()} -- ${(invoice.type.name() == "VATI")?string("等","不等")} -- ${invoice.type.name()}
+                                        ${invoice.type.getName()}
                                     </div>
                                 </div>
-                                <#if invoice.type.name() == "VATI">
+                                <#if invoice.type.name() == "GVATI">
                                     <div class="attribute-table-row">
                                         <div class="attribute-table-label">类型</div>
                                         <div class="attribute-table-value">
@@ -209,8 +209,32 @@
                             </div>
                         </div>
                     </div>
+                    <#if invoice.express??>
+                     <div class="widget-box">
+                         <div class="widget-header widget-header-custom">
+                             快递信息
+                         </div>
+                         <div class="widget-body">
+                             <div class="widget-main">
+                                 <div class="attribute-table-row">
+                                     <div class="attribute-table-label">快递公司</div>
+                                     <div class="attribute-table-value">
+                                         ${invoice.express["company"]}
+                                     </div>
+                                 </div>
+                                 <div class="attribute-table-row">
+                                     <div class="attribute-table-label">快递单号</div>
+                                     <div class="attribute-table-value">
+                                         ${invoice.express["no"]}
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    </#if>
                 </div>
                 </#if>
+
             </div>
         </div>
     </div>
@@ -243,13 +267,13 @@
                                     <div class="form-group row">
                                         <div class="col-sm-2 control-label no-padding-right">快递公司</div>
                                         <div class="col-sm-10">
-                                            <input type="text" name="express[快递公司]" class="form-control"/>
+                                            <input type="text" name="express[company]" class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-2 control-label no-padding-right">快递单号</div>
                                         <div class="col-sm-10">
-                                            <input type="text" name="express[快递单号]" class="form-control"/>
+                                            <input type="text" name="express[no]" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>

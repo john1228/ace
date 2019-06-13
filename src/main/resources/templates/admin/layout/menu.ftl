@@ -122,4 +122,21 @@
             </li>
         </ul>
     </li>
+    <li class="${(menu == "log")?string("active open","")}">
+        <a href="#" class="dropdown-toggle">
+            <i class="menu-icon fa fa-bookmark"></i>
+            <span class="menu-text"> 日志管理 </span>
+            <b class="arrow fa fa-angle-down"></b>
+        </a>
+        <b class="arrow"></b>
+        <ul class="submenu">
+            <li class="${(requestUri?starts_with("/admin/oper_logs"))?string("active","")}">
+                <a href="/admin/oper_logs">
+                    <i class="menu-icon fa fa-caret-right"></i>
+                    <text>操作日志</text>
+                </a>
+                <b class="arrow"></b>
+            </li>
+        </ul>
+    </li>
 </ul>

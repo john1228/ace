@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.RoomClosed;
 import com.ace.service.admin.RoomClosedService;
@@ -28,6 +29,7 @@ public class ClosedController {
     }
 
     @PostMapping(value = {"", "/"})
+    @Recordable
     public RedirectView create(@Valid RoomClosed closed) {
         rcService.create(closed);
         return new RedirectView(viewPath + closed.getRoomId());

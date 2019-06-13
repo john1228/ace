@@ -8,6 +8,7 @@ import com.ace.entity.*;
 import com.ace.entity.concern.Period;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.RoomService;
+import com.ace.util.Aliyun;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -88,7 +89,11 @@ public class RoomServiceImpl extends BaseService implements RoomService {
 
     @Override
     public Room show(Long id) {
-        return rMapper.findById(id);
+        Room room = rMapper.findById(id);
+        List<String> imgList = new ArrayList<>();
+        room.getImage().forEach(path -> imgList.add(Aliyun.Instance.imgHost + path));
+        room.setImage(imgList);
+        return room;
     }
 
     @Override

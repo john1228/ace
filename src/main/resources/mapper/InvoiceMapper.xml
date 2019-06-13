@@ -104,6 +104,7 @@
                bb_invoices.address,
                bb_invoices.remark,
                bb_invoices.status,
+               bb_invoices.express,
                bb_invoices.created_at,
                bb_invoices.updated_at
         FROM bb_invoices

@@ -41,7 +41,7 @@
                                 <div class="col-sm-10">
                                     <div class="btn-group" data-toggle="buttons">
                                         <label class="btn btn-primary">
-                                            <input type="radio" name="type" value="GVATI">增值税专用发票
+                                            <input type="radio" name="type" value="GVATI">增值税普通发票
                                         </label>
                                         <label class="btn btn-primary">
                                             <input type="radio" name="type" value="VATI">普通增值税专用发票

@@ -42,8 +42,26 @@
     </div>
 </div>
 <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-    <i class="icon-double-angle-up icon-only bigger-110"></i>
+    <i class="icon-double-angle-up icon-only bigger-110 "></i>
 </a>
+<#if errors??>
+    <script>
+        ;!function () {
+            layer.ready(function () {
+                layer.open({
+                    type: 1,
+                    title: '错误提示',
+                    area: ['800px', '500px'],
+                    content: '<div class="widget-box"><div class="widget-body"><div class="widget-main"><ul class="list-unstyled spaced2">' +
+                            <#list errors as objErr>
+                                  '<li><i class="ace-icon fa fa-warning orange"></i>&nbsp;${objErr.objectName}:${objErr.defaultMessage}</li>' +
+                            </#list>
+                            '</ul></div></div></div>'
+                });
+            });
+        }();
+    </script>
+</#if>
 <#include "foot.ftl">
 </body>
 </html>

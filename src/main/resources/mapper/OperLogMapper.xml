@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.OperLogMapper">
+    <resultMap id="logMap" type="com.ace.entity.OperLog">
+        <result column="emp_id" property="empId"/>
+        <result column="emp_name" property="empName"/>
+        <result column="controller" property="controller"/>
+        <result column="operation" property="operation"/>
+        <result column="ip" property="ip"/>
+        <result column="created_at" property="createdAt"/>
+    </resultMap>
+    <select id="recordsTotal" resultType="java.lang.Long">
+        select count(1) from bb_oper_logs
+        <where>
+            <if test="criteria.empName!=null and criteria.empName!=''">
+                AND emp_name LIKE CONCAT('%',#{criteria.empName},'%')
+            </if>
+            <if test="criteria.from!=null">
+                AND created_at >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= bb_orders.created_at
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultMap="logMap">
+        select *
+        from bb_oper_logs
+        <where>
+            <if test="criteria.empName!=null and criteria.empName!=''">
+                AND emp_name LIKE CONCAT('%',#{criteria.empName},'%')
+            </if>
+            <if test="criteria.from!=null">
+                AND created_at >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= created_at
+            </if>
+        </where>
+        order by bb_oper_logs.created_at desc LIMIT #{criteria.start},#{criteria.length}
+    </select>
+
+    <insert id="create">
+        insert into bb_oper_logs (emp_id, emp_name, controller, operation, ip)
+        values (#{empId}, #{empName}, #{controller}, #{operation}, #{ip})
+    </insert>
+</mapper>

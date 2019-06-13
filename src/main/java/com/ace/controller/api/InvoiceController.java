@@ -34,7 +34,7 @@ public class InvoiceController {
         if (account.getErrMsg() != null) {
             return new Failure(account.getErrMsg());
         } else {
-            return new Success(invoice);
+            return new Success(null);
         }
     }
 

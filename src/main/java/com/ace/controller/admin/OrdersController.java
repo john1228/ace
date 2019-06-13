@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.OrderCriteria;
@@ -57,6 +58,7 @@ public class OrdersController extends BaseController {
 
 
     @PostMapping(value = {"", "/"})
+    @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Order order, Model model) {
         orderService.create(staff, order);
         if (staff.getErrMsg().length() != 0) {
@@ -81,6 +83,7 @@ public class OrdersController extends BaseController {
     }
 
     @PutMapping("/{id}/update")
+    @Recordable
     public String update(@PathVariable("id") String orderNo, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return viewPath + "edit";
@@ -91,7 +94,8 @@ public class OrdersController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") String id) {
+    @Recordable
+    public String destroy(@PathVariable("id") String id) {
         orderService.delete(id);
         return "redirect:" + viewPath;
     }

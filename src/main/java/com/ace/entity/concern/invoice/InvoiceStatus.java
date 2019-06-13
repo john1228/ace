@@ -1,5 +1,7 @@
 package com.ace.entity.concern.invoice;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * @author john
  * @date 19-5-14 下午6:39
@@ -18,6 +20,7 @@ public enum InvoiceStatus {
         return this.code;
     }
 
+    @JsonValue
     public String getName() {
         return this.name;
     }

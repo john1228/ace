@@ -25,7 +25,7 @@
         <result column="layer_area" property="layerArea"/>
         <result column="quota" property="quota"/>
         <result column="free" property="free"/>
-        <result column="free_org" property="freeOrg"/>
+        <!--<result column="free_org" property="freeOrg"/>-->
         <result column="open_date" property="openDate"/>
         <result column="close_date" property="closeDate"/>
         <result column="rental" property="rental"/>
@@ -113,6 +113,7 @@
         bb_rooms.id,
         bb_rooms.serial_no AS serialNo,
         bb_rooms.name,
+        CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_rooms.cover) AS cover,
         bb_rooms.type,
         bb_rooms.publish,
         bb_rooms.rental,

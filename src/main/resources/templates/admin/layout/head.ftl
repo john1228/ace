@@ -42,6 +42,7 @@
 <script src="/assets/js/jquery/mobile.custom.min.js"></script>
 <!-- ace settings handler -->
 <script src="/assets/js/ace/min.js"></script>
+<script src="/assets/layer-v3.1.1/layer/layer.js"></script>
 <!--[if IE]>
 <script type="text/javascript">
     window.jQuery || document.write("<script src='https://code.jquery.com/jquery-1.10.2.js' integrity='sha256-it5nQKHTz+34HijZJQkpNBIHsjpV8b6QzMJs9tmOBSo=' crossorigin='anonymous'>" + "<" + "/script>");

@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.CouponCriteria;
 import com.ace.controller.admin.concerns.DataTable;
@@ -68,6 +69,7 @@ public class CouponsController extends BaseController {
 
 
     @PostMapping(value = {"", "/"})
+    @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("couponType", CollectionUtil.toCollection(CouponType.class));
@@ -108,6 +110,7 @@ public class CouponsController extends BaseController {
     }
 
     @PutMapping("/{id}")
+    @Recordable
     public String update(@PathVariable("id") int id, @Valid SystemCoupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return viewPath + "edit";
@@ -120,6 +123,7 @@ public class CouponsController extends BaseController {
     }
 
     @PostMapping("/{id}/grant")
+    @Recordable
     public String grant(@PathVariable("id") int id, Grant grant, Model model) {
         logger.info("发放优惠券");
         SystemCoupon coupon = couponService.findById(id);
@@ -130,7 +134,8 @@ public class CouponsController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @Recordable
+    public String destroy(@PathVariable("id") int id) {
         return viewPath + "index";
     }
 }

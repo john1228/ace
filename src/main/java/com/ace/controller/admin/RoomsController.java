@@ -51,6 +51,7 @@ public class RoomsController extends BaseController {
     @ResponseBody
     @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
+    @Recordable
     public DataTable<Room> dataList(@SessionAttribute(CURRENT_OPERATOR) Staff staff, DataTable<Room> dataTable, RoomCriteria criteria) {
         logger.info("请求数据");
         roomService.data(staff, dataTable, criteria);
@@ -98,6 +99,7 @@ public class RoomsController extends BaseController {
             result.addError(new ObjectError("image", "上传图片失败"));
         }
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
             model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
             model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));
@@ -136,6 +138,7 @@ public class RoomsController extends BaseController {
     }
 
     @PutMapping({"/{id}/", "/{id}"})
+    @Recordable
     public String update(
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
             @PathVariable("id") Long id,
@@ -174,7 +177,8 @@ public class RoomsController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id) {
+    @Recordable
+    public String destroy(@PathVariable("id") int id) {
         return viewPath + "index";
     }
 

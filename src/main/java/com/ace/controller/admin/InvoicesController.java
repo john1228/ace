@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.InvoiceCriteria;
 import com.ace.entity.Invoice;
@@ -47,6 +48,7 @@ public class InvoicesController extends BaseController {
 
 
     @PostMapping(value = {"", "/"})
+    @Recordable
     public String create(@RequestParam("orderNo") String orderNo, @Valid Invoice invoice, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("orderNo", orderNo);
@@ -69,6 +71,7 @@ public class InvoicesController extends BaseController {
     }
 
     @PostMapping("/{orderNo}/mail")
+    @Recordable
     public String update(@PathVariable("orderNo") String orderNo, Invoice invoice) {
         invoiceService.mail(orderNo, invoice);
         return "redirect:" + viewPath + orderNo;

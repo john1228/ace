@@ -12,7 +12,7 @@
     <select id="supportList" resultType="com.ace.entity.RoomSupport">
         SELECT bb_rooms_supports.id,
                bb_supports.name  as name,
-               bb_supports.cover as cover,
+               CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_supports.cover) AS cover,
                bb_supports.unit  as unit,
                price
         FROM bb_rooms_supports

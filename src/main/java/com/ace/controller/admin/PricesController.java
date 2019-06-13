@@ -1,5 +1,6 @@
 package com.ace.controller.admin;
 
+import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.RoomRental;
@@ -63,6 +64,7 @@ public class PricesController extends BaseController {
 
 
     @PostMapping({"", "/"})
+    @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, Model model) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
@@ -85,7 +87,6 @@ public class PricesController extends BaseController {
 
     @GetMapping("/{id}/edit")
     public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id, Model model) {
-
         Price price = priceService.findById(id);
         model.addAttribute("price", price);
         model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
@@ -95,6 +96,7 @@ public class PricesController extends BaseController {
     }
 
     @PutMapping({"/{id}/", "/{id}"})
+    @Recordable
     public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, HttpServletRequest request, @PathVariable("id") int id, Model model) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
