@@ -48,7 +48,14 @@
     <label class="col-sm-2 control-label no-padding-right"><span
             style="color: red">*</span>价格</label>
     <div class="col-sm-10">
-        <@spring.formInput "price.price" "class='col-xs-10 col-sm-9' placeholder='请填写价格' required"/>
+        <div class="input-group col-xs-10 col-sm-9">
+            <@spring.formInput "price.price" "class='form-control' placeholder='请填写价格' required"/>
+            <span class="input-group-btn">
+               <button class="btn btn-sm btn-default" type="button">
+                    半小时
+                </button>
+            </span>
+        </div>
     </div>
 </div>
 <div class="clearfix form-actions">

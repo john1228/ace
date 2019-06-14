@@ -34,19 +34,7 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private AppointmentMapper appointmentMapper;
     @Resource
-    private RoomMapper roomMapper;
-    @Resource
-    private PriceMapper priceMapper;
-    @Resource
-    private RoomSupportMapper rsMapper;
-    @Resource
-    private RoomClosedMapper rcMapper;
-    @Resource
     private RedisTemplate<String, Period> redisTemplate;
-    @Resource
-    private OrderTools orderTools;
-    @Resource
-    private RoomTools roomTools;
 
     @Override
     public void dataTable(Staff staff, OrderCriteria criteria, DataTable<Order> dataTable) {
@@ -55,8 +43,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findById(String orderNo) {
-        return orderMapper.findById(orderNo);
+    public Order findByOrderNo(String orderNo) {
+        return orderMapper.findByOrderNo(orderNo);
     }
 
     @Override

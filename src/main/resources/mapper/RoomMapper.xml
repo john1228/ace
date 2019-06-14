@@ -103,16 +103,14 @@
     <select id="roomList" resultType="com.ace.entity.Room">
         SELECT bb_rooms.id, bb_rooms.name
         FROM bb_rooms
-                 LEFT JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
+        WHERE project_id = #{staff.projectId}
     </select>
     <!--客户端查询会议室，包含自有和开放的-->
     <select id="query" resultType="com.ace.entity.Room">
         SELECT
-        bb_staffs.project_name AS projectName,
         bb_rooms.id,
         bb_rooms.serial_no AS serialNo,
-        bb_rooms.name,
+        CONCAT( bb_rooms.project_name,bb_rooms.name) AS name,
         CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_rooms.cover) AS cover,
         bb_rooms.type,
         bb_rooms.publish,
@@ -127,7 +125,7 @@
         bb_rooms.supervisor_mobile AS supervisorMobile,
         bb_rooms.supervisor_email AS supervisorEmail,
         bb_rooms.free_service AS freeService
-        FROM bb_rooms LEFT JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.project_id
+        FROM bb_rooms
         WHERE (bb_rooms.publish = 1) OR (bb_rooms.project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}

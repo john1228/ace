@@ -17,7 +17,9 @@ public interface OrderMapper {
 
     void create(Order order);
 
-    Order findById(@Param("id") String id);
+    Order findByOrderNo(@Param("orderNo") String orderNO);
+
+    Order findById(@Param("id") Long id);
 
     void update(@Param("orderNo") String orderNo, @Param("status") OrderStatus status);
 

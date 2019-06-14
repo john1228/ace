@@ -3,12 +3,10 @@ package com.ace.service.api.impl;
 import com.ace.dao.MemberCouponMapper;
 import com.ace.dao.PriceMapper;
 import com.ace.dao.RoomMapper;
-import com.ace.dao.StaffMapper;
 import com.ace.entity.*;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.CouponService;
 import com.ace.service.concerns.OrderTools;
-import com.ace.service.concerns.RoomTools;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,8 +28,6 @@ public class CouponServiceImpl implements CouponService {
     RoomMapper roomMapper;
     @Resource
     PriceMapper priceMapper;
-    @Resource
-    StaffMapper staffMapper;
     @Resource
     private OrderTools orderTools;
 

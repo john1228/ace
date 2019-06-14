@@ -48,8 +48,10 @@
                                     <div class="attribute-table-row">
                                         <div class="attribute-table-label">会议室</div>
                                         <div class="attribute-table-value ">
-                                            <#list price.roomName as item>
-                                                <span class="btn btn-info">${item}</span>
+                                            <#list price.roomName as room>
+                                                <span class="label label-info arrowed-in arrowed-in-right">
+                                                    ${room}
+                                                </span>
                                             </#list>
                                         </div>
                                     </div>
@@ -65,18 +67,16 @@
                                         <div class="attribute-table-label">适用日期</div>
                                         <div class="attribute-table-value">
                                         <span>
-                                            ${(price.startDate?date)!"n/a"} - ${(price.endDate?date)!"n/a"}
+                                            ${(price.startDate?string('yyyy-MM-dd'))!"n/a"} 至 ${(price.endDate?string('yyyy-MM-dd'))!"n/a"}
                                         </span>
                                         </div>
                                     </div>
                                     <div class="attribute-table-row">
                                         <div class="attribute-table-label">周</div>
                                         <div class="attribute-table-value">
-                                        <span>
                                             <#list price.wday as week>
-                                                <span class="btn btn-info">${week}</span>
+                                                <span class="label label-info arrowed-in arrowed-in-right">${week}</span>
                                             </#list>
-                                        </span>
                                         </div>
                                     </div>
                                     <div class="attribute-table-row">

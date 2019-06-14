@@ -57,14 +57,8 @@ public class MemberCouponsController extends BaseController {
         return viewPath + "edit";
     }
 
-    @PutMapping("/{couponId}/member_coupons/{id}/update")
+    @DeleteMapping("/{couponId}/member_coupons/{id}")
     public String update(@Valid MemberCoupon memberCoupon, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return viewPath + "edit";
-        } else {
-            mcService.update(memberCoupon);
-            model.addAttribute("mc", memberCoupon);
-            return viewPath + "show";
-        }
+        return viewPath + "edit";
     }
 }

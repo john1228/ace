@@ -7,6 +7,7 @@
 <link href="/assets/css/bootstrap/tags-input.css" media="all" rel="stylesheet" type="text/css">
 <script src="/assets/js/bootstrap/tags-input.js"></script>
 <script src="/assets/js/bootstrap/locales/zh.js"></script>
+<script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <@spring.bind path="room"/>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 <input type="hidden" name="staffId" value="${current_operator.getId()}">
@@ -198,11 +199,11 @@
                             <@spring.formRadioButtons "room.free",free,""/>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row" id="freeOrgContainer">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>免费组织</label>
                         <div class="col-sm-10 form-radio-group">
-                            <@spring.formInput "room.freeOg"/>
+                            <@spring.formMultiSelect "room.freeOrg",current_orgs,"class='multiselect col-xs-10 col-sm-9'"/>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -254,8 +255,15 @@
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>起租时间</label>
-                        <div class="col-sm-10">
-                            <@spring.formInput "room.unit" "class='col-xs-10 col-sm-9'"/>
+                        <div class="col-sm-10 ">
+                            <div class="input-group col-xs-10 col-sm-9">
+                                <@spring.formInput "room.unit" "class='form-control'"/>
+                                <span class="input-group-btn">
+                                   <button class="btn btn-sm btn-default" type="button">
+                                        半小时
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -429,7 +437,6 @@
         </div>
     </div>
 </div>
-
 <div class="row clearfix form-actions">
     <div class="col-md-offset-3 col-md-9">
         <button class="btn btn-info" type="submit">
@@ -443,3 +450,40 @@
         </button>
     </div>
 </div>
+<script type="text/javascript">
+    var isFree = $("input[name='free']:checked").val();
+    console.log("##" + isFree);
+    $(function () {
+        var isFree = $("input[name='free']:checked").val();
+        if (isFree) {
+            $("#freeOrgContainer").hide();
+        } else {
+            $("#freeOrgContainer").show();
+        }
+        $('.multiselect').multiselect({
+            nonSelectedText: "请选择",
+            nSelectedText: "已选择",
+            allSelectedText: "全选",
+            enableFiltering: true,
+            enableHTML: true,
+            buttonClass: 'btn btn-white btn-primary',
+            templates: {
+                button: '<button type="button" class="multiselect dropdown-toggle" data-toggle="dropdown"><span class="multiselect-selected-text"></span> &nbsp;<b class="fa fa-caret-down"></b></button>',
+                ul: '<ul class="multiselect-container dropdown-menu"></ul>',
+                filter: '<li class="multiselect-item filter"><div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span><input class="form-control multiselect-search" type="text"></div></li>',
+                filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default btn-white btn-grey multiselect-clear-filter" type="button"><i class="fa fa-times-circle red2"></i></button></span>',
+                li: '<li><a tabindex="0"><label></label></a></li>',
+                divider: '<li class="multiselect-item divider"></li>',
+                liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
+            }
+        });
+        $("input[name='free']").on("change", function () {
+            console.log("选择改变::" + $(this).val());
+            if ($(this).val() === 'true') {
+                $("#freeOrgContainer").show();
+            } else {
+                $("#freeOrgContainer").hide();
+            }
+        });
+    })
+</script>

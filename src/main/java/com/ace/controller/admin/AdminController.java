@@ -3,29 +3,25 @@ package com.ace.controller.admin;
 
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
-import com.ace.service.StaffService;
+import lombok.extern.java.Log;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
 @Controller
 @RequestMapping("/admin")
+@Log
 public class AdminController extends BaseController {
-    @Resource
-    private StaffService staffService;
 
     @RequestMapping("/")
-    public String index(HttpSession session, @SessionAttribute(CURRENT_OPERATOR) Staff staff) {
-        List<Staff> relatedStaffList = staffService.relatedStaffs(staff.getProjectId(), staff.getOrgId());
-        session.setAttribute(CURRENT_RELATED_STAFF, relatedStaffList);
+    public String index() {
         return INDEX;
     }
 
@@ -36,8 +32,7 @@ public class AdminController extends BaseController {
         Staff selected = staffList.stream().filter(staff -> staff.getId() == operator).findAny().get();
         if (selected != null) {
             session.setAttribute(CURRENT_OPERATOR, selected);
-            List<Staff> relatedStaffList = staffService.relatedStaffs(selected.getProjectId(), selected.getOrgId());
-            session.setAttribute(CURRENT_RELATED_STAFF, relatedStaffList);
+            log.info("设置操作用户");
         }
         return "redirect:" + redirectUri;
     }
@@ -45,5 +40,11 @@ public class AdminController extends BaseController {
     @RequestMapping("/login")
     public String login() {
         return LOGIN;
+    }
+
+    @DeleteMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:" + "http://bpmp.baobanwang.com/page/logout";
     }
 }

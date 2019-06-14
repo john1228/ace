@@ -45,8 +45,8 @@
         insert into
         bb_member_coupons(org_id,emp_id,coupon_id,name,type,discount,min,resume,start_date,end_date,limit_wday,limit_room)
         values
-        <foreach collection="coupons" item="mc" index="index" open="(" separator="," close=")">
-            #{mc.orgId},
+        <foreach collection="coupons" item="mc" index="index" separator=",">
+            (#{mc.orgId},
             #{mc.empId},
             #{mc.couponId},
             #{mc.name},
@@ -57,7 +57,7 @@
             #{mc.startDate},
             #{mc.endDate},
             #{mc.limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
-            #{mc.limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler}
+            #{mc.limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler})
         </foreach>
     </insert>
 
@@ -68,13 +68,9 @@
         limit 1
     </select>
 
-    <update id="update">
+    <update id="use">
         update bb_member_coupons
-        set name     = #{name},
-            type     = #{type},
-            discount = #{discount},
-            min      = #{min},
-            resume   = #{resume}
+        set status = #{status.code}
         where id = #{id}
     </update>
 

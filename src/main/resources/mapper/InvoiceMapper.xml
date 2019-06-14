@@ -31,8 +31,7 @@
         LEFT JOIN bb_orders ON bb_invoices.order_id = bb_orders.id
         INNER JOIN bb_order_appointments ON bb_order_appointments.order_id = bb_orders.id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
-        INNER JOIN bb_staffs ON bb_staffs.id = bb_rooms.project_id
-        WHERE bb_staffs.project_id = #{staff.projectId}
+        WHERE bb_rooms.project_id = #{staff.projectId}
         <if test="criteria.orderNo!=null and criteria.orderNo!=''">
             AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
             CONCAT('%',#{criteria.orderNo},'%')
@@ -68,7 +67,7 @@
         LEFT JOIN bb_invoices ON bb_orders.id = bb_invoices.order_id
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
-        WHERE bb_rooms.project_id = #{staff.projectId}
+        WHERE bb_rooms.project_id = #{staff.projectId} AND bb_orders.status = 3
         <if test="criteria.orderNo!=null and criteria.orderNo!=''">
             AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
             CONCAT('%',#{criteria.orderNo},'%')

@@ -12,8 +12,8 @@ import java.sql.Date;
 @Getter
 @Setter
 public class OrderCriteria extends Criteria {
-    private String orderNo;
-    private Date startDate;
-    private Date endDate;
+    private String no;
+    private Date from;
+    private Date to;
     private String mobile;
 }

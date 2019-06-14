@@ -31,11 +31,4 @@ public class MemberCouponServiceImpl implements MemberCouponService {
     public MemberCoupon findById(Long id) {
         return mcMapper.findById(id);
     }
-
-
-    @Override
-    public void update(MemberCoupon mc) {
-        logger.info("更新数据");
-        mcMapper.update(mc);
-    }
 }

@@ -20,7 +20,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Order {
     @JsonView(AdminView.Table.class)
-    private long id;
+    private Long id;
     @NonNull
     @JsonView(AdminView.Table.class)
     private String accountId;

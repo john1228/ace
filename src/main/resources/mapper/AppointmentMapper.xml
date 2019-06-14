@@ -40,7 +40,7 @@
                bb_rooms.supervisor_mobile AS roomMobile,
                bb_rooms.refund_limit_time AS roomRefund,
                bb_rooms.renew             AS roomRenew,
-               CONCAT(bb_staffs.project_name, bb_rooms.building_no, '幢', bb_rooms.floor_no, '层', bb_rooms.room_no,
+               CONCAT(bb_rooms.project_name, bb_rooms.building_no, '幢', bb_rooms.floor_no, '层', bb_rooms.room_no,
                       '室')                AS address,
                meeting_name               AS meetingName,
                start_time                 AS startTime,
@@ -50,7 +50,6 @@
                remark
         FROM bb_order_appointments
                  LEFT JOIN bb_rooms on bb_order_appointments.room_id = bb_rooms.id
-                 INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
         WHERE order_id = #{order}
     </select>
 

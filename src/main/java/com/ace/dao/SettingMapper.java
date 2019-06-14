@@ -10,15 +10,15 @@ import org.apache.ibatis.annotations.Param;
  * @date 19-6-6 上午9:32
  */
 public interface SettingMapper {
-    Alipay alipay(@Param("staff") Staff staff);
+    Alipay alipay(@Param("projectId") String projectId);
 
     void updateAlipay(@Param("staff") Staff staff, @Param("alipay") Alipay alipay);
 
-    Wxpay wxpay(@Param("staff") Staff staff);
+    Wxpay wxpay(@Param("projectId") String projectId);
 
     void updateWxpay(@Param("staff") Staff staff, @Param("wxpay") Wxpay wxpay);
 
-    String protocol(@Param("staff") Staff staff);
+    String protocol(@Param("projectId") String projectId);
 
     void updateProtocol(@Param("staff") Staff staff, @Param("protocol") String protocol);
 }

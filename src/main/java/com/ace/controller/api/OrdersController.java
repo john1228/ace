@@ -7,6 +7,7 @@ import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
 import com.ace.entity.Account;
 import com.ace.entity.Appointment;
+import com.ace.entity.Order;
 import com.ace.entity.concern.enums.OrderStatus;
 import com.ace.service.api.OrderService;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -39,13 +40,14 @@ public class OrdersController extends BaseController {
         return new Success(orderService.customerOrder(account, status, page));
     }
 
-    @JsonView(ApiView.Base.class)
+    @JsonView(ApiView.Detail.class)
     @PostMapping("")
     @Authorization
     @ApiOperation(value = "创建订单")
     public Result create(@RequestAttribute("ACCOUNT") Account account, Appointment appointment, @RequestParam(value = "coupon", defaultValue = "0") Long couponId) {
-        if (orderService.create(account, appointment, couponId)) {
-            return new Success(null);
+        Order order = orderService.create(account, appointment, couponId);
+        if (order != null) {
+            return new Success(order);
         } else {
             return new Failure(account.getErrMsg());
         }

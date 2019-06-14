@@ -142,8 +142,7 @@
                                         data: "id",
                                         render: function (data) {
                                             return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
-                                                    '<a class="btn btn-xs btn-warning" data-method="delete">删除</a>';
+                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>';
                                         },
                                         className: 'center'
                                     }

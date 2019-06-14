@@ -39,8 +39,8 @@
                 roomId: $("#room").val(),
                 date: $("#date").val()
             }, function (data) {
+                calendar.gotoDate($("#date").val());
                 data.data.forEach(function (item) {
-                    calendar.gotoDate($("#date").val());
                     calendar.addEvent(
                             {
                                 title: item.contactName + ' : ' + item.contactMobile,

@@ -3,7 +3,6 @@
 <mapper namespace="com.ace.dao.PriceMapper">
     <resultMap type="com.ace.entity.Price" id="priceMap">
         <id column="id" property="id"/>
-        <result column="staff_id" property="staffId"/>
         <result column="room_id" property="roomId" typeHandler="com.ace.dao.handler.StringListHandler"/>
         <result column="room_name" property="roomName" typeHandler="com.ace.dao.handler.StringListHandler"/>
         <result column="rental" property="rental"/>
@@ -78,7 +77,6 @@
     <select id="findById" resultMap="priceMap">
         SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.id) AS room_id, GROUP_CONCAT(bb_rooms.name) AS room_name
         FROM bb_room_prices
-                 LEFT JOIN bb_staffs ON bb_room_prices.staff_id = bb_staffs.id
                  INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
                  INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
         WHERE bb_room_prices.id = #{id}

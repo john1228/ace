@@ -13,7 +13,7 @@ public interface OrderService {
 
     void dataTable(Staff staff, OrderCriteria criteria, DataTable<Order> dataTable);
 
-    Order findById(String orderNo);
+    Order findByOrderNo(String orderNo);
 
     void create(Staff staff, Order order);
 

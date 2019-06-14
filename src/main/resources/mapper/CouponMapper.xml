@@ -21,11 +21,11 @@
         <if test="criteria.name!=null">
             AND bb_coupons.name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
-        <if test="criteria.startDate!=null">
-            AND #{criteria.startDate} >= bb_coupons.start_date
+        <if test="criteria.from!=null">
+            AND #{criteria.from} >= bb_coupons.start_date
         </if>
-        <if test="criteria.endDate!=null">
-            AND bb_coupons.end_date >= #{criteria.endDate}
+        <if test="criteria.to!=null">
+            AND bb_coupons.end_date >= #{criteria.to}
         </if>
     </select>
 
@@ -35,11 +35,11 @@
         <if test="criteria.name!=null">
             AND name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
-        <if test="criteria.startDate!=null">
-            AND #{criteria.startDate} >= start_date
+        <if test="criteria.from!=null">
+            AND #{criteria.from} >= start_date
         </if>
-        <if test="criteria.endDate!=null">
-            AND end_date >= #{criteria.endDate}
+        <if test="criteria.to!=null">
+            AND end_date >= #{criteria.to}
         </if>
         ORDER BY id DESC LIMIT #{start},#{length}
     </select>

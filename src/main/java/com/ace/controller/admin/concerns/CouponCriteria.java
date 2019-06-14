@@ -13,6 +13,6 @@ import java.sql.Date;
 @Setter
 public class CouponCriteria extends Criteria {
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private Date from;
+    private Date to;
 }

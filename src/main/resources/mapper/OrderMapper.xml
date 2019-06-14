@@ -57,17 +57,16 @@
         SELECT count(1) AS recordsTotal FROM bb_orders
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
-        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
-        <if test="criteria.orderNo!=null and criteria.orderNo!=''">
+        WHERE bb_rooms.project_id = #{staff.projectId}
+        <if test="criteria.no!=null and criteria.no!=''">
             AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
-            CONCAT('%',#{criteria.orderNo},'%')
+            CONCAT('%',#{criteria.no},'%')
         </if>
-        <if test="criteria.startDate!=null">
-            AND bb_orders.created_at >= #{criteria.startDate}
+        <if test="criteria.from!=null">
+            AND bb_orders.created_at >= #{criteria.from}
         </if>
-        <if test="criteria.startDate!=null">
-            AND #{criteria.endDate} >= bb_orders.created_at
+        <if test="criteria.to!=null">
+            AND #{criteria.to} >= bb_orders.created_at
         </if>
         <if test="criteria.mobile!=null and criteria.mobile != ''">
             AND bb_order_appointments.contact_mobile LIKE CONCAT('%',#{criteria.mobile},'%')
@@ -90,17 +89,16 @@
         LEFT JOIN bb_order_appointments ON bb_orders.id =
         bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
-        INNER JOIN bb_staffs ON bb_rooms.project_id = bb_staffs.id
-        WHERE bb_staffs.project_id = #{staff.projectId}
-        <if test="criteria.orderNo!=null and criteria.orderNo!=''">
+        WHERE bb_rooms.project_id = #{staff.projectId}
+        <if test="criteria.no!=null and criteria.no!=''">
             AND CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
-            CONCAT('%',#{criteria.orderNo},'%')
+            CONCAT('%',#{criteria.no},'%')
         </if>
-        <if test="criteria.startDate!=null">
-            AND bb_orders.created_at >= #{criteria.startDate}
+        <if test="criteria.from!=null">
+            AND bb_orders.created_at >= #{criteria.from}
         </if>
-        <if test="criteria.startDate!=null">
-            AND #{criteria.endDate} >= bb_orders.created_at
+        <if test="criteria.to!=null">
+            AND #{criteria.to} >= bb_orders.created_at
         </if>
         <if test="criteria.mobile!=null and criteria.mobile != ''">
             AND bb_order_appointments.contact_mobile LIKE CONCAT('%',#{criteria.mobile},'%')
@@ -188,6 +186,31 @@
         values (#{accountId}, #{accountName}, #{total}, #{coupon}, #{payAmount}, #{status})
     </insert>
 
+    <select id="findByOrderNo" resultMap="dMap">
+        SELECT bb_orders.id,
+               CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) AS order_no,
+               account_id,
+               account_name,
+               total,
+               pay_amount,
+               coupon,
+               status,
+               bb_orders.created_at,
+               bb_orders.updated_at,
+               bb_rooms.id                                                                   AS appointed_room_id,
+               bb_rooms.name                                                                 AS appointed_room_name,
+               bb_order_appointments.start_time                                              AS appointed_start_time,
+               bb_order_appointments.end_time                                                AS appointed_end_time,
+               bb_order_appointments.contact_name                                            AS appointed_contact_name,
+               bb_order_appointments.contact_mobile                                          AS appointed_contact_mobile,
+               bb_order_appointments.remark
+        FROM bb_orders
+                 LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
+                 INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
+        WHERE CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) = #{orderNo}
+        LIMIT 1
+    </select>
+
     <select id="findById" resultMap="dMap">
         SELECT bb_orders.id,
                CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) AS order_no,
@@ -209,8 +232,7 @@
         FROM bb_orders
                  LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
                  INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
-        WHERE CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) = #{id}
-        LIMIT 1
+        WHERE bb_orders.id = #{id}
     </select>
 
     <update id="update">

@@ -105,23 +105,7 @@
                             {data: "appointTime", className: 'center'},
                             {data: "total", className: 'center'},
                             {data: "payAmount", className: 'center'},
-                            {
-                                data: "status",
-                                className: 'center',
-                                render: function (data) {
-                                    switch (data) {
-                                        case "PENDING":
-                                            return "未开";
-                                        case "APPLYING":
-                                            return "待开";
-                                        case "INVOICED":
-                                            return "已开";
-                                        case "SHIPPED":
-                                            return "已邮寄";
-
-                                    }
-                                }
-                            },
+                            {data: "status", className: 'center'},
                             {
                                 data: "status",
                                 className: 'center',

@@ -27,7 +27,7 @@ public class InvoiceServiceImpl extends BaseService implements InvoiceService {
     public void create(Account account, String orderNo, Invoice invoice) {
         Invoice invoiced = invoiceMapper.findBy(orderNo);
         if (invoiced == null) {
-            Order order = orderMapper.findById(orderNo);
+            Order order = orderMapper.findByOrderNo(orderNo);
             if (order == null) {
                 account.setErrMsg("无效的订单");
             } else {

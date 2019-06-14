@@ -86,9 +86,10 @@
                                         url: "/admin/orders/dataList",
                                         type: "POST",
                                         data: function (data) {
-                                            data.orderNo = $("#orderNo").val();
-                                            data.startDate = $("#startDate").val();
-                                            data.endDate = $("#endDate").val()
+                                            data.no = $("#no").val();
+                                            data.from = $("#from").val();
+                                            data.to = $("#to").val();
+                                            data.mobile = $("#mobile").val()
                                         }
                                     },
                                     dom: 'Bfltip',
@@ -161,7 +162,6 @@
                                                     render: function (data) {
                                                         return '<div class="hidden-sm hidden-xs btn-group">' +
                                                                 '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>' +
-                                                                '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>' +
                                                                 '</div>';
                                                     }
                                                 }

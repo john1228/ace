@@ -8,7 +8,7 @@
                 <div class="form-group row col-xs-12 col-sm-6">
                     <label class="col-sm-2 no-padding-right text-right">名称</label>
                     <div class="col-sm-10">
-                        <input name="name" class="form-control col-xs-10 col-sm-9"/>
+                        <input id="name" class="form-control col-xs-10 col-sm-9"/>
                     </div>
                 </div>
             </div>
@@ -17,8 +17,8 @@
                     <label class="col-sm-2 no-padding-right text-right">有效期</label>
                     <div class="col-sm-10">
                         <input type="text" id="dateRange" class="form-control col-xs-10 col-sm-9">
-                        <input type="hidden" id="startDate">
-                        <input type="hidden" id="endDate">
+                        <input type="hidden" id="from">
+                        <input type="hidden" id="to">
                         <script type="text/javascript">
                             $(function () {
                                 $("#dateRange").daterangepicker({
@@ -36,11 +36,11 @@
                                     }
                                 }).on('cancel.daterangepicker', function (ev, picker) {
                                     $("#dateRange").val("请选择日期");
-                                    $("#startDate").val("");
-                                    $("#endDate").val("");
+                                    $("#from").val("");
+                                    $("#to").val("");
                                 }).on('apply.daterangepicker', function (ev, picker) {
-                                    $("#startDate").val(picker.startDate.format('YYYY-MM-DD'));
-                                    $("#endDate").val(picker.endDate.format('YYYY-MM-DD'));
+                                    $("#from").val(picker.startDate.format('YYYY-MM-DD'));
+                                    $("#to").val(picker.endDate.format('YYYY-MM-DD'));
                                     $("#dateRange").val(picker.startDate.format('YYYY-MM-DD') + " 至 " + picker.endDate.format('YYYY-MM-DD'));
                                 });
                             })
@@ -52,8 +52,7 @@
                 <div class="form-group row col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">&nbsp;</label>
                     <div class="col-sm-10">
-                        <button class="btn btn-info" type="submit">
-                            <i class="icon-ok bigger-110"></i>
+                        <button class="btn btn-info" type="submit" id="query">
                             查询
                         </button>
                     </div>

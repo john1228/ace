@@ -8,7 +8,6 @@ import com.ace.entity.*;
 import com.ace.entity.concern.enums.CouponStatus;
 import com.ace.entity.concern.enums.CouponType;
 import com.ace.entity.concern.enums.Week;
-import com.ace.service.StaffService;
 import com.ace.service.admin.CouponService;
 import com.ace.service.admin.RoomService;
 import com.ace.util.CollectionUtil;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +37,6 @@ public class CouponsController extends BaseController {
     private CouponService couponService;
     @Resource
     private RoomService roomService;
-    @Resource
-    private StaffService staffService;
 
 
     @GetMapping({"", "/"})
@@ -47,7 +45,7 @@ public class CouponsController extends BaseController {
     }
 
     @ResponseBody
-    @GetMapping("/dataList")
+    @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
     public DataTable<SystemCoupon> dataList(
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
@@ -83,17 +81,14 @@ public class CouponsController extends BaseController {
     }
 
     @GetMapping("/{id}")
-    public String show(@SessionAttribute(CURRENT_RELATED_STAFF) List<Staff> staffList, @PathVariable("id") int id, Model model) {
+    public String show(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") int id, Model model) {
         SystemCoupon coupon = couponService.findById(id);
         model.addAttribute("coupon", coupon);
         model.addAttribute("grant", new Grant());
         Map<String, String> orgs = new HashMap<>();
-        staffList.forEach(staff -> {
-            if (!orgs.containsKey(staff.getOrgId())) {
-                orgs.put(staff.getOrgId(), staff.getOrgName());
-            }
-        });
-
+        orgs.put(staff.getOrgId(), staff.getOrgName());
+        List<Staff> staffList = new ArrayList<>();
+        staffList.add(staff);
         model.addAttribute("orgs", orgs);
         model.addAttribute("staffs", staffList);
         return viewPath + "show";

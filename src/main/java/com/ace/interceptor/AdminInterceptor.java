@@ -25,7 +25,6 @@ public class AdminInterceptor implements HandlerInterceptor {
             request.setAttribute("menu", "room");
         }
         //请求处理
-        request.setAttribute("company", "爱测试");
         return true;
     }
 

@@ -91,52 +91,54 @@
             </li>
         </ul>
     </li>
-    <li class="${(menu == "setting")?string("active open","")}">
-        <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fa fa-cogs"></i>
-            <span class="menu-text"> 配置管理 </span>
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-        <b class="arrow"></b>
-        <ul class="submenu">
-            <li class="${(requestUri?starts_with("/admin/settings/alipay"))?string("active","")}">
-                <a href="/admin/settings/alipay">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>支付宝配置</text>
+    <#if current_account.manager != true>
+        <li class="${(menu == "setting")?string("active open","")}">
+             <a href="#" class="dropdown-toggle">
+                 <i class="menu-icon fa fa-cogs"></i>
+                 <span class="menu-text"> 配置管理 </span>
+                 <b class="arrow fa fa-angle-down"></b>
+             </a>
+             <b class="arrow"></b>
+             <ul class="submenu">
+                 <li class="${(requestUri?starts_with("/admin/settings/alipay"))?string("active","")}">
+                     <a href="/admin/settings/alipay">
+                         <i class="menu-icon fa fa-caret-right"></i>
+                         <text>支付宝配置</text>
+                     </a>
+                     <b class="arrow"></b>
+                 </li>
+                 <li class="${(requestUri?starts_with("/admin/settings/wxpay"))?string("active","")}">
+                     <a href="/admin/settings/wxpay">
+                         <i class="menu-icon fa fa-caret-right"></i>
+                         <text>微信配置</text>
+                     </a>
+                     <b class="arrow"></b>
+                 </li>
+                 <li class="${(requestUri?starts_with("/admin/settings/protocol"))?string("active","")}">
+                     <a href="/admin/settings/protocol">
+                         <i class="menu-icon fa fa-caret-right"></i>
+                         <text>下单协议</text>
+                     </a>
+                     <b class="arrow"></b>
+                 </li>
+             </ul>
+         </li>
+        <li class="${(menu == "log")?string("active open","")}">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-bookmark"></i>
+                    <span class="menu-text"> 日志管理 </span>
+                    <b class="arrow fa fa-angle-down"></b>
                 </a>
                 <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="${(requestUri?starts_with("/admin/oper_logs"))?string("active","")}">
+                        <a href="/admin/oper_logs">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            <text>操作日志</text>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
             </li>
-            <li class="${(requestUri?starts_with("/admin/settings/wxpay"))?string("active","")}">
-                <a href="/admin/settings/wxpay">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>微信配置</text>
-                </a>
-                <b class="arrow"></b>
-            </li>
-            <li class="${(requestUri?starts_with("/admin/settings/protocol"))?string("active","")}">
-                <a href="/admin/settings/protocol">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>下单协议</text>
-                </a>
-                <b class="arrow"></b>
-            </li>
-        </ul>
-    </li>
-    <li class="${(menu == "log")?string("active open","")}">
-        <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fa fa-bookmark"></i>
-            <span class="menu-text"> 日志管理 </span>
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-        <b class="arrow"></b>
-        <ul class="submenu">
-            <li class="${(requestUri?starts_with("/admin/oper_logs"))?string("active","")}">
-                <a href="/admin/oper_logs">
-                    <i class="menu-icon fa fa-caret-right"></i>
-                    <text>操作日志</text>
-                </a>
-                <b class="arrow"></b>
-            </li>
-        </ul>
-    </li>
+    </#if>
 </ul>

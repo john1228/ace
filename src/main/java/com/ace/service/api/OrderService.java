@@ -14,7 +14,7 @@ public interface OrderService {
 
     List<Order> supplierOrder(Account account, String status, int page);
 
-    boolean create(Account account, Appointment appointment, Long couponId);
+    Order create(Account account, Appointment appointment, Long couponId);
 
     Order show(Account account, String orderNo);
 

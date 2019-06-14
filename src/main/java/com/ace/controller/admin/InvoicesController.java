@@ -64,7 +64,7 @@ public class InvoicesController extends BaseController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") String orderNo, Model model) {
         InvoiceOrder iOrder = invoiceService.findOrder(orderNo);
-        Invoice invoice = invoiceService.findById(orderNo);
+        Invoice invoice = invoiceService.findByOrderNo(orderNo);
         model.addAttribute("order", iOrder);
         model.addAttribute("invoice", invoice);
         return viewPath + "show";

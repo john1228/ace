@@ -4,7 +4,7 @@
     <select id="alipay" resultType="com.ace.entity.Alipay">
         SELECT seller, private_key AS privateKey, public_key AS publicKey
         FROM bb_alipay
-        WHERE project_id = #{staff.projectId}
+        WHERE project_id = #{projectId}
     </select>
 
     <insert id="updateAlipay" useGeneratedKeys="true" keyProperty="id">
@@ -25,7 +25,7 @@
     <select id="wxpay" resultType="com.ace.entity.Wxpay">
         SELECT app_id AS appId, mch_id AS mchId, secret_key AS secretKey
         FROM bb_wxpay
-        WHERE project_id = #{staff.projectId}
+        WHERE project_id = #{projectId}
     </select>
 
     <insert id="updateWxpay" useGeneratedKeys="true" keyProperty="id">
@@ -47,7 +47,7 @@
     <select id="protocol" resultType="java.lang.String">
         SELECT content
         FROM bb_protocol
-        WHERE project_id = #{staff.projectId}
+        WHERE project_id = #{projectId}
     </select>
 
     <insert id="updateProtocol" useGeneratedKeys="true" keyProperty="id">

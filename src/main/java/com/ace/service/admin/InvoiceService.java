@@ -10,7 +10,7 @@ public interface InvoiceService {
 
     DataTable<InvoiceOrder> dataTable(Staff staff, InvoiceCriteria criteria);
 
-    Invoice findById(String orderNo);
+    Invoice findByOrderNo(String orderNo);
 
     void create(String orderNo, Invoice invoice);
 

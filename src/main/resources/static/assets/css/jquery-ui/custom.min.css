@@ -286,6 +286,7 @@
 }
 
 .attribute-table-value > span + span:before {
+    height: 100%;
     display: inline;
     content: ",";
     margin-left: 1px;

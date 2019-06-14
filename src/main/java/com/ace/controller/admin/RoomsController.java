@@ -19,6 +19,7 @@ import com.ace.util.CollectionUtil;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,9 +28,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -60,6 +64,9 @@ public class RoomsController extends BaseController {
 
     @GetMapping("/new")
     public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+        Map<String, String> orgs = new HashMap<>();
+        orgs.put(staff.getEmpId(), staff.getEmpName());
+        model.addAttribute("current_orgs", orgs);
         model.addAttribute("room", new Room());
         model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
         model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
@@ -127,6 +134,9 @@ public class RoomsController extends BaseController {
     public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id, Model model) {
         Room room = roomService.findById(id);
         model.addAttribute("room", room);
+        Map<String, String> orgs = new HashMap<>();
+        orgs.put(staff.getEmpId(), staff.getEmpName());
+        model.addAttribute("current_orgs", orgs);
         model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
         model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
         model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));

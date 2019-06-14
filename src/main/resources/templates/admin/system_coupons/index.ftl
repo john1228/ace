@@ -51,8 +51,8 @@
                             dt.ajax.reload();
                         }
                     };
-                    var $coupon = $('#couponList');
-                    $coupon.DataTable({
+                    var $table = $('#couponList');
+                    $table.DataTable({
                         language: {
                             sProcessing: "处理中...",
                             sLengthMenu: "显示 _MENU_ 项结果",
@@ -79,7 +79,12 @@
                         ordering: false,
                         ajax: {
                             url: "/admin/coupons/dataList",
-                            type: "GET"
+                            type: "POST",
+                            data: function (data) {
+                                data.name = $("#name").val();
+                                data.from = $("#from").val();
+                                data.to = $("#to").val()
+                            }
                         },
                         dom: 'Bfltip',
                         buttons: [
@@ -148,12 +153,14 @@
                                     return '<div class="hidden-sm hidden-xs btn-group">' +
                                             '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '">查看</a>' +
                                             '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit">编辑</a>' +
-                                            '<a class="btn btn-xs btn-warning" href="/admin/coupons/' + data + '" data-method="delete">删除</a>' +
                                             '</div>';
                                 }
                             }
                         ]
                     });
+                    $('#query').on("click", function () {
+                        $table.DataTable().draw(true);
+                    })
                 })
             </script>
         </div>

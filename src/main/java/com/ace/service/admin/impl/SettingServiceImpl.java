@@ -21,7 +21,7 @@ public class SettingServiceImpl implements SettingService {
 
     @Override
     public Alipay alipay(Staff staff) {
-        return settingMapper.alipay(staff);
+        return settingMapper.alipay(staff.getProjectId());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SettingServiceImpl implements SettingService {
 
     @Override
     public Wxpay wxpay(Staff staff) {
-        return settingMapper.wxpay(staff);
+        return settingMapper.wxpay(staff.getProjectId());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SettingServiceImpl implements SettingService {
 
     @Override
     public String protocol(Staff staff) {
-        return settingMapper.protocol(staff);
+        return settingMapper.protocol(staff.getProjectId());
     }
 
     @Override

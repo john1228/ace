@@ -3,6 +3,7 @@ package com.ace.dao;
 import com.ace.entity.Account;
 import com.ace.entity.MemberCoupon;
 import com.ace.entity.Staff;
+import com.ace.entity.concern.enums.CouponStatus;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface MemberCouponMapper {
 
     void grant(@Param("coupons") List<MemberCoupon> mcList);
 
-    void update(MemberCoupon Coupon);
+    void use(@Param("id") Long id, @Param("status") CouponStatus status);
 
     List<MemberCoupon> projectCoupons(@Param("account") Account account, @Param("project") String projectId);
 }

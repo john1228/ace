@@ -70,14 +70,14 @@ public class OrdersController extends BaseController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") String orderNo, Model model) {
-        Order order = orderService.findById(orderNo);
+        Order order = orderService.findByOrderNo(orderNo);
         model.addAttribute("order", order);
         return viewPath + "show";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") String orderNo, Model model) {
-        Order order = orderService.findById(orderNo);
+        Order order = orderService.findByOrderNo(orderNo);
         model.addAttribute("order", order);
         return viewPath + "edit";
     }

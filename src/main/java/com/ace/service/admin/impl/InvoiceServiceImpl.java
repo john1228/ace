@@ -37,13 +37,13 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice findById(String orderNo) {
+    public Invoice findByOrderNo(String orderNo) {
         return invoiceMapper.findBy(orderNo);
     }
 
     @Override
     public void create(String orderNo, Invoice invoice) {
-        Order order = orderMapper.findById(orderNo);
+        Order order = orderMapper.findByOrderNo(orderNo);
         if (order.getStatus() == OrderStatus.PAIDANDCONFIRM || true) {
             invoice.setOrderId(order.getId());
             invoiceMapper.create(invoice);
