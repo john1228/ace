@@ -270,7 +270,14 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>续租时间</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "room.renew" "class='col-xs-10 col-sm-9'"/>
+                            <div class="input-group col-xs-10 col-sm-9">
+                                <@spring.formInput "room.renew" "class='form-control'"/>
+                                <span class="input-group-btn">
+                                   <button class="btn btn-sm btn-default" type="button">
+                                        小时
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -338,10 +345,13 @@
                         <div class="form-group row col-xs-12 col-sm-6">
                             <label class="col-sm-2 control-label no-padding-right"
                                    for="form-field-1"><span style="color: red">*</span>退款时限</label>
-                            <div class="col-sm-10">
-                                <@spring.formInput "room.rlt","class='col-xs-10 col-sm-9' required"/>
-                            </div>
-                            <div class="invalid-feedback">
+                            <div class="input-group col-xs-10 col-sm-9">
+                                <@spring.formInput "room.rlt" "class='form-control' required"/>
+                                <span class="input-group-btn">
+                                   <button class="btn btn-sm btn-default" type="button">
+                                        小时
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -409,7 +419,9 @@
                                                class="spItem"/>
                                     </td>
                                     <td class="center">${support.name}</td>
-                                    <td class="center">${support.cover}</td>
+                                    <td class="center">
+                                        <img src="${image + '/'+ support.cover}" class="table"/>
+                                    </td>
                                     <td class="center">
                                         <input name="supportList[${support_index}].remark"
                                                class="col-xs-12 col-sm-12">
@@ -426,7 +438,11 @@
                                 $(function () {
                                     $('#supportList').DataTable({
                                         searching: false,
-                                        lengthChange: false
+                                        lengthChange: false,
+                                        paging: false,
+                                        language: {
+                                            sInfo: ""
+                                        },
                                     });
                                 })
                             </script>

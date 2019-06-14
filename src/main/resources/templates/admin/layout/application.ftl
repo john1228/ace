@@ -62,6 +62,9 @@
         }();
     </script>
 </#if>
+<script>
+    $("a[href")
+</script>
 <#include "foot.ftl">
 </body>
 </html>

@@ -46,7 +46,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public void create(Staff staff, Room room) {
-        roomMapper.create(room);
+        roomMapper.create(staff, room);
         List<RoomSupport> selectedSupport = room.getSupportList().stream().filter(item -> item.getSupportId() != null).collect(Collectors.toList());
         selectedSupport.forEach(item -> item.setRoomId(room.getId()));
         roomSupportMapper.create(selectedSupport);

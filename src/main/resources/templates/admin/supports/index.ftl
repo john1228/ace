@@ -103,7 +103,7 @@
                                         data: "cover",
                                         className: 'center',
                                         render: function (data) {
-                                            return '<img class="table" src="${image}' + data + '"/>';
+                                            return '<img class="img-50" src="${image}' + data + '"/>';
                                         }
                                     },
                                     {data: "unit", className: 'center'},

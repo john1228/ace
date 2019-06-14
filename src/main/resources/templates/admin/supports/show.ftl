@@ -41,7 +41,7 @@
                 <div class="attribute-table-row">
                     <div class="attribute-table-label">图片</div>
                     <div class="attribute-table-value">
-                        <img src="${image + support.cover}" class="show"/>
+                        <img src="${image + support.cover}" class="img-150"/>
                     </div>
                 </div>
             </div>

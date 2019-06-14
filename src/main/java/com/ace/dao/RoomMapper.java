@@ -17,7 +17,7 @@ public interface RoomMapper {
 
     List<Room> roomList(@Param("staff") Staff staff);
 
-    void create(Room room);
+    void create(@Param("staff") Staff staff, @Param("room") Room room);
 
     Room findById(@Param("id") Long id);
 

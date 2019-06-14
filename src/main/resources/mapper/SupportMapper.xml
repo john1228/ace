@@ -34,7 +34,7 @@
         WHERE project_id = #{staff.projectId}
     </select>
 
-    <insert id="create">
+    <insert id="create" useGeneratedKeys="true" keyProperty="support.id">
         insert into bb_supports (project_id, name, cover, unit)
         values (#{staff.projectId}, #{support.name}, #{support.cover}, #{support.unit})
     </insert>

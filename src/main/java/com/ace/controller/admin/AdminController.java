@@ -6,10 +6,7 @@ import com.ace.entity.Staff;
 import lombok.extern.java.Log;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -20,7 +17,7 @@ import java.util.List;
 @Log
 public class AdminController extends BaseController {
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String index() {
         return INDEX;
     }
@@ -37,12 +34,12 @@ public class AdminController extends BaseController {
         return "redirect:" + redirectUri;
     }
 
-    @RequestMapping("/login")
+    @GetMapping("/login")
     public String login() {
         return LOGIN;
     }
 
-    @DeleteMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:" + "http://bpmp.baobanwang.com/page/logout";

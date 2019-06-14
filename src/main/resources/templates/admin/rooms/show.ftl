@@ -52,7 +52,7 @@
                 <div class="widget-body">
                     <div class="widget-main">
                             <#list room.image as img>
-                                <img src="${image + '/' + img}"/>
+                                <img src="${image + '/'+ img}" style="object-fit: cover;width: 100px;height: 100px"/>
                             </#list>
                     </div>
                 </div>
@@ -313,11 +313,11 @@
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-12">
                                 <div class="attribute-table-label">收费</div>
-                                <div class="attribute-table-value">
+                                <div class="attribute-table-value" style="display: table-cell">
                                         <#list room.supportList as support>
-                                            <div>
+                                            <div style="padding: 5px;border: 1px dotted #b1b1b1">
                                                 <div>${support.name}</div>
-                                                <div><img src="${image + "/" + support.cover}"/></div>
+                                                <div><img src="${support.cover}" class="img-50"/></div>
                                                 <div>${support.price}/${support.unit}</div>
                                             </div>
                                         </#list>
