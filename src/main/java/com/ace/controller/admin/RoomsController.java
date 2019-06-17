@@ -16,6 +16,8 @@ import com.ace.service.admin.RoomService;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
 import com.ace.util.CollectionUtil;
+import com.ace.util.remote.Data;
+import com.ace.util.remote.DataUtils;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +57,6 @@ public class RoomsController extends BaseController {
     @ResponseBody
     @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
-    @Recordable
     public DataTable<Room> dataList(@SessionAttribute(CURRENT_OPERATOR) Staff staff, DataTable<Room> dataTable, RoomCriteria criteria) {
         logger.info("请求数据");
         roomService.data(staff, dataTable, criteria);
@@ -64,9 +65,8 @@ public class RoomsController extends BaseController {
 
     @GetMapping("/new")
     public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-        Map<String, String> orgs = new HashMap<>();
-        orgs.put(staff.getEmpId(), staff.getEmpName());
-        model.addAttribute("current_orgs", orgs);
+
+        model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
         model.addAttribute("room", new Room());
         model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
         model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
@@ -134,9 +134,7 @@ public class RoomsController extends BaseController {
     public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id, Model model) {
         Room room = roomService.findById(id);
         model.addAttribute("room", room);
-        Map<String, String> orgs = new HashMap<>();
-        orgs.put(staff.getEmpId(), staff.getEmpName());
-        model.addAttribute("current_orgs", orgs);
+        model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
         model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
         model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
         model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));

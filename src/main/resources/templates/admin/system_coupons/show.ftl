@@ -153,7 +153,6 @@
                                             <th class="center">编号</th>
                                             <th class="center">有效期</th>
                                             <th class="center">状态</th>
-                                            <th class="center">操作</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -192,6 +191,8 @@
                                                 },
                                                 columns: [
                                                     {data: "id", className: 'center'},
+                                                    {data: "orgId", className: "center"},
+                                                    {data: "empId", className: "center"},
                                                     {data: "startDate", className: 'center'},
                                                     {data: "endDate", className: 'center'},
                                                     {
@@ -205,13 +206,6 @@
                                                                     return "已使用";
                                                             }
                                                         }
-                                                    },
-                                                    {
-                                                        data: "id",
-                                                        render: function (data) {
-                                                            return '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>';
-                                                        },
-                                                        className: 'center'
                                                     }
                                                 ]
                                             });
@@ -256,10 +250,9 @@
                                             <label class="col-sm-2 control-label no-padding-right">
                                                 发放组织 </label>
                                             <div class="col-sm-10">
-                                                <select id="orgId" name="orgId" class="chosen-select form-control"
-                                                        data-placeholder="请选择账号">
-                                                    <#list orgs?keys as key>
-                                                        <option value="${key}">${orgs[key]}</option>
+                                                <select id="orgId" name="orgId" class="select2">
+                                                    <#list orgs as org>
+                                                        <option value="${org.id}">${org.text}</option>
                                                     </#list>
                                                 </select>
                                             </div>
@@ -268,19 +261,42 @@
                                             <label class="col-sm-2 control-label no-padding-right">
                                                 发放员工 </label>
                                             <div class="col-sm-10">
-                                                <select id="empId" name="empId" class="chosen-select form-control"
+                                                <select id="empId" name="empId" class="select2"
                                                         data-placeholder="请选择账号">
-                                                    <#list staffs as staff>
-                                                        <option value="${staff.empId}">${staff.empName}</option>
-                                                    </#list>
+                                                    <option></option>
                                                 </select>
                                             </div>
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    $("#orgId").css('width', '83.333%').select2({
+                                                        allowClear: true,
+                                                        dropdownParent: $("#my-modal")
+                                                    });
+                                                    $("#empId").css('width', '83.333%').select2({
+                                                        allowClear: true,
+                                                        dropdownParent: $("#my-modal"),
+                                                        ajax: {
+                                                            url: '/admin/options/employee',
+                                                            dataType: 'json',
+                                                            data: function (params) {
+                                                                var q = {link: $("#orgId").val(), keyword: params.term};
+                                                                return q;
+                                                            },
+                                                            processResults: function (data) {
+                                                                return {
+                                                                    results: data
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+                                                })
+                                            </script>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-2 control-label no-padding-right">
                                                 发放数量 </label>
                                             <div class="col-sm-10">
-                                                <@spring.formInput "grant.amount","class='col-xs-10 col-sm-5' placeholder='每个用户发放的数量'"/>
+                                                <@spring.formInput "grant.amount","class='col-xs-12 col-sm-10' placeholder='每个用户发放的数量'"/>
                                                 <span style="color:red; height:25px;line-height:25px;overflow:hidden;"><b>&nbsp;*</b></span>
                                             </div>
                                         </div>

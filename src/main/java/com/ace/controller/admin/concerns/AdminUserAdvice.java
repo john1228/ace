@@ -3,20 +3,17 @@ package com.ace.controller.admin.concerns;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
 import com.ace.util.Aliyun;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 @ControllerAdvice("com.ace.controller.admin")
+@Log4j2
 public class AdminUserAdvice {
     private static final String CURRENT_OPERATOR = "CURRENT::OPERATOR";
 
@@ -39,11 +36,11 @@ public class AdminUserAdvice {
                 Account account = (Account) authentication.getCredentials();
                 staff = account.getStaffList().get(0);
                 session.setAttribute(CURRENT_OPERATOR, staff);
+                log.info(account.getAccountName() + "::" + staff.getEmpName());
             }
             return staff;
         }
     }
-
 
 
     @ModelAttribute("image")

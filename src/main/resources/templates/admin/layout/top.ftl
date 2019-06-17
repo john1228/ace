@@ -21,7 +21,7 @@
         <div class="navbar-buttons navbar-header">
             <ul class="nav ace-nav">
                 <li class="light-blue">
-                    <a href="http://bpmp.baobanwang.com/page/logout" class="btn btn-white">
+                    <a href="http://bpmp.baobanwang.com/p/index" class="btn btn-white">
                         <span class="glyphicon glyphicon-send"></span> 点击返回
                     </a>
                 </li>

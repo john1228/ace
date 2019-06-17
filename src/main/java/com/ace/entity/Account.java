@@ -26,30 +26,5 @@ public class Account implements Serializable {
         this.accountName = accountName;
     }
 
-    //账号内所有员工的编号
-    public List<Long> allStaff() {
-        List<Long> idList = new ArrayList<>();
-        staffList.forEach(staff -> idList.add(staff.getId()));
-        return idList;
-    }
 
-    //项目内所有账户
-    public List<Long> projectStaff(String projectId) {
-        List<Long> idList = new ArrayList<>();
-        staffList.forEach(staff -> {
-            if (staff.getProjectId().equals(projectId))
-                idList.add(staff.getId());
-        });
-        return idList;
-    }
-
-    //组织内所有账户
-    public List<Long> orgStaff(String orgId) {
-        List<Long> idList = new ArrayList<>();
-        staffList.forEach(staff -> {
-            if (staff.getOrgId().equals(orgId))
-                idList.add(staff.getId());
-        });
-        return idList;
-    }
 }

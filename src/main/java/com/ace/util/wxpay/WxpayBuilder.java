@@ -16,7 +16,7 @@ public enum WxpayBuilder {
     private final String gateway = "https://api.mch.weixin.qq.com/pay/unifiedorder";
     private final String tradeIp = "58.34.201.235";
     private final String tradeType = "APP";
-    private final String notifyUrl = "http://open.aidong.me/callback/wx";
+    private final String notifyUrl = "http://mrp.baobanwang.com/callback/wxpay";
 
 
     public WxpayResponse getPay(Wxpay config, Order order) {
@@ -29,7 +29,7 @@ public enum WxpayBuilder {
         return client.makeRequest(request);
     }
 
-    public boolean signatureCheck(Wxpay config, SortedMap<String, Object> params, String sign) {
+    public boolean check(Wxpay config, SortedMap<String, Object> params, String sign) {
         try {
             WxPayClient client = new WxPayClient(gateway, config.getAppId(), config.getMchId(), config.getSecretKey(), tradeIp, tradeType, notifyUrl);
             return client.signatureCheck(params, sign);

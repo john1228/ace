@@ -41,7 +41,6 @@
                 <div class="col-xs-12">
                     <form action="/admin/orders/" role="form" class="form-horizontal" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <input type="hidden" name="staffId" value="${current_operator.getId()}">
                         <input type="hidden" name="accountId" value="0"/>
                         <input type="hidden" name="accountName" value="后台添加">
                         <@spring.bind path="order"/>

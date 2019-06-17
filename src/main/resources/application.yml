@@ -20,8 +20,7 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
 server:
-  company: 爱测试
-  port: 9001
+  port: 9093
   servlet:
     context-path: /
     session:
@@ -42,15 +41,18 @@ spring:
     maxWait: 60000.0
     minEvictableIdleTimeMillis: 300000.0
     minIdle: 5.0
-    password: Ace!1228
     poolPreparedStatements: 'true  '
     testOnBorrow: 'false  '
     testOnReturn: 'false  '
     testWhileIdle: 'true  '
     timeBetweenEvictionRunsMillis: 60000.0
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: ace
+    url: jdbc:mysql://101.37.27.163:3306/rmpdb?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: baobanwang_rmp
+    password: Rmp123456
+#    url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+#    username: ace
+#    password: Ace!1228
     validationQuery: 'SELECT 1 FROM DUAL'
   freemarker:
     cache: false
@@ -68,12 +70,9 @@ spring:
       pool:
         max-active: 8
         max-idle: 8
-        max-wait: 10000
         min-idle: 0
-      shutdown-timeout: 100
     password: ''
     port: 6379
-    timeout: 10000
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
   session:

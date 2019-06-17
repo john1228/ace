@@ -1,10 +1,14 @@
 package com.ace.controller.callback;
 
 import com.ace.entity.Receipt;
+import com.ace.service.admin.SettingService;
 import com.ace.service.api.OrderService;
+import com.ace.service.callback.AlipayService;
 import com.ace.util.AlipayBuilder;
 import com.alipay.api.internal.util.AlipaySignature;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -18,10 +22,13 @@ import java.util.Map;
  * @date 19-6-5 上午9:38
  */
 @RestController
+@Log4j2
 public class AlipayController {
 
     @Resource
     OrderService orderService;
+    @Resource
+    AlipayService alipayService;
 
     @RequestMapping("/callback/alipay")
     public String home(HttpServletRequest request, Receipt receipt) {
@@ -40,8 +47,11 @@ public class AlipayController {
             params.put(name, valueStr);
         }
         try {
-            boolean checked = AlipayBuilder.instance.verify(null, params);
-            if (checked) orderService.paying(receipt, "支付宝");
+            if (alipayService.check(receipt.getOrderNo(), params)) {
+                orderService.paying(receipt, "支付宝");
+            } else {
+                log.error("支付宝回调验证出错");
+            }
             return "success";
 
         } catch (Exception exp) {

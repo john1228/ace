@@ -459,7 +459,6 @@
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <input type="hidden" name="staffId" value="${current_operator.getId()}">
                                 <input type="hidden" name="roomId" value="${room.id}">
                                 <div class="form-group row">
                                     <div class="col-sm-2 control-label no-padding-right">日期</div>

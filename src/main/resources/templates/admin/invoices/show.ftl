@@ -263,7 +263,6 @@
                                 </div>
                                 <div class="modal-body">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                    <input type="hidden" name="staffId" value="${current_operator.getId()}">
                                     <div class="form-group row">
                                         <div class="col-sm-2 control-label no-padding-right">快递公司</div>
                                         <div class="col-sm-10">

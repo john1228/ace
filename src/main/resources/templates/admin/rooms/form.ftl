@@ -10,7 +10,6 @@
 <script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <@spring.bind path="room"/>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<input type="hidden" name="staffId" value="${current_operator.getId()}">
 <div class="row">
     <div class="col-xs-12 col-sm-12 widget-container-col">
         <div class="widget-box">
@@ -203,7 +202,12 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>免费组织</label>
                         <div class="col-sm-10 form-radio-group">
-                            <@spring.formMultiSelect "room.freeOrg",current_orgs,"class='multiselect col-xs-10 col-sm-9'"/>
+                            <select multiple="multiple" id="freeOrg" name="freeOrg"
+                                    class="multiselect col-xs-10 col-sm-9">
+                                <#list current_orgs as org>
+                                    <option value="${org.id}">${org.text}</option>
+                                </#list>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -420,7 +424,7 @@
                                     </td>
                                     <td class="center">${support.name}</td>
                                     <td class="center">
-                                        <img src="${image + '/'+ support.cover}" class="table"/>
+                                        <img src="${image + '/'+ support.cover}" class="img-50"/>
                                     </td>
                                     <td class="center">
                                         <input name="supportList[${support_index}].remark"

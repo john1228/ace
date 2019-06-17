@@ -23,10 +23,10 @@ public class AdminController extends BaseController {
     }
 
     @PostMapping({"", "/"})
-    public String change(@RequestParam("operator") int operator, @RequestParam("redirectUri") String redirectUri, Authentication authentication, HttpSession session) {
+    public String change(@RequestParam("operator") String empId, @RequestParam("redirectUri") String redirectUri, Authentication authentication, HttpSession session) {
         Account account = (Account) authentication.getCredentials();
         List<Staff> staffList = account.getStaffList();
-        Staff selected = staffList.stream().filter(staff -> staff.getId() == operator).findAny().get();
+        Staff selected = staffList.stream().filter(staff -> staff.getEmpId().equals(empId)).findAny().get();
         if (selected != null) {
             session.setAttribute(CURRENT_OPERATOR, selected);
             log.info("设置操作用户");

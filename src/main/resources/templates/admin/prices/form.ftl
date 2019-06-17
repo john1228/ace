@@ -1,7 +1,6 @@
 <#import "/spring.ftl" as spring />
 <script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-<input type="hidden" name="staffId" value="${current_operator.getId()}">
 <input type="hidden" name="roomName">
 <@spring.bind "price"/>
 <div class="form-group row">

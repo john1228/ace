@@ -186,3 +186,7 @@ td .btn {
 .modal.fade.in {
     top: 20%;
 }
+
+.chosen-container {
+    width: 83.333% !important;
+}

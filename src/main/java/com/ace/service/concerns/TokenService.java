@@ -12,16 +12,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +40,6 @@ public class TokenService {
             List<Staff> staffList = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
                 Staff staff = new Staff();
-                staff.setId(Long.valueOf(i));
                 staff.setAccountId("001");
                 staff.setAccountName("001-NAME");
                 staff.setProjectId("001-P-" + i);
@@ -92,6 +87,7 @@ public class TokenService {
                                 empObj.getString("empId"),
                                 empObj.getString("empName")
                         ));
+                        logger.info("登录用户:" + staffList.get(i).getEmpName());
                     }
                     account.setStaffList(staffList);
                     return account;

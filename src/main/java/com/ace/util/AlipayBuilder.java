@@ -23,7 +23,7 @@ public enum AlipayBuilder {
     private static final Logger logger = LoggerFactory.getLogger(AlipayBuilder.class);
     private static final String gateway = "https://openapi.alipay.com/gateway.do";
     private final String signType = "RSA2";
-    private final String notifyUrl = "";
+    private final String notifyUrl = "http://mrp.baobanwang.com/callback/alipay";
 
 
     public String getPay(Alipay config, Order order) {

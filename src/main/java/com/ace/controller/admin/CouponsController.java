@@ -11,6 +11,7 @@ import com.ace.entity.concern.enums.Week;
 import com.ace.service.admin.CouponService;
 import com.ace.service.admin.RoomService;
 import com.ace.util.CollectionUtil;
+import com.ace.util.remote.DataUtils;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,7 @@ public class CouponsController extends BaseController {
         orgs.put(staff.getOrgId(), staff.getOrgName());
         List<Staff> staffList = new ArrayList<>();
         staffList.add(staff);
-        model.addAttribute("orgs", orgs);
+        model.addAttribute("orgs", DataUtils.orgList("806334169587257344"));
         model.addAttribute("staffs", staffList);
         return viewPath + "show";
     }

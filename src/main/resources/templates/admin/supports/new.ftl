@@ -29,7 +29,6 @@
     <form action="/admin/supports" role="form" class="form-horizontal" method="post"
           enctype="multipart/form-data">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input type="hidden" name="staffId" value="${current_operator.getId()}">
         <@spring.bind path="support"/>
         <#include "form.ftl"/>
     </form>

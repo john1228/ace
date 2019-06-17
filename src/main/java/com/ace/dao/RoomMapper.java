@@ -26,4 +26,6 @@ public interface RoomMapper {
     void destroy(Long id);
 
     List<Room> query(@Param("account") Account account, @Param("query") Query query);
+
+    Room appointedRoom(@Param("orderNo") String orderNO);
 }

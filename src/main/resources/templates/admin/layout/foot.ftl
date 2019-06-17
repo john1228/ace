@@ -50,7 +50,7 @@
     $(document).ready(function () {
 
         $('a.delete').on('click', function (e) {
-            console.log("abbb");
+            console.log("删除");
             e.preventDefault();
         });
 
