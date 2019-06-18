@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.RoomFreeOrgMapper">
+    <insert id="create">
+        INSERT INTO bb_room_free_org (room_id, org_id, org_name)
+        VALUES
+        <foreach collection="orgs" item="org" separator=",">
+            (#{org.roomId}, #{org.orgId},#{org.orgName})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        org_name = org_name
+    </insert>
+
+    <select id="freeOrgs" resultType="com.ace.entity.RoomFreeOrg">
+        SELECT *
+        FROM bb_room_free_org
+        WHERE room_id = #{room}
+    </select>
+</mapper>

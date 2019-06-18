@@ -21,5 +21,5 @@ public class OrderSupport extends Support {
     @JsonView(ApiView.Detail.class)
     private BigDecimal price;
     @JsonView(ApiView.Detail.class)
-    private int amount;
+    private Integer amount;
 }

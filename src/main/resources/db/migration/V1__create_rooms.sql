@@ -12,7 +12,7 @@ CREATE TABLE bb_rooms
   floor_no           varchar(16)         NOT NULL COMMENT '楼层编号',
   room_no            varchar(16)         NOT NULL COMMENT '房间编号',
   layer_height       double              NOT NULL COMMENT '楼层高度',
-  type               tinyint(1)          NOT NULL COMMENT '场地类型',
+  type               varchar(16)         NOT NULL COMMENT '场地类型',
   publish            tinyint(1)          NOT NULL COMMENT '发布类型',
   layer_area         double              NOT NULL COMMENT '房间面积',
   quota              integer             NOT NULL COMMENT '容纳人数',

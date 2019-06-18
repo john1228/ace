@@ -36,6 +36,7 @@
                             <th class="center">名字</th>
                             <th class="center">图片</th>
                             <th class="center">单位</th>
+                            <th class="center">状态</th>
                             <th class="center">操作</th>
                         </tr>
                         </thead>
@@ -100,15 +101,23 @@
                             },
                             {data: "unit", className: 'center'},
                             {
+                                data: "online", className: 'center', render: function (data) {
+                                    return data ? '在线' : '下线';
+                                }
+                            },
+                            {
                                 data: "id",
-                                render: function (data) {
-                                    return '<div class="hidden-sm hidden-xs btn-group">' +
-                                            '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '">查看</a>' +
-                                            '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>' +
-                                            '<a class="btn btn-xs btn-warning" href="javascript:void(0)">删除</a>' +
-                                            '</div>';
-                                },
-                                className: 'center'
+                                className: 'center',
+                                render: function (data, type, row) {
+                                    if (row.online) {
+                                        return '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '">查看</a>' +
+                                                '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>' +
+                                                '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE">下架</a>';
+                                    } else {
+                                        return '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '">查看</a>' +
+                                                '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>';
+                                    }
+                                }
                             }
                         ]
                     });

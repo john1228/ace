@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/admin/")
-                .loginPage("/admin/login")
+                .loginPage("http://bpmp.baobanwang.com/page/logout")
                 .permitAll();
         http.addFilterAt(tokenAuth(), UsernamePasswordAuthenticationFilter.class);
         super.configure(http);
@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
+                "/admin/logout",
                 "/doc.html",
                 "/v2/**",
                 "/swagger-resources/**",

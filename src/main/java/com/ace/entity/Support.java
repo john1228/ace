@@ -23,6 +23,7 @@ public class Support extends Base {
     @NotEmpty(message = "不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private String unit;
+    private boolean online;
     private Date createdAt;
     private Date updatedAt;
 }

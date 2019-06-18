@@ -39,21 +39,20 @@
 <#--<script src="/assets/js/fuelux/tree.min.js"></script>-->
 <script src="http://www.fuelcdn.com/fuelux/3.7.3/js/fuelux.min.js"></script>
 <script type="text/javascript" inline="javascript">
-    function go_url(url) {
-        window.location.href = url;
-    }
-
-    function go_back() {
-        self.location = document.referrer;
-    }
 
     $(document).ready(function () {
-
-        $('a.delete').on('click', function (e) {
-            console.log("删除");
+        $(".table").on("click", 'a[data-method="DELETE"]', function (e) {
             e.preventDefault();
-        });
-
+            $.ajax({
+                url: $(this).attr("href"), type: 'DELETE', data: {}, success: function (data) {
+                    if (data == "SUCCESS") {
+                        layer.msg("下架成功", function () {
+                            window.location.reload();
+                        })
+                    }
+                }
+            })
+        })
         $('[data-toggle="buttons"] .btn').on('click', function (e) {
             var target = $(this).find('input[type=radio]');
             var which = parseInt(target.val());
@@ -149,8 +148,6 @@
         }).next().on(ace.click_event, function () {
             $(this).prev().focus();
         });
-
-
     });
     /*]]>*/
 </script>

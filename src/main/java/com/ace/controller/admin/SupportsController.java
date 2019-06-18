@@ -40,7 +40,7 @@ public class SupportsController extends BaseController {
             SupportCriteria criteria,
             DataTable<Support> dataTable
     ) {
-        supportService.dataTable(staff,criteria,dataTable);
+        supportService.dataTable(staff, criteria, dataTable);
         return dataTable;
     }
 
@@ -94,8 +94,10 @@ public class SupportsController extends BaseController {
 
     @DeleteMapping("/{id}")
     @Recordable
+    @ResponseBody
     public String destroy(@PathVariable("id") int id) {
-        return viewPath + "index";
+        supportService.delete(id);
+        return "SUCCESS";
     }
 
     private void upload(Support support, MultipartFile file) {

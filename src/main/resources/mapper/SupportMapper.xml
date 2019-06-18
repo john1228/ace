@@ -6,6 +6,7 @@
         <result column="name" property="name"/>
         <result column="cover" property="cover"/>
         <result column="unit" property="unit"/>
+        <result column="online" property="online"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_supports
@@ -43,15 +44,15 @@
     </select>
 
     <update id="update">
-        update bb_supports
-        set name  = #{support.name},
+        UPDATE bb_supports
+        SET name  = #{support.name},
             cover = #{support.cover},
             unit  = #{support.unit}
-        where id = #{support.id}
+        WHERE id = #{support.id}
     </update>
-    <delete id="destroy">
-        delete
-        from bb_supports
-        where id = #{id}
-    </delete>
+    <update id="destroy">
+        UPDATE ace.bb_supports
+        SET online = false
+        WHERE id = #{support.id}
+    </update>
 </mapper>

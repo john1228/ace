@@ -15,7 +15,7 @@
             <a href="/admin/">Home</a>
         </li>
         <li>
-            <a href="/admin/sites/attributes/">场地管理</a>
+            <a href="/admin/rooms/">场地管理</a>
         </li>
         <li class="active">更新场地</li>
     </ul><!-- .breadcrumb -->

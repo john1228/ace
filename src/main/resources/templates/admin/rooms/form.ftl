@@ -4,6 +4,7 @@
 <script src="/assets/js/jquery/dataTables.bootstrap.min.js"></script>
 <link href="/assets/css/bootstrap/fileinput.css" media="all" rel="stylesheet" type="text/css">
 <script src="/assets/js/bootstrap/fileinput.js"></script>
+<script src="/assets/js/bootstrap/locales/zh.js"></script>
 <link href="/assets/css/bootstrap/tags-input.css" media="all" rel="stylesheet" type="text/css">
 <script src="/assets/js/bootstrap/tags-input.js"></script>
 <script src="/assets/js/bootstrap/locales/zh.js"></script>
@@ -34,15 +35,15 @@
                                 maxFileSize: 1500,
                                 showClose: false,
                                 showCaption: false,
+                                showCancel: true,
                                 showBrowse: false,
                                 browseOnZoneClick: true,
-                                removeLabel: '',
-                                removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-                                removeTitle: 'Cancel or reset changes',
+                                allowedFileTypes: ['image'],
+                                removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
+                                removeClass: 'btn btn-default',
                                 elErrorContainer: '#kv-avatar-errors-1',
                                 msgErrorClass: 'alert alert-block alert-danger',
-                                layoutTemplates: {main2: '{preview} {browse}'},
-                                allowedFileExtensions: ["jpg", "png"]
+                                layoutTemplates: {main2: '{preview} {browse}'}
                             });
                         </script>
                     </div>
@@ -220,18 +221,18 @@
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>开放日期</label>
-                            <div class="col-sm-10">
-                                <div class="col-xs-12 col-sm-9 input-group input-daterange">
+                        <div class="col-sm-10">
+                            <div class="col-xs-12 col-sm-9 input-group input-daterange">
                                     <@spring.formInput "room.openDate",'class="form-control"'/>
-                                    <div class="input-group-addon">至</div>
+                                <div class="input-group-addon">至</div>
                                     <@spring.formInput "room.closeDate",'class="form-control"'/>
-                                </div>
                             </div>
-                            <script type="text/javascript">
-                                $('.input-daterange input').each(function () {
-                                    $(this).datepicker({language: 'zh'});
-                                });
-                            </script>
+                        </div>
+                        <script type="text/javascript">
+                            $('.input-daterange input').each(function () {
+                                $(this).datepicker({language: 'zh'});
+                            });
+                        </script>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"

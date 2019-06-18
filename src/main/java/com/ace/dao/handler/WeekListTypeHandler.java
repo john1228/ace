@@ -29,31 +29,29 @@ public class WeekListTypeHandler extends BaseTypeHandler<List<Week>> {
 
     @Override
     public List<Week> getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String[] values = rs.getString(columnName).split(",");
-        List<Week> weekList = new ArrayList<>();
-        for (String value : values) {
-            weekList.add(Week.valueOf(value));
-        }
-        return weekList;
+        return toWeekList(rs.getString(columnName));
     }
 
     @Override
     public List<Week> getNullableResult(ResultSet rs, int i) throws SQLException {
-        String[] values = rs.getString(i).split(",");
-        List<Week> weekList = new ArrayList<>();
-        for (String value : values) {
-            weekList.add(Week.valueOf(value));
-        }
-        return weekList;
+        return toWeekList(rs.getString(i));
     }
 
     @Override
     public List<Week> getNullableResult(CallableStatement cs, int i) throws SQLException {
-        String[] values = cs.getString(i).split(",");
-        List<Week> weekList = new ArrayList<>();
-        for (String value : values) {
-            weekList.add(Week.valueOf(value));
+        return toWeekList(cs.getString(i));
+    }
+
+    private List<Week> toWeekList(String weeks) {
+        if (weeks == null) {
+            return new ArrayList<>();
+        } else {
+            List<Week> weekList = new ArrayList<>();
+            String[] weekAry = weeks.split(",");
+            for (String week : weekAry) {
+                weekList.add(Week.valueOf(week));
+            }
+            return weekList;
         }
-        return weekList;
     }
 }

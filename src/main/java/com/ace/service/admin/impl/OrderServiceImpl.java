@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service("admin_order_service")
 public class OrderServiceImpl implements OrderService {
@@ -60,7 +61,8 @@ public class OrderServiceImpl implements OrderService {
             orderMapper.create(order);
             appointment.setOrderId(order.getId());
             appointmentMapper.create(appointment);
-            if (appointment.getService().size() > 0) {
+            List<OrderSupport> selectedSupport = appointment.getService().stream().filter(item -> item.getSupportId() != null).collect(Collectors.toList());
+            if (selectedSupport.size() > 0) {
                 appointment.getService().forEach(service -> service.setOrderId(order.getId()));
                 orderSupportMapper.create(appointment.getService());
             }

@@ -17,23 +17,12 @@
             <a href="/admin/coupons">优惠券管理</a>
         </li>
         <li class="active">优惠券修改</li>
-    </ul><!-- .breadcrumb -->
-
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-				<span class="input-icon">
-					<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                           autocomplete="off"/>
-					<i class="icon-search nav-search-icon"></i>
-				</span>
-        </form>
-    </div><!-- #nav-search -->
+    </ul>
 </div>
 
 <div class="page-content">
     <div class="row">
         <div class="col-xs-12">
-            <!-- PAGE CONTENT BEGINS -->
             <div class="page-title">
                 <h4>
                     优惠券修改
