@@ -77,7 +77,7 @@ public class CouponsController extends BaseController {
             return viewPath + "new";
         } else {
             couponService.create(staff, systemCoupon);
-            return "redirect:" + viewPath + systemCoupon.getId();
+            return "redirect:" + viewPath;
         }
     }
 
@@ -113,7 +113,7 @@ public class CouponsController extends BaseController {
         } else {
             couponService.update(coupon);
             model.addAttribute("coupon", coupon);
-            return "redirect:" + "/admin/coupons/" + id;
+            return "redirect:" + viewPath;
         }
 
     }

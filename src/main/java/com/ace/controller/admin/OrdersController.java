@@ -24,7 +24,6 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/admin/orders")
 public class OrdersController extends BaseController {
-    Logger logger = LoggerFactory.getLogger(OrdersController.class);
     static String viewPath = "/admin/orders/";
     @Resource
     private OrderService orderService;
@@ -64,7 +63,7 @@ public class OrdersController extends BaseController {
         if (staff.getErrMsg().length() != 0) {
             return viewPath + "new";
         } else {
-            return "redirect:" + viewPath + order.getOrderNo();
+            return "redirect:" + viewPath;
         }
     }
 
@@ -73,24 +72,6 @@ public class OrdersController extends BaseController {
         Order order = orderService.findByOrderNo(orderNo);
         model.addAttribute("order", order);
         return viewPath + "show";
-    }
-
-    @GetMapping("/{id}/edit")
-    public String edit(@PathVariable("id") String orderNo, Model model) {
-        Order order = orderService.findByOrderNo(orderNo);
-        model.addAttribute("order", order);
-        return viewPath + "edit";
-    }
-
-    @PutMapping("/{id}/update")
-    @Recordable
-    public String update(@PathVariable("id") String orderNo, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return viewPath + "edit";
-        } else {
-            return "redirect:" + viewPath + orderNo;
-        }
-
     }
 
     @DeleteMapping("/{id}")

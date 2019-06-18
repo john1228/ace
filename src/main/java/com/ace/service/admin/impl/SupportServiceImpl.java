@@ -1,6 +1,7 @@
 package com.ace.service.admin.impl;
 
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.admin.concerns.SupportCriteria;
 import com.ace.dao.SupportMapper;
 import com.ace.entity.Staff;
 import com.ace.entity.Support;
@@ -17,13 +18,9 @@ public class SupportServiceImpl implements SupportService {
     private SupportMapper supportMapper;
 
     @Override
-    public DataTable<Support> dataTable(Staff staff, int start, int length, String keyword) {
-        DataTable<Support> dataTable = new DataTable<>();
-        dataTable.setStart(start);
-        dataTable.setLength(length);
-        dataTable.setRecordsFiltered(supportMapper.recordsTotal(staff, keyword));
-        dataTable.setData(supportMapper.dataList(staff, start, length, keyword));
-        return dataTable;
+    public void dataTable(Staff staff, SupportCriteria criteria, DataTable<Support> dataTable) {
+        dataTable.setRecordsFiltered(supportMapper.recordsTotal(staff, criteria));
+        dataTable.setData(supportMapper.dataList(staff, criteria));
     }
 
     @Override

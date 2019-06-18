@@ -4,6 +4,8 @@ import com.ace.annotation.Authorization;
 import com.ace.entity.Account;
 import com.ace.entity.Staff;
 import com.ace.service.concerns.TokenService;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.util.Strings;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +21,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 public class ApiInterceptor implements HandlerInterceptor {
-    Logger logger = LoggerFactory.getLogger(ApiInterceptor.class);
     @Resource
     TokenService tokenService;
 
@@ -29,7 +31,6 @@ public class ApiInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         } else {
-            logger.info("TOKEN值::" + request.getHeader("token"));
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
             //得到该处理器是否需要认证
@@ -37,53 +38,30 @@ public class ApiInterceptor implements HandlerInterceptor {
             if (annotation == null) {
                 return true;
             } else {
-//                String authorization = request.getHeader("token");
-//                if (Strings.isEmpty(authorization)) {
-//                    returnJson(response, "该接口未认证或者未签名或者不存在此资源");
-//                    return false;
-//                }else{
-//
-//                }
-                Account account = new Account();
-                account.setAccountId("001");
-                account.setAccountName("001-NAME");
-                List<Staff> staffList = new ArrayList<>();
-                for (int i = 1; i <= 5; i++) {
-                    Staff staff = new Staff();
-                    staff.setAccountId("001");
-                    staff.setAccountName("001-NAME");
-                    staff.setProjectId("001-P-" + i);
-                    staff.setProjectName("001-PN-" + i);
-                    staff.setOrgId("001-O-" + i);
-                    staff.setOrgName("001-ON" + i);
-                    staff.setEmpId("001-E-" + i);
-                    staff.setEmpName("001-EM-" + i);
-                    staffList.add(staff);
-                    logger.info("");
+                String authorization = request.getHeader("token");
+                log.info("移动端请求TOKEN::" + authorization);
+                if (Strings.isEmpty(authorization)) {
+                    returnJson(response, "该接口未认证或者未签名或者不存在此资源");
+                } else if (authorization.equals("test-123")) {
+                    Account account = new Account();
+                    account.setAccountId("001");
+                    account.setAccountName("001-NAME");
+                    List<Staff> staffList = new ArrayList<>();
+                    for (int i = 1; i <= 5; i++) {
+                        staffList.add(new Staff(account, "001-P-" + i, "001-PN-" + i, "001-O-" + i, "001-ON" + i, "001-E-" + i, "001-EM-" + i));
+                    }
+                    account.setStaffList(staffList);
+                    request.setAttribute("ACCOUNT", account);
+                    return true;
+                } else {
+                    Account account = tokenService.account(authorization);
+                    request.setAttribute("ACCOUNT", account);
+                    return true;
                 }
-                account.setStaffList(staffList);
-
-                request.setAttribute("ACCOUNT", account);
-                logger.info(request.getAttribute("ACCOUNT").getClass().getName());
-                return true;
-
-//                String authorization = request.getHeader("");
-//                if (!StringUtils.isEmpty(authorization)) {
-//                    boolean checkToken = tokenManager.checkToken(authorization);
-//                    if (checkToken) {
-//                        return true;
-//                    } else {
-//                        returnJson(response, "授权失败");
-//                        return false;
-//                    }
-//
-//                } else {
-//                    returnJson(response, "该接口未认证或者未签名或者不存在此资源");
-//                    return false;
-//                }
 
             }
         }
+        return false;
     }
 
 

@@ -80,7 +80,7 @@
     </div>
     <div class="col-xs-12 col-sm-6 widget-container-col">
         <div class="widget-box">
-            <div class="widget-header widget-header-custom widget-color-blue">
+            <div class="widget-header widget-header-custom">
                 <h5 class="widget-title">基本信息</h5>
             </div>
             <div class="widget-body">
@@ -220,41 +220,18 @@
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>开放日期</label>
-                        <div class="col-sm-10">
-                            <div class="input-icon input-icon-right col-xs-10 col-sm-9"
-                                 style="padding-left: 0 !important;padding-right: 0 !important; ">
-                                <input type="text" id="dateRange" style="width: 100%" autocomplete="off">
-                                <i class="ace-icon fa fa-calendar blue"></i>
+                            <div class="col-sm-10">
+                                <div class="col-xs-12 col-sm-9 input-group input-daterange">
+                                    <@spring.formInput "room.openDate",'class="form-control"'/>
+                                    <div class="input-group-addon">至</div>
+                                    <@spring.formInput "room.closeDate",'class="form-control"'/>
+                                </div>
                             </div>
-                            <@spring.formHiddenInput "room.openDate"/>
-                            <@spring.formHiddenInput "room.closeDate"/>
-                        </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                $("#dateRange").daterangepicker({
-                                    autoUpdateInput: false,
-                                    locale: {
-                                        format: "YYYY/MM/DD",
-                                        separator: " - ",
-                                        applyLabel: "确认",
-                                        cancelLabel: "清空",
-                                        fromLabel: "开始时间",
-                                        toLabel: "结束时间",
-                                        customRangeLabel: "自定义",
-                                        daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
-                                        monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
-                                    }
-                                }).on('cancel.daterangepicker', function (ev, picker) {
-                                    $("#dateRange").val("请选择日期");
-                                    $("#openDate").val("");
-                                    $("#closeDate").val("");
-                                }).on('apply.daterangepicker', function (ev, picker) {
-                                    $("#openDate").val(picker.startDate.format('YYYY-MM-DD'));
-                                    $("#closeDate").val(picker.endDate.format('YYYY-MM-DD'));
-                                    $("#dateRange").val(picker.startDate.format('YYYY-MM-DD') + " 至 " + picker.endDate.format('YYYY-MM-DD'));
+                            <script type="text/javascript">
+                                $('.input-daterange input').each(function () {
+                                    $(this).datepicker({language: 'zh'});
                                 });
-                            })
-                        </script>
+                            </script>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"

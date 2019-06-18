@@ -1,6 +1,5 @@
 <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap-select.css"/>
 <script src="/assets/js/bootstrap/bootstrap-select.js"></script>
-<script src="/assets/js/bootstrap/datepicker.min.js"></script>
 <div class="row">
     <div class="col-xs-12">
         <h4 class="header smaller lighter blue">
@@ -22,9 +21,9 @@
                 <div class="form-group row col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">查询日期</label>
                     <div class="col-sm-10">
-                        <input name="name" id="date" class="form-control col-xs-10 col-sm-9" autocomplete="off"/>
+                        <input name="name" id="date" class="form-control" autocomplete="off"/>
                         <script>
-                            $("#date").datepicker({format: 'yyyy-mm-dd'});
+                            $("#date").datepicker({language: 'zh'});
                         </script>
                     </div>
                 </div>

@@ -9,23 +9,19 @@
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_supports
-        <where>
-            project_id = #{staff.projectId}
-            <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
-            </if>
-        </where>
+        WHERE project_id = #{staff.projectId}
+        <if test="criteria.name!=null and criteria.name!=''">
+            AND name LIKE CONCAT('%',#{criteria.name},'%')
+        </if>
     </select>
 
     <select id="dataList" resultMap="supMap">
-        select * from bb_supports
-        <where>
-            project_id = #{staff.projectId}
-            <if test="keyword != null and keyword != ''">
-                and name LIKE "%${keyword}%"
-            </if>
-        </where>
-        order by bb_supports.id desc LIMIT #{start},#{length}
+        SELECT * FROM bb_supports
+        WHERE project_id = #{staff.projectId}
+        <if test="criteria.name!=null and criteria.name!=''">
+            AND name LIKE CONCAT('%',#{criteria.name},'%')
+        </if>
+        ORDER BY id DESC LIMIT #{criteria.start},#{criteria.length}
     </select>
 
     <select id="all" resultMap="supMap">

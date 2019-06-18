@@ -1,5 +1,6 @@
 package com.ace.dao;
 
+import com.ace.controller.admin.concerns.SupportCriteria;
 import com.ace.entity.Staff;
 import com.ace.entity.Support;
 import org.apache.ibatis.annotations.Param;
@@ -8,9 +9,9 @@ import java.util.List;
 
 
 public interface SupportMapper {
-    List<Support> dataList(@Param("staff") Staff staff, @Param("start") int start, @Param("length") int length, @Param("keyword") String keyword);
+    List<Support> dataList(@Param("staff") Staff staff, @Param("criteria") SupportCriteria criteria);
 
-    Long recordsTotal(@Param("staff") Staff staff, @Param("keyword") String keyword);
+    Long recordsTotal(@Param("staff") Staff staff, @Param("criteria") SupportCriteria criteria);
 
     void create(@Param("staff") Staff staff, @Param("support") Support support);
 

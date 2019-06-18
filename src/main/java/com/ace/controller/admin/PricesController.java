@@ -74,7 +74,7 @@ public class PricesController extends BaseController {
             return viewPath + "new";
         } else {
             priceService.create(price);
-            return "redirect:" + "/admin/prices/" + price.getId();
+            return "redirect:" + viewPath;
         }
     }
 
@@ -106,7 +106,7 @@ public class PricesController extends BaseController {
             return viewPath + "edit";
         } else {
             priceService.update(price);
-            return viewPath + "show";
+            return "redirect:" + viewPath;
         }
 
     }

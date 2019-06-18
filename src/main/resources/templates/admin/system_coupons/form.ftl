@@ -21,10 +21,17 @@
                         <label class="col-sm-2 control-label no-padding-right"><span
                                 style="color: red">*</span>有效期</label>
                         <div class="col-sm-10">
-                            <input type="text" id="dateRange" class="col-xs-10 col-sm-9" readonly required>
-                            <@spring.formHiddenInput "coupon.startDate"/>
-                            <@spring.formHiddenInput "coupon.endDate"/>
+                            <div class="col-xs-12 col-sm-9 input-group input-daterange">
+                                <@spring.formInput "coupon.startDate",'class="form-control"'/>
+                                <div class="input-group-addon">至</div>
+                                <@spring.formInput "coupon.endDate",'class="form-control"'/>
+                            </div>
                         </div>
+                        <script type="text/javascript">
+                            $('.input-daterange input').each(function () {
+                                $(this).datepicker({language: 'zh'});
+                            });
+                        </script>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>抵扣金额
@@ -108,33 +115,6 @@
                 divider: '<li class="multiselect-item divider"></li>',
                 liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
             }
-        });
-
-        $("#dateRange").daterangepicker({
-            forceUpdate: true,
-            locale: {
-                format: "YYYY/MM/DD",
-                separator: " - ",
-                applyLabel: "确认",
-                cancelLabel: "清空",
-                fromLabel: "开始时间",
-                toLabel: "结束时间",
-                customRangeLabel: "自定义",
-                daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
-                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
-            },
-            callback: function (startDate, endDate, period) {
-                console.log(startDate);
-                $(this).val(startDate + ' 至 ' + endDate);
-            }
-        }).on('cancel.daterangepicker', function (ev, picker) {
-            $("#dateRange").val("请选择日期");
-            $("#startDate").val("");
-            $("#endDate").val("");
-        }).on('apply.daterangepicker', function (ev, picker) {
-            $("#startDate").val(picker.startDate.format('YYYY-MM-DD'));
-            $("#endDate").val(picker.endDate.format('YYYY-MM-DD'));
-            $("#dateRange").val(picker.startDate.format('YYYY-MM-DD') + " 至 " + picker.endDate.format('YYYY-MM-DD'));
         });
     })
 </script>

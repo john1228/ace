@@ -118,7 +118,7 @@ public class RoomsController extends BaseController {
         } else {
             roomService.create(staff, room);
             model.addAttribute("room", room);
-            return "redirect:" + "/admin/rooms/" + room.getId();
+            return "redirect:" + viewPath;
 
         }
     }
@@ -179,7 +179,7 @@ public class RoomsController extends BaseController {
                 result.addError(new ObjectError("image", "更新图片失败"));
             }
             roomService.update(staff, room);
-            return "redirect:" + "/admin/rooms/" + id;
+            return "redirect:" + viewPath;
         }
 
     }
