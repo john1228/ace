@@ -71,6 +71,7 @@ public class CouponsController extends BaseController {
     @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("couponType", CollectionUtil.toCollection(CouponType.class));
             model.addAttribute("weeks", Week.toOptions());
             model.addAttribute("coupon", systemCoupon);
@@ -109,6 +110,7 @@ public class CouponsController extends BaseController {
     @Recordable
     public String update(@PathVariable("id") int id, @Valid SystemCoupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             return viewPath + "edit";
         } else {
             couponService.update(coupon);

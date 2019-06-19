@@ -25,7 +25,6 @@
         <result column="layer_area" property="layerArea"/>
         <result column="quota" property="quota"/>
         <result column="free" property="free"/>
-        <!--<result column="free_org" property="freeOrg"/>-->
         <result column="open_date" property="openDate"/>
         <result column="close_date" property="closeDate"/>
         <result column="rental" property="rental"/>
@@ -37,6 +36,7 @@
         <result column="payable" property="payable"/>
         <result column="resume" property="resume"/>
         <result column="free_service" property="freeService"/>
+        <result column="online" property="online"/>
         <association property="supportList" select="com.ace.dao.RoomSupportMapper.supportList" column="id"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
@@ -76,7 +76,8 @@
         bb_rooms.supervisor,
         bb_rooms.supervisor_mobile AS supervisorMobile,
         bb_rooms.supervisor_email AS supervisorEmail,
-        bb_rooms.free_service AS freeService
+        bb_rooms.free_service AS freeService,
+        bb_rooms.online AS online
         FROM bb_rooms
         WHERE project_id = #{staff.projectId}
         <if test="criteria.name!=null and criteria.name!=''">
@@ -108,34 +109,34 @@
     <!--客户端查询会议室，包含自有和开放的-->
     <select id="query" resultType="com.ace.entity.Room">
         SELECT
-        bb_rooms.id,
-        bb_rooms.serial_no AS serialNo,
-        CONCAT( bb_rooms.project_name,bb_rooms.name) AS name,
-        CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_rooms.cover) AS cover,
-        bb_rooms.type,
-        bb_rooms.publish,
-        bb_rooms.rental,
-        bb_rooms.building_no AS buildingNo,
-        bb_rooms.floor_no AS floorNo,
-        bb_rooms.room_no AS roomNo,
-        bb_rooms.price,
-        bb_rooms.layer_area AS layerArea,
-        bb_rooms.quota,
-        bb_rooms.supervisor,
-        bb_rooms.supervisor_mobile AS supervisorMobile,
-        bb_rooms.supervisor_email AS supervisorEmail,
-        bb_rooms.free_service AS freeService
+        id,
+        serial_no AS serialNo,
+        CONCAT(project_name,name) AS name,
+        CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',cover) AS cover,
+        type,
+        publish,
+        rental,
+        building_no AS buildingNo,
+        floor_no AS floorNo,
+        room_no AS roomNo,
+        price,
+        layer_area AS layerArea,
+        quota,
+        supervisor,
+        supervisor_mobile AS supervisorMobile,
+        supervisor_email AS supervisorEmail,
+        free_service AS freeService
         FROM bb_rooms
-        WHERE (bb_rooms.publish = 1) OR (bb_rooms.project_id IN
+        WHERE online = true AND (publish = 1 OR project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}
         </foreach>
         )
         <if test="query.keyword != null and query.keyword != ''">
-            AND bb_rooms.name LIKE CONCAT('%',#{query.keyword},'%')
+            AND name LIKE CONCAT('%',#{query.keyword},'%')
         </if>
         <if test="query.quota != 0">
-            AND bb_rooms.quota > #{query.quota}
+            AND quota > #{query.quota}
         </if>
         ORDER BY ${query.sort.column} ${query.sort.order} LIMIT #{query.start},#{query.pageSize}
     </select>
@@ -220,8 +221,8 @@
     </update>
 
     <delete id="destroy">
-        delete
-        from bb_rooms
+        UPDATE bb_rooms
+        SET online = false
         where id = #{id}
     </delete>
 

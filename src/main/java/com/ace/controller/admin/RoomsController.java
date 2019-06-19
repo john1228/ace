@@ -41,7 +41,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin/rooms")
 public class RoomsController extends BaseController {
-    Logger logger = LoggerFactory.getLogger(RoomsController.class);
     static String viewPath = "/admin/rooms/";
     @Resource
     private RoomService roomService;
@@ -58,14 +57,12 @@ public class RoomsController extends BaseController {
     @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
     public DataTable<Room> dataList(@SessionAttribute(CURRENT_OPERATOR) Staff staff, DataTable<Room> dataTable, RoomCriteria criteria) {
-        logger.info("请求数据");
         roomService.data(staff, dataTable, criteria);
         return dataTable;
     }
 
     @GetMapping("/new")
     public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-
         model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
         model.addAttribute("room", new Room());
         model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
@@ -186,8 +183,10 @@ public class RoomsController extends BaseController {
 
     @DeleteMapping("/{id}")
     @Recordable
-    public String destroy(@PathVariable("id") int id) {
-        return viewPath + "index";
+    @ResponseBody
+    public String destroy(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id) {
+        roomService.delete(staff, id);
+        return "SUCCESS";
     }
 
 

@@ -57,6 +57,7 @@ public class SupportsController extends BaseController {
         model.addAttribute("support", support);
         upload(support, cover);
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             return viewPath + "new";
         } else {
             supportService.create(staff, support);
@@ -80,11 +81,24 @@ public class SupportsController extends BaseController {
 
     @PutMapping({"/{id}", "/{id}/"})
     @Recordable
-    public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
+    public String update(
+            @PathVariable("id") int id,
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @RequestParam("coverFile") MultipartFile cover,
+            @Valid Support support,
+            BindingResult result,
+            Model model
+    ) {
+        Support old = supportService.findById(id);
         model.addAttribute("support", support);
-        upload(support, cover);
+        if (cover != null) {
+            upload(support, cover);
+        } else {
+            support.setCover(old.getCover());
+        }
         if (result.hasErrors()) {
-            return viewPath + "edit";
+            model.addAttribute("errors", result.getAllErrors());
+            return "redirect:" + viewPath + id + "edit";
         } else {
             supportService.update(staff, support);
             return "redirect:" + viewPath;

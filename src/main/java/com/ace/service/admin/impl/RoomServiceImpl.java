@@ -76,11 +76,21 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void update(Staff staff, Room room) {
-        logger.info("更新数据");
         roomMapper.update(room);
         List<RoomSupport> selectedSupport = room.getSupportList().stream().filter(item -> item.getSupportId() != null).collect(Collectors.toList());
-        selectedSupport.forEach(item -> item.setRoomId(room.getId()));
-//        roomSupportMapper.create(selectedSupport);
+        if (selectedSupport.size() > 0) {
+            selectedSupport.forEach(item -> item.setRoomId(room.getId()));
+            roomSupportMapper.create(selectedSupport);
+        }
+        List<RoomFreeOrg> freeOrgs = new ArrayList<>();
+        List<Data> orgList = DataUtils.orgList(staff.getProjectId());
+        orgList.forEach(data -> {
+            if (room.getFreeOrg().contains(data.getId())) {
+                freeOrgs.add(new RoomFreeOrg(room.getId(), data.getId(), data.getText()));
+            }
+        });
+        if (freeOrgs.size() != 0)
+            freeOrgMapper.create(freeOrgs);
     }
 
     @Override

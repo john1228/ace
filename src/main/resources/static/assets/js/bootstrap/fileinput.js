@@ -49,14 +49,14 @@
         FRAMES: '.kv-preview-thumb',
         SORT_CSS: 'file-sortable',
         OBJECT_PARAMS: '<param name="controller" value="true" />\n' +
-        '<param name="allowFullScreen" value="true" />\n' +
-        '<param name="allowScriptAccess" value="always" />\n' +
-        '<param name="autoPlay" value="false" />\n' +
-        '<param name="autoStart" value="false" />\n' +
-        '<param name="quality" value="high" />\n',
+            '<param name="allowFullScreen" value="true" />\n' +
+            '<param name="allowScriptAccess" value="always" />\n' +
+            '<param name="autoPlay" value="false" />\n' +
+            '<param name="autoStart" value="false" />\n' +
+            '<param name="quality" value="high" />\n',
         DEFAULT_PREVIEW: '<div class="file-preview-other">\n' +
-        '<span class="{previewFileIconClass}">{previewFileIcon}</span>\n' +
-        '</div>',
+            '<span class="{previewFileIconClass}">{previewFileIcon}</span>\n' +
+            '</div>',
         MODAL_ID: 'kvFileinputModal',
         MODAL_EVENTS: ['show', 'shown', 'hide', 'hidden', 'loaded'],
         objUrl: window.URL || window.webkitURL,
@@ -688,6 +688,7 @@
             self.isClickable = self.browseOnZoneClick && self.showPreview &&
                 (self.dropZoneEnabled || !$h.isEmpty(self.defaultPreviewContent));
             self.isAjaxUpload = $h.hasFileUploadSupport() && !$h.isEmpty(self.uploadUrl);
+            window.console.log(self.isClickable + ":" + self.isAjaxUpload);
             self.dropZoneEnabled = $h.hasDragDropSupport() && self.dropZoneEnabled;
             if (!self.isAjaxUpload) {
                 self.dropZoneEnabled = self.dropZoneEnabled && $h.canAssignFilesToInput();
@@ -4251,17 +4252,11 @@
                     $zone = $tmpZone;
                 }
             }
-
             $h.addCss($zone, 'clickable');
             $zone.attr('tabindex', -1);
             self._handler($zone, 'click', function (e) {
-                var $tar = $(e.target);
-                if (!$(self.elErrorContainer + ':visible').length &&
-                    (!$tar.parents('.file-preview-thumbnails').length || $tar.parents(
-                        '.file-default-preview').length)) {
-                    self.$element.data('zoneClicked', true).trigger('click');
-                    $zone.blur();
-                }
+                self.$element.data('zoneClicked', true).trigger('click');
+                $zone.blur();
             });
         },
         _initCaption: function () {
@@ -5298,7 +5293,7 @@
         deleteUrl: '',
         deleteExtraData: {},
         overwriteInitial: true,
-        sanitizeZoomCache: function(content) {
+        sanitizeZoomCache: function (content) {
             var $container = $(document.createElement('div')).append(content);
             $container.find('input,select,.file-thumbnail-footer').remove();
             return $container.html();

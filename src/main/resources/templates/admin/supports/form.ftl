@@ -9,7 +9,8 @@
             <div class="widget-body">
                 <div class="widget-main padding-8">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>名称</label>
+                        <label class="col-sm-2 control-label no-padding-right"><span
+                                style="color: red">*</span>名称</label>
                         <div class="col-sm-10">
                             <@spring.formInput "support.name" "class='col-xs-10 col-sm-5' placeholder='请填写服务名字' required"/>
                         </div>
@@ -19,7 +20,7 @@
                         <div class="col-sm-10">
                             <div class="avatar">
                                 <div class="file-loading">
-                                    <input id="cover" name="coverFile" type="file" required>
+                                    <input id="cover" name="coverFile" type="file">
                                     <script type="text/javascript">
                                         $("#cover").fileinput({
                                             language: 'zh',
@@ -28,14 +29,13 @@
                                             showClose: false,
                                             showCaption: false,
                                             showBrowse: false,
+                                            showRemove: false,
+                                            showUpload: false,
                                             browseOnZoneClick: true,
-                                            removeLabel: '',
-                                            removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-                                            removeTitle: 'Cancel or reset changes',
-                                            elErrorContainer: '#kv-avatar-errors-1',
-                                            msgErrorClass: 'alert alert-block alert-danger',
-                                            layoutTemplates: {main2: '{preview} {browse}'},
-                                            allowedFileExtensions: ["jpg", "png"]
+                                            allowedFileExtensions: ["jpg", "png"],
+                                            initialPreview: ["${image+support.cover}"],
+                                            initialPreviewAsData: true,
+                                            initialPreviewFileType: 'image'
                                         });
                                     </script>
                                 </div>
@@ -43,7 +43,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>单位</label>
+                        <label class="col-sm-2 control-label no-padding-right"><span
+                                style="color: red">*</span>单位</label>
                         <div class="col-sm-10">
                             <@spring.formInput "support.unit","class='col-xs-10 col-sm-5' placeholder='请填写服务单位' required"/>
                         </div>

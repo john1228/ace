@@ -6,13 +6,13 @@
 <div class="form-group row">
     <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>会议室</label>
     <div class="col-sm-10">
-        <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-9' required"/>
+        <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-9'"/>
     </div>
 </div>
 <div class="form-group row">
     <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>出租方式</label>
     <div class="col-sm-10">
-        <@spring.formRadioButtons "price.rental",rentals,''/>
+        <@spring.formRadioButtons "price.rental",rentals,""/>
     </div>
 </div>
 <div class="form-group row">
@@ -124,7 +124,7 @@
                 liGroup: '<li class="multiselect-item multiselect-group"><label></label></li>'
             }
         });
-        $("form").on('submit', function (e) {
+        $("form").on('submit', function () {
             var ary = new Array();
             $("#roomId option:selected").each(function (i, option) {
                 ary.push($(this).text());

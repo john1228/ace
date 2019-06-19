@@ -33,6 +33,7 @@ CREATE TABLE bb_rooms
   free_service       varchar(640)        COMMENT '免费服务',
   charging_service   varchar(640)        COMMENT '收费服务',
   resume             text                NOT NULL,
+  online             boolean             NOT NULL DEFAULT true COMMENT '会议室状态',
   created_at         timestamp           DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   updated_at         timestamp           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (id)

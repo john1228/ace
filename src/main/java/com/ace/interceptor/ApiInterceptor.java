@@ -39,7 +39,7 @@ public class ApiInterceptor implements HandlerInterceptor {
                 return true;
             } else {
                 String authorization = request.getHeader("token");
-                log.info("移动端请求TOKEN::" + authorization);
+                log.info("移动端请求::" + authorization);
                 if (Strings.isEmpty(authorization)) {
                     returnJson(response, "该接口未认证或者未签名或者不存在此资源");
                 } else if (authorization.equals("test-123")) {

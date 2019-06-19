@@ -15,12 +15,13 @@ import java.util.Date;
 public class Support extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private Long id;
-    @NotEmpty(message = "不能为空")
+    @NotEmpty(message = "服务名字不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private String name;
+    @NotEmpty(message = "服务封面不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private String cover;
-    @NotEmpty(message = "不能为空")
+    @NotEmpty(message = "服务单位不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private String unit;
     private boolean online;

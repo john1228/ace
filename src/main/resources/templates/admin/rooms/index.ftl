@@ -44,6 +44,7 @@
                                     <th class="center">负责人</th>
                                     <th class="center">联系电话</th>
                                     <th class="center">邮箱</th>
+                                    <th class="center">状态</th>
                                     <th class="center">操作</th>
                                 </tr>
                                 </thead>
@@ -139,10 +140,21 @@
                                     {data: "supervisorMobile", className: 'center'},
                                     {data: "supervisorEmail", className: 'center'},
                                     {
+                                        data: "online", className: 'center', render: function (data) {
+                                            return data ? '在线' : '下线';
+                                        }
+                                    },
+                                    {
                                         data: "id",
-                                        render: function (data) {
-                                            return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
-                                                    '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>';
+                                        render: function (data, type, row) {
+                                            if (row.online) {
+                                                return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
+                                                        '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
+                                                        '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '" data-method="DELETE">下架</a>';
+                                            } else {
+                                                return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
+                                                        '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>';
+                                            }
                                         },
                                         className: 'center'
                                     }

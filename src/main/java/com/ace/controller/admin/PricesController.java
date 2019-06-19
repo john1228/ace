@@ -68,6 +68,7 @@ public class PricesController extends BaseController {
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, Model model) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
             model.addAttribute("weeks", Week.toOptions());

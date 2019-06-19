@@ -51,6 +51,7 @@ public class InvoicesController extends BaseController {
     @Recordable
     public String create(@RequestParam("orderNo") String orderNo, @Valid Invoice invoice, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("orderNo", orderNo);
             model.addAttribute("invoice", invoice);
             return viewPath + "new";
