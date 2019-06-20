@@ -20,22 +20,34 @@
         <result column="room_name" property="name"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
-        SELECT count(1) AS recordsTotal
+        SELECT count(distinct(bb_room_prices.id)) AS recordsTotal
         FROM bb_room_prices
-                 INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
-                 INNER JOIN bb_rooms ON bb_rooms.id = bb_room_prices_ref.room_id
+        LEFT JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
+        INNER JOIN bb_rooms ON bb_rooms.id = bb_room_prices_ref.room_id
         WHERE bb_rooms.project_id = #{staff.projectId}
+        <if test="criteria.name!=null and criteria.name!=''">
+            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+        </if>
+        <if test="criteria.date!=null">
+            AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
+        </if>
     </select>
 
     <select id="dataList" resultMap="priceMap">
         SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.name) AS room_name
         FROM bb_room_prices
-                 INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
-                 INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
+        INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
+        INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
         WHERE bb_rooms.project_id = #{staff.projectId}
+        <if test="criteria.name!=null and criteria.name!=''">
+            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+        </if>
+        <if test="criteria.date!=null">
+            AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
+        </if>
         GROUP BY bb_room_prices.id
         ORDER BY bb_room_prices.id DESC
-        LIMIT #{start},#{length}
+        LIMIT #{criteria.start},#{criteria.length}
     </select>
 
     <!--获取日期有效的价格-->
@@ -70,9 +82,10 @@
     </insert>
     <insert id="createRef" useGeneratedKeys="true">
         insert into bb_room_prices_ref (price_id,room_id) values
-        <foreach collection="rooms" item="item" index="index" separator=",">
+        <foreach collection="rooms" item="item" separator=",">
             (#{priceId},#{item})
         </foreach>
+        ON DUPLICATE KEY UPDATE id = id
     </insert>
     <select id="findById" resultMap="priceMap">
         SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.id) AS room_id, GROUP_CONCAT(bb_rooms.name) AS room_name
@@ -81,7 +94,7 @@
                  INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
         WHERE bb_room_prices.id = #{id}
         GROUP BY bb_room_prices.id
-        limit 1
+        ORDER BY bb_room_prices.id DESC
     </select>
 
     <select id="findRefById" resultType="java.lang.Integer">
@@ -91,21 +104,16 @@
     </select>
 
     <update id="update">
-        update bb_room_prices
-        set rental     = #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
+        UPDATE bb_room_prices
+        SET rental     = #{rental,typeHandler=com.ace.dao.handler.EnumHandler},
             start_date = #{startDate},
             end_date   = #{endDate},
-            wday       = #{wday,typeHandler=com.ace.dao.handler.EnumHandler},
+            start_time = #{startTime},
+            end_time   = #{endTime},
+            wday       = #{wday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
             price      = #{price}
-        where id = #{id}
+        WHERE id = #{id}
     </update>
-    <!--删除引用-->
-    <update id="deleteRef">
-        delete
-        from bb_room_prices_ref
-        where price_id = #{id}
-    </update>
-
     <delete id="delete">
         delete
         from bb_room_prices

@@ -11,8 +11,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +24,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Price extends Base {
     private Long id;
-    private List<Integer> roomId;
+    @Size(min = 1, message = "教室不能为空")
+    private List<Integer> roomId = new ArrayList<>();
     @JsonView(AdminView.Table.class)
     private List<String> roomName;
     @JsonView(AdminView.Table.class)
@@ -38,14 +42,14 @@ public class Price extends Base {
     @NotNull(message = "结束日期不能为空")
     private Date endDate;
     @JsonView(AdminView.Table.class)
-    @NotNull(message = "开始时间不能为空")
-    private String startTime;
+    @NotBlank(message = "开始时间不能为空")
+    private String startTime = "08:00";
     @JsonView(AdminView.Table.class)
-    @NotNull(message = "结束时间不能为空")
-    private String endTime;
+    @NotBlank(message = "结束时间不能为空")
+    private String endTime = "21:00";
     @JsonView(AdminView.Table.class)
-    @NotNull(message = "使用周不能为空")
-    private List<Week> wday;
+    @Size(min = 1, message = "适用周不能为空")
+    private List<Week> wday = new ArrayList<>();
     @JsonView(AdminView.Table.class)
     @NotNull(message = "价格必须设置")
     private BigDecimal price;

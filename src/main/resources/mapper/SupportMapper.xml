@@ -50,9 +50,10 @@
             unit  = #{support.unit}
         WHERE id = #{support.id}
     </update>
+
     <update id="destroy">
-        UPDATE ace.bb_supports
-        SET online = false
-        WHERE id = #{support.id}
+        DELETE
+        FROM bb_supports
+        WHERE id = #{id}
     </update>
 </mapper>

@@ -1,5 +1,6 @@
 package com.ace.dao;
 
+import com.ace.controller.admin.concerns.PriceCriteria;
 import com.ace.entity.Staff;
 import com.ace.entity.Price;
 import com.ace.entity.Room;
@@ -10,9 +11,9 @@ import java.util.List;
 
 
 public interface PriceMapper {
-    List<Price> dataList(@Param("staff") Staff staff, @Param("start") int start, @Param("length") int length, @Param("keyword") String keyword);
+    Long recordsTotal(@Param("staff") Staff staff, PriceCriteria criteria);
 
-    Long recordsTotal(@Param("staff") Staff staff, @Param("keyword") String keyword);
+    List<Price> dataList(@Param("staff") Staff staff, PriceCriteria criteria);
 
     void create(Price price);
 
@@ -25,8 +26,6 @@ public interface PriceMapper {
     void update(Price price);
 
     void delete(Long id);
-
-    void deleteRef(Long id);
 
     //APP相关接口
     List<Price> priceList(@Param("rooms") List<Room> rooms, @Param("date") Date date);

@@ -94,8 +94,13 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void delete(Staff staff, Long id) {
-        roomMapper.destroy(id);
+    public void enable(Staff staff, Long id) {
+        roomMapper.enable(id);
+    }
+
+    @Override
+    public void disable(Staff staff, Long id) {
+        roomMapper.disable(id);
     }
 
     @Override

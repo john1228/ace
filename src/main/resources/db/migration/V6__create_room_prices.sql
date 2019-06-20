@@ -22,7 +22,8 @@ CREATE TABLE bb_room_prices_ref (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   price_id     bigint(11)          NOT NULL COMMENT '关联价格编号',
   room_id      bigint(11)          NOT NULL COMMENT '关联会议室编号',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  UNIQUE KEY (room_id, price_id)
 )
   ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

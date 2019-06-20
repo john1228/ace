@@ -2,6 +2,7 @@ package com.ace.controller.admin;
 
 import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.admin.concerns.PriceCriteria;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
@@ -40,16 +41,13 @@ public class PricesController extends BaseController {
     }
 
     @ResponseBody
-    @GetMapping("/dataList")
+    @PostMapping("/dataList")
     public DataTable<Price> dataList(
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
-            @RequestParam(value = "draw", defaultValue = "1") int draw,
-            @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "search[value]", defaultValue = "") String keyword
+            PriceCriteria criteria,
+            DataTable<Price> dataTable
     ) {
-        DataTable<Price> dataTable = priceService.dataTable(staff, start, length, keyword);
-        dataTable.setDraw(draw);
+        priceService.dataTable(staff, criteria, dataTable);
         return dataTable;
     }
 
@@ -98,9 +96,16 @@ public class PricesController extends BaseController {
 
     @PutMapping({"/{id}/", "/{id}"})
     @Recordable
-    public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, HttpServletRequest request, @PathVariable("id") int id, Model model) {
+    public String update(
+            @PathVariable("id") Long id,
+            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @Valid Price price,
+            BindingResult result,
+            Model model
+    ) {
         model.addAttribute("price", price);
         if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
             model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
             model.addAttribute("weeks", Week.toOptions());

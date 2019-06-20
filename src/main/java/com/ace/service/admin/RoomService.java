@@ -20,7 +20,9 @@ public interface RoomService {
 
     void update(Staff staff, Room room);
 
-    void delete(Staff staff, Long id);
+    void enable(Staff staff, Long id);
+
+    void disable(Staff staff, Long id);
 
     List<RoomSupport> roomSupports(Long roomId);
 }

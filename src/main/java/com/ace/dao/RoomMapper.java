@@ -23,7 +23,9 @@ public interface RoomMapper {
 
     void update(Room room);
 
-    void destroy(Long id);
+    void enable(Long id);
+
+    void disable(Long id);
 
     List<Room> query(@Param("account") Account account, @Param("query") Query query);
 

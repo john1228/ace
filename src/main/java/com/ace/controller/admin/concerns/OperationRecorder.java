@@ -48,6 +48,8 @@ public class OperationRecorder {
             new SimpleEntry<>("update", "更新"),
             new SimpleEntry<>("destroy", "删除"),
             new SimpleEntry<>("grant", "发放"),
+            new SimpleEntry<>("enable", "启用"),
+            new SimpleEntry<>("disable", "停用"),
             new SimpleEntry<>("updateAlipay", "更新支付宝"),
             new SimpleEntry<>("updateWxpay", "更新微信")
     ).collect(Collectors.toMap(SimpleEntry::getKey, SimpleEntry::getValue));

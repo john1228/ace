@@ -73,7 +73,7 @@ public class TokenService {
                 if (jsonObject.getString("code").equals("000000000")) {
                     JSONObject actObj = jsonObject.getJSONObject("data");
                     Account account = new Account(actObj.getString("accountId"), actObj.getString("accountName"));
-
+                    account.setManager(true);
                     JSONArray empList = actObj.getJSONArray("employee");
                     List<Staff> staffList = new ArrayList<>();
                     for (int i = 0; i < empList.length(); i++) {

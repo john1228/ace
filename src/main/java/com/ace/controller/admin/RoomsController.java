@@ -181,14 +181,22 @@ public class RoomsController extends BaseController {
 
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}/enable")
     @Recordable
     @ResponseBody
-    public String destroy(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id) {
-        roomService.delete(staff, id);
+    public String enable(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id) {
+        roomService.enable(staff, id);
         return "SUCCESS";
     }
 
+
+    @PostMapping("/{id}/disable")
+    @Recordable
+    @ResponseBody
+    public String disable(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id) {
+        roomService.disable(staff, id);
+        return "SUCCESS";
+    }
 
     @ResponseBody
     @JsonView(AdminView.Table.class)

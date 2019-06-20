@@ -48,19 +48,6 @@
 <link href="/assets/css/select2/min.css" rel="stylesheet"/>
 <script src="/assets/js/select2/min.js"></script>
 <script src="/assets/js/bootstrap/datepicker.min.js"></script>
-<script type="text/javascript">
-    $.fn.datepicker.dates['zh'] = {
-        days: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
-        daysShort: ["日", "一", "二", "三", "四", "五", "六"],
-        daysMin: ["日", "一", "二", "三", "四", "五", "六"],
-        months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-        monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-        today: "今天",
-        clear: "清楚",
-        format: "yyyy-mm-dd",
-        weekStart: 0
-    };
-</script>
 <!--[if IE]>
 <script type="text/javascript">
     window.jQuery || document.write("<script src='https://code.jquery.com/jquery-1.10.2.js' integrity='sha256-it5nQKHTz+34HijZJQkpNBIHsjpV8b6QzMJs9tmOBSo=' crossorigin='anonymous'>" + "<" + "/script>");

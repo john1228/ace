@@ -8,7 +8,6 @@
 <script type="text/javascript">
     $(function () {
         $(".datetimepicker").datetimepicker({
-            // locale: 'zh-CN',
             format: "YYYY-MM-DD HH:mm"
         })
     })
@@ -90,11 +89,18 @@
                                             <@spring.formInput "order.coupon","class='form-control' required"/>
                                         </div>
                                     </div>
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $("#total,#coupon").on("change", function () {
+                                                $("#payAmount").val(parseFloat($("#total").val()) - (parseFloat($("#coupon").val())));
+                                            })
+                                        })
+                                    </script>
                                     <div class="form-group row">
                                         <label class="col-sm-2 control-label no-padding-right"><span
                                                 style="color: red">*</span>支付金额</label>
                                         <div class="col-sm-6 col-xs-12">
-                                            <@spring.formInput "order.payAmount","class='form-control' required"/>
+                                            <@spring.formInput "order.payAmount","class='form-control' required readonly"/>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -187,7 +193,7 @@
                                                         data: "cover",
                                                         className: 'center',
                                                         render: function (data, type, row, meta) {
-                                                            return '<img class="table" src="${image}' + data + '"/>' +
+                                                            return '<img class="img-50" src="' + data + '"/>' +
                                                                     '<input type="hidden" name="appointment.service[' + meta.row + '].cover" value="' + data + '"/>';
                                                         }
                                                     },

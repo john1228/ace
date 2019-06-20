@@ -31,6 +31,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="_method" value="put">
         <@spring.bind path="support"/>
+        <@spring.formHiddenInput "support.cover"/>
         <#include "form.ftl"/>
     </form>
 </div>

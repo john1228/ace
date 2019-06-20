@@ -76,7 +76,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             Room room = roomMapper.findById(appointment.getRoomId());
             Order order = new Order(account.getAccountId(), account.getAccountName());
             SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
-            SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
+
             Date appointedDate = new Date(appointment.getStartTime().getTime());
             Week week = Week.valueOf(wf.format(appointedDate).toUpperCase());
             //校验时间是否有效
@@ -123,7 +123,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                             order.setCoupon(new BigDecimal(coupon.getDiscount()));
                         }
                     }
-                    //TODO:更新优惠券状态
                     mcMapper.use(couponId, CouponStatus.USED);
                 }
                 //计算服务费用
@@ -136,7 +135,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 }
                 order.setTotal(order.getTotal().add(supportFee));
                 order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
-
 
                 if (order.getPayAmount().compareTo(new BigDecimal(0)) == 0) {
                     switch (room.getCfm()) {
@@ -164,38 +162,27 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                             break;
                     }
                 }
-
-                orderMapper.create(order);
-                Long orderId = order.getId();
-                //创建预约
-                appointment.setOrderId(order.getId());
-                appointmentMapper.create(appointment);
-                //创建服务
-                if (appointment.getService().size() > 0) {
-                    appointment.getService().forEach(service -> service.setOrderId(orderId));
-                    orderSupportMapper.create(appointment.getService());
-                }
-                //缓存预约时间
-                redisTemplate.opsForSet().add("ROOM::" + appointment.getRoomId() + "::APPOINTED::" + appointedDate.toString(), new Period(
-                        hf.format(appointment.getStartTime()),
-                        hf.format(appointment.getEndTime())
-                ));
-
-                order = orderMapper.findById(order.getId());
-                if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
-                    //支付宝
-                    Alipay alipay = settingMapper.alipay(room.getProjectId());
-                    Wxpay wxpay = settingMapper.wxpay(room.getProjectId());
-                    Payment payment = new Payment();
-                    if (alipay != null) {
-                        payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
+                Long orderId = createOrder(order, appointment);
+                if (orderId != null && orderId != 0L) {
+                    order = orderMapper.findById(orderId);
+                    if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
+                        //支付宝
+                        Alipay alipay = settingMapper.alipay(room.getProjectId());
+                        Wxpay wxpay = settingMapper.wxpay(room.getProjectId());
+                        Payment payment = new Payment();
+                        if (alipay != null) {
+                            payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
+                        }
+                        if (wxpay != null) {
+                            payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
+                        }
+                        order.setPayment(payment);
                     }
-                    if (wxpay != null) {
-                        payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
-                    }
-                    order.setPayment(payment);
+                    return order;
+                } else {
+                    account.setErrMsg("创建订单失败");
+                    return null;
                 }
-                return order;
             } else {
                 account.setErrMsg("该时间段未开放预约");
                 return null;
@@ -273,5 +260,27 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 orderMapper.defray(order.getOrderNo(), OrderStatus.PAIDANDCONFIRM, payType);
                 break;
         }
+    }
+
+    @Transactional
+    protected Long createOrder(Order order, Appointment appointment) {
+        SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
+        Date appointedDate = new Date(appointment.getStartTime().getTime());
+        orderMapper.create(order);
+        Long orderId = order.getId();
+        //创建预约
+        appointment.setOrderId(order.getId());
+        appointmentMapper.create(appointment);
+        //创建服务
+        if (appointment.getService().size() > 0) {
+            appointment.getService().forEach(service -> service.setOrderId(orderId));
+            orderSupportMapper.create(appointment.getService());
+        }
+        //缓存预约时间
+        redisTemplate.opsForSet().add("ROOM::" + appointment.getRoomId() + "::APPOINTED::" + appointedDate.toString(), new Period(
+                hf.format(appointment.getStartTime()),
+                hf.format(appointment.getEndTime())
+        ));
+        return orderId;
     }
 }

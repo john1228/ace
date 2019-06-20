@@ -45,7 +45,8 @@
                     </div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#priceList').DataTable({
+                            var $table = $('#priceList');
+                            $table.DataTable({
                                 language: {
                                     sProcessing: "处理中...",
                                     sLengthMenu: "显示 _MENU_ 项结果",
@@ -73,7 +74,12 @@
                                 ordering: false,
                                 ajax: {
                                     url: "/admin/prices/dataList",
-                                    type: "GET"
+                                    type: "POST",
+                                    data: function (data) {
+                                        data.name = $("#name").val();
+                                        data.date = $("#date").val();
+                                    }
+
                                 },
                                 dom: 'Bfltip',
                                 buttons: [
@@ -164,6 +170,9 @@
                                     }
                                 ]
                             });
+                            $('#query').on("click", function () {
+                                $table.DataTable().draw(true);
+                            })
                         })
                     </script>
                 </div>

@@ -91,7 +91,7 @@
             </li>
         </ul>
     </li>
-    <#if current_account.manager != true>
+    <#if current_account.manager == true>
         <li class="${(menu == "setting")?string("active open","")}">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fa-cogs"></i>

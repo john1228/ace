@@ -8,6 +8,7 @@ CREATE TABLE bb_order_appointments (
   end_time       datetime            NOT NULL comment '预约的结束时间',
   contact_name   varchar(32)         NOT NULL comment '联系人名字',
   contact_mobile varchar(11)         NOT NULL comment '联系人电话',
+  remark         text                COMMENT '预约备注',
   created_at     timestamp           DEFAULT CURRENT_TIMESTAMP,
   updated_at     timestamp           DEFAULT CURRENT_TIMESTAMP
   ON UPDATE CURRENT_TIMESTAMP,

@@ -43,19 +43,19 @@
         SELECT count(1) AS recordsTotal FROM bb_rooms
         WHERE project_id = #{staff.projectId}
         <if test="criteria.name!=null and criteria.name!=''">
-            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+            AND name LIKE CONCAT('%',#{criteria.name},'%')
         </if>
         <if test="criteria.layerAreaFrom!=null">
-            AND bb_rooms.layer_area >= #{criteria.layerAreaFrom}
+            AND layer_area >= #{criteria.layerAreaFrom}
         </if>
         <if test="criteria.layerAreaTo!=null">
-            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+            AND #{criteria.layerAreaTo} >= layer_area
         </if>
         <if test="criteria.quotaFrom!=null">
-            AND bb_rooms.quota >= #{criteria.layerAreaFrom}
+            AND quota >= #{criteria.quotaFrom}
         </if>
         <if test="criteria.quotaTo!=null">
-            AND #{criteria.layerAreaTo} >= bb_rooms.layer_area
+            AND #{criteria.quotaTo} >= quota
         </if>
     </select>
 
@@ -220,11 +220,17 @@
         where id = #{id}
     </update>
 
-    <delete id="destroy">
+    <update id="enable">
+        UPDATE bb_rooms
+        SET online = true
+        where id = #{id}
+    </update>
+
+    <update id="disable">
         UPDATE bb_rooms
         SET online = false
         where id = #{id}
-    </delete>
+    </update>
 
     <select id="appointedRoom" resultMap="dMap">
         SELECT bb_rooms.project_id, bb_rooms.project_name, bb_rooms.id, bb_rooms.name

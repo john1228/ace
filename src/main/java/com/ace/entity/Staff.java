@@ -34,6 +34,13 @@ public class Staff implements Serializable {
         this.empName = empName;
     }
 
+    public StringBuilder getErrMsg() {
+        if (errMsg == null) {
+            this.errMsg = new StringBuilder();
+        }
+        return errMsg;
+    }
+
     @Override
     public String toString() {
         return this.orgName + "@" + this.projectName;

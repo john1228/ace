@@ -20,9 +20,9 @@
                         <div class="col-sm-10">
                             <div class="avatar">
                                 <div class="file-loading">
-                                    <input id="cover" name="coverFile" type="file">
+                                    <input id="coverFile" name="coverFile" type="file">
                                     <script type="text/javascript">
-                                        $("#cover").fileinput({
+                                        $("#coverFile").fileinput({
                                             language: 'zh',
                                             overwriteInitial: true,
                                             maxFileSize: 1500,

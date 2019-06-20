@@ -6,7 +6,11 @@
 <div class="form-group row">
     <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>会议室</label>
     <div class="col-sm-10">
-        <@spring.formMultiSelect "price.roomId",rooms,"class='multiselect col-xs-10 col-sm-9'"/>
+        <select id="roomId" name="roomId" class="multiselect" multiple="multiple">
+            <#list rooms as id,name>
+                <option value="${id}" ${price.roomId?seq_contains(id)?string('selected="selected"', '')}>${name}</option>
+            </#list>
+        </select>
     </div>
 </div>
 <div class="form-group row">
@@ -34,7 +38,11 @@
     <label class="col-sm-2 control-label no-padding-right"><span
             style="color: red">*</span>周</label>
     <div class="col-sm-10">
-        <@spring.formMultiSelect "price.wday",weeks,"class='multiselect col-xs-10 col-sm-9'"/>
+        <select id="wday" name="wday" class="multiselect" multiple="multiple">
+            <#list weeks as key,value>
+                <option value="${key}" ${price.wday?seq_contains(value)?string('selected="selected"', '')}>${value}</option>
+            </#list>
+        </select>
     </div>
 </div>
 <div class="form-group row">
@@ -45,7 +53,7 @@
         <@spring.formHiddenInput "price.endTime"/>
     </div>
     <div class="col-sm-10" style="margin-top: 10px">
-        <span id="display">09:00 ~ 21:00</span>
+        <span id="display">08:00 ~ 21:00</span>
     </div>
 </div>
 <div class="form-group row">

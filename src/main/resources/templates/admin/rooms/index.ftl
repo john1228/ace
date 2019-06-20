@@ -38,7 +38,7 @@
                                     <th class="center">名称</th>
                                     <th class="center">发布类型</th>
                                     <th class="center">出租方式</th>
-                                    <th class="center">楼层</th>
+                                    <th class="center">房间信息</th>
                                     <th class="center">面积</th>
                                     <th class="center">容纳人数</th>
                                     <th class="center">负责人</th>
@@ -150,10 +150,11 @@
                                             if (row.online) {
                                                 return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
                                                         '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
-                                                        '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '" data-method="DELETE">下架</a>';
+                                                        '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '/disable" data-method="POST" data-message="停用成功">停用</a>';
                                             } else {
                                                 return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
-                                                        '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>';
+                                                        '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
+                                                        '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '/enable" data-method="POST" data-message="启用成功">启用</a>';
                                             }
                                         },
                                         className: 'center'

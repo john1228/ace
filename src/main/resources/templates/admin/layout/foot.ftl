@@ -39,20 +39,34 @@
 <#--<script src="/assets/js/fuelux/tree.min.js"></script>-->
 <script src="http://www.fuelcdn.com/fuelux/3.7.3/js/fuelux.min.js"></script>
 <script type="text/javascript" inline="javascript">
-
     $(document).ready(function () {
         $(".table").on("click", 'a[data-method="DELETE"]', function (e) {
+            var message = $(this).data("message");
             e.preventDefault();
             $.ajax({
                 url: $(this).attr("href"), type: 'DELETE', data: {}, success: function (data) {
                     if (data == "SUCCESS") {
-                        layer.msg("下架成功", function () {
+                        layer.msg(message, function () {
                             window.location.reload();
                         })
                     }
                 }
             })
-        })
+        });
+        $(".table").on("click", 'a[data-method="POST"]', function (e) {
+            var message = $(this).data("message");
+            e.preventDefault();
+            $.ajax({
+                url: $(this).attr("href"), type: 'POST', data: {}, success: function (data) {
+                    if (data == "SUCCESS") {
+                        layer.msg(message, function () {
+                            window.location.reload();
+                        })
+                    }
+                }
+            })
+        });
+
         $('[data-toggle="buttons"] .btn').on('click', function (e) {
             var target = $(this).find('input[type=radio]');
             var which = parseInt(target.val());

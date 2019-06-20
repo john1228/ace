@@ -7,11 +7,13 @@ import com.ace.entity.Staff;
 import com.ace.entity.Support;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,8 +23,8 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/supports")
+@Log4j2
 public class SupportsController extends BaseController {
-    Logger logger = LoggerFactory.getLogger(SupportsController.class);
     static String viewPath = "/admin/supports/";
     @Resource
     private SupportService supportService;
@@ -89,16 +91,13 @@ public class SupportsController extends BaseController {
             BindingResult result,
             Model model
     ) {
-        Support old = supportService.findById(id);
         model.addAttribute("support", support);
         if (cover != null) {
             upload(support, cover);
-        } else {
-            support.setCover(old.getCover());
         }
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
-            return "redirect:" + viewPath + id + "edit";
+            return "redirect:" + viewPath + id + "/edit";
         } else {
             supportService.update(staff, support);
             return "redirect:" + viewPath;
@@ -119,7 +118,7 @@ public class SupportsController extends BaseController {
             String fileName = Aliyun.Instance.upload(file);
             support.setCover(fileName);
         } catch (Exception exp) {
-            logger.info(exp.getMessage());
+            log.info(exp.getMessage());
         }
     }
 }

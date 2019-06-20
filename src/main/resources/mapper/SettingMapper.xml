@@ -34,7 +34,7 @@
         </selectKey>
         <if test="count > 0">
             UPDATE bb_wxpay
-            SET app_id = #{wxpay.appId},mch_id = #{wxpay.mchId},secret_key = #{alipay.secretKey}
+            SET app_id = #{wxpay.appId},mch_id = #{wxpay.mchId},secret_key = #{wxpay.secretKey}
             WHERE project_id = #{staff.projectId}
         </if>
         <if test="count==0">

@@ -29,7 +29,7 @@ public enum Aliyun {
 
 
     public String upload(MultipartFile file) throws IOException {
-        String filePath = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
+        String filePath = new SimpleDateFormat("yyyy/MM/dd/").format(new Date());
         String fileName = UUID.randomUUID().toString();
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (!client.doesBucketExist(bucket)) {

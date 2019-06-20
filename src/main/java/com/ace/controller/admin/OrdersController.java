@@ -16,10 +16,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/orders")
@@ -61,6 +64,8 @@ public class OrdersController extends BaseController {
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Order order, Model model) {
         orderService.create(staff, order);
         if (staff.getErrMsg().length() != 0) {
+            List<ObjectError> errors = Arrays.asList(new ObjectError[]{new ObjectError("订单", staff.getErrMsg().toString())});
+            model.addAttribute("errors", errors);
             return viewPath + "new";
         } else {
             return "redirect:" + viewPath;
