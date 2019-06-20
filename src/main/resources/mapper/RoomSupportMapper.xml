@@ -11,12 +11,12 @@
 
     <select id="supportList" resultType="com.ace.entity.RoomSupport">
         SELECT bb_rooms_supports.id,
-               bb_supports.name  as name,
-               CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',bb_supports.cover) AS cover,
-               bb_supports.unit  as unit,
+               bb_supports.name                                                               as name,
+               CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/', bb_supports.cover) AS cover,
+               bb_supports.unit                                                               as unit,
                price
-        FROM bb_rooms_supports
-                 LEFT JOIN bb_supports ON bb_rooms_supports.support_id = bb_supports.id
-        where bb_rooms_supports.room_id = #{room}
+        FROM bb_supports
+                 LEFT JOIN bb_rooms_supports ON bb_rooms_supports.support_id = bb_supports.id
+        WHERE bb_rooms_supports.room_id = #{room}
     </select>
 </mapper>

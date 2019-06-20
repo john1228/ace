@@ -18,7 +18,6 @@ public class Support extends Base {
     @NotEmpty(message = "服务名字不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private String name;
-    @NotEmpty(message = "服务封面不能为空")
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private String cover;
     @NotEmpty(message = "服务单位不能为空")

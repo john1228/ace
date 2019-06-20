@@ -8,6 +8,7 @@ import com.ace.entity.Support;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -58,6 +59,9 @@ public class SupportsController extends BaseController {
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
         model.addAttribute("support", support);
         upload(support, cover);
+        if (Strings.isBlank(support.getCover())) {
+            result.getAllErrors().add(new ObjectError("cover", "封面不能为空"));
+        }
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
             return viewPath + "new";
@@ -92,9 +96,7 @@ public class SupportsController extends BaseController {
             Model model
     ) {
         model.addAttribute("support", support);
-        if (cover != null) {
-            upload(support, cover);
-        }
+        if (!cover.isEmpty()) upload(support, cover);
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
             return "redirect:" + viewPath + id + "/edit";

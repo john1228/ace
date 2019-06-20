@@ -31,11 +31,15 @@
                                             showBrowse: false,
                                             showRemove: false,
                                             showUpload: false,
+                                            <#if support.cover??>
                                             browseOnZoneClick: true,
                                             allowedFileExtensions: ["jpg", "png"],
-                                            initialPreview: ["${image+support.cover}"],
+                                            initialPreview: ["${image + support.cover}"],
                                             initialPreviewAsData: true,
                                             initialPreviewFileType: 'image'
+                                            <#else>
+                                            browseOnZoneClick: true
+                                            </#if>
                                         });
                                     </script>
                                 </div>
