@@ -188,7 +188,6 @@
                 #{room.quota},
                 #{room.price},
                 #{room.free},
-                #{room.freeOrg,typeHandler=com.ace.dao.handler.StringListHandler},
                 #{room.openDate},
                 #{room.closeDate},
                 #{room.unit},
@@ -212,11 +211,37 @@
 
     <update id="update">
         update bb_rooms
-        set name      = #{name},
-            resume    = #{resume},
-            cover     = #{cover},
-            image     = #{image,typeHandler=com.ace.dao.handler.StringListHandler},
-            serial_no = ${serialNo}
+        set name = #{name},
+        <if test="cover != null">
+            cover = #{cover},
+        </if>
+        <if test="image != null and image.size !=0">
+            image = #{image,typeHandler=com.ace.dao.handler.StringListHandler},
+        </if>
+        serial_no = #{serialNo},
+        building_no = #{buildingNo},
+        floor_no = #{floorNo},
+        room_no = #{roomNo},
+        layer_height = #{layerHeight},
+        type = #{type},
+        publish = #{publish},
+        layer_area = #{layerArea},
+        quota = #{quota},
+        price = #{price},
+        free = #{free},
+        open_date = #{openDate},
+        close_date = #{closeDate},
+        unit = #{unit},
+        renew = #{renew},
+        rental = #{rental},
+        supervisor = #{supervisor},
+        supervisor_mobile = #{supervisorMobile},
+        supervisor_email = #{supervisorEmail},
+        payable = #{payable},
+        cfm = #{cfm},
+        refund_limit_time = #{rlt},
+        resume = #{resume},
+        free_service = #{freeService}
         where id = #{id}
     </update>
 

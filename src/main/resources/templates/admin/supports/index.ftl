@@ -25,22 +25,20 @@
             <#include 'search.ftl'/>
         </div>
         <div class="col-xs-12">
-            <div class="row">
-                <div>
-                    <div class="table-header">服务列表</div>
-                    <table id="supportList" class="table table-striped table-bordered" cellspacing="0"
-                           width="100%">
-                        <thead>
-                        <tr>
-                            <th class="center">编号</th>
-                            <th class="center">名字</th>
-                            <th class="center">图片</th>
-                            <th class="center">单位</th>
-                            <th class="center">操作</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
+            <div>
+                <div class="table-header">服务列表</div>
+                <table id="supportList" class="table table-striped table-bordered" cellspacing="0"
+                       width="100%">
+                    <thead>
+                    <tr>
+                        <th class="center">编号</th>
+                        <th class="center">名字</th>
+                        <th class="center">图片</th>
+                        <th class="center">单位</th>
+                        <th class="center">操作</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
             <script type="text/javascript">
                 $(function () {
@@ -106,7 +104,7 @@
                                 render: function (data) {
                                     return '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '">查看</a>' +
                                             '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>' +
-                                            '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE" data-message="删除成功">成功</a>';
+                                            '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
 
                                 }
                             }

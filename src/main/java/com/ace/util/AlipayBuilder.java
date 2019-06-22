@@ -28,7 +28,7 @@ public enum AlipayBuilder {
 
     public String getPay(Alipay config, Order order) {
         try {
-            AlipayClient client = new DefaultAlipayClient(gateway, config.getSeller(), config.getPrivateKey());
+            AlipayClient client = new DefaultAlipayClient(gateway, config.getSeller(), config.getPrivateKey(), "json", "utf-8", config.getPublicKey(), signType);
             AlipayTradeAppPayModel payModel = new AlipayTradeAppPayModel();
             payModel.setOutTradeNo(order.getOrderNo());
             payModel.setSubject("爱包办-会议室预定-" + order.getOrderNo());

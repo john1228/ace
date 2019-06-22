@@ -63,14 +63,8 @@ public class RoomsController extends BaseController {
 
     @GetMapping("/new")
     public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-        model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
         model.addAttribute("room", new Room());
-        model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
-        model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
-        model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));
-        model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
-        model.addAttribute("confirmations", CollectionUtil.toCollection(RoomCFM.class));
-        model.addAttribute("payable", CollectionUtil.trueOrFalseCollection("是", "否"));
+        model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
         model.addAttribute("supports", supportService.supportList(staff));
         return viewPath + "new";
     }
@@ -92,7 +86,6 @@ public class RoomsController extends BaseController {
         } catch (Exception exp) {
             result.addError(new ObjectError("cover", "上传列表图片失败"));
         }
-
         try {
             List<String> images = new ArrayList<>();
             for (MultipartFile tmp : image) {
@@ -103,20 +96,14 @@ public class RoomsController extends BaseController {
             result.addError(new ObjectError("image", "上传图片失败"));
         }
         if (result.hasErrors()) {
-            model.addAttribute("errors", result.getAllErrors());
-            model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
-            model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
-            model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));
-            model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
-            model.addAttribute("confirmations", CollectionUtil.toCollection(RoomCFM.class));
-            model.addAttribute("payable", CollectionUtil.trueOrFalseCollection("是", "否"));
             model.addAttribute("room", room);
+            model.addAttribute("errors", result.getAllErrors());
+            model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
+            model.addAttribute("supports", supportService.supportList(staff));
             return viewPath + "new";
         } else {
             roomService.create(staff, room);
-            model.addAttribute("room", room);
             return "redirect:" + viewPath;
-
         }
     }
 
@@ -132,12 +119,6 @@ public class RoomsController extends BaseController {
         Room room = roomService.findById(id);
         model.addAttribute("room", room);
         model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
-        model.addAttribute("types", CollectionUtil.toCollection("室内", "室外"));
-        model.addAttribute("publish", CollectionUtil.toCollection(RoomPublish.class));
-        model.addAttribute("free", CollectionUtil.trueOrFalseCollection("免费", "收费"));
-        model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
-        model.addAttribute("confirmations", CollectionUtil.toCollection(RoomCFM.class));
-        model.addAttribute("payable", CollectionUtil.trueOrFalseCollection("是", "否"));
         model.addAttribute("supports", supportService.supportList(staff));
         return viewPath + "edit";
     }
@@ -147,38 +128,38 @@ public class RoomsController extends BaseController {
     public String update(
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
             @PathVariable("id") Long id,
-            @RequestParam("coverFile") MultipartFile avatar,
+            @RequestParam("coverFile") MultipartFile cover,
             @RequestParam("imageFiles") MultipartFile[] image,
             @Valid Room room, BindingResult result,
             Model model
     ) {
-        model.addAttribute("room", room);
+        if (!cover.isEmpty()) {
+            try {
+                room.setCover(Aliyun.Instance.upload(cover));
+            } catch (Exception exp) {
+                result.addError(new ObjectError("cover", "更新列表图出错"));
+            }
+        }
+        try {
+            List<String> imageList = new ArrayList<>();
+            for (MultipartFile tmp : image) {
+                if (!tmp.isEmpty())
+                    imageList.add(Aliyun.Instance.upload(tmp));
+            }
+            room.setImage(imageList);
+        } catch (Exception exp) {
+            result.addError(new ObjectError("image", "更新场地图失败"));
+        }
         if (result.hasErrors()) {
-            model.addAttribute("rentals", CollectionUtil.toCollection(RoomRental.class));
-            model.addAttribute("confirmations", CollectionUtil.toCollection(RoomCFM.class));
-            model.addAttribute("payments", CollectionUtil.trueOrFalseCollection("是", "否"));
+            model.addAttribute("room", room);
+            model.addAttribute("errors", result.getAllErrors());
+            model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
+            model.addAttribute("supports", supportService.supportList(staff));
             return viewPath + "edit";
         } else {
-            try {
-                String fileName = Aliyun.Instance.upload(avatar);
-                room.setCover(fileName);
-            } catch (Exception exp) {
-                result.addError(new ObjectError("cover", "上传列表图片失败"));
-            }
-
-            try {
-                List<String> imageList = new ArrayList<>();
-                for (MultipartFile tmp : image) {
-                    imageList.add(Aliyun.Instance.upload(tmp));
-                }
-                room.setImage(imageList);
-            } catch (Exception exp) {
-                result.addError(new ObjectError("image", "更新图片失败"));
-            }
             roomService.update(staff, room);
             return "redirect:" + viewPath;
         }
-
     }
 
     @PostMapping("/{id}/enable")

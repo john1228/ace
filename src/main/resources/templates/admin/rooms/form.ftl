@@ -24,26 +24,28 @@
                         <div class="col-sm-10">
                             <div class="avatar">
                                 <div class="file-loading">
-                                    <input id="cover" name="coverFile" type="file" required>
+                                    <input id="coverFile" name="coverFile" type="file">
                                 </div>
                             </div>
                         </div>
                         <script type="text/javascript">
-                            $("#cover").fileinput({
+                            $("#coverFile").fileinput({
                                 language: 'zh',
                                 overwriteInitial: true,
                                 maxFileSize: 1500,
                                 showClose: false,
                                 showCaption: false,
-                                showCancel: true,
+                                showCancel: false,
                                 showBrowse: false,
-                                browseOnZoneClick: true,
-                                allowedFileTypes: ['image'],
-                                removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
-                                removeClass: 'btn btn-default',
-                                elErrorContainer: '#kv-avatar-errors-1',
-                                msgErrorClass: 'alert alert-block alert-danger',
-                                layoutTemplates: {main2: '{preview} {browse}'}
+                                <#if room.cover??>
+                                    browseOnZoneClick: true,
+                                    allowedFileExtensions: ["jpg", "png"],
+                                    initialPreview: ["${image + room.cover}"],
+                                    initialPreviewAsData: true,
+                                    initialPreviewFileType: 'image'
+                                <#else>
+                                    browseOnZoneClick: true
+                                </#if>
                             });
                         </script>
                     </div>
@@ -63,14 +65,19 @@
                                     showClose: false,
                                     showCaption: false,
                                     showBrowse: false,
-                                    browseOnZoneClick: true,
-                                    removeLabel: '',
-                                    removeIcon: '<i class="glyphicon glyphicon-remove"></i>',
-                                    removeTitle: 'Cancel or reset changes',
-                                    elErrorContainer: '#kv-avatar-errors-1',
-                                    msgErrorClass: 'alert alert-block alert-danger',
-                                    layoutTemplates: {main2: '{preview} {browse}'},
-                                    allowedFileExtensions: ["jpg", "png"]
+                                    <#if room.image??>
+                                        browseOnZoneClick: true,
+                                        allowedFileExtensions: ["jpg", "png"],
+                                        initialPreview: [
+                                            <#list room.image as img>
+                                                "${image + room.cover}",
+                                            </#list>
+                                        ],
+                                        initialPreviewAsData: true,
+                                        initialPreviewFileType: 'image'
+                                    <#else>
+                                        browseOnZoneClick: true
+                                    </#if>
                                 });
                             })
                         </script>
@@ -148,30 +155,40 @@
                         <label class="col-sm-2 control-label no-padding-right"><span
                                 style="color: red">*</span>场地类型</label>
                         <div class="col-sm-10 form-radio-group">
-                            <@spring.formRadioButtons "room.type",types,""/>
+                            <input type="radio" id="type0" name="type"
+                                   value="室内" ${(room.type == "室内")?string("checked='checked'","")}>
+                            <label for="type0">室内</label>
+                            <input type="radio" id="type1" name="type"
+                                   value="室外" ${(room.type == "室外")?string("checked='checked'","")}>
+                            <label for="type1">室外</label>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 control-label no-padding-right">
-                            <span style="color: red">*</span>发布类型</label>
-                        <div class="col-sm-10 form-radio-group">
-                            <@spring.formRadioButtons "room.publish",publish,""/>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 control-label no-padding-right">
+                        <span style="color: red">*</span>发布类型</label>
+                    <div class="col-sm-10 form-radio-group">
+                        <input type="radio" id="publish0" name="publish"
+                               value="PRIVATE" ${(room.publish.name() == "PRIVATE")?string("checked='checked'","")}>
+                        <label for="publish0">自有</label>
+                        <input type="radio" id="publish1" name="publish"
+                               value="PUBLIC" ${(room.publish.name() == "PUBLIC")?string("checked='checked'","")}>
+                        <label for="publish1">公开</label>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>面积</label>
-                        <div class="col-sm-10">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label no-padding-right"
+                       for="form-field-1"><span style="color: red">*</span>面积</label>
+                <div class="col-sm-10">
                             <@spring.formInput "room.layerArea" "class='col-xs-10 col-sm-9' required"/>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>容纳人数</label>
-                        <div class="col-sm-10">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 control-label no-padding-right"
+                       for="form-field-1"><span style="color: red">*</span>容纳人数</label>
+                <div class="col-sm-10">
                             <@spring.formInput "room.quota","class='col-xs-10 col-sm-9' required"/>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -196,7 +213,12 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>出租收费</label>
                         <div class="col-sm-10 form-radio-group">
-                            <@spring.formRadioButtons "room.free",free,""/>
+                            <input type="radio" id="free0" name="free"
+                                   value="true" ${(room.free)?string("checked='checked'","")}>
+                            <label for="free0">免费</label>
+                            <input type="radio" id="free1" name="free"
+                                   value="false" ${(room.free)?string("","checked='checked'")}>
+                            <label for="free1">收费</label>
                         </div>
                     </div>
                     <div class="form-group row" id="freeOrgContainer">
@@ -215,7 +237,12 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>出租方式</label>
                         <div class="col-sm-10 form-radio-group">
-                            <@spring.formRadioButtons "room.rental",rentals,""/>
+                            <input type="radio" id="rental0" name="rental"
+                                   value="HOUR" ${(room.rental.name() == "HOUR")?string("checked='checked'","")}>
+                            <label for="rental0">小时</label>
+                            <input type="radio" id="rental1" name="rental"
+                                   value="PERIOD" ${(room.rental.name() == "PERIOD")?string("checked='checked'","")}>
+                            <label for="rental1">整段</label>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -312,14 +339,27 @@
                             <label class="col-sm-2 control-label no-padding-right"
                                    for="form-field-1"><span style="color: red">*</span>是否支付</label>
                             <div class="col-sm-10 form-radio-group">
-                                <@spring.formRadioButtons "room.payable",payable,"&nbsp"/>
+                                <input type="radio" id="payable0" name="payable"
+                                       value="true" ${(room.payable)?string("checked='checked'","")}>
+                                <label for="payable0">是</label>
+                                <input type="radio" id="payable1" name="payable"
+                                       value="false" ${(room.payable)?string("","checked='checked'")}>
+                                <label for="payable1">否</label>
                             </div>
                         </div>
                         <div class="form-group row col-xs-12 col-sm-6">
                             <label class="col-sm-2 control-label no-padding-right"
                                    for="form-field-1"><span style="color: red">*</span>确认方式</label>
                             <div class="col-sm-10 form-radio-group">
-                                <@spring.formRadioButtons "room.cfm",confirmations,""/>
+                                <input type="radio" id="cfm0" name="cfm"
+                                       value="AUTO" ${(room.cfm.name() == "AUTO")?string("checked='checked'","")}>
+                                <label for="cfm0">无需确认</label>
+                                <input type="radio" id="cfm1" name="cfm"
+                                       value="BEFORE" ${(room.cfm.name() == "BEFORE")?string("checked='checked'","")}>
+                                <label for="cfm1">确认后付款</label>
+                                <input type="radio" id="cfm2" name="cfm"
+                                       value="AFTER" ${(room.cfm.name() == "AFTER")?string("checked='checked'","")}>
+                                <label for="cfm2">付款后确认</label>
                             </div>
                         </div>
                     </div>
@@ -327,13 +367,15 @@
                         <div class="form-group row col-xs-12 col-sm-6">
                             <label class="col-sm-2 control-label no-padding-right"
                                    for="form-field-1"><span style="color: red">*</span>退款时限</label>
-                            <div class="input-group col-xs-10 col-sm-9">
-                                <@spring.formInput "room.rlt" "class='form-control' required"/>
-                                <span class="input-group-btn">
-                                   <button class="btn btn-sm btn-default" type="button">
-                                        小时
-                                    </button>
-                                </span>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="input-group">
+                                    <@spring.formInput "room.rlt" "class='form-control' required"/>
+                                    <span class="input-group-btn">
+                                       <button class="btn btn-sm btn-default" type="button">
+                                            小时
+                                       </button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -354,7 +396,9 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>免费服务</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "room.freeService","class='col-xs-12 col-sm-12' data-role='tagsinput' "/>
+                            <div class="col-xs-12 col-sm-9">
+                                <@spring.formInput "room.freeService","class='form-control' data-role='tagsinput' "/>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -362,9 +406,76 @@
                                for="form-field-1"><span style="color: red">*</span>会场简介</label>
                         <div class="col-sm-10">
                             <@spring.formTextarea "room.resume","class='col-xs-10 col-sm-9'"/>
-                            <script src="/assets/js/ckeditor.js"></script>
+                            <link rel="stylesheet" href="/assets/css/froala_editor/froala_editor.css"/>
+                            <link rel="stylesheet" href="/assets/css/froala_editor/froala_style.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/code_view.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/colors.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/emoticons.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/image_manager.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/image.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/line_breaker.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/table.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/char_counter.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/video.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/fullscreen.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/quick_insert.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/plugins/file.css">
+                            <link rel="stylesheet" href="/assets/css/froala_editor/themes/gray.css">
+
+                            <script type="text/javascript" src="/assets/js/froala_editor/froala_editor.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/align.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/code_beautifier.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/code_view.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/colors.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/draggable.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/emoticons.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/font_size.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/font_family.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/image.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/file.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/image_manager.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/line_breaker.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/link.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/lists.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/paragraph_format.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/paragraph_style.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/video.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/table.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/url.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/entities.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/char_counter.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/inline_style.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/quick_insert.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/save.min.js"></script>
+                            <script type="text/javascript"
+                                    src="/assets/js/froala_editor/plugins/fullscreen.min.js"></script>
+                            <script type="text/javascript" src="/assets/js/froala_editor/plugins/quote.min.js"></script>
                             <script type="text/javascript">
-                                ClassicEditor.create(document.querySelector("#resume"))
+                                new FroalaEditor("#resume", {
+                                    language: 'zh_cn',
+                                    theme: 'gray',
+                                    toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '-', 'insertLink', 'insertImage', 'insertTable', '|', 'quote', 'insertHR', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'],
+                                    quickInsertButtons: ['image', 'table', 'ol', 'ul'],
+                                    imageUploadURL: "/admin/images",
+                                    imageUploadParam: "file",
+                                    imageUploadMethod: "POST",
+                                    imageAllowedTypes: ["jpeg", "jpg", "png"]
+                                })
                             </script>
                         </div>
                     </div>

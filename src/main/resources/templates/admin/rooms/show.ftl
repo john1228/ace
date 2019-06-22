@@ -5,7 +5,7 @@
 <script src="/assets/js/jquery/dataTables.buttons.min.js"></script>
 <script src="/assets/js/bootstrap/timepicker.min.js"></script>
 <link rel="stylesheet" href="/assets/css/jquery/buttons.dataTables.min.css"/>
-<link rel="stylesheet" href="/assets/csss/bootstrap/timepicker.min.css"/>
+<link rel="stylesheet" href="/assets/css/bootstrap/timepicker.min.css"/>
 <div class="breadcrumbs" id="breadcrumbs">
     <script type="text/javascript">
         try {

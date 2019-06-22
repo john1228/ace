@@ -88,7 +88,7 @@
                  INNER JOIN bb_orders ON bb_orders.id = bb_order_appointments.order_id
         WHERE bb_orders.status IN (0, 1, 2, 3)
           AND bb_order_appointments.room_id = #{criteria.roomId}
-          AND (bb_order_appointments.created_at BETWEEN #{criteria.date} AND DATE_ADD(#{criteria.date}, interval 1 week))
+          AND (bb_order_appointments.created_at BETWEEN DATE(#{criteria.date} + INTERVAL (1 - DAYOFWEEK(#{criteria.date})) DAY) AND DATE(#{criteria.date} + INTERVAL (7 - DAYOFWEEK(#{criteria.date})) DAY))
     </select>
 
     <select id="daily" resultMap="apmMap">
