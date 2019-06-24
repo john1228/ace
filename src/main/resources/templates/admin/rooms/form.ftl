@@ -148,7 +148,14 @@
                         <label class="col-sm-2 control-label no-padding-right"><span
                                 style="color: red">*</span>层高</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "room.layerHeight" "class='col-xs-10 col-sm-9'"/>
+                            <div class="input-group col-xs-10 col-sm-9">
+                                <@spring.formInput "room.layerHeight" "class='form-control' required"/>
+                                <span class="input-group-btn">
+                                   <button class="btn btn-sm btn-default" type="button">
+                                        米
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -181,14 +188,28 @@
                 <label class="col-sm-2 control-label no-padding-right"
                        for="form-field-1"><span style="color: red">*</span>面积</label>
                 <div class="col-sm-10">
-                            <@spring.formInput "room.layerArea" "class='col-xs-10 col-sm-9' required"/>
+                    <div class="input-group col-xs-10 col-sm-9">
+                        <@spring.formInput "room.layerArea" "class='form-control' required"/>
+                        <span class="input-group-btn">
+                           <button class="btn btn-sm btn-default" type="button">
+                                m²
+                            </button>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 control-label no-padding-right"
                        for="form-field-1"><span style="color: red">*</span>容纳人数</label>
                 <div class="col-sm-10">
-                            <@spring.formInput "room.quota","class='col-xs-10 col-sm-9' required"/>
+                    <div class="input-group col-xs-10 col-sm-9">
+                    <@spring.formInput "room.quota" "class='form-control' required" "number"/>
+                        <span class="input-group-btn">
+                           <button class="btn btn-sm btn-default" type="button">
+                                m²
+                            </button>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -205,8 +226,15 @@
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>参考价</label>
-                        <div class="col-sm-10 form-radio-group">
-                            <@spring.formInput "room.price" "class='col-xs-10 col-sm-9' required" "number"/>
+                        <div class="col-sm-10">
+                            <div class="input-group col-xs-10 col-sm-9">
+                            <@spring.formInput "room.price" "class='form-control' required" "number"/>
+                                <span class="input-group-btn">
+                                   <button class="btn btn-sm btn-default" type="button">
+                                        元
+                                    </button>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">

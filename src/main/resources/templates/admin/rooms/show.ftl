@@ -24,6 +24,7 @@
         <li class="active">查看场地</li>
     </ul>
 </div>
+    <#setting number_format="0.##">
 <div class="page-content">
     <div class="page-title">
         <h3>
@@ -114,41 +115,31 @@
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">场地层高</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.layerHeight!}
-                                        </span>
+                                    ${room.layerHeight!}　米
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">场地类型</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.type}
-                                        </span>
+                                    ${room.type}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">发布类型</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.publish}
-                                        </span>
+                                    ${room.publish.getName()}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">面积</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.layerArea}
-                                        </span>
+                                    ${room.layerArea}　m²
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">最大容纳人数</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.quota}
-                                        </span>
+                                    ${room.quota}　人
                                 </div>
                             </div>
                         </div>
@@ -167,41 +158,31 @@
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">出租收费</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.free?string("免费","收费")}
-                                        </span>
+                                    ${room.free?string("免费","收费")}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">出租方式</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.rental}
-                                        </span>
+                                    ${room.rental.getName()}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">开放时间</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.publish}
-                                        </span>
+                                    ${room.openDate?string("yyyy-MM-dd")} 至　${room.closeDate?string("yyyy-MM-dd")}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">起租时间</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.unit}
-                                        </span>
+                                    ${room.unit} 个/半小时
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">续租时间</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.renew}
-                                        </span>
+                                    ${room.renew} 小时
                                 </div>
                             </div>
                         </div>
@@ -220,25 +201,19 @@
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">负责人</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.supervisor}
-                                        </span>
+                                    ${room.supervisor}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">联系电话</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.supervisorMobile}
-                                        </span>
+                                    ${room.supervisorMobile}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">邮箱</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.supervisorEmail}
-                                        </span>
+                                    ${room.supervisorEmail}
                                 </div>
                             </div>
                         </div>
@@ -257,25 +232,19 @@
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">确认方式</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.cfm}
-                                        </span>
+                                    ${room.cfm.getName()}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">是否支付</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.payable?string("是","否")}
-                                        </span>
+                                    ${room.payable?string("是","否")}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
                                 <div class="attribute-table-label">退款限时</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.rlt!}
-                                        </span>
+                                    ${room.rlt!} 小时
                                 </div>
                             </div>
                         </div>
@@ -306,58 +275,19 @@
                             <div class="attribute-table-row col-xs-12 col-sm-12">
                                 <div class="attribute-table-label">免费</div>
                                 <div class="attribute-table-value">
-                                        <span>
-                                            ${room.freeService}
-                                        </span>
+                                    ${room.freeService}
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-12">
                                 <div class="attribute-table-label">收费</div>
                                 <div class="attribute-table-value" style="display: table-cell">
-                                        <#list room.supportList as support>
-                                            <div style="padding: 5px;border: 1px dotted #b1b1b1">
-                                                <div>${support.name}</div>
-                                                <div><img src="${support.cover}" class="img-50"/></div>
-                                                <div>${support.price}/${support.unit}</div>
-                                            </div>
-                                        </#list>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="widget-box">
-                <div class="widget-header widget-header-custom">
-                    <h5 class="widget-title">订单相关</h5>
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <div class="attribute-table">
-                            <div class="attribute-table-row col-xs-12 col-sm-6">
-                                <div class="attribute-table-label">确认方式</div>
-                                <div class="attribute-table-value">
-                                        <span>
-                                            ${room.cfm}
-                                        </span>
-                                </div>
-                            </div>
-                            <div class="attribute-table-row col-xs-12 col-sm-6">
-                                <div class="attribute-table-label">是否支付</div>
-                                <div class="attribute-table-value">
-                                        <span>
-                                            ${room.payable?string("是","否")}
-                                        </span>
-                                </div>
-                            </div>
-                            <div class="attribute-table-row col-xs-12 col-sm-6">
-                                <div class="attribute-table-label">退款限时</div>
-                                <div class="attribute-table-value">
-                                        <span>
-                                            ${room.rlt!}
-                                        </span>
+                                    <#list room.supportList as support>
+                                        <div style="padding: 5px;border: 1px dotted #b1b1b1">
+                                            <div>${support.name}</div>
+                                            <div><img src="${support.cover}" class="img-50"/></div>
+                                            <div>${support.price}/${support.unit}</div>
+                                        </div>
+                                    </#list>
                                 </div>
                             </div>
                         </div>
@@ -401,6 +331,7 @@
                             }
                         },
                         searching: false,
+                        paging: false,
                         processing: true,
                         serverSide: true,
                         autoWidth: false,
@@ -463,53 +394,25 @@
                                 <div class="form-group row">
                                     <div class="col-sm-2 control-label no-padding-right">日期</div>
                                     <div class="col-sm-10">
-                                        <div class="input-icon input-icon-right col-xs-10 col-sm-9"
-                                             style="padding-left: 0 !important;padding-right: 0 !important; ">
-                                            <input type="text" id="dateRange" style="width: 100%"
-                                                   autocomplete="off">
-                                            <i class="ace-icon fa fa-calendar blue"></i>
+                                        <div class="col-xs-12 col-sm-12 input-group input-daterange">
+                                            <input id="startDate" name="startDate" class="form-control">
+                                            <div class="input-group-addon">至</div>
+                                            <input id="endDate" name="endDate" class="form-control">
                                         </div>
-                                        <input type="hidden" id="startDate" name="startDate">
-                                        <input type="hidden" id="endDate" name="endDate">
                                         <script type="text/javascript">
-                                            $(function () {
-                                                $("#dateRange").daterangepicker({
-                                                    autoUpdateInput: false,
-                                                    locale: {
-                                                        format: "YYYY/MM/DD",
-                                                        separator: " - ",
-                                                        applyLabel: "确认",
-                                                        cancelLabel: "清空",
-                                                        fromLabel: "开始时间",
-                                                        toLabel: "结束时间",
-                                                        customRangeLabel: "自定义",
-                                                        daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
-                                                        monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"]
-                                                    }
-                                                }).on('cancel.daterangepicker', function (ev, picker) {
-                                                    $("#dateRange").val("请选择日期");
-                                                    $("#startDate").val("");
-                                                    $("#endDate").val("");
-                                                }).on('apply.daterangepicker', function (ev, picker) {
-                                                    $("#startDate").val(picker.startDate.format('YYYY-MM-DD'));
-                                                    $("#endDate").val(picker.endDate.format('YYYY-MM-DD'));
-                                                    $("#dateRange").val(picker.startDate.format('YYYY-MM-DD') + " 至 " + picker.endDate.format('YYYY-MM-DD'));
-                                                });
-                                            })
+                                            $('.input-daterange input').each(function () {
+                                                $(this).datepicker({language: 'zh'});
+                                            });
                                         </script>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-2 control-label no-padding-right">时间</div>
                                     <div class="col-sm-10">
-                                        <div class="input-group">
-                                            <input type="text" class="input-sm form-control" name="startTime"
-                                                   id="startTime">
-                                            <span class="input-group-addon">
-                                                        <i class="fa fa-exchange"></i>
-                                                    </span>
-                                            <input type="text" class="input-sm form-control" name="endTime"
-                                                   id="endTime">
+                                        <div class="col-xs-12 col-sm-12 input-group">
+                                            <input class="form-control" name="startTime" d="startTime">
+                                            <div class="input-group-addon">至</div>
+                                            <input class="form-control" name="endTime" id="endTime">
                                         </div>
                                         <script>
                                             $(function () {

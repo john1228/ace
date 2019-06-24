@@ -49,17 +49,18 @@
 </a>
 <#if errors??>
     <script>
+        console.log("有错无信息");
         ;!function () {
             layer.ready(function () {
                 layer.open({
                     type: 1,
                     title: '错误提示',
                     area: ['800px', '500px'],
-                    content: '<div class="widget-box"><div class="widget-body"><div class="widget-main"><ul class="list-unstyled spaced2">' +
+                    content: "<div class='widget-box'><div class='widget-body'><div class='widget-main'><ul class='list-unstyled spaced2'>" +
                             <#list errors as objErr>
-                                  '<li><i class="ace-icon fa fa-warning orange"></i>&nbsp;${objErr.defaultMessage}</li>' +
+                                  "<li><i class='ace-icon fa fa-warning orange'></i>&nbsp;${objErr.defaultMessage?html}</li>" +
                             </#list>
-                            '</ul></div></div></div>'
+                            "</ul></div></div></div>"
                 });
             });
         }();

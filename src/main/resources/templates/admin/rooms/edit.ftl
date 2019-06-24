@@ -33,10 +33,16 @@
             <div class="widget-main">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="/admin/rooms/${room.id}" role="form" class="form-horizontal"
+                        <form action="/admin/rooms/${room.id}/edit" role="form" class="form-horizontal"
                               enctype="multipart/form-data"
                               data-toggle="validator" method="post">
                             <input type="hidden" name="_method" value="put">
+                            <#if room.cover??>
+                                <input type="hidden" name="cover" value="${room.cover}"/>
+                            </#if>
+                            <#if room.image??>
+                                <input type="hidden" name="image" value="${room.image?join(",")}">
+                            </#if>
                             <#include "form.ftl">
                         </form>
                     </div>

@@ -9,11 +9,9 @@ import com.ace.entity.concern.enums.RoomPublish;
 import com.ace.entity.concern.enums.RoomRental;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Getter;
 import lombok.Setter;
-import org.codehaus.jettison.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;

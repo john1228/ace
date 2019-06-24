@@ -1,16 +1,10 @@
 package com.ace.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.net.*;
 
 /**
  * 字符串帮助类
@@ -103,32 +97,6 @@ public class StringUtils {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        URL realUrl = new URL("https://poll.kuaidi100.com/poll/query.do");
-        //打开和URL之间的连接
-        URLConnection conn = realUrl.openConnection();
-        //设置通用的请求属性
-//        conn.setRequestProperty("accept", "*/*");
-//        conn.setRequestProperty("connection", "Keep-Alive");
-//        conn.setRequestProperty("user-agent",
-//                "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-        //建立实际的连接
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        PrintWriter out = new PrintWriter(conn.getOutputStream());
-        //发送请求参数
-        out.print("customer=23649B67CD95D38114BDECF6F1887A92&param=%7B%22com%22%3A%22zhongtong%22%2C%22num%22%3A%2273111935198843%22%2C%22resultv2%22%3A0%7D&sign=B2AD1538A0E8701841835C1BAF86D2C8");
-        //flush输出流的缓冲
-        out.flush();
-        // 定义 BufferedReader输入流来读取URL的响应
-        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        StringBuffer sb = new StringBuffer();
-        String line;
-        while ((line = in.readLine()) != null) {
-            sb.append(line);
-        }
-        System.err.println(sb.toString());
-    }
 
     public static final char UNDERLINE = '_';
 
@@ -148,5 +116,22 @@ public class StringUtils {
             }
         }
         return sb.toString();
+    }
+
+    public static boolean isNumeric(String value) {
+
+        if (value == null) {
+            return false;
+        } else {
+            int sz = value.length();
+
+            for (int i = 0; i < sz; ++i) {
+                if (!Character.isDigit(value.charAt(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

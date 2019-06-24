@@ -6,36 +6,27 @@ import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.RoomCriteria;
 import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
-import com.ace.entity.RoomSupport;
 import com.ace.entity.Staff;
-import com.ace.entity.concern.enums.RoomCFM;
-import com.ace.entity.concern.enums.RoomPublish;
-import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.Room;
 import com.ace.service.admin.RoomService;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
-import com.ace.util.CollectionUtil;
-import com.ace.util.remote.Data;
+import com.ace.util.StringUtils;
 import com.ace.util.remote.DataUtils;
 import com.fasterxml.jackson.annotation.JsonView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -123,7 +114,7 @@ public class RoomsController extends BaseController {
         return viewPath + "edit";
     }
 
-    @PutMapping({"/{id}/", "/{id}"})
+    @PutMapping("/{id}/edit")
     @Recordable
     public String update(
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
@@ -137,18 +128,22 @@ public class RoomsController extends BaseController {
             try {
                 room.setCover(Aliyun.Instance.upload(cover));
             } catch (Exception exp) {
-                result.addError(new ObjectError("cover", "更新列表图出错"));
+                result.addError(new FieldError("会议室", "封面", "更新列表图出错"));
             }
         }
         try {
+            boolean changed = false;
             List<String> imageList = new ArrayList<>();
             for (MultipartFile tmp : image) {
-                if (!tmp.isEmpty())
+                if (!tmp.isEmpty()) {
+                    changed = true;
                     imageList.add(Aliyun.Instance.upload(tmp));
+                }
             }
-            room.setImage(imageList);
+            if (changed)
+                room.setImage(imageList);
         } catch (Exception exp) {
-            result.addError(new ObjectError("image", "更新场地图失败"));
+            result.addError(new FieldError("会议室", "图片", "更新场地图失败"));
         }
         if (result.hasErrors()) {
             model.addAttribute("room", room);

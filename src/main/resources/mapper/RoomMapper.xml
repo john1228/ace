@@ -135,7 +135,7 @@
         <if test="query.keyword != null and query.keyword != ''">
             AND name LIKE CONCAT('%',#{query.keyword},'%')
         </if>
-        <if test="query.quota != 0">
+        <if test="query.quota != null and query.quota != 0">
             AND quota > #{query.quota}
         </if>
         ORDER BY ${query.sort.column} ${query.sort.order} LIMIT #{query.start},#{query.pageSize}
