@@ -59,6 +59,7 @@
             #{item.id}
         </foreach>
         AND #{date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
+        ORDER BY bb_room_prices.id ASC
     </select>
     <!--获取日期有效的价格-->
     <select id="prices" resultMap="priceMap">
@@ -67,6 +68,7 @@
                  LEFT JOIN bb_room_prices_ref ON bb_room_prices.id = bb_room_prices_ref.price_id
         WHERE bb_room_prices_ref.room_id = #{room}
           AND #{date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
+        ORDER BY bb_room_prices.id ASC
     </select>
 
 
@@ -81,12 +83,19 @@
                 #{price})
     </insert>
     <insert id="createRef" useGeneratedKeys="true">
-        insert into bb_room_prices_ref (price_id,room_id) values
+        INSERT INTO bb_room_prices_ref (price_id,room_id) VALUES
         <foreach collection="rooms" item="item" separator=",">
             (#{priceId},#{item})
         </foreach>
         ON DUPLICATE KEY UPDATE id = id
     </insert>
+
+    <delete id="deleteRef">
+        DELETE
+        FROM bb_room_prices_ref
+        WHERE price_id = #{priceId}
+    </delete>
+
     <select id="findById" resultMap="priceMap">
         SELECT bb_room_prices.*, GROUP_CONCAT(bb_rooms.id) AS room_id, GROUP_CONCAT(bb_rooms.name) AS room_name
         FROM bb_room_prices

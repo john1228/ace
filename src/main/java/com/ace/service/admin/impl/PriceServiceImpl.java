@@ -41,11 +41,13 @@ public class PriceServiceImpl implements PriceService {
     @Transactional
     public void update(Price price) {
         priceMapper.update(price);
+        priceMapper.deleteRef(price.getId());
         priceMapper.createRef(price.getId(), price.getRoomId());
     }
 
     @Override
     public void delete(Long id) {
         priceMapper.delete(id);
+        priceMapper.deleteRef(id);
     }
 }

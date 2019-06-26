@@ -3,6 +3,7 @@
 <mapper namespace="com.ace.dao.AppointmentMapper">
     <resultMap type="com.ace.entity.Appointment" id="apmMap">
         <result column="order_id" property="orderId"/>
+        <result column="order_no" property="orderNo"/>
         <result column="room_id" property="roomId"/>
         <result column="meeting_name" property="meetingName"/>
         <result column="start_time" property="startTime"/>
@@ -76,8 +77,9 @@
 
     <select id="weekly" resultMap="apmMap">
         SELECT order_id,
+               CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) as order_no,
                room_id,
-               bb_rooms.name as room_name,
+               bb_rooms.name                                                                 as room_name,
                meeting_name,
                start_time,
                end_time,

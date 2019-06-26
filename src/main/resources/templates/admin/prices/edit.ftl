@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <form action="/admin/prices/${price.id}" role="form" class="form-horizontal"
+                    <form action="/admin/prices/${price.id}/edit" role="form" class="form-horizontal"
                           method="post">
                         <input type="hidden" name="_method" value="put">
                         <#include "form.ftl">

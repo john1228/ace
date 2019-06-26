@@ -174,13 +174,13 @@
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
-                                <div class="attribute-table-label">起租时间</div>
+                                <div class="attribute-table-label">最短起租时间</div>
                                 <div class="attribute-table-value">
                                     ${room.unit} 个/半小时
                                 </div>
                             </div>
                             <div class="attribute-table-row col-xs-12 col-sm-6">
-                                <div class="attribute-table-label">续租时间</div>
+                                <div class="attribute-table-label">最短续租时间</div>
                                 <div class="attribute-table-value">
                                     ${room.renew} 小时
                                 </div>

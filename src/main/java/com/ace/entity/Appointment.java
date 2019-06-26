@@ -21,6 +21,8 @@ public class Appointment {
     private Long id;
     @JsonView(AdminView.Table.class)
     private Long orderId;
+    @JsonView(AdminView.Table.class)
+    private String orderNo;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private Long roomId;
     @JsonView(ApiView.Detail.class)

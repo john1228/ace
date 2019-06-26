@@ -160,11 +160,9 @@
                                     {
                                         data: "id",
                                         render: function (data) {
-                                            return '<div class="hidden-sm hidden-xs btn-group">' +
-                                                    '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '">查看</a>' +
+                                            return '<a class="btn btn-xs btn-info" href="/admin/prices/' + data + '">查看</a>' +
                                                     '<a class="btn btn-xs btn-danger" href="/admin/prices/' + data + '/edit">编辑</a>' +
-                                                    '<a class="btn btn-xs btn-warning rest"　href="/admin/prices/' + data + '" data-method="DELETE">删除</a>' +
-                                                    '</div>';
+                                                    '<a class="btn btn-xs btn-warning" href="/admin/prices/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
                                         },
                                         className: 'center'
                                     }

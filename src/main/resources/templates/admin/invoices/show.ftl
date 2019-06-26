@@ -219,13 +219,13 @@
                                  <div class="attribute-table-row">
                                      <div class="attribute-table-label">快递公司</div>
                                      <div class="attribute-table-value">
-                                         ${invoice.express["company"]}
+                                         ${invoice.express["company"]!}
                                      </div>
                                  </div>
                                  <div class="attribute-table-row">
                                      <div class="attribute-table-label">快递单号</div>
                                      <div class="attribute-table-value">
-                                         ${invoice.express["no"]}
+                                         ${invoice.express["no"]!}
                                      </div>
                                  </div>
                              </div>

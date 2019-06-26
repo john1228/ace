@@ -48,7 +48,7 @@
                                 start: item.startTime,
                                 end: item.endTime,
                                 description: '联系人:' + item.contactName + '\n' + '联系电话:' + item.contactMobile,
-                                url: "/admin/orders/" + item.orderId + "",
+                                url: "/admin/orders/" + item.orderNo + "",
                                 textColor: "white",
                                 textEscape: true
                             }

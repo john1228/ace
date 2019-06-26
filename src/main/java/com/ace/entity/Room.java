@@ -50,9 +50,9 @@ public class Room extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private double layerArea;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
-    private String type;
+    private String type = "室内";
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
-    private RoomPublish publish;
+    private RoomPublish publish = RoomPublish.PRIVATE;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private Integer quota;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
@@ -62,10 +62,11 @@ public class Room extends Base {
     private Date openDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date closeDate;
+    @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private Integer unit;
-    private Integer renew;
+    private String renew;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
-    private RoomRental rental;
+    private RoomRental rental = RoomRental.HOUR;
     @JsonView({AdminView.Table.class})
     private String supervisor;
     @JsonView({ApiView.Detail.class, AdminView.Table.class})
@@ -73,7 +74,7 @@ public class Room extends Base {
     @JsonView({AdminView.Table.class})
     private String supervisorEmail;
     private boolean payable;
-    private RoomCFM cfm;
+    private RoomCFM cfm = RoomCFM.AUTO;
     private Integer rlt;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private String freeService;

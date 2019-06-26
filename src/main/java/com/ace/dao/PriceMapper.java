@@ -19,6 +19,8 @@ public interface PriceMapper {
 
     void createRef(@Param("priceId") Long priceId, @Param("rooms") List<Integer> rooms);
 
+    void deleteRef(@Param("priceId") Long priceId);
+
     Price findById(@Param("id") Long id);
 
     List<Integer> findRefById(@Param("id") Long id);

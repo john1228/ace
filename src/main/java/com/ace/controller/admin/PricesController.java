@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/prices")
 public class PricesController extends BaseController {
-    Logger logger = LoggerFactory.getLogger(PricesController.class);
     static String viewPath = "/admin/prices/";
     @Resource
     private PriceService priceService;
@@ -94,7 +93,7 @@ public class PricesController extends BaseController {
         return viewPath + "edit";
     }
 
-    @PutMapping({"/{id}/", "/{id}"})
+    @PutMapping({"/{id}/", "/{id}/edit"})
     @Recordable
     public String update(
             @PathVariable("id") Long id,
@@ -118,7 +117,10 @@ public class PricesController extends BaseController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    @Recordable
+    @ResponseBody
+    public String delete(@PathVariable("id") Long id) {
         priceService.delete(id);
+        return "SUCCESS";
     }
 }

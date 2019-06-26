@@ -37,7 +37,7 @@ public class MapHandler extends BaseTypeHandler<Map<String, Object>> {
     public Map<String, Object> getNullableResult(ResultSet rs, String s) throws SQLException {
         try {
             String rst = rs.getString(s);
-            return objectMapper.readValue(rst, HashMap.class);
+            return rst == null ? new HashMap<>() : objectMapper.readValue(rst, HashMap.class);
         } catch (Exception e) {
             throw new SQLException("类型错误");
         }
@@ -47,7 +47,7 @@ public class MapHandler extends BaseTypeHandler<Map<String, Object>> {
     public Map<String, Object> getNullableResult(ResultSet rs, int i) throws SQLException {
         try {
             String rst = rs.getString(i);
-            return objectMapper.readValue(rst, HashMap.class);
+            return rst == null ? new HashMap<>() : objectMapper.readValue(rst, HashMap.class);
         } catch (Exception e) {
             throw new SQLException("类型错误");
         }
@@ -57,7 +57,7 @@ public class MapHandler extends BaseTypeHandler<Map<String, Object>> {
     public Map<String, Object> getNullableResult(CallableStatement cs, int i) throws SQLException {
         try {
             String rst = cs.getString(i);
-            return objectMapper.readValue(rst, HashMap.class);
+            return rst == null ? new HashMap<>() : objectMapper.readValue(rst, HashMap.class);
         } catch (Exception e) {
             throw new SQLException("类型错误");
         }

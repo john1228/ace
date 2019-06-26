@@ -291,7 +291,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>起租时间</label>
+                               for="form-field-1"><span style="color: red">*</span>最短起租时间</label>
                         <div class="col-sm-10 ">
                             <div class="input-group col-xs-10 col-sm-9">
                                 <@spring.formInput "room.unit" "class='form-control'"/>
@@ -305,7 +305,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>续租时间</label>
+                               for="form-field-1"><span style="color: red">*</span>最短续租时间</label>
                         <div class="col-sm-10">
                             <div class="input-group col-xs-10 col-sm-9">
                                 <@spring.formInput "room.renew" "class='form-control'"/>
@@ -562,7 +562,9 @@
                                         lengthChange: false,
                                         paging: false,
                                         language: {
-                                            sInfo: ""
+                                            sZeroRecords: "数据为空",
+                                            sInfo: "",
+                                            sInfoEmpty: ""
                                         },
                                     });
                                 })

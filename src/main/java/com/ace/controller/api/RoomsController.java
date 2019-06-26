@@ -57,5 +57,4 @@ public class RoomsController extends BaseController {
         }
         return new Success(scheduleList);
     }
-
 }
