@@ -21,10 +21,21 @@ import java.util.Optional;
  */
 @Service("tools-order")
 public class OrderTools {
+    /**
+     * 计算预约时间段价格
+     *
+     * @param prices
+     * @param start
+     * @param end
+     * @param rental
+     * @return
+     */
     public Optional<Price> fittedPrice(List<Price> prices, Timestamp start, Timestamp end, RoomRental rental) {
         Date date = new java.sql.Date(start.getTime());
         SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Week week = Week.valueOf(wf.format(date).toUpperCase());
+
+
         return prices.stream().filter(item -> {
             if (item.getWday().contains(week)) {
                 Timestamp itemStart = Timestamp.valueOf(date.toString() + " " + item.getStartTime() + ":00");
