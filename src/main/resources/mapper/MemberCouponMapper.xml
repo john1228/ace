@@ -78,7 +78,7 @@
         SELECT *
         FROM bb_member_coupons
         JOIN bb_coupons ON bb_member_coupons.coupon_id = bb_coupons.id
-        WHERE bb_coupons.project_id = #{project} AND ((bb_member_coupons.org_id in
+        WHERE bb_coupons.project_id = #{project} AND bb_member_coupons.min > #{total} AND ((bb_member_coupons.org_id in
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.orgId}
         </foreach>

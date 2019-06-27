@@ -24,7 +24,7 @@
     <h4 class="header smaller lighter blue">
         <span>优惠券新增</span>
     </h4>
-    <form action="/admin/coupons/" role="form" class="form-horizontal" method="post">
+    <form action="/admin/system_coupons/" role="form" class="form-horizontal" method="post">
         <#include "form.ftl"/>
     </form>
 </div>

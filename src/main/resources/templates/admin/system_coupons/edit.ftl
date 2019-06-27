@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <form action="/admin/coupons/${coupon.id}" role="form" class="form-horizontal"
+                    <form action="/admin/system_coupons/${coupon.id}" role="form" class="form-horizontal"
                           method="post" name="coupon">
                         <input type="hidden" name="_method" value="put">
                         <#include "form.ftl"/>

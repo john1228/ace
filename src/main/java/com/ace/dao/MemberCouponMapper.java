@@ -6,6 +6,7 @@ import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.CouponStatus;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -20,5 +21,5 @@ public interface MemberCouponMapper {
 
     void use(@Param("id") Long id, @Param("status") CouponStatus status);
 
-    List<MemberCoupon> projectCoupons(@Param("account") Account account, @Param("project") String projectId);
+    List<MemberCoupon> projectCoupons(@Param("account") Account account, @Param("project") String projectId, @Param("total") BigDecimal total);
 }

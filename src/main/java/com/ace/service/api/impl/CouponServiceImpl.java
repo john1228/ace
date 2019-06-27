@@ -10,6 +10,7 @@ import com.ace.service.concerns.OrderTools;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -39,14 +40,13 @@ public class CouponServiceImpl implements CouponService {
         Room room = roomMapper.findById(roomId);
         Date appointedDate = new Date(appointStartTime.getTime());
         List<Price> prices = priceMapper.prices(roomId, appointedDate);
-        Optional<Price> optional = orderTools.fittedPrice(prices, appointStartTime, appointEndTime, room.getRental());
-        if (optional.isPresent()) {
-            //查找优惠券
-            List<MemberCoupon> couponList = mcMapper.projectCoupons(account, room.getProjectId());
+        try {
+            BigDecimal total = orderTools.fittedPrice(prices, appointStartTime, appointEndTime, room.getRental());
+            List<MemberCoupon> couponList = mcMapper.projectCoupons(account, room.getProjectId(), total);
             fittedCoupon = couponList.stream().filter(cp ->
                     (cp.getLimitWday().size() == 0 || cp.getLimitWday().contains(week)) && (cp.getLimitRoom().size() == 0 || cp.getLimitRoom().contains(roomId))
             ).collect(Collectors.toList());
-        } else {
+        } catch (Exception e) {
             fittedCoupon = new ArrayList<>();
         }
         return fittedCoupon;

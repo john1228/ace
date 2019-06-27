@@ -51,8 +51,8 @@
                 </a>
                 <b class="arrow"></b>
             </li>
-            <li class="${(requestUri?starts_with("/admin/coupons"))?string("active","")}">
-                <a href="/admin/coupons">
+            <li class="${(requestUri?starts_with("/admin/system_coupons"))?string("active","")}">
+                <a href="/admin/system_coupons">
                     <i class="menu-icon fa fa-caret-right"></i>
                     <text>优惠券</text>
                 </a>

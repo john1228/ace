@@ -13,6 +13,7 @@ import com.ace.service.concerns.OrderTools;
 import com.ace.service.concerns.RoomTools;
 import com.ace.util.AlipayBuilder;
 import com.ace.util.wxpay.WxpayBuilder;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service("api_order_service")
+@Log4j2
 public class OrderServiceImpl extends BaseService implements OrderService {
-
     @Resource
     private RoomMapper roomMapper;
     @Resource
@@ -93,15 +94,11 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             }
             //价格计算
             List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
-            Optional<Price> optional = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
-            if (optional.isPresent()) {
-                Price price = optional.get();
+            try {
                 //计算总价
-                if (price.getRental().equals(RoomRental.PERIOD)) {
-                    order.setTotal(price.getPrice());
-                } else {
-                    order.setTotal(price.getPrice().multiply(new BigDecimal(units.intValue())));
-                }
+                BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
+                order.setTotal(total);
+                log.info("房间价格:" + order.getTotal());
                 //校验优惠券
                 if (couponId != 0) {
                     Date date = new Date(System.currentTimeMillis());
@@ -133,6 +130,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                     account.setErrMsg(errMsg.toString());
                     return null;
                 }
+                log.info("服务费用:" + supportFee);
                 order.setTotal(order.getTotal().add(supportFee));
                 order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
 
@@ -183,7 +181,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                     account.setErrMsg("创建订单失败");
                     return null;
                 }
-            } else {
+            } catch (Exception e) {
                 account.setErrMsg("该时间段未开放预约");
                 return null;
             }

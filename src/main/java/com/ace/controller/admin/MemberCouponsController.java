@@ -29,7 +29,7 @@ public class MemberCouponsController extends BaseController {
     }
 
     @ResponseBody
-    @GetMapping({"coupons/{id}/member_coupons/dataList", "member_coupons/dataList"})
+    @GetMapping({"system_coupons/{id}/member_coupons/dataList", "member_coupons/dataList"})
     public DataTable<MemberCoupon> dataList(
             @PathVariable("id") Long couponId,
             @RequestParam(value = "draw", defaultValue = "1") int draw,
@@ -40,25 +40,5 @@ public class MemberCouponsController extends BaseController {
         DataTable<MemberCoupon> dataTable = mcService.dataTable(couponId, start, length, keyword);
         dataTable.setDraw(draw);
         return dataTable;
-    }
-
-
-    @GetMapping("/{couponId}/member_coupons/{id}")
-    public String show(@PathVariable("id") Long id, Model model) {
-        MemberCoupon coupon = mcService.findById(id);
-        model.addAttribute("coupon", coupon);
-        return viewPath + "show";
-    }
-
-    @GetMapping("/{couponId}/member_coupons/{id}/edit")
-    public String edit(@PathVariable("id") Long id, Model model) {
-        MemberCoupon coupon = mcService.findById(id);
-        model.addAttribute("coupon", coupon);
-        return viewPath + "edit";
-    }
-
-    @DeleteMapping("/{couponId}/member_coupons/{id}")
-    public String update(@Valid MemberCoupon memberCoupon, BindingResult result, Model model) {
-        return viewPath + "edit";
     }
 }

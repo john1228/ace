@@ -30,9 +30,9 @@ import java.util.stream.Collectors;
 
 
 @Controller("admin_coupons_controller")
-@RequestMapping("/admin/coupons")
-public class CouponsController extends BaseController {
-    Logger logger = LoggerFactory.getLogger(CouponsController.class);
+@RequestMapping("/admin/system_coupons")
+public class SystemCouponsController extends BaseController {
+    Logger logger = LoggerFactory.getLogger(SystemCouponsController.class);
     static String viewPath = "/admin/system_coupons/";
     @Resource
     private CouponService couponService;

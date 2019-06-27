@@ -78,7 +78,7 @@
                         autoWidth: false,
                         ordering: false,
                         ajax: {
-                            url: "/admin/coupons/dataList",
+                            url: "/admin/system_coupons/dataList",
                             type: "POST",
                             data: function (data) {
                                 data.name = $("#name").val();
@@ -151,8 +151,8 @@
                                 className: 'center',
                                 render: function (data) {
                                     return '<div class="hidden-sm hidden-xs btn-group">' +
-                                            '<a class="btn btn-xs btn-info" href="/admin/coupons/' + data + '">查看</a>' +
-                                            '<a class="btn btn-xs btn-danger" href="/admin/coupons/' + data + '/edit">编辑</a>' +
+                                            '<a class="btn btn-xs btn-info" href="/admin/system_coupons/' + data + '">查看</a>' +
+                                            '<a class="btn btn-xs btn-danger" href="/admin/system_coupons/' + data + '/edit">编辑</a>' +
                                             '</div>';
                                 }
                             }

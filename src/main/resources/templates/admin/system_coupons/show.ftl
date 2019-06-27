@@ -186,7 +186,7 @@
                                                 autoWidth: false,
                                                 ordering: false,
                                                 ajax: {
-                                                    url: "/admin/coupons/${coupon.id}/member_coupons/dataList",
+                                                    url: "/admin/system_coupons/${coupon.id}/member_coupons/dataList",
                                                     type: "GET"
                                                 },
                                                 columns: [
@@ -220,7 +220,7 @@
             <div class="col-sm-12 padding-6">
                 <div class="col-md-offset-3  col-md-9">
                     <a class="btn btn-info" type="button"
-                       href="/admin/coupons/${coupon.id}/edit">
+                       href="/admin/system_coupons/${coupon.id}/edit">
                         <i class="icon-ok bigger-110"></i>
                         修改
                     </a>
@@ -241,7 +241,7 @@
                                     <h4 class="smaller lighter blue no-margin">${coupon.name}
                                         ---发放</h4>
                                 </div>
-                                <form action="/admin/coupons/${coupon.id}/grant" role="form"
+                                <form action="/admin/system_coupons/${coupon.id}/grant" role="form"
                                       class="form-horizontal" method="post">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                     <div class="modal-body">

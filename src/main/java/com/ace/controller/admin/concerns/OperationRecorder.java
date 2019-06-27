@@ -33,7 +33,7 @@ public class OperationRecorder {
     static final Map<String, String> controllers = Stream.of(
             new SimpleEntry<>("RoomsController", "会议室管理"),
             new SimpleEntry<>("ClosedController", "时间管理"),
-            new SimpleEntry<>("CouponsController", "优惠券管理"),
+            new SimpleEntry<>("SystemCouponsController", "优惠券管理"),
             new SimpleEntry<>("InvoicesController", "发票管理"),
             new SimpleEntry<>("MemberCouponsController", "用户优惠券管理"),
             new SimpleEntry<>("OrdersController", "订单管理"),

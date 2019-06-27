@@ -70,13 +70,21 @@
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right">使用周数</label>
                         <div class="col-sm-10">
-                            <@spring.formMultiSelect "coupon.limitWday",weeks,"class='multiselect col-xs-10 col-sm-9'"/>
+                            <select id="limitWday" name="limitWday" class="multiselect" multiple>
+                                <#list weeks as id,name>
+                                    <option value="${id}" ${coupon.limitWday?seq_contains(name)?string('selected="selected"', '')}>${name}</option>
+                                </#list>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right">可使用场地</label>
                         <div class="col-sm-10">
-                            <@spring.formMultiSelect "coupon.limitRoom",rooms,"class='multiselect col-xs-10 col-sm-9'"/>
+                            <select id="limitRoom" name="limitRoom" class="multiselect" multiple>
+                                <#list rooms as id,name>
+                                    <option value="${id}" ${coupon.limitRoom?seq_contains(id)?string('selected="selected"', '')}>${name}</option>
+                                </#list>
+                            </select>
                         </div>
                     </div>
                 </div>
