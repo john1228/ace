@@ -111,6 +111,7 @@ public class RoomsController extends BaseController {
         model.addAttribute("room", room);
         model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
         model.addAttribute("supports", supportService.supportList(staff));
+        model.addAttribute("has_supports", room.getSupportList().stream().mapToLong(support -> support.getId()));
         return viewPath + "edit";
     }
 

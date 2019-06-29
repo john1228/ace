@@ -308,10 +308,10 @@
                                for="form-field-1"><span style="color: red">*</span>最短续租时间</label>
                         <div class="col-sm-10">
                             <div class="input-group col-xs-10 col-sm-9">
-                                <@spring.formInput "room.renew" "class='form-control'"/>
+                                <@spring.formInput "room.renew" "class='form-control' 'number'"/>
                                 <span class="input-group-btn">
                                    <button class="btn btn-sm btn-default" type="button">
-                                        小时
+                                        半小时
                                     </button>
                                 </span>
                             </div>
@@ -533,25 +533,55 @@
                                 </thead>
                                 <tbody>
                                 <#list supports as support>
-                                <tr>
-                                    <td class="center">
-                                        <input type="checkbox" name="supportList[${support_index}].supportId"
-                                               value="${support.id}"
-                                               class="spItem"/>
-                                    </td>
-                                    <td class="center">${support.name}</td>
-                                    <td class="center">
-                                        <img src="${image + '/'+ support.cover}" class="img-50"/>
-                                    </td>
-                                    <td class="center">
-                                        <input name="supportList[${support_index}].remark"
-                                               class="col-xs-12 col-sm-12">
-                                    </td>
-                                    <td class="center">
-                                        <input name="supportList[${support_index}].price"
-                                               class="col-xs-12 col-sm-12">
-                                    </td>
-                                </tr>
+                                    <#assign hasSupport = true>
+                                    <#list room.supportList as roomSupport>
+                                        <#if support.id == roomSupport.supportId>
+                                            <#assign hasSupport = roomSupport>
+                                        </#if>
+                                    </#list>
+                                    <#if hasSupport==true>
+                                        <tr>
+                                            <td class="center">
+                                                <input type="checkbox" name="supportList[${support_index}].supportId"
+                                                       value="${support.id}"
+                                                       class="spItem"/>
+                                            </td>
+                                            <td class="center">${support.name}</td>
+                                            <td class="center">
+                                                <img src="${image + '/'+ support.cover}" class="img-50"/>
+                                            </td>
+                                            <td class="center">
+                                                <input name="supportList[${support_index}].remark"
+                                                       class="col-xs-12 col-sm-12">
+                                            </td>
+                                            <td class="center">
+                                                <input name="supportList[${support_index}].price"
+                                                       class="col-xs-12 col-sm-12">
+                                            </td>
+                                        </tr>
+                                    <#else >
+                                        <tr>
+                                            <td class="center">
+                                                <input type="checkbox" name="supportList[${support_index}].supportId"
+                                                       value="${support.id}"
+                                                       class="spItem" checked="checked"/>
+                                            </td>
+                                            <td class="center">${support.name}</td>
+                                            <td class="center">
+                                                <img src="${image + '/'+ support.cover}" class="img-50"/>
+                                            </td>
+                                            <td class="center">
+                                                <input name="supportList[${support_index}].remark"
+                                                       value="${hasSupport.remark!}"
+                                                       class="col-xs-12 col-sm-12">
+                                            </td>
+                                            <td class="center">
+                                                <input name="supportList[${support_index}].price"
+                                                       value="${hasSupport.price!}"
+                                                       class="col-xs-12 col-sm-12">
+                                            </td>
+                                        </tr>
+                                    </#if>
                                 </#list>
                                 </tbody>
                             </table>

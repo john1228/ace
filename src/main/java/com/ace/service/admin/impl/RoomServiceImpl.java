@@ -77,6 +77,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void update(Staff staff, Room room) {
         roomMapper.update(room);
+        roomSupportMapper.removeList(room.getId());
         List<RoomSupport> selectedSupport = room.getSupportList().stream().filter(item -> item.getSupportId() != null).collect(Collectors.toList());
         if (selectedSupport.size() > 0) {
             selectedSupport.forEach(item -> item.setRoomId(room.getId()));

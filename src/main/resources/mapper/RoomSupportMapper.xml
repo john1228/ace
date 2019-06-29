@@ -11,6 +11,7 @@
 
     <select id="supportList" resultType="com.ace.entity.RoomSupport">
         SELECT bb_rooms_supports.id,
+               bb_rooms_supports.support_id                                                   as supportId,
                bb_supports.name                                                               as name,
                CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/', bb_supports.cover) AS cover,
                bb_supports.unit                                                               as unit,
@@ -19,4 +20,10 @@
                  LEFT JOIN bb_rooms_supports ON bb_rooms_supports.support_id = bb_supports.id
         WHERE bb_rooms_supports.room_id = #{room}
     </select>
+
+    <delete id="removeList">
+        DELETE
+        FROM bb_rooms_supports
+        WHERE room_id = #{room}
+    </delete>
 </mapper>

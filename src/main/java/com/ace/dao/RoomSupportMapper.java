@@ -10,4 +10,6 @@ public interface RoomSupportMapper {
     void create(@Param("supports") List<RoomSupport> supports);
 
     List<RoomSupport> supportList(@Param("room") Long room);
+
+    void removeList(@Param("room") Long room);
 }
