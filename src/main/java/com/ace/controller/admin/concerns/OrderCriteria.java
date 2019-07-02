@@ -3,6 +3,7 @@ package com.ace.controller.admin.concerns;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -12,8 +13,10 @@ import java.sql.Date;
 @Getter
 @Setter
 public class OrderCriteria extends Criteria {
-    private String no;
+    private String keyword;
+    private BigDecimal total;
+    private BigDecimal payAmount;
     private Date from;
     private Date to;
-    private String mobile;
+    private String projectName;
 }

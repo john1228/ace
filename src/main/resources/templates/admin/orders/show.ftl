@@ -122,15 +122,24 @@
                                 <div class="attribute-table-label">预约时间</div>
                                 <div class="attribute-table-value">
                                     ${order.appointment.startTime?string("yyyy-MM-dd HH:mm")}
-                                    - ${order.appointment.startTime?string("HH:mm")}
+                                    - ${order.appointment.endTime?string("HH:mm")}
                                 </div>
                             </div>
                             <div class="attribute-table-row">
                                 <div class="attribute-table-label">选择服务</div>
                                 <div class="attribute-table-value">
-                                    <#list order.appointment.service as service>
-                                        ${service.name}
-                                    </#list>
+                                    <div class="media search-media">
+                                        <#list order.appointment.service as service>
+                                            <div class="media-body">
+                                                <div>${service.name}</div>
+                                                <div class="search-actions text-center">
+                                                    <span class="text-info">￥</span>
+                                                    <span class="blue bolder bigger-150">${service.price}</span>
+                                                    x${service.amount}${service.unit}
+                                                </div>
+                                            </div>
+                                        </#list>
+                                    </div>
                                 </div>
                             </div>
                             <div class="attribute-table-row">

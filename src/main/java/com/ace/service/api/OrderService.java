@@ -6,6 +6,7 @@ import com.ace.entity.Order;
 import com.ace.entity.Receipt;
 import com.ace.entity.concern.enums.OrderStatus;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
@@ -23,4 +24,6 @@ public interface OrderService {
     void cancel(String orderNo);
 
     void paying(Receipt receipt, String payType);
+
+    BigDecimal check(String orderNo);
 }

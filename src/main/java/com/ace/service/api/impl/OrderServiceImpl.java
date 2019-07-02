@@ -14,6 +14,8 @@ import com.ace.service.concerns.RoomTools;
 import com.ace.util.AlipayBuilder;
 import com.ace.util.wxpay.WxpayBuilder;
 import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +30,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Service("api_order_service")
-@Log4j2
 public class OrderServiceImpl extends BaseService implements OrderService {
+    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     @Resource
     private RoomMapper roomMapper;
     @Resource
@@ -98,7 +100,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 //计算总价
                 BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
                 order.setTotal(total);
-                log.info("房间价格:" + order.getTotal());
+                logger.info("房间价格:" + order.getTotal());
                 //校验优惠券
                 if (couponId != 0) {
                     Date date = new Date(System.currentTimeMillis());
@@ -130,10 +132,10 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                     account.setErrMsg(errMsg.toString());
                     return null;
                 }
-                log.info("服务费用:" + supportFee);
+                logger.info("服务费用:" + supportFee);
                 order.setTotal(order.getTotal().add(supportFee));
                 order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
-
+                logger.info("订单金额:" + order.getTotal() + ";实付金额:" + order.getPayAmount());
                 if (order.getPayAmount().compareTo(new BigDecimal(0)) == 0) {
                     switch (room.getCfm()) {
                         case AUTO:
@@ -257,6 +259,39 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             case CONFIRM2PAID:
                 orderMapper.defray(order.getOrderNo(), OrderStatus.PAIDANDCONFIRM, payType);
                 break;
+        }
+    }
+
+    @Override
+    public BigDecimal check(String orderNo) {
+        Order order = orderMapper.findByOrderNo(orderNo);
+        Appointment appointment = order.getAppointment();
+        Room room = roomMapper.findById(appointment.getRoomId());
+        SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
+        Date appointedDate = new Date(appointment.getStartTime().getTime());
+        Week week = Week.valueOf(wf.format(appointedDate).toUpperCase());
+        //价格计算
+        List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
+        try {
+            //计算总价
+            BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
+            order.setTotal(total);
+            logger.info("房间价格:" + order.getTotal());
+            //计算服务费用
+            List<RoomSupport> roomSupports = rsMapper.supportList(room.getId());
+            StringBuilder errMsg = new StringBuilder();
+            List<OrderSupport> supports = orderSupportMapper.supportList(order.getId());
+            logger.info("服务数量:" + supports.size());
+            BigDecimal supportFee = orderTools.cacl(supports, roomSupports, errMsg);
+            if (errMsg.length() != 0) {
+                return null;
+            } else {
+                logger.info("计算服务失败" + supportFee.toString());
+            }
+            logger.info("服务费用:" + supportFee);
+            return order.getTotal();
+        } catch (Exception e) {
+            return new BigDecimal("-1");
         }
     }
 

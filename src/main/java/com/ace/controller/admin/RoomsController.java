@@ -6,14 +6,17 @@ import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.RoomCriteria;
 import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
+import com.ace.entity.RoomSupport;
 import com.ace.entity.Staff;
 import com.ace.entity.Room;
+import com.ace.entity.Support;
 import com.ace.service.admin.RoomService;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
 import com.ace.util.StringUtils;
 import com.ace.util.remote.DataUtils;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,11 +29,15 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping("/admin/rooms")
+@Log4j2
 public class RoomsController extends BaseController {
     static String viewPath = "/admin/rooms/";
     @Resource
@@ -54,9 +61,12 @@ public class RoomsController extends BaseController {
 
     @GetMapping("/new")
     public String add(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
-        model.addAttribute("room", new Room());
+        Room room = new Room();
+        List<Support> supports = supportService.supportList(staff);
+        List<RoomSupport> roomSupports = supports.stream().map(Support::toRoomSupport).collect(Collectors.toList());
+        model.addAttribute("room", room);
+        model.addAttribute("supports", roomSupports);
         model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
-        model.addAttribute("supports", supportService.supportList(staff));
         return viewPath + "new";
     }
 
@@ -66,7 +76,7 @@ public class RoomsController extends BaseController {
     public String create(
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
             @RequestParam("coverFile") MultipartFile avatar,
-            @RequestParam("imageFiles") MultipartFile[] image,
+            @RequestParam("img[]") MultipartFile[] image,
             @Valid Room room,
             BindingResult result,
             Model model
@@ -108,10 +118,10 @@ public class RoomsController extends BaseController {
     @GetMapping("/{id}/edit")
     public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id, Model model) {
         Room room = roomService.findById(id);
+        List<Support> supports = supportService.supportList(staff);
         model.addAttribute("room", room);
+        model.addAttribute("supports", buildSupport(supports, room));
         model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
-        model.addAttribute("supports", supportService.supportList(staff));
-        model.addAttribute("has_supports", room.getSupportList().stream().mapToLong(support -> support.getId()));
         return viewPath + "edit";
     }
 
@@ -121,10 +131,12 @@ public class RoomsController extends BaseController {
             @SessionAttribute(CURRENT_OPERATOR) Staff staff,
             @PathVariable("id") Long id,
             @RequestParam("coverFile") MultipartFile cover,
-            @RequestParam("imageFiles") MultipartFile[] image,
+            @RequestParam("img[]") MultipartFile[] image,
+            @RequestParam("remove") List<String> removeList,
             @Valid Room room, BindingResult result,
             Model model
     ) {
+        Room old = roomService.findById(id);
         if (!cover.isEmpty()) {
             try {
                 room.setCover(Aliyun.Instance.upload(cover));
@@ -133,24 +145,27 @@ public class RoomsController extends BaseController {
             }
         }
         try {
-            boolean changed = false;
-            List<String> imageList = new ArrayList<>();
+            //图片处理
+            List<String> imgList = new ArrayList<>(old.getImage());
+            for (String idx : removeList) {
+                imgList.remove(Integer.parseInt(idx));
+            }
             for (MultipartFile tmp : image) {
                 if (!tmp.isEmpty()) {
-                    changed = true;
-                    imageList.add(Aliyun.Instance.upload(tmp));
+                    String imgPath = Aliyun.Instance.upload(tmp);
+                    imgList.add(imgPath);
                 }
             }
-            if (changed)
-                room.setImage(imageList);
+            room.setImage(imgList);
         } catch (Exception exp) {
             result.addError(new FieldError("会议室", "图片", "更新场地图失败"));
         }
         if (result.hasErrors()) {
+            List<Support> supports = supportService.supportList(staff);
             model.addAttribute("room", room);
             model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
-            model.addAttribute("supports", supportService.supportList(staff));
+            model.addAttribute("supports", buildSupport(supports, old));
             return viewPath + "edit";
         } else {
             roomService.update(staff, room);
@@ -180,5 +195,16 @@ public class RoomsController extends BaseController {
     @PostMapping("/supportList")
     public Result supports(@RequestParam("roomId") Long roomId) {
         return new Success(roomService.roomSupports(roomId));
+    }
+
+    private List<RoomSupport> buildSupport(List<Support> supports, Room room) {
+        return supports.stream().map(support -> {
+            Optional<RoomSupport> roomSupport = room.getSupportList().stream().filter(rs -> rs.getSupportId() == support.getId()).findFirst();
+            if (roomSupport.isPresent()) {
+                return roomSupport.get();
+            } else {
+                return support.toRoomSupport();
+            }
+        }).collect(Collectors.toList());
     }
 }

@@ -158,7 +158,6 @@
                               quota,
                               price,
                               free,
-                              free_org,
                               open_date,
                               close_date,
                               unit,

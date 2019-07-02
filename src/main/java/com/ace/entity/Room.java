@@ -32,7 +32,7 @@ public class Room extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private String cover;
     @JsonView(ApiView.Detail.class)
-    private List<String> image;
+    private List<String> image = new ArrayList<>();
     @NotEmpty(message = "场地编号不能为空")
     @JsonView(AdminView.Table.class)
     private String serialNo;

@@ -82,10 +82,12 @@
                             url: "/admin/orders/dataList",
                             type: "POST",
                             data: function (data) {
-                                data.no = $("#no").val();
+                                data.keyword = $("#mobile").val()
+                                data.total = $("#total").val();
+                                data.payAmount = $("#payAmount").val();
                                 data.from = $("#from").val();
                                 data.to = $("#to").val();
-                                data.mobile = $("#mobile").val()
+                                data.projectName = $("#project").val();
                             }
                         },
                         dom: 'Bfltip',

@@ -13,6 +13,7 @@
 
     <select id="supportList" resultType="com.ace.entity.OrderSupport">
         SELECT id,
+               support_id     AS supportId,
                support_name   AS name,
                support_cover  AS cover,
                support_unit   AS unit,

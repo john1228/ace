@@ -2357,6 +2357,7 @@
             return self._isFileSelectionValid() && !self._abort({});
         },
         _clearPreview: function () {
+            console.log("清除预览");
             var self = this, $p = self.$preview,
                 $thumbs = self.showUploadedThumbs ? self.getFrames(':not(.file-preview-success)') : self.getFrames();
             $thumbs.each(function () {
@@ -3074,6 +3075,7 @@
                 var $thumb = $(this), $preview = self.$preview, $remove = $thumb.find('.kv-file-remove');
                 $remove.removeAttr('disabled');
                 self._handler($remove, 'click', function () {
+                    console.log("处理");
                     var id = $thumb.attr('id'),
                         out = self._raise('filesuccessremove', [id, $thumb.attr('data-fileindex')]);
                     $h.cleanMemory($thumb);
@@ -4255,7 +4257,9 @@
             $h.addCss($zone, 'clickable');
             $zone.attr('tabindex', -1);
             self._handler($zone, 'click', function (e) {
+                e.stopPropagation();
                 self.$element.data('zoneClicked', true).trigger('click');
+                console.log(self.$element);
                 $zone.blur();
             });
         },

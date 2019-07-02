@@ -1,32 +1,27 @@
 package com.ace.controller;
 
 
-import com.ace.util.RequestType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import com.ace.service.api.OrderService;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Resource;
+import java.math.BigDecimal;
 
 
-@Controller
-@RequestMapping("/")
+@RestController
+@RequestMapping("/check")
 public class IndexController {
-	
-	@RequestMapping("/")
-	public String index(Model model){
-		return "index";
-	}
 
-	@RequestMapping("/test.json")
-	public @ResponseBody Map<String,Object> test(RequestType type, Model model){
-		Map<String,Object> returnMap = new HashMap<String,Object>();
-		System.out.println("type: " + type);
-//		System.out.println("is GET?: " + type.equals(RequestType.GET));
-		returnMap.put("type",type);
-		return returnMap;
-	}
-	
+    @Resource
+    private OrderService orderService;
+
+    @RequestMapping("/{order}")
+    @ResponseBody
+    public BigDecimal index(@PathVariable("order") String order) {
+        return orderService.check(order);
+    }
+
 }

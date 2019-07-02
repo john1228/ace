@@ -3,6 +3,7 @@ package com.ace.entity;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.api.concerns.ApiView;
 import com.ace.entity.concern.Base;
+import com.ace.util.Aliyun;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
 
@@ -26,4 +27,12 @@ public class Support extends Base {
     private boolean online;
     private Date createdAt;
     private Date updatedAt;
+
+    public RoomSupport toRoomSupport() {
+        RoomSupport roomSupport = new RoomSupport();
+        roomSupport.setSupportId(id);
+        roomSupport.setName(name);
+        roomSupport.setCover(Aliyun.Instance.imgHost + cover);
+        return roomSupport;
+    }
 }

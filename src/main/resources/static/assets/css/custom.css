@@ -100,6 +100,8 @@ legend.fixed-border {
     border: none;
     box-shadow: none;
     text-align: center;
+    width: 227px;
+    height: 227px;
 }
 
 .avatar {
@@ -108,7 +110,32 @@ legend.fixed-border {
 
 .avatar .file-input {
     display: table-cell;
-    width: 213px;
+    width: 227px;
+    height: 227px;
+}
+
+.avatar > .file-input > .file-preview {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 5px;
+}
+
+.avatar > .file-input > .file-preview > .file-drop-zone {
+    border: 1px dashed #aaa;
+    border-radius: 4px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.avatar > .file-input > .file-preview > .file-drop-zone > .file-preview-thumbnails {
+    width: 100%;
+    height: 100%;
 }
 
 .form-radio-group {

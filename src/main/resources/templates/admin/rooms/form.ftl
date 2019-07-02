@@ -33,16 +33,23 @@
                                 language: 'zh',
                                 overwriteInitial: true,
                                 maxFileSize: 1500,
+                                showUpload: false,
+                                showRemove: false,
                                 showClose: false,
                                 showCaption: false,
                                 showCancel: false,
                                 showBrowse: false,
                                 <#if room.cover??>
                                     browseOnZoneClick: true,
-                                    allowedFileExtensions: ["jpg", "png"],
+                                    allowedFileExtensions: ["jpg", "png", "jpeg"],
                                     initialPreview: ["${image + room.cover}"],
                                     initialPreviewAsData: true,
-                                    initialPreviewFileType: 'image'
+                                    initialPreviewFileType: 'image',
+                                    initialPreviewShowDelete: false,
+                                    layoutTemplates: {
+                                        actions: ""
+                                    }
+
                                 <#else>
                                     browseOnZoneClick: true
                                 </#if>
@@ -52,35 +59,126 @@
                     <div class="form-group row">
                         <div class="col-sm-2 control-label no-padding-right">场地图片</div>
                         <div class="col-sm-10">
-                            <div class="file-loading">
-                                <input id="image" name="imageFiles" type="file" multiple>
+                            <input name="remove" id="remove" type="hidden">
+                            <input name="change" id="change" type="hidden">
+                            <div class="avatar">
+                                <div class="file-loading">
+                                    <input id="img1" name="img[]" type="file" data-id="0">
+                                </div>
                             </div>
-                        </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                $("#image").fileinput({
+                            <div class="avatar">
+                                <div class="file-loading">
+                                    <input id="img2" name="img[]" type="file" data-id="1">
+                                </div>
+                            </div>
+                            <div class="avatar">
+                                <div class="file-loading">
+                                    <input id="img3" name="img[]" type="file" data-id="2">
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                $("#img1").fileinput({
                                     language: 'zh',
                                     overwriteInitial: true,
                                     maxFileSize: 1500,
+                                    showUpload: false,
+                                    showRemove: false,
                                     showClose: false,
                                     showCaption: false,
+                                    showCancel: false,
                                     showBrowse: false,
-                                    <#if room.image??>
-                                        browseOnZoneClick: true,
-                                        allowedFileExtensions: ["jpg", "png"],
-                                        initialPreview: [
-                                            <#list room.image as img>
-                                                "${image + room.cover}",
-                                            </#list>
-                                        ],
-                                        initialPreviewAsData: true,
-                                        initialPreviewFileType: 'image'
+                                    <#if room.image[0]??>
+                                    browseOnZoneClick: true,
+                                    allowedFileExtensions: ["jpg", "png", "jpeg"],
+                                    initialPreview: ["${image + room.image[0]}"],
+                                    initialPreviewAsData: true,
+                                    initialPreviewFileType: 'image',
+                                    layoutTemplates: {
+                                        actions: "<div class=\"file-actions\">" +
+                                                "<div class=\"file-footer-buttons\">" +
+                                                " <button type=\"button\" class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"删除文件\" data-url=\"\" data-key=\"\"><i class=\"glyphicon glyphicon-trash\"></i></button>\n" +
+                                                "</div>" +
+                                                "</div>"
+                                    }
                                     <#else>
-                                        browseOnZoneClick: true
+                                    browseOnZoneClick: true
                                     </#if>
                                 });
-                            })
-                        </script>
+                                $('#img1').on('filedeleted', function (event, key, jqXHR, data) {
+                                    console.log("图片1删除");
+                                });
+                                $("#img2").fileinput({
+                                    language: 'zh',
+                                    overwriteInitial: true,
+                                    maxFileSize: 1500,
+                                    showUpload: false,
+                                    showRemove: false,
+                                    showClose: false,
+                                    showCaption: false,
+                                    showCancel: false,
+                                    showBrowse: false,
+                                    <#if room.image[1]??>
+                                    browseOnZoneClick: true,
+                                    allowedFileExtensions: ["jpg", "png", "jpeg"],
+                                    initialPreview: ["${image + room.image[1]}"],
+                                    initialPreviewAsData: true,
+                                    initialPreviewFileType: 'image',
+                                    layoutTemplates: {
+                                        actions: "<div class=\"file-actions\">" +
+                                                "<div class=\"file-footer-buttons\">" +
+                                                " <button type=\"button\" class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"删除文件\" data-url=\"\" data-key=\"\"><i class=\"glyphicon glyphicon-trash\"></i></button>\n" +
+                                                "</div>" +
+                                                "</div>"
+                                    }
+                                    <#else>
+                                    browseOnZoneClick: true
+                                    </#if>
+                                });
+                                $("#img3").fileinput({
+                                    language: 'zh',
+                                    overwriteInitial: true,
+                                    maxFileSize: 1500,
+                                    showUpload: false,
+                                    showRemove: false,
+                                    showClose: false,
+                                    showCaption: false,
+                                    showCancel: false,
+                                    showBrowse: false,
+                                    <#if room.image[2]??>
+                                    browseOnZoneClick: true,
+                                    allowedFileExtensions: ["jpg", "png", "jpeg"],
+                                    initialPreview: ["${image + room.image[2]}"],
+                                    initialPreviewAsData: true,
+                                    initialPreviewFileType: 'image',
+                                    layoutTemplates: {
+                                        actions: "<div class=\"file-actions\">" +
+                                                "<div class=\"file-footer-buttons\">" +
+                                                " <button type=\"button\" class=\"kv-file-remove btn btn-sm btn-kv btn-default btn-outline-secondary\" title=\"删除文件\" data-url=\"\" data-key=\"\"><i class=\"glyphicon glyphicon-trash\"></i></button>\n" +
+                                                "</div>" +
+                                                "</div>"
+                                    }
+                                    <#else>
+                                    browseOnZoneClick: true
+                                    </#if>
+                                });
+                                $(function () {
+                                    $(".kv-file-remove").on("click", function (e) {
+                                        var preview = $(this).parent().parent().parent().parent().parent();
+                                        var container = preview.parent().parent().parent().find("input");
+                                        var rmv = $("#remove");
+                                        if (rmv.val() == 0) {
+                                            $("#remove").val(container.data("id"))
+                                        } else {
+                                            $("#remove").val($("#remove").val() + "," + container.data("id"))
+                                        }
+                                        preview.empty();
+                                        preview.attr("tabindex", "-1");
+                                        preview.append("<div class='file-drop-zone-title'>拖拽文件到这里 …<br>(或点击文件按钮选择文件)</div>");
+                                        e.stopPropagation();
+                                    })
+                                })
+                            </script>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -206,7 +304,7 @@
                     <@spring.formInput "room.quota" "class='form-control' required" "number"/>
                         <span class="input-group-btn">
                            <button class="btn btn-sm btn-default" type="button">
-                                m²
+                                人
                             </button>
                         </span>
                     </div>
@@ -533,55 +631,41 @@
                                 </thead>
                                 <tbody>
                                 <#list supports as support>
-                                    <#assign hasSupport = true>
-                                    <#list room.supportList as roomSupport>
-                                        <#if support.id == roomSupport.supportId>
-                                            <#assign hasSupport = roomSupport>
-                                        </#if>
-                                    </#list>
-                                    <#if hasSupport==true>
-                                        <tr>
-                                            <td class="center">
-                                                <input type="checkbox" name="supportList[${support_index}].supportId"
-                                                       value="${support.id}"
-                                                       class="spItem"/>
-                                            </td>
-                                            <td class="center">${support.name}</td>
-                                            <td class="center">
-                                                <img src="${image + '/'+ support.cover}" class="img-50"/>
-                                            </td>
-                                            <td class="center">
-                                                <input name="supportList[${support_index}].remark"
-                                                       class="col-xs-12 col-sm-12">
-                                            </td>
-                                            <td class="center">
-                                                <input name="supportList[${support_index}].price"
-                                                       class="col-xs-12 col-sm-12">
-                                            </td>
-                                        </tr>
-                                    <#else >
-                                        <tr>
-                                            <td class="center">
-                                                <input type="checkbox" name="supportList[${support_index}].supportId"
-                                                       value="${support.id}"
-                                                       class="spItem" checked="checked"/>
-                                            </td>
-                                            <td class="center">${support.name}</td>
-                                            <td class="center">
-                                                <img src="${image + '/'+ support.cover}" class="img-50"/>
-                                            </td>
-                                            <td class="center">
-                                                <input name="supportList[${support_index}].remark"
-                                                       value="${hasSupport.remark!}"
-                                                       class="col-xs-12 col-sm-12">
-                                            </td>
-                                            <td class="center">
-                                                <input name="supportList[${support_index}].price"
-                                                       value="${hasSupport.price!}"
-                                                       class="col-xs-12 col-sm-12">
-                                            </td>
-                                        </tr>
+                                <tr>
+                                    <#if support.id??>
+                                      <td class="center">
+                                          <input type="checkbox" name="supportList[${support_index}].supportId"
+                                                 value="${support.supportId}"
+                                                 class="spItem" checked="checked"/>
+                                      </td>
+                                    <#else>
+                                      <td class="center">
+                                          <input type="checkbox" name="supportList[${support_index}].supportId"
+                                                 value="${support.supportId}"
+                                                 class="spItem"/>
+                                      </td>
                                     </#if>
+                                    <td class="center">${support.name}</td>
+                                    <td class="center">
+                                        <img src="${support.cover}" class="img-50"/>
+                                    </td>
+                                    <td class="center">
+                                        <input name="supportList[${support_index}].remark"
+                                               class="col-xs-12 col-sm-12" value="${support.remark!}">
+                                    </td>
+                                    <td class="center">
+                                        <div class="input-group">
+                                            <input name="supportList[${support_index}].price"
+                                                   class="form-control" value="${support.price!}">
+                                            <span class="input-group-btn">
+                                               <button class="btn btn-sm btn-default" type="button">
+                                                    元
+                                               </button>
+                                            </span>
+                                        </div>
+
+                                    </td>
+                                </tr>
                                 </#list>
                                 </tbody>
                             </table>
@@ -625,9 +709,9 @@
     $(function () {
         var isFree = $("input[name='free']:checked").val();
         if (isFree) {
-            $("#freeOrgContainer").hide();
-        } else {
             $("#freeOrgContainer").show();
+        } else {
+            $("#freeOrgContainer").hide();
         }
         $('.multiselect').multiselect({
             nonSelectedText: "请选择",
@@ -647,11 +731,10 @@
             }
         });
         $("input[name='free']").on("change", function () {
-            console.log("选择改变::" + $(this).val());
             if ($(this).val() === 'true') {
-                $("#freeOrgContainer").show();
-            } else {
                 $("#freeOrgContainer").hide();
+            } else {
+                $("#freeOrgContainer").show();
             }
         });
     })
