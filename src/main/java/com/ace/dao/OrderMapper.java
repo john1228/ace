@@ -24,11 +24,14 @@ public interface OrderMapper {
     void update(@Param("orderNo") String orderNo, @Param("status") OrderStatus status);
 
     //用户订单
-    List<Order> customerOrder(@Param("account") Account account, @Param("status") OrderStatus status, @Param("page") int page, @Param("length") int length);
+    List<Order> customerOrder(@Param("account") Account account, @Param("statuses") List<OrderStatus> status, @Param("page") int page, @Param("length") int length);
 
     //供应商订单
     List<Order> supplierOrder(@Param("account") Account account, @Param("status") String status, @Param("page") int page, @Param("length") int length);
 
     //订单付款
     void defray(@Param("id") String orderNo, @Param("status") OrderStatus status, @Param("payType") String payType);
+
+    //订单确认试用
+    void using();
 }

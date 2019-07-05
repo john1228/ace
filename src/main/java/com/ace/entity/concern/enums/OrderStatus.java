@@ -8,7 +8,7 @@ package com.ace.entity.concern.enums;
 
 public enum OrderStatus {
     CANCELED(-1, "已取消"), UNPAID2CONFIRM(0, "未付款未确认"), CONFIRM2PAID(1, "已确认未付款"),
-    PAID2CONFIRM(2, "已付款未确认"), PAIDANDCONFIRM(3, "已付款已确认"), REFUNDED(4, "已退款");
+    PAID2CONFIRM(2, "已付款未确认"), PAIDANDCONFIRM(3, "已付款已确认"), COMPLETE(4, "已完成"), REFUNDED(5, "已退款");
 
     private final int code;
     private String name;

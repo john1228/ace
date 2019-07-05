@@ -14,7 +14,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +65,9 @@ public class Room extends Base {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date closeDate;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
+    @NotNull(message = "最短起租时间不能为空")
     private Integer unit;
+    @NotBlank(message = "最短续租时间不能为空")
     private String renew;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private RoomRental rental = RoomRental.HOUR;

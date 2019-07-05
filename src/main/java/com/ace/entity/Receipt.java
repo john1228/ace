@@ -1,27 +1,33 @@
 package com.ace.entity;
 
 
-import com.alipay.api.internal.mapping.ApiField;
+import com.ace.annotation.ParameterName;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 @Setter
 @Getter
+@NoArgsConstructor
 public class Receipt {
     private Integer id;
-    @ApiField("trade_no")
     private String no;
-    @ApiField("out_trade_no")
     private String orderNo;
-    @ApiField("seller_id")
     private String seller;
-    @ApiField("buyer_id")
     private String buyer;
-    @ApiField("total_amount")
     private BigDecimal price;
     private Date createdAt;
     private Date updatedAt;
+
+    public Receipt(Map<String, String> params) {
+        this.no = params.get("trade_no");
+        this.orderNo = params.get("out_trade_no");
+        this.seller = params.get("seller_id");
+        this.buyer = params.get("buyer_id");
+        this.price = new BigDecimal(params.get("total_amount"));
+    }
 }

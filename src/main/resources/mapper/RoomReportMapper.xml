@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.handler.RoomReportMapper">
+
+    <select id="roomList" resultType="com.ace.entity.Room">
+        SELECT id, name
+        FROM ace.bb_rooms
+    </select>
+
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO bb_room_reports
+        (report_date,room_id,room_name,online,offline,order_amount,room_amount,rented_amount,idle_amount)
+        VALUES
+        <foreach collection="reports" item="report" separator=",">
+            (CURDATE(),#{report.roomId},
+            #{report.roomName},#{report.online},#{report.offline},#{report.orderAmount},1,#{report.rentedAmount},#{report.idleAmount})
+        </foreach>
+    </insert>
+
+
+    <select id="reports" resultType="com.ace.entity.RoomReport">
+        SELECT bb_room_reports.room_id,
+        bb_room_reports.room_name,
+        SUM(bb_room_reports.online) AS online,
+        SUM(bb_room_reports.offline) AS offline,
+        SUM(bb_room_reports.order_amount) AS orderAmount,
+        1 AS roomAmount,
+        SUM(bb_room_reports.rented_amount) AS rentedAmount,
+        SUM(bb_room_reports.idle_amount) AS idleAmount
+        FROM bb_room_reports LEFT JOIN bb_rooms ON bb_rooms.id = bb_room_reports.room_id
+        WHERE bb_rooms.project_id IN
+        <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.projectId}
+        </foreach>
+        AND report_date >= #{from}
+        AND #{to} > report_date
+        GROUP BY room_id
+    </select>
+
+    <select id="online" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(bbo.total) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status = 3
+          AND bbo.account_id != "0"
+          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        GROUP BY room_id
+    </select>
+
+    <select id="offline" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(bbo.total) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status = 3
+          AND bbo.account_id = "0"
+          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        GROUP BY room_id
+    </select>
+
+    <select id="orderAmt" resultType="java.util.HashMap">
+        SELECT room_id as id, count(1) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status = 3
+          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        GROUP BY room_id
+    </select>
+
+    <select id="appointedAmt" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(TIMESTAMPDIFF(MINUTE, bboa.start_time, bboa.end_time)) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status = 3
+          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        GROUP BY room_id
+    </select>
+</mapper>

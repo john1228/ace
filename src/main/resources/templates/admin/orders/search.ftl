@@ -3,9 +3,9 @@
 </h4>
 <div class="col-xs-12 col-sm-8 form-horizontal">
     <div class="col-xs-12 col-sm-12 form-group">
-        <div class="col-xs-12 col-sm-6">
-            <label class="col-sm-2 control-label no-padding-right text-right">订单号/手机号/姓名</label>
-            <div class="col-sm-10">
+        <div class="col-xs-12 col-sm-8">
+            <label class="col-sm-4 control-label no-padding-right text-right">订单号/手机号/姓名</label>
+            <div class="col-sm-8">
                 <input class="form-control col-xs-10 col-sm-9" id="mobile"/>
             </div>
         </div>

@@ -100,11 +100,20 @@
             LIMIT #{start},#{length}
         </if>
     </select>
-    <!--筛选用户下的管理的所有会议室，用于筛选-->
+    <!--筛选员工下的管理的所有会议室，用于筛选-->
     <select id="roomList" resultType="com.ace.entity.Room">
         SELECT bb_rooms.id, bb_rooms.name
         FROM bb_rooms
         WHERE project_id = #{staff.projectId}
+    </select>
+    <!--筛选账户下的管理的所有会议室，用于筛选-->
+    <select id="accountRooms" resultType="com.ace.entity.Room">
+        SELECT bb_rooms.id, bb_rooms.name
+        FROM bb_rooms
+        WHERE project_id IN
+        <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
+            #{staff.projectId}
+        </foreach>
     </select>
     <!--客户端查询会议室，包含自有和开放的-->
     <select id="query" resultType="com.ace.entity.Room">

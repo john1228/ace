@@ -1,10 +1,7 @@
 package com.ace.controller.api;
 
 import com.ace.annotation.Authorization;
-import com.ace.controller.api.concerns.ApiView;
-import com.ace.controller.api.concerns.Failure;
-import com.ace.controller.api.concerns.Result;
-import com.ace.controller.api.concerns.Success;
+import com.ace.controller.api.concerns.*;
 import com.ace.entity.Account;
 import com.ace.entity.Appointment;
 import com.ace.entity.Order;
@@ -13,6 +10,7 @@ import com.ace.service.api.OrderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -24,6 +22,7 @@ import javax.annotation.Resource;
 @Api(tags = "订单管理")
 @RestController("api_orders")
 @RequestMapping("/api/orders")
+@Log4j2
 public class OrdersController extends BaseController {
     @Resource
     OrderService orderService;
@@ -34,7 +33,7 @@ public class OrdersController extends BaseController {
     @ApiOperation(value = "查询订单")
     public Result index(
             @RequestAttribute("ACCOUNT") Account account,
-            @RequestParam(value = "list", defaultValue = "") OrderStatus status,
+            @RequestParam(value = "list", defaultValue = "") ListStatus status,
             @RequestParam(value = "page", defaultValue = "1") int page
     ) {
         return new Success(orderService.customerOrder(account, status, page));

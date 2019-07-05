@@ -14,6 +14,7 @@ import com.ace.service.api.OrderService;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -25,6 +26,7 @@ import javax.annotation.Resource;
 @Api(tags = "管理端-订单管理")
 @RestController("api_admin_orders")
 @RequestMapping("/api/admin/orders")
+@Log4j2
 public class OrdersController extends BaseController {
     @Resource
     OrderService orderService;

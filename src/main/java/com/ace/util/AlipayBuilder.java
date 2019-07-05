@@ -26,6 +26,7 @@ public enum AlipayBuilder {
     private final String notifyUrl = "http://mrp.baobanwang.com/callback/alipay";
 
 
+
     public String getPay(Alipay config, Order order) {
         try {
             AlipayClient client = new DefaultAlipayClient(gateway, config.getSeller(), config.getPrivateKey(), "json", "utf-8", config.getPublicKey(), signType);

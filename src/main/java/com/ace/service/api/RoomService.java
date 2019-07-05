@@ -3,6 +3,7 @@ package com.ace.service.api;
 import com.ace.controller.api.concerns.Query;
 import com.ace.entity.Account;
 import com.ace.entity.Room;
+import com.ace.entity.RoomReport;
 import com.ace.entity.Schedule;
 
 import java.sql.Date;

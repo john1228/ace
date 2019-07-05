@@ -1,8 +1,6 @@
 package com.ace.util.remote;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
-import lombok.*;
+
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,7 +13,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONObject;
 
-import javax.validation.constraints.NotNull;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;

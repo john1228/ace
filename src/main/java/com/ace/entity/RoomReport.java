@@ -18,6 +18,6 @@ public class RoomReport {
     private BigDecimal offline;
     private int orderAmount;
     private int roomAmount;
-    private int rentedAmount;
-    private int idleAmount;
+    private BigDecimal rentedAmount;
+    private BigDecimal idleAmount;
 }

@@ -2,10 +2,8 @@ package com.ace.controller;
 
 
 import com.ace.service.api.OrderService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import com.ace.service.concerns.JobTools;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -17,6 +15,8 @@ public class IndexController {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private JobTools jobTools;
 
     @RequestMapping("/{order}")
     @ResponseBody
@@ -24,4 +24,10 @@ public class IndexController {
         return orderService.check(order);
     }
 
+    @GetMapping("/{order}/cancel")
+    @ResponseBody
+    public String schedule(@PathVariable("order") String order) {
+        jobTools.cancelOrder(order, 0L);
+        return "sss";
+    }
 }

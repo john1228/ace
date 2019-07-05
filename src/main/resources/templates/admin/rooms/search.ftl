@@ -2,7 +2,7 @@
     <span><i class="fa fa-filter"></i> 筛选条件</span>
 </h4>
 <div class="col-xs-12 col-sm-12 padding-6 form-horizontal">
-    <div class="col-xs-12">
+    <div class="col-xs-12 col-sm-9">
         <div class="form-group row col-xs-12 col-sm-6">
             <label class="col-sm-2 control-label no-padding-right text-right">名称</label>
             <div class="col-sm-10">
@@ -10,7 +10,35 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12 col-sm-9">
+        <div class="form-group col-xs-12 col-sm-6">
+            <label class="col-sm-2 control-label no-padding-right text-right">项目</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <select>
+                        <option>---请选择---</option>
+                        <#list current_account.getStaffList() as staff>
+                            <option value="${staff.projectId}">${staff.projectName}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-xs-12 col-sm-6">
+            <label class="col-sm-2 control-label no-padding-right text-right">组织</label>
+            <div class="col-sm-10">
+                <div class="input-group">
+                    <select>
+                        <option>---请选择---</option>
+                        <#list current_account.getStaffList() as staff>
+                            <option value="${staff.orgId}">${staff.orgName}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-9">
         <div class="form-group col-xs-12 col-sm-6">
             <label class="col-sm-2 control-label no-padding-right text-right">面积</label>
             <div class="col-sm-10">

@@ -30,6 +30,13 @@ server:
 spring:
   banner:
     charset: UTF-8
+  quartz:
+    job-store-type: jdbc
+    properties:
+      org:
+        quartz:
+          threadPool:
+            threadCount: 5
   datasource:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -47,12 +54,12 @@ spring:
     testWhileIdle: 'true  '
     timeBetweenEvictionRunsMillis: 60000.0
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://101.37.27.163:3306/rmpdb?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-    username: baobanwang_rmp
-    password: Rmp123456
-#    url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-#    username: ace
-#    password: Ace!1228
+#    url: jdbc:mysql://101.37.27.163:3306/rmpdb?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+#    username: baobanwang_rmp
+#    password: Rmp123456
+    url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: ace
+    password: Ace!1228
     validationQuery: 'SELECT 1 FROM DUAL'
   freemarker:
     cache: false

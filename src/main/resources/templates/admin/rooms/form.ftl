@@ -483,9 +483,6 @@
                                 <input type="radio" id="cfm1" name="cfm"
                                        value="BEFORE" ${(room.cfm.name() == "BEFORE")?string("checked='checked'","")}>
                                 <label for="cfm1">确认后付款</label>
-                                <input type="radio" id="cfm2" name="cfm"
-                                       value="AFTER" ${(room.cfm.name() == "AFTER")?string("checked='checked'","")}>
-                                <label for="cfm2">付款后确认</label>
                             </div>
                         </div>
                     </div>
@@ -520,7 +517,7 @@
                 <div class="widget-main padding-6">
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>免费服务</label>
+                               for="form-field-1">免费服务</label>
                         <div class="col-sm-10">
                             <div class="col-xs-12 col-sm-9">
                                 <@spring.formInput "room.freeService","class='form-control' data-role='tagsinput' "/>
@@ -529,7 +526,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>会场简介</label>
+                               for="form-field-1">会场简介</label>
                         <div class="col-sm-10">
                             <@spring.formTextarea "room.resume","class='col-xs-10 col-sm-9'"/>
                             <link rel="stylesheet" href="/assets/css/froala_editor/froala_editor.css"/>
@@ -607,7 +604,7 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 control-label no-padding-right"
-                               for="form-field-1"><span style="color: red">*</span>收费服务</label>
+                               for="form-field-1">收费服务</label>
                         <div class="col-sm-10">
                             <table id="supportList" class="table table-striped table-bordered" cellspacing="0"
                                    width="100%">

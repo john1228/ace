@@ -151,8 +151,11 @@
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
         WHERE bb_orders.account_id = #{account.accountId}
-        <if test="status!=null">
-            AND status = #{status.code}
+        <if test="statuses!=null">
+            AND bb_orders.status in
+            <foreach collection="statuses" item="status" index="index" open="(" separator="," close=")">
+                #{status.code}
+            </foreach>
         </if>
         ORDER BY id DESC
         LIMIT ${(page - 1) * length},#{length}
@@ -192,6 +195,7 @@
         <if test="status=='confirmed'">
             AND bb_orders.status IN (1,3)
         </if>
+        ORDER BY id DESC
         LIMIT ${(page - 1) * length},#{length}
     </select>
 
@@ -261,5 +265,12 @@
         set status   = #{status},
             pay_type = #{payType}
         WHERE CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) = #{id}
+    </update>
+
+    <update id="using">
+        UPDATE bb_orders LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
+        SET status = 4
+        WHERE CURRENT_TIMESTAMP > bb_order_appointments.end_time
+          AND status = 3
     </update>
 </mapper>

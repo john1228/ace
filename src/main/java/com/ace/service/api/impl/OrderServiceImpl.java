@@ -1,19 +1,19 @@
 package com.ace.service.api.impl;
 
+import com.ace.controller.api.concerns.ListStatus;
 import com.ace.dao.*;
 import com.ace.entity.*;
 import com.ace.entity.concern.Payment;
 import com.ace.entity.concern.Period;
 import com.ace.entity.concern.enums.CouponStatus;
 import com.ace.entity.concern.enums.OrderStatus;
-import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.OrderService;
+import com.ace.service.concerns.JobTools;
 import com.ace.service.concerns.OrderTools;
 import com.ace.service.concerns.RoomTools;
 import com.ace.util.AlipayBuilder;
 import com.ace.util.wxpay.WxpayBuilder;
-import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,11 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service("api_order_service")
 public class OrderServiceImpl extends BaseService implements OrderService {
@@ -55,13 +53,36 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Resource
     private RoomTools roomTools;
     @Resource
+    private JobTools jobTools;
+    @Resource
     private ReceiptMapper receiptMapper;
     @Resource
     private SettingMapper settingMapper;
 
     @Override
-    public List<Order> customerOrder(Account account, OrderStatus status, int page) {
-        return orderMapper.customerOrder(account, status, page, pageSize);
+    public List<Order> customerOrder(Account account, ListStatus status, int page) {
+        switch (status) {
+            case CANCELED:
+                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
+                        OrderStatus.CANCELED
+                }), page, pageSize);
+            case PENDING:
+                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
+                        OrderStatus.UNPAID2CONFIRM,
+                        OrderStatus.CONFIRM2PAID
+                }), page, pageSize);
+            case CONFIRMING:
+                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
+                        OrderStatus.PAID2CONFIRM,
+                        OrderStatus.UNPAID2CONFIRM
+                }), page, pageSize);
+            case PAID:
+                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
+                        OrderStatus.PAIDANDCONFIRM
+                }), page, pageSize);
+            default:
+                return orderMapper.customerOrder(account, null, page, pageSize);
+        }
     }
 
     @Override
@@ -74,6 +95,9 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     public Order create(Account account, Appointment appointment, Long couponId) {
         if (appointmentMapper.isExists(appointment.getRoomId(), appointment.getStartTime(), appointment.getEndTime())) {
             account.setErrMsg("已经有客户预约了该时间段");
+            return null;
+        } else if (appointment.getStartTime().before(new Timestamp(System.currentTimeMillis()))) {
+            account.setErrMsg("该时间段已过预约时间");
             return null;
         } else {
             Room room = roomMapper.findById(appointment.getRoomId());
@@ -100,7 +124,6 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 //计算总价
                 BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
                 order.setTotal(total);
-                logger.info("房间价格:" + order.getTotal());
                 //校验优惠券
                 if (couponId != 0) {
                     Date date = new Date(System.currentTimeMillis());
@@ -132,10 +155,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                     account.setErrMsg(errMsg.toString());
                     return null;
                 }
-                logger.info("服务费用:" + supportFee);
                 order.setTotal(order.getTotal().add(supportFee));
                 order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
-                logger.info("订单金额:" + order.getTotal() + ";实付金额:" + order.getPayAmount());
                 if (order.getPayAmount().compareTo(new BigDecimal(0)) == 0) {
                     switch (room.getCfm()) {
                         case AUTO:
@@ -177,6 +198,9 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                             payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
                         }
                         order.setPayment(payment);
+                    }
+                    if (order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
+                        jobTools.cancelOrder(order.getOrderNo());
                     }
                     return order;
                 } else {
@@ -229,6 +253,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                         break;
                     case UNPAID2CONFIRM:
                         orderMapper.update(orderNo, OrderStatus.CONFIRM2PAID);
+                        //TODO: 通知用户付款
+                        jobTools.cancelOrder(orderNo);
                         break;
                 }
                 break;

@@ -4,8 +4,10 @@ import com.ace.controller.api.concerns.Query;
 import com.ace.dao.PriceMapper;
 import com.ace.dao.RoomClosedMapper;
 import com.ace.dao.RoomMapper;
+import com.ace.dao.handler.RoomReportMapper;
 import com.ace.entity.*;
 import com.ace.entity.concern.Period;
+import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.RoomService;
 import com.ace.util.Aliyun;
@@ -23,7 +25,6 @@ import java.util.stream.Collectors;
 
 @Service("api_room_service")
 public class RoomServiceImpl extends BaseService implements RoomService {
-    Logger logger = LoggerFactory.getLogger(RoomServiceImpl.class);
     @Resource
     private RoomMapper rMapper;
     @Resource
@@ -32,6 +33,8 @@ public class RoomServiceImpl extends BaseService implements RoomService {
     private RoomClosedMapper rcMapper;
     @Resource
     private RedisTemplate<String, Period> redisTemplate;
+    @Resource
+    private RoomReportMapper reportMapper;
 
 
     @Override
@@ -120,4 +123,6 @@ public class RoomServiceImpl extends BaseService implements RoomService {
         }
         return schedules;
     }
+
+
 }
