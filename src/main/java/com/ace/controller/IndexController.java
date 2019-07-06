@@ -3,6 +3,7 @@ package com.ace.controller;
 
 import com.ace.service.api.OrderService;
 import com.ace.service.concerns.JobTools;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,8 +27,8 @@ public class IndexController {
 
     @GetMapping("/{order}/cancel")
     @ResponseBody
-    public String schedule(@PathVariable("order") String order) {
-        jobTools.cancelOrder(order, 0L);
+    public String schedule(@PathVariable("order") String order, @Param("duration") Long duration) {
+        jobTools.cancelOrder(order, duration);
         return "sss";
     }
 }

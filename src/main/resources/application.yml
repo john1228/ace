@@ -28,6 +28,9 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "Asia/Shanghai"
   banner:
     charset: UTF-8
   quartz:
@@ -37,6 +40,7 @@ spring:
         quartz:
           threadPool:
             threadCount: 5
+    auto-startup: true
   datasource:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     driver-class-name: com.mysql.cj.jdbc.Driver

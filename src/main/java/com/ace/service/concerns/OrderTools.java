@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.sql.Date;
 
 /**
  * @author john
@@ -33,7 +33,7 @@ public class OrderTools {
      * @return
      */
     public BigDecimal fittedPrice(List<Price> prices, Timestamp start, Timestamp end, RoomRental rental) throws Exception {
-        Date date = new java.sql.Date(start.getTime());
+        Date date = new Date(start.getTime());
         SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Week week = Week.valueOf(wf.format(date).toUpperCase());
 
@@ -44,7 +44,8 @@ public class OrderTools {
                 int i = 0;
                 while (end.after(new Timestamp(start.getTime() + i * 30 * 60 * 1000))) {
                     boolean isFitted = false;
-                    for (Price price : prices) {
+                    for (int j = prices.size() - 1; j >= 0; j--) {
+                        Price price = prices.get(j);
                         if (price.getWday().contains(week)) {
                             Timestamp _start = Timestamp.valueOf(date.toString() + " " + price.getStartTime() + ":00");
                             Timestamp _end = Timestamp.valueOf(date.toString() + " " + price.getEndTime() + ":00");

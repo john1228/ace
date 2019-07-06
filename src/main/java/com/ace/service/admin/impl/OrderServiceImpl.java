@@ -8,6 +8,7 @@ import com.ace.entity.concern.Period;
 import com.ace.entity.concern.enums.OrderStatus;
 import com.ace.entity.concern.enums.RoomRental;
 import com.ace.service.admin.OrderService;
+import com.ace.service.concerns.JobTools;
 import com.ace.service.concerns.OrderTools;
 import com.ace.service.concerns.RoomTools;
 import org.slf4j.Logger;
@@ -36,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
     private AppointmentMapper appointmentMapper;
     @Resource
     private RedisTemplate<String, Period> redisTemplate;
+    @Resource
+    private JobTools jt;
 
     @Override
     public void dataTable(Staff staff, OrderCriteria criteria, DataTable<Order> dataTable) {
@@ -77,6 +80,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void update(String orderNo, OrderStatus status) {
         orderMapper.update(orderNo, status);
+    }
+
+
+    @Override
+    public void confirm(Staff staff, String orderNo) {
+        Order order = orderMapper.findByOrderNo(orderNo);
+        if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM)) {
+            orderMapper.update(orderNo, OrderStatus.CONFIRM2PAID);
+            jt.cancelOrder(orderNo);
+        }
     }
 
     @Override

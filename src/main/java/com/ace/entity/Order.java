@@ -48,7 +48,7 @@ public class Order {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createdAt;
-    @JsonView({ApiView.Base.class, ApiView.Detail.class})
+    @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedAt;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})

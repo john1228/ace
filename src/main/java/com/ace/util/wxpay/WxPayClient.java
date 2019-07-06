@@ -97,7 +97,7 @@ public class WxPayClient {
     }
 
     public boolean signatureCheck(SortedMap<String, Object> params, String sign) throws NoSuchAlgorithmException {
-        return sign.equals(md5(params));
+        return sign.equals(md5(params).toUpperCase());
     }
 
     private String md5(SortedMap<String, Object> params) throws NoSuchAlgorithmException {
@@ -113,6 +113,7 @@ public class WxPayClient {
             }
         }
         sb.append("key=" + secretKey);
+        logger.info("当前字符串:" + sb.toString());
 
         //MD5加密
         MessageDigest md = MessageDigest.getInstance("MD5");

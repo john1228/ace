@@ -30,7 +30,7 @@ public class WxpayController {
     @Resource
     WxpayService wxpayService;
 
-    @RequestMapping("/callback/wx")
+    @RequestMapping("/callback/wxpay")
     public String home(HttpServletRequest request) {
         try {
             InputStream inStream = request.getInputStream();

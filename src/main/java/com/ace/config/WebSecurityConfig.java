@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/admin/logout",
                 "/doc.html",
                 "/v2/**",
+                "/check/**",
                 "/swagger-resources/**",
                 "/webjars/**",
                 "/api/**",//app接口

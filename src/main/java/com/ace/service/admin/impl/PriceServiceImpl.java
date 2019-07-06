@@ -21,7 +21,6 @@ public class PriceServiceImpl implements PriceService {
     public void dataTable(Staff staff, PriceCriteria criteria, DataTable<Price> dataTable) {
         dataTable.setRecordsFiltered(priceMapper.recordsTotal(staff, criteria));
         dataTable.setData(priceMapper.dataList(staff, criteria));
-
     }
 
     @Override

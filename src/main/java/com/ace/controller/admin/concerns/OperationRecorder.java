@@ -48,6 +48,7 @@ public class OperationRecorder {
             new SimpleEntry<>("update", "更新"),
             new SimpleEntry<>("destroy", "删除"),
             new SimpleEntry<>("grant", "发放"),
+            new SimpleEntry<>("confirm", "确认订单"),
             new SimpleEntry<>("enable", "启用"),
             new SimpleEntry<>("disable", "停用"),
             new SimpleEntry<>("updateAlipay", "更新支付宝"),
@@ -60,7 +61,6 @@ public class OperationRecorder {
 
     @AfterReturning("@annotation(recordable)")
     public void record(JoinPoint jp, Recordable recordable) {
-        //
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();

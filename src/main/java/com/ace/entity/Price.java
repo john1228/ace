@@ -6,6 +6,7 @@ import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +16,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -33,12 +34,10 @@ public class Price extends Base {
     private RoomRental rental;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView(AdminView.Table.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @NotNull(message = "开始日期不能为空")
     private Date startDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonView(AdminView.Table.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @NotNull(message = "结束日期不能为空")
     private Date endDate;
     @JsonView(AdminView.Table.class)
@@ -46,7 +45,7 @@ public class Price extends Base {
     private String startTime = "08:00";
     @JsonView(AdminView.Table.class)
     @NotBlank(message = "结束时间不能为空")
-    private String endTime = "21:00";
+    private String endTime = "20:00";
     @JsonView(AdminView.Table.class)
     @Size(min = 1, message = "适用周不能为空")
     private List<Week> wday = new ArrayList<>();
@@ -55,4 +54,11 @@ public class Price extends Base {
     private BigDecimal price;
     private Date createdAt;
     private Date updatedAt;
+
+    public static void main(String[] args){
+        ObjectMapper ob  = new ObjectMapper();
+        Date sd = new Date(System.currentTimeMillis());
+        java.util.Date ud = new java.util.Date();
+
+    }
 }

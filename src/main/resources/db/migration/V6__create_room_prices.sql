@@ -7,7 +7,7 @@ CREATE TABLE bb_room_prices (
   start_time   varchar(5)          COMMENT '开始时间',
   end_time     varchar(5)          COMMENT '结束时间',
   wday         varchar(64)         DEFAULT 0 COMMENT '星期',
-  price        decimal             DEFAULT 0 COMMENT '价格',
+  price        decimal(10,2)       DEFAULT 0 COMMENT '价格',
   created_at   timestamp           DEFAULT CURRENT_TIMESTAMP,
   updated_at   timestamp           DEFAULT CURRENT_TIMESTAMP
   ON UPDATE CURRENT_TIMESTAMP,

@@ -46,7 +46,7 @@
             AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
         </if>
         GROUP BY bb_room_prices.id
-        ORDER BY bb_room_prices.id DESC
+        ORDER BY bb_room_prices.updated_at DESC
         LIMIT #{criteria.start},#{criteria.length}
     </select>
 
@@ -59,7 +59,7 @@
             #{item.id}
         </foreach>
         AND #{date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
-        ORDER BY bb_room_prices.id ASC
+        ORDER BY bb_room_prices.updated_at ASC
     </select>
     <!--获取日期有效的价格-->
     <select id="prices" resultMap="priceMap">
@@ -68,7 +68,7 @@
                  LEFT JOIN bb_room_prices_ref ON bb_room_prices.id = bb_room_prices_ref.price_id
         WHERE bb_room_prices_ref.room_id = #{room}
           AND #{date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
-        ORDER BY bb_room_prices.id ASC
+        ORDER BY bb_room_prices.updated_at ASC
     </select>
 
 

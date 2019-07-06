@@ -4,6 +4,7 @@ import com.ace.annotation.Recordable;
 import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.OrderCriteria;
+import com.ace.controller.api.concerns.Result;
 import com.ace.entity.Order;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.OrderStatus;
@@ -78,6 +79,15 @@ public class OrdersController extends BaseController {
         model.addAttribute("order", order);
         return viewPath + "show";
     }
+
+    @PostMapping("/{id}/confirm")
+    @Recordable
+    @ResponseBody
+    public String confirm(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") String orderNo) {
+        orderService.confirm(staff, orderNo);
+        return "SUCCESS";
+    }
+
 
     @DeleteMapping("/{id}")
     @Recordable

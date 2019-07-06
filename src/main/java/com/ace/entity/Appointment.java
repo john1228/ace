@@ -28,10 +28,8 @@ public class Appointment {
     @JsonView(ApiView.Detail.class)
     private String meetingName;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Timestamp startTime;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private Timestamp endTime;
     @JsonView({ApiView.Detail.class, AdminView.Table.class})
     private String contactName;

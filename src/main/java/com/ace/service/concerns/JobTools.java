@@ -39,6 +39,7 @@ public class JobTools {
     }
 
     public void cancelOrder(String orderNo, Long seconds) {
+        log.info("到时间处理订单");
         JobDataMap dataMap = new JobDataMap();
         dataMap.put("order_no", orderNo);
         JobDetail jobDetail = JobBuilder.newJob(OrderJob.class)
@@ -55,7 +56,7 @@ public class JobTools {
         } else {
             trigger = TriggerBuilder.newTrigger().forJob(jobDetail)
                     .withIdentity(jobDetail.getKey().getName(), "orders-trigger")
-                    .startAt(new Timestamp(System.currentTimeMillis() + seconds))
+                    .startAt(new Timestamp(System.currentTimeMillis() + seconds*1000))
                     .build();
         }
         try {

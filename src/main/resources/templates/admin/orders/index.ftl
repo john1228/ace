@@ -157,10 +157,16 @@
                                     {
                                         data: "orderNo",
                                         className: 'center',
-                                        render: function (data) {
-                                            return '<div class="hidden-sm hidden-xs btn-group">' +
-                                                    '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>' +
-                                                    '</div>';
+                                        render: function (data, type, row) {
+                                            switch (row.status) {
+                                                case "UNPAID2CONFIRM":
+                                                    return '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>' +
+                                                            '<a class="btn btn-xs btn-warning" href="/admin/orders/' + data + '/confirm" data-method="POST" data-message="确认成功">确认</a>';
+
+                                                default:
+                                                    return '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>';
+
+                                            }
                                         }
                                     }
                                 ]

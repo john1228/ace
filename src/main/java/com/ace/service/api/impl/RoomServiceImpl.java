@@ -11,6 +11,7 @@ import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.RoomService;
 import com.ace.util.Aliyun;
+import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service("api_room_service")
+@Log4j2
 public class RoomServiceImpl extends BaseService implements RoomService {
     @Resource
     private RoomMapper rMapper;
@@ -112,10 +114,7 @@ public class RoomServiceImpl extends BaseService implements RoomService {
             Set<Price> prices = pMapper.prices(room, date).stream().filter(item ->
                     item.getWday().contains(week)
             ).collect(Collectors.toSet());
-            List<Period> opens = new ArrayList<>();
-            for (Price price : prices) {
-                opens.add(new Period(price.getStartTime(), price.getEndTime(), price.getPrice()));
-            }
+            List<Period> opens = prices.stream().map(price -> new Period(price.getStartTime(), price.getEndTime(), price.getPrice())).collect(Collectors.toList());
             Set<Period> appointed = redisTemplate.opsForSet().members("ROOM::" + room + "::APPOINTED::" + date.toString());
 
             Schedule schedule = new Schedule(new Date(timemills), opens, new ArrayList<>(appointed));

@@ -19,5 +19,7 @@ public interface OrderService {
 
     void update(String orderNo, OrderStatus status);
 
+    void confirm(Staff staff, String orderNo);
+
     void delete(String orderNo);
 }
