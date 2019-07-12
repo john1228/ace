@@ -1,12 +1,11 @@
 <h4 class="header smaller lighter blue">
     <span><i class="fa fa-filter"></i> 筛选条件</span>
 </h4>
-<div class="col-xs-12 col-sm-8 form-horizontal">
-    <div class="col-xs-12 col-sm-12 form-group">
+<div class="col-xs-12 col-sm-10 form-horizontal">
+    <div class="col-xs-12 col-sm-9 form-group">
         <div class="col-xs-12 col-sm-8">
-            <label class="col-sm-4 control-label no-padding-right text-right">订单号/手机号/姓名</label>
-            <div class="col-sm-8">
-                <input class="form-control col-xs-10 col-sm-9" id="mobile"/>
+            <div class="col-sm-10">
+                <input class="form-control" id="mobile" placeholder="订单号/手机号/姓名"/>
             </div>
         </div>
     </div>

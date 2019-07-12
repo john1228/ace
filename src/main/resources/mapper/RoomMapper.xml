@@ -41,22 +41,26 @@
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_rooms
-        WHERE project_id = #{staff.projectId}
-        <if test="criteria.name!=null and criteria.name!=''">
-            AND name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
-        <if test="criteria.layerAreaFrom!=null">
-            AND layer_area >= #{criteria.layerAreaFrom}
-        </if>
-        <if test="criteria.layerAreaTo!=null">
-            AND #{criteria.layerAreaTo} >= layer_area
-        </if>
-        <if test="criteria.quotaFrom!=null">
-            AND quota >= #{criteria.quotaFrom}
-        </if>
-        <if test="criteria.quotaTo!=null">
-            AND #{criteria.quotaTo} >= quota
-        </if>
+        <where>
+            <if test="criteria.name!=null and criteria.name!=''">
+                project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null and criteria.name!=''">
+                AND name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.layerAreaFrom!=null">
+                AND layer_area >= #{criteria.layerAreaFrom}
+            </if>
+            <if test="criteria.layerAreaTo!=null">
+                AND #{criteria.layerAreaTo} >= layer_area
+            </if>
+            <if test="criteria.quotaFrom!=null">
+                AND quota >= #{criteria.quotaFrom}
+            </if>
+            <if test="criteria.quotaTo!=null">
+                AND #{criteria.quotaTo} >= quota
+            </if>
+        </where>
     </select>
 
     <select id="dataList" resultType="com.ace.entity.Room">
@@ -79,22 +83,26 @@
         bb_rooms.free_service AS freeService,
         bb_rooms.online AS online
         FROM bb_rooms
-        WHERE project_id = #{staff.projectId}
-        <if test="criteria.name!=null and criteria.name!=''">
-            AND name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
-        <if test="criteria.layerAreaFrom!=null">
-            AND layer_area >= #{criteria.layerAreaFrom}
-        </if>
-        <if test="criteria.layerAreaTo!=null">
-            AND #{criteria.layerAreaTo} >= layer_area
-        </if>
-        <if test="criteria.quotaFrom!=null">
-            AND quota >= #{criteria.quotaFrom}
-        </if>
-        <if test="criteria.quotaTo!=null">
-            AND #{criteria.quotaTo} >= quota
-        </if>
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null and criteria.name!=''">
+                AND name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.layerAreaFrom!=null">
+                AND layer_area >= #{criteria.layerAreaFrom}
+            </if>
+            <if test="criteria.layerAreaTo!=null">
+                AND #{criteria.layerAreaTo} >= layer_area
+            </if>
+            <if test="criteria.quotaFrom!=null">
+                AND quota >= #{criteria.quotaFrom}
+            </if>
+            <if test="criteria.quotaTo!=null">
+                AND #{criteria.quotaTo} >= quota
+            </if>
+        </where>
         ORDER BY id DESC
         <if test="length!=0">
             LIMIT #{start},#{length}
@@ -104,7 +112,11 @@
     <select id="roomList" resultType="com.ace.entity.Room">
         SELECT bb_rooms.id, bb_rooms.name
         FROM bb_rooms
-        WHERE project_id = #{staff.projectId}
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+        </where>
     </select>
     <!--筛选账户下的管理的所有会议室，用于筛选-->
     <select id="accountRooms" resultType="com.ace.entity.Room">
@@ -153,6 +165,8 @@
     <insert id="create" useGeneratedKeys="true" keyProperty="room.id">
         insert into bb_rooms (project_id,
                               project_name,
+                              org_id,
+                              org_name,
                               name,
                               cover,
                               image,
@@ -182,6 +196,8 @@
                               free_service)
         values (#{staff.projectId},
                 #{staff.projectName},
+                #{staff.orgId},
+                #{staff.orgName},
                 #{room.name},
                 #{room.cover},
                 #{room.image,typeHandler=com.ace.dao.handler.StringListHandler},

@@ -32,11 +32,11 @@ public class TokenService {
     private static final String host = "http://passport.baobanwang.com/login/getAccountData";
 
     public Account account(String token) {
-        if (token.equals("john-token-123")) {
+        if (token.equals("john-token-1234")) {
             Account account = new Account();
             account.setAccountId("001");
             account.setAccountName("001-NAME");
-            account.setManager(true);
+            account.setAdmin(false);
             List<Staff> staffList = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
                 Staff staff = new Staff();
@@ -51,6 +51,12 @@ public class TokenService {
                 staffList.add(staff);
             }
             account.setStaffList(staffList);
+            return account;
+        } else if (token.equals("john-token-123")) {
+            Account account = new Account();
+            account.setAccountId("001");
+            account.setAccountName("001-NAME");
+            account.setAdmin(true);
             return account;
         } else {
             HttpClient httpClient = HttpClients.createDefault();
@@ -73,23 +79,25 @@ public class TokenService {
                 if (jsonObject.getString("code").equals("000000000")) {
                     JSONObject actObj = jsonObject.getJSONObject("data");
                     Account account = new Account(actObj.getString("accountId"), actObj.getString("accountName"));
-                    account.setManager(true);
-                    JSONArray empList = actObj.getJSONArray("employee");
-                    List<Staff> staffList = new ArrayList<>();
-                    for (int i = 0; i < empList.length(); i++) {
-                        JSONObject empObj = empList.getJSONObject(i);
-                        staffList.add(new Staff(
-                                account,
-                                empObj.getString("projectId"),
-                                empObj.getString("projectName"),
-                                empObj.getString("orgId"),
-                                empObj.getString("orgName"),
-                                empObj.getString("empId"),
-                                empObj.getString("empName")
-                        ));
-                        logger.info("登录用户:" + staffList.get(i).getEmpName());
+                    boolean isAdmin = actObj.getInt("accountRoles") == 7;
+                    account.setAdmin(isAdmin);
+                    if (!isAdmin) {
+                        JSONArray empList = actObj.getJSONArray("employee");
+                        List<Staff> staffList = new ArrayList<>();
+                        for (int i = 0; i < empList.length(); i++) {
+                            JSONObject empObj = empList.getJSONObject(i);
+                            staffList.add(new Staff(
+                                    account,
+                                    empObj.getString("projectId"),
+                                    empObj.getString("projectName"),
+                                    empObj.getString("orgId"),
+                                    empObj.getString("orgName"),
+                                    empObj.getString("empId"),
+                                    empObj.getString("empName")
+                            ));
+                        }
+                        account.setStaffList(staffList);
                     }
-                    account.setStaffList(staffList);
                     return account;
                 }
 

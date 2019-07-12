@@ -92,7 +92,7 @@
                                 text: '新增优惠券',
                                 className: 'btn btn-primary pull-right',
                                 action: function (e, dt, node, config) {
-                                    window.location.href = '/admin/coupons/new';
+                                    window.location.href = '/admin/system_coupons/new';
                                 }
                             }
                         ],

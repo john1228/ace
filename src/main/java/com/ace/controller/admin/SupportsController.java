@@ -39,7 +39,7 @@ public class SupportsController extends BaseController {
     @ResponseBody
     @PostMapping("/dataList")
     public DataTable<Support> dataList(
-            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
             SupportCriteria criteria,
             DataTable<Support> dataTable
     ) {

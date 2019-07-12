@@ -1,9 +1,11 @@
 package com.ace.dao.handler;
 
 import com.ace.entity.concern.enums.Week;
+import lombok.extern.log4j.Log4j2;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedTypes;
+import org.apache.logging.log4j.util.Strings;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -19,6 +21,7 @@ import java.util.List;
 @MappedTypes(value = {
         Week.class
 })
+@Log4j2
 public class WeekListTypeHandler extends BaseTypeHandler<List<Week>> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<Week> weeks, JdbcType jdbcType) throws SQLException {
@@ -43,7 +46,7 @@ public class WeekListTypeHandler extends BaseTypeHandler<List<Week>> {
     }
 
     private List<Week> toWeekList(String weeks) {
-        if (weeks == null) {
+        if (Strings.isBlank(weeks)) {
             return new ArrayList<>();
         } else {
             List<Week> weekList = new ArrayList<>();

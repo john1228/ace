@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ace.entity.Account;
 import com.ace.util.Menu;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,9 +17,7 @@ public class AdminInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //处理菜单
         String path = request.getServletPath();
-        Optional<Menu> selected = Arrays.stream(Menu.values()).filter(
-                menu -> menu.contain(path)
-        ).findFirst();
+        Optional<Menu> selected = Arrays.stream(Menu.values()).filter(menu -> menu.contain(path)).findFirst();
         if (selected.isPresent()) {
             request.setAttribute("menu", selected.get().name());
         } else {

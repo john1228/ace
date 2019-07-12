@@ -276,8 +276,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Override
     @Transactional
     public void paying(Receipt receipt, String payType) {
-        receiptMapper.create(receipt);
         Order order = orderMapper.findByOrderNo(receipt.getOrderNo());
+        orderMapper.defray(order.getOrderNo(), OrderStatus.PAID2CONFIRM, payType);
         switch (order.getStatus()) {
             case UNPAID2CONFIRM:
                 orderMapper.defray(order.getOrderNo(), OrderStatus.PAID2CONFIRM, payType);

@@ -1,7 +1,6 @@
 package com.ace.entity;
 
 
-import com.ace.annotation.ParameterName;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

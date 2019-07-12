@@ -49,7 +49,7 @@ public class SystemCouponsController extends BaseController {
     @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
     public DataTable<SystemCoupon> dataList(
-            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
             DataTable<SystemCoupon> dataTable,
             CouponCriteria criteria
     ) {

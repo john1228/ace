@@ -24,13 +24,17 @@
         FROM bb_room_prices
         LEFT JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
         INNER JOIN bb_rooms ON bb_rooms.id = bb_room_prices_ref.room_id
-        WHERE bb_rooms.project_id = #{staff.projectId}
-        <if test="criteria.name!=null and criteria.name!=''">
-            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
-        <if test="criteria.date!=null">
-            AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
-        </if>
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null and criteria.name!=''">
+                AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.date!=null">
+                AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
+            </if>
+        </where>
     </select>
 
     <select id="dataList" resultMap="priceMap">
@@ -38,13 +42,17 @@
         FROM bb_room_prices
         INNER JOIN bb_room_prices_ref ON bb_room_prices_ref.price_id = bb_room_prices.id
         INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
-        WHERE bb_rooms.project_id = #{staff.projectId}
-        <if test="criteria.name!=null and criteria.name!=''">
-            AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
-        <if test="criteria.date!=null">
-            AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
-        </if>
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null and criteria.name!=''">
+                AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.date!=null">
+                AND #{criteria.date} BETWEEN bb_room_prices.start_date AND bb_room_prices.end_date
+            </if>
+        </where>
         GROUP BY bb_room_prices.id
         ORDER BY bb_room_prices.updated_at DESC
         LIMIT #{criteria.start},#{criteria.length}

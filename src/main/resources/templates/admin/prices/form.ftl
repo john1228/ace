@@ -23,9 +23,11 @@
     <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>适用日期</label>
     <div class="col-sm-10">
         <div class="col-xs-12 col-sm-9 input-group input-daterange">
-            <input type="text" class="form-control" name="startDate" id="startDate" value="${price.startDate?string("yyyy-MM-dd")}">
+            <input type="text" class="form-control" name="startDate" id="startDate"
+                   value="${price.startDate!}">
             <div class="input-group-addon">至</div>
-            <input type="text" class="form-control" name="endDate" id="endDate" value="${price.endDate?string("yyyy-MM-dd")}">
+            <input type="text" class="form-control" name="endDate" id="endDate"
+                   value="${price.endDate!}">
         </div>
     </div>
     <script type="text/javascript">

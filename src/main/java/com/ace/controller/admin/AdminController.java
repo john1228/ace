@@ -19,19 +19,19 @@ public class AdminController extends BaseController {
 
     @GetMapping("/")
     public String index() {
-        return INDEX;
+        return "redirect:/admin/orders";
     }
 
     @PostMapping({"", "/"})
-    public String change(@RequestParam("operator") String empId, @RequestParam("redirectUri") String redirectUri, Authentication authentication, HttpSession session) {
+    public String change(Authentication authentication, HttpSession session) {
         Account account = (Account) authentication.getCredentials();
-        List<Staff> staffList = account.getStaffList();
-        Staff selected = staffList.stream().filter(staff -> staff.getEmpId().equals(empId)).findAny().get();
-        if (selected != null) {
-            session.setAttribute(CURRENT_OPERATOR, selected);
-            log.info("设置操作用户");
+        if (account.isAdmin()) {
+            session.setAttribute(CURRENT_OPERATOR, null);
+        } else {
+            List<Staff> staffList = account.getStaffList();
+            session.setAttribute(CURRENT_OPERATOR, staffList.get(0));
         }
-        return "redirect:" + redirectUri;
+        return "redirect:/admin/orders";
     }
 
     @GetMapping("/login")

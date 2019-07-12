@@ -18,14 +18,13 @@
         var calendar = new FullCalendar.Calendar(calendarEl, {
             plugins: ['dayGrid', 'timeGrid', 'list', 'interaction'],
             header: {
-                left: '',
-                center: 'title',
-                right: ''
+                left: 'title',
+                center: '',
+                right: 'today prev,next'
             },
             defaultView: 'timeGridWeek',
             themeSystem: 'bootstrap',
             locale: 'zh-cn',
-            defaultDate: '2019-06-05',
             businessHours: {
                 daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
                 startTime: "08:00",

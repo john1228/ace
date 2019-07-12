@@ -11,6 +11,8 @@ import lombok.Setter;
 @Getter
 public class RoomCriteria {
     private String name;
+    private String proId;
+    private String orgId;
     private Integer layerAreaFrom;
     private Integer layerAreaTo;
     private Integer quotaFrom;

@@ -76,16 +76,18 @@
                                 data.name = $("#name").val();
                             }
                         },
-                        dom: 'Bfltip',
-                        buttons: [
-                            {
-                                text: '新建服务',
-                                className: 'btn btn-primary pull-right',
-                                action: function () {
-                                    window.location.href = '/admin/supports/new';
+                        <#if !current_account.isAdmin()>
+                            dom: 'Bfltip',
+                            buttons: [
+                                {
+                                    text: '新建服务',
+                                    className: 'btn btn-primary pull-right',
+                                    action: function () {
+                                        window.location.href = '/admin/supports/new';
+                                    }
                                 }
-                            }
-                        ],
+                            ],
+                        </#if>
                         columns: [
                             {data: "id", className: 'center'},
                             {data: "name", className: 'center'},
@@ -102,10 +104,13 @@
                                 data: "id",
                                 className: 'center',
                                 render: function (data) {
-                                    return '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '">查看</a>' +
-                                            '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>' +
-                                            '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
-
+                                    var _btn = '<a class="btn btn-xs btn-info" href="/admin/supports/' + data + '">查看</a>';
+                                    <#if !current_account.isAdmin()>
+                                        _btn = _btn +
+                                                '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>' +
+                                                '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
+                                    </#if>
+                                    return _btn;
                                 }
                             }
                         ]

@@ -1,12 +1,16 @@
 package com.ace.service.admin.impl;
 
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.admin.concerns.ReceiptCriteria;
 import com.ace.dao.ReceiptMapper;
 import com.ace.entity.Receipt;
+import com.ace.entity.ReceiptDetail;
+import com.ace.entity.Staff;
 import com.ace.service.admin.ReceiptService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 @Service("receiptService")
 public class ReceiptServiceImpl implements ReceiptService {
@@ -14,13 +18,9 @@ public class ReceiptServiceImpl implements ReceiptService {
     private ReceiptMapper receiptMapper;
 
     @Override
-    public DataTable<Receipt> dataTable(int start, int length, String keyword) {
-        DataTable<Receipt> dataTable = new DataTable<>();
-        dataTable.setStart(start);
-        dataTable.setLength(length);
-        dataTable.setRecordsFiltered(receiptMapper.recordsTotal(keyword));
-        dataTable.setData(receiptMapper.dataList(start, length, keyword));
-        return dataTable;
+    public void dataTable(Staff staff, ReceiptCriteria criteria, DataTable<ReceiptDetail> dataTable) {
+        dataTable.setRecordsFiltered(receiptMapper.recordsTotal(staff, criteria));
+        dataTable.setData(receiptMapper.dataList(staff, criteria));
     }
 
 

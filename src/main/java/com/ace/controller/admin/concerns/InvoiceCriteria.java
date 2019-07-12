@@ -1,9 +1,11 @@
 package com.ace.controller.admin.concerns;
 
+import com.ace.entity.concern.invoice.InvoiceStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -14,8 +16,9 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 public class InvoiceCriteria extends Criteria {
-    private String orderNo;
-    private Date startDate;
-    private Date endDate;
-    private String mobile;
+    private String keyword;
+    private InvoiceStatus status;
+    private Date createdAt;
+    private Integer total;
+    private Integer payAmount;
 }

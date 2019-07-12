@@ -14,7 +14,7 @@
             <a href="#" class="navbar-brand">
                 <small>
                     <i class="fa fa-leaf"></i>
-                ${current_operator.projectName}
+                ${(current_operator.projectName)!"上海大之商"}
                 </small>
             </a>
         </div>

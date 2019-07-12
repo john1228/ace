@@ -1,13 +1,19 @@
 package com.ace.controller.admin;
 
 import com.ace.controller.admin.concerns.DataTable;
+import com.ace.controller.admin.concerns.OrderCriteria;
+import com.ace.controller.admin.concerns.ReceiptCriteria;
+import com.ace.entity.Order;
 import com.ace.entity.Receipt;
+import com.ace.entity.ReceiptDetail;
+import com.ace.entity.Staff;
 import com.ace.service.admin.ReceiptService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 
 @Controller
@@ -19,19 +25,18 @@ public class ReceiptsController extends BaseController {
 
 
     @GetMapping({"", "/"})
-    public String index() {
+    public String index(Model model) {
         return viewPath + "index";
     }
 
     @ResponseBody
-    @GetMapping("/dataList")
-    public DataTable<Receipt> dataList(
-            @RequestParam(value = "draw", defaultValue = "1") int draw,
-            @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "search[value]", defaultValue = "") String keyword
+    @PostMapping("/dataList")
+    public DataTable<ReceiptDetail> dataList(
+            @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
+            ReceiptCriteria criteria,
+            DataTable<ReceiptDetail> dataTable
     ) {
-        DataTable<Receipt> dataTable = receiptService.dataTable(start, length, keyword);
+        receiptService.dataTable(staff, criteria, dataTable);
         return dataTable;
     }
 

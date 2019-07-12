@@ -90,16 +90,18 @@
                                         data.quotaTo = $("#quotaTo").val();
                                     }
                                 },
-                                dom: 'Bfltip',
-                                buttons: [
-                                    {
-                                        text: '新建场地',
-                                        className: 'btn btn-primary pull-right',
-                                        action: function () {
-                                            window.location.href = '/admin/rooms/new';
+                                <#if !current_account.isAdmin()>
+                                    dom: 'Bfltip',
+                                    buttons: [
+                                        {
+                                            text: '新建场地',
+                                            className: 'btn btn-primary pull-right',
+                                            action: function () {
+                                                window.location.href = '/admin/rooms/new';
+                                            }
                                         }
-                                    }
-                                ],
+                                    ],
+                                </#if>
                                 columns: [
                                     {data: "serialNo", className: 'center'},
                                     {data: "name", className: 'center'},
@@ -147,15 +149,19 @@
                                     {
                                         data: "id",
                                         render: function (data, type, row) {
-                                            if (row.online) {
-                                                return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
-                                                        '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
-                                                        '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '/disable" data-method="POST" data-message="停用成功">停用</a>';
-                                            } else {
-                                                return '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>' +
-                                                        '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
-                                                        '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '/enable" data-method="POST" data-message="启用成功">启用</a>';
-                                            }
+                                            var _btn = '<a class="btn btn-xs btn-info" href="/admin/rooms/' + data + '">查看</a>';
+                                            <#if !current_account.isAdmin()>
+                                                if (row.online) {
+                                                    _btn = _btn +
+                                                            '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
+                                                            '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '/disable" data-method="POST" data-message="停用成功">停用</a>';
+                                                } else {
+                                                    _btn = _btn +
+                                                            '<a class="btn btn-xs btn-danger" href="/admin/rooms/' + data + '/edit">编辑</a>' +
+                                                            '<a class="btn btn-xs btn-warning" href="/admin/rooms/' + data + '/enable" data-method="POST" data-message="启用成功">启用</a>';
+                                                }
+                                            </#if>
+                                            return _btn;
                                         },
                                         className: 'center'
                                     }

@@ -54,7 +54,7 @@ public class RoomsController extends BaseController {
     @ResponseBody
     @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
-    public DataTable<Room> dataList(@SessionAttribute(CURRENT_OPERATOR) Staff staff, DataTable<Room> dataTable, RoomCriteria criteria) {
+    public DataTable<Room> dataList(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, DataTable<Room> dataTable, RoomCriteria criteria) {
         roomService.data(staff, dataTable, criteria);
         return dataTable;
     }

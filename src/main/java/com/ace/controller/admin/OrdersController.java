@@ -44,11 +44,10 @@ public class OrdersController extends BaseController {
     @PostMapping("/dataList")
     @JsonView(AdminView.Table.class)
     public DataTable<Order> dataList(
-            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
             OrderCriteria criteria,
             DataTable<Order> dataTable
     ) {
-
         orderService.dataTable(staff, criteria, dataTable);
         return dataTable;
     }
@@ -97,7 +96,7 @@ public class OrdersController extends BaseController {
     }
 
     @ModelAttribute
-    public void globalAttribute(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+    public void globalAttribute(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, Model model) {
         model.addAttribute("orderStatus", CollectionUtil.toCollection(OrderStatus.class));
         model.addAttribute("rooms", roomService.roomList(staff));
     }

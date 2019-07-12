@@ -13,18 +13,25 @@
             <div class="col-sm-9">
                 <select class="form-control">
                     <option>---请选择---</option>
-                    <#list statuses?keys as key>
-                        <option value="${key}">${statuses[key]}</option>
-                    </#list>
+                    <option value="PAIDANDCONFIRM">已付款</option>
+                    <option value="COMPLETE">已完成</option>
+                    <option value="REFUNDING">退款中</option>
+                    <option value="REFUNDED">已退款</option>
                 </select>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-3 control-label no-padding-right text-right">订单日期</label>
             <div class="col-sm-9">
-                <input id="createdAt" class="form-control" placeholder="下单日期"/>
+                <div class="col-xs-12 input-group input-daterange">
+                    <input id="from" class="form-control">
+                    <div class="input-group-addon">至</div>
+                    <input id="to" class="form-control">
+                </div>
                 <script type="text/javascript">
-                    $("#createdAt").datepicker({language: 'zh'});
+                    $('.input-daterange input').each(function () {
+                        $(this).datepicker({language: 'zh'});
+                    });
                 </script>
             </div>
         </div>

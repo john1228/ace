@@ -8,7 +8,7 @@
                 <div class="form-group row col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">名称</label>
                     <div class="col-sm-10">
-                        <input id="name" class="form-control col-xs-10 col-sm-9"/>
+                        <input id="name" class="form-control"/>
                     </div>
                 </div>
             </div>

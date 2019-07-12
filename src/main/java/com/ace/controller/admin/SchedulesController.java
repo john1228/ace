@@ -25,7 +25,7 @@ public class SchedulesController extends BaseController {
     private ScheduleService scheduleService;
 
     @GetMapping({"", "/"})
-    public String index(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+    public String index(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, Model model) {
         model.addAttribute("rooms", roomService.roomList(staff));
         return viewPath + "index";
     }

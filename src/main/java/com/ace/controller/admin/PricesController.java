@@ -42,7 +42,7 @@ public class PricesController extends BaseController {
     @ResponseBody
     @PostMapping("/dataList")
     public DataTable<Price> dataList(
-            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
             PriceCriteria criteria,
             DataTable<Price> dataTable
     ) {

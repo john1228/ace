@@ -41,6 +41,7 @@
 <script src="/assets/js/jquery/2.1.4.min.js"></script>
 <script src="/assets/js/jquery-ui/min.js"></script>
 <script src="/assets/js/jquery/mobile.custom.min.js"></script>
+<script src="/assets/js/jquery/chosen.min.js"></script>
 <!-- ace settings handler -->
 <script src="/assets/js/ace/min.js"></script>
 <script src="/assets/layer-v3.1.1/layer/layer.js"></script>

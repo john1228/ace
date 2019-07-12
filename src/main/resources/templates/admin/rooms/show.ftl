@@ -340,16 +340,18 @@
                             url: "/admin/rooms/${room.id}/closed/dataList",
                             type: "GET"
                         },
-                        dom: 'Bfltip',
-                        buttons: [
-                            {
-                                text: '新建',
-                                className: 'btn btn-primary pull-right',
-                                action: function (e, dt, node, config) {
-                                    $('#closedModal').modal('show')
+                        <#if !current_account.isAdmin()>
+                            dom: 'Bfltip',
+                            buttons: [
+                                {
+                                    text: '新建',
+                                    className: 'btn btn-primary pull-right',
+                                    action: function (e, dt, node, config) {
+                                        $('#closedModal').modal('show')
+                                    }
                                 }
-                            }
-                        ],
+                            ],
+                        </#if>
                         columns: [
                             {
                                 data: "startDate",

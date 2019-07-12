@@ -11,22 +11,77 @@
         <result column="account_id" property="updatedAt"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
-        SELECT count(1) AS recordsTotal FROM bb_receipts
+        SELECT count(1) AS recordsTotal
+        FROM bb_receipts br
+        LEFT JOIN bb_orders bo ON br.order_no = CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'),LPAD(bo.id, 6, 0))
+        INNER JOIN bb_order_appointments boa ON bo.id = boa.order_id
+        INNER JOIN bb_rooms brm ON boa.room_id = brm.id
         <where>
-            <if test="keyword != null and keyword != ''">
-                order_no LIKE "%${keyword}%"
+            <if test="criteria.keyword!=null and criteria.keyword!=''">
+                AND ((CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
+                CONCAT('%',#{criteria.keyword},'%')) OR (boa.contact_name LIKE
+                CONCAT('%',#{criteria.keyword},'%')) OR
+                (boa.contact_mobile LIKE CONCAT('%',#{criteria.keyword},'%')))
+            </if>
+            <if test="criteria.total!=null">
+                AND bo.total > #{criteria.total}
+            </if>
+            <if test="criteria.payAmount!=null">
+                AND bo.pay_amount > #{criteria.payAmount}
+            </if>
+            <if test="criteria.from!=null">
+                AND bo.created_at >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= bo.created_at
+            </if>
+            <if test="criteria.status">
+                AND bo.status = #{criteria.status.code}
             </if>
         </where>
     </select>
 
-    <select id="dataList" resultMap="receiptMap">
-        select * from bb_receipts
+    <select id="dataList" resultType="com.ace.entity.ReceiptDetail">
+        SELECT
+        br.order_no AS orderNo,
+        br.no AS no,
+        brm.project_name AS projectName,
+        brm.org_name AS orgName,
+        brm.name AS roomName,
+        bo.total AS total,
+        bo.pay_amount AS payAmount,
+        br.price AS price,
+        bo.created_at AS createdAt,
+        br.created_at AS paidAt,
+        bo.pay_type AS payType
+        FROM bb_receipts br
+        LEFT JOIN bb_orders bo ON br.order_no = CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'),LPAD(bo.id, 6, 0))
+        INNER JOIN bb_order_appointments boa ON bo.id = boa.order_id
+        INNER JOIN bb_rooms brm ON boa.room_id = brm.id
         <where>
-            <if test="keyword != null and keyword != ''">
-                order_no LIKE "%${keyword}%"
+            <if test="criteria.keyword!=null and criteria.keyword!=''">
+                AND ((CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
+                CONCAT('%',#{criteria.keyword},'%')) OR (boa.contact_name LIKE
+                CONCAT('%',#{criteria.keyword},'%')) OR
+                (boa.contact_mobile LIKE CONCAT('%',#{criteria.keyword},'%')))
+            </if>
+            <if test="criteria.total!=null">
+                AND bo.total > #{criteria.total}
+            </if>
+            <if test="criteria.payAmount!=null">
+                AND bo.pay_amount > #{criteria.payAmount}
+            </if>
+            <if test="criteria.from!=null">
+                AND bo.created_at >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= bo.created_at
+            </if>
+            <if test="criteria.status">
+                AND bo.status = #{criteria.status.code}
             </if>
         </where>
-        order by id desc LIMIT #{start},#{length}
+        ORDER BY br.id DESC LIMIT #{criteria.start},#{criteria.length}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">

@@ -90,17 +90,19 @@
                                 data.projectName = $("#project").val();
                             }
                         },
-                        dom: 'Bfltip',
-                        buttons:
-                                [
-                                    {
-                                        text: '新建订单',
-                                        className: 'btn btn-primary pull-right',
-                                        action: function () {
-                                            window.location.href = '/admin/orders/new';
+                        <#if !current_account.isAdmin()>
+                            dom: 'Bfltip',
+                            buttons:
+                                    [
+                                        {
+                                            text: '新建订单',
+                                            className: 'btn btn-primary pull-right',
+                                            action: function () {
+                                                window.location.href = '/admin/orders/new';
+                                            }
                                         }
-                                    }
-                                ],
+                                    ],
+                        </#if>
                         columns:
                                 [
                                     {
@@ -158,15 +160,13 @@
                                         data: "orderNo",
                                         className: 'center',
                                         render: function (data, type, row) {
-                                            switch (row.status) {
-                                                case "UNPAID2CONFIRM":
-                                                    return '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>' +
-                                                            '<a class="btn btn-xs btn-warning" href="/admin/orders/' + data + '/confirm" data-method="POST" data-message="确认成功">确认</a>';
-
-                                                default:
-                                                    return '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>';
-
-                                            }
+                                            var _btn = '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>';
+                                            <#if !current_account.isAdmin()>
+                                                if (row.status == "UNPAID2CONFIRM") {
+                                                    _btn = _btn + '<a class="btn btn-xs btn-warning" href="/admin/orders/' + data + '/confirm" data-method="POST" data-message="确认成功">确认</a>';
+                                                }
+                                            </#if>
+                                            return _btn;
                                         }
                                     }
                                 ]

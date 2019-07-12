@@ -16,7 +16,7 @@ public class Account implements Serializable {
     private static final long serialVersionUID = -2636547406752810026L;
     private String accountId;
     private String accountName;
-    private boolean manager = false;
+    private boolean admin = false;
     private List<Staff> staffList = new ArrayList<>();
     //记录操作产生的错误信息
     private String errMsg;
@@ -25,6 +25,4 @@ public class Account implements Serializable {
         this.accountId = accountId;
         this.accountName = accountName;
     }
-
-
 }

@@ -16,6 +16,7 @@ import org.codehaus.jettison.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -91,5 +92,19 @@ public class DataUtils {
             log.info("获取组织信息失败:" + exp.getMessage());
         }
         return dataList;
+    }
+
+    public static List<Data> proList(String actId) {
+        List<Data> proList = new ArrayList<>(Arrays.asList(
+                new Data("795124065877757952", "上海中星城"),
+                new Data("806334169587257344", "东城创业园"),
+                new Data("809760378929418240", "歌华大厦"),
+                new Data("846745686094778368", "高盛大厦"),
+                new Data("887185483367845888", "宏慧盟智园"),
+                new Data("892342708801507328", "凤创谷"),
+                new Data("978893741458984960", "亿博业空间"),
+                new Data("980654544793112576", "星月总部湾")
+        ));
+        return proList;
     }
 }

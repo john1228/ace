@@ -4,40 +4,35 @@
 <div class="col-xs-12 col-sm-12 padding-6 form-horizontal">
     <div class="col-xs-12 col-sm-9">
         <div class="form-group row col-xs-12 col-sm-6">
-            <label class="col-sm-2 control-label no-padding-right text-right">名称</label>
-            <div class="col-sm-10">
-                <input id="name" class="form-control col-xs-10 col-sm-9"/>
-            </div>
+            <input id="name" class="form-control" placeholder="请输入场地名字"/>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-9">
-        <div class="form-group col-xs-12 col-sm-6">
-            <label class="col-sm-2 control-label no-padding-right text-right">项目</label>
-            <div class="col-sm-10">
-                <div class="input-group">
-                    <select>
+    <#if current_account.isAdmin() >
+        <div class="col-xs-12 col-sm-9">
+            <div class="form-group col-xs-12 col-sm-6">
+                <label class="col-sm-2 control-label no-padding-right text-right">项目</label>
+                <div class="col-sm-10">
+                    <select class="chosen-select form-control">
                         <option>---请选择---</option>
-                        <#list current_account.getStaffList() as staff>
-                            <option value="${staff.projectId}">${staff.projectName}</option>
+                        <#list current_project as pro>
+                            <option value="${pro.id}">${pro.text}</option>
                         </#list>
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="form-group col-xs-12 col-sm-6">
-            <label class="col-sm-2 control-label no-padding-right text-right">组织</label>
-            <div class="col-sm-10">
-                <div class="input-group">
-                    <select>
+            <div class="form-group col-xs-12 col-sm-6">
+                <label class="col-sm-2 control-label no-padding-right text-right">组织</label>
+                <div class="col-sm-10">
+                    <select class="chosen-select form-control">
                         <option>---请选择---</option>
-                        <#list current_account.getStaffList() as staff>
-                            <option value="${staff.orgId}">${staff.orgName}</option>
-                        </#list>
+                    <#--<#list current_account.getStaffList() as staff>-->
+                    <#--<option value="${staff.orgId}">${staff.orgName}</option>-->
+                    <#--</#list>-->
                     </select>
                 </div>
             </div>
         </div>
-    </div>
+    </#if>
     <div class="col-xs-12 col-sm-9">
         <div class="form-group col-xs-12 col-sm-6">
             <label class="col-sm-2 control-label no-padding-right text-right">面积</label>

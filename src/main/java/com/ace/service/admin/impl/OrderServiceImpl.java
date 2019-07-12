@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 
 @Service("admin_order_service")
 public class OrderServiceImpl implements OrderService {
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Resource
     private OrderMapper orderMapper;

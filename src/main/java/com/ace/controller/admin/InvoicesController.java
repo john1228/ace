@@ -6,7 +6,9 @@ import com.ace.controller.admin.concerns.InvoiceCriteria;
 import com.ace.entity.Invoice;
 import com.ace.entity.InvoiceOrder;
 import com.ace.entity.Staff;
+import com.ace.entity.concern.invoice.InvoiceStatus;
 import com.ace.service.admin.InvoiceService;
+import com.ace.util.CollectionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,14 +27,15 @@ public class InvoicesController extends BaseController {
 
 
     @GetMapping({"", "/"})
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("statuses", CollectionUtil.toCollection(InvoiceStatus.class));
         return viewPath + "index";
     }
 
     @ResponseBody
     @PostMapping("/dataList")
     public DataTable<InvoiceOrder> dataList(
-            @SessionAttribute(CURRENT_OPERATOR) Staff staff,
+            @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
             InvoiceCriteria criteria
     ) {
         DataTable<InvoiceOrder> dataTable = invoiceService.dataTable(staff, criteria);

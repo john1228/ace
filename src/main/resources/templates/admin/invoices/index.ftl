@@ -28,7 +28,9 @@
 </div>
 <div class="page-content">
     <div class="row">
-        <#include "search.ftl"/>
+        <div class="col-xs-12">
+            <#include "search.ftl"/>
+        </div>
         <div class="col-xs-12">
             <div class="table-header padding-2">
                 发票订单
@@ -90,10 +92,11 @@
                             type: "POST",
                             data: function (data) {
                                 console.log(data);
-                                data.orderNo = $("#orderNo").val();
-                                data.startDate = $("#startDate").val();
-                                data.endDate = $("#endDate").val();
-                                data.mobile = $("#mobile").val()
+                                data.keyword = $("#keyword").val();
+                                data.status = $("#status").val();
+                                data.createdAt = $("#createdAt").val();
+                                data.total = $("#total").val();
+                                data.payAmount = $("#payAmount").val()
                             }
                         },
                         columns: [
@@ -110,10 +113,9 @@
                                 data: "status",
                                 className: 'center',
                                 render: function (data, type, row) {
-                                    console.log(data);
-                                    console.log(row.orderNo);
                                     var _html = '<div class="hidden-sm hidden-xs btn-group">' +
                                             '<a class="btn btn-xs btn-info" href="/admin/invoices/' + row.orderNo + '">查看</a>';
+                                    <#if current_account.isAdmin()>
                                     switch (data) {
                                         case "APPLYING":
                                             _html += '<a class="btn btn-xs btn-info" href="/admin/invoices/' + row.orderNo + '">开票</a>';
@@ -122,6 +124,7 @@
                                             _html += '<a class="btn btn-xs btn-info" href="/admin/invoices/' + row.orderNo + '">邮寄</a>';
                                             break;
                                     }
+                                    </#if>
                                     _html += '</div>';
                                     return _html;
                                 }

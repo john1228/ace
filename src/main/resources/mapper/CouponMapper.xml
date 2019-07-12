@@ -17,34 +17,42 @@
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_coupons
-        WHERE project_id = #{staff.projectId}
-        <if test="criteria.name!=null">
-            AND bb_coupons.name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
-        <if test="criteria.from!=null">
-            AND #{criteria.from} >= bb_coupons.start_date
-        </if>
-        <if test="criteria.to!=null">
-            AND bb_coupons.end_date >= #{criteria.to}
-        </if>
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null">
+                AND bb_coupons.name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.from!=null">
+                AND #{criteria.from} >= bb_coupons.start_date
+            </if>
+            <if test="criteria.to!=null">
+                AND bb_coupons.end_date >= #{criteria.to}
+            </if>
+        </where>
     </select>
 
     <select id="dataList" resultMap="couponMap">
         SELECT * FROM bb_coupons
-        WHERE project_id = #{staff.projectId}
-        <if test="criteria.name!=null">
-            AND name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
-        <if test="criteria.from!=null">
-            AND #{criteria.from} >= start_date
-        </if>
-        <if test="criteria.to!=null">
-            AND end_date >= #{criteria.to}
-        </if>
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null">
+                AND name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.from!=null">
+                AND #{criteria.from} >= start_date AND end_date >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= start_date AND end_date >= #{criteria.to}
+            </if>
+        </where>
         ORDER BY id DESC LIMIT #{start},#{length}
     </select>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create" useGeneratedKeys="true" keyProperty="coupon.id">
         insert into bb_coupons (project_id,
                                 name,
                                 type,
