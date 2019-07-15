@@ -12,8 +12,8 @@
             <div class="form-group col-xs-12 col-sm-6">
                 <label class="col-sm-2 control-label no-padding-right text-right">项目</label>
                 <div class="col-sm-10">
-                    <select class="chosen-select form-control">
-                        <option>---请选择---</option>
+                    <select class="chosen-select form-control" id="proId">
+                        <option disabled selected>---请选择---</option>
                         <#list current_project as pro>
                             <option value="${pro.id}">${pro.text}</option>
                         </#list>
@@ -23,14 +23,33 @@
             <div class="form-group col-xs-12 col-sm-6">
                 <label class="col-sm-2 control-label no-padding-right text-right">组织</label>
                 <div class="col-sm-10">
-                    <select class="chosen-select form-control">
-                        <option>---请选择---</option>
+                    <select class="chosen-select form-control" id="orgId">
+                        <option disabled selected>---请选择---</option>
                     <#--<#list current_account.getStaffList() as staff>-->
                     <#--<option value="${staff.orgId}">${staff.orgName}</option>-->
                     <#--</#list>-->
                     </select>
                 </div>
             </div>
+            <script type="text/javascript">
+                $(function () {
+                    $("#proId").on("change", function () {
+                        var orgs;
+                        $.ajax({
+                            type: "GET",
+                            url: "/admin/options/orgs",
+                            data: {link: $("#proId").val()}
+                        }).done(function (data) {
+                            orgs = eval(data);
+                            $('#orgId').html("<option disabled selected>---请选择---</option>");
+                            $(orgs).each(function () {
+                                $('#orgId').append('<option value="' + this.id + '">' + this.text + '</option>');
+                            });
+                            $("#orgId").trigger("liszt:updated");
+                        });
+                    })
+                })
+            </script>
         </div>
     </#if>
     <div class="col-xs-12 col-sm-9">

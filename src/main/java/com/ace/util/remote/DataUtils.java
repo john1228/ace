@@ -46,6 +46,7 @@ public class DataUtils {
                 orgInfo.append(inputLine);
             }
             JSONObject jsonObject = new JSONObject(orgInfo.toString());
+            log.info("获取组织列表:" + jsonObject.toString());
             if (jsonObject.getString("code").equals("000000000")) {
                 JSONArray data = jsonObject.getJSONArray("data");
                 for (int i = 0; i < data.length(); i++) {

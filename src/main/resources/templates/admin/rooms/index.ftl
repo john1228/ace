@@ -84,6 +84,8 @@
                                     type: "POST",
                                     data: function (data) {
                                         data.name = $("#name").val();
+                                        data.proId = $("#proId").val();
+                                        data.orgId = $("#orgId").val();
                                         data.layerAreaFrom = $("#layerAreaFrom").val();
                                         data.layerAreaTo = $("#layerAreaTo").val();
                                         data.quotaFrom = $("#quotaFrom").val();

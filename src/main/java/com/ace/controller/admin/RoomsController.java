@@ -6,18 +6,17 @@ import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.RoomCriteria;
 import com.ace.controller.api.concerns.Result;
 import com.ace.controller.api.concerns.Success;
-import com.ace.entity.RoomSupport;
-import com.ace.entity.Staff;
-import com.ace.entity.Room;
-import com.ace.entity.Support;
+import com.ace.entity.*;
 import com.ace.service.admin.RoomService;
 import com.ace.service.admin.SupportService;
 import com.ace.util.Aliyun;
 import com.ace.util.StringUtils;
+import com.ace.util.remote.Data;
 import com.ace.util.remote.DataUtils;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +46,9 @@ public class RoomsController extends BaseController {
 
 
     @GetMapping({"", "/"})
-    public String index() {
+    public String index(Authentication authentication, Model model) {
+        Account account = (Account) authentication.getCredentials();
+        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
         return viewPath + "index";
     }
 

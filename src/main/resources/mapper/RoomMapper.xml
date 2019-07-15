@@ -48,6 +48,12 @@
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
             </if>
+            <if test="criteria.proId!=null and criteria.proId!=''">
+                AND project_id = #{criteria.proId}
+            </if>
+            <if test="criteria.orgId!=null and criteria.orgId!=''">
+                AND org_id = #{criteria.orgId}
+            </if>
             <if test="criteria.layerAreaFrom!=null">
                 AND layer_area >= #{criteria.layerAreaFrom}
             </if>
@@ -89,6 +95,12 @@
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+            <if test="criteria.proId!=null and criteria.proId!=''">
+                AND project_id = #{criteria.proId}
+            </if>
+            <if test="criteria.orgId!=null and criteria.orgId!=''">
+                AND org_id = #{criteria.orgId}
             </if>
             <if test="criteria.layerAreaFrom!=null">
                 AND layer_area >= #{criteria.layerAreaFrom}
@@ -148,11 +160,29 @@
         supervisor_email AS supervisorEmail,
         free_service AS freeService
         FROM bb_rooms
-        WHERE online = true AND (publish = 1 OR project_id IN
-        <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
-            #{staff.projectId}
-        </foreach>
-        )
+        WHERE online = true
+        <choose>
+            <when test="account.staffList==null || account.staffList.isEmpty()">
+                AND ((publish = 1 AND 1 = 0)
+            </when>
+            <otherwise>
+                AND ((publish = 1 AND project_id IN
+                <foreach collection="account.staffList" item="id" open="(" separator="," close=")">
+                    #{staff.projectId}
+                </foreach>)
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="account.staffList==null || account.staffList.isEmpty()">
+                OR (publish = 0 AND 1 = 0))
+            </when>
+            <otherwise>
+                OR (publish = 0 AND org_id IN
+                <foreach collection="account.staffList" item="id" open="(" separator="," close=")">
+                    #{staff.orgId}
+                </foreach>))
+            </otherwise>
+        </choose>
         <if test="query.keyword != null and query.keyword != ''">
             AND name LIKE CONCAT('%',#{query.keyword},'%')
         </if>

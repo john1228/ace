@@ -48,12 +48,7 @@ public class AdminUserAdvice {
         }
     }
 
-    @ModelAttribute("current_project")
-    public List<Data> projectList(Authentication authentication) {
-        log.info("获取账户下项目");
-        Account account = (Account) authentication.getCredentials();
-        return DataUtils.proList(account.getAccountId());
-    }
+
 
 
     @ModelAttribute("image")
