@@ -25,9 +25,6 @@
                 <div class="col-sm-10">
                     <select class="chosen-select form-control" id="orgId">
                         <option disabled selected>---请选择---</option>
-                    <#--<#list current_account.getStaffList() as staff>-->
-                    <#--<option value="${staff.orgId}">${staff.orgName}</option>-->
-                    <#--</#list>-->
                     </select>
                 </div>
             </div>

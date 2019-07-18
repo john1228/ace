@@ -65,9 +65,10 @@ public class RoomsController extends BaseController {
         Room room = new Room();
         List<Support> supports = supportService.supportList(staff);
         List<RoomSupport> roomSupports = supports.stream().map(Support::toRoomSupport).collect(Collectors.toList());
+        List<Data> orgList = DataUtils.orgList(staff.getProjectId());
         model.addAttribute("room", room);
         model.addAttribute("supports", roomSupports);
-        model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
+        model.addAttribute("current_orgs", buildFreeOrg(orgList, room));
         return viewPath + "new";
     }
 
@@ -98,9 +99,10 @@ public class RoomsController extends BaseController {
             result.addError(new ObjectError("image", "上传图片失败"));
         }
         if (result.hasErrors()) {
+            List<Data> orgList = DataUtils.orgList(staff.getProjectId());
             model.addAttribute("room", room);
             model.addAttribute("errors", result.getAllErrors());
-            model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
+            model.addAttribute("current_orgs", buildFreeOrg(orgList, room));
             model.addAttribute("supports", supportService.supportList(staff));
             return viewPath + "new";
         } else {
@@ -120,9 +122,10 @@ public class RoomsController extends BaseController {
     public String edit(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @PathVariable("id") Long id, Model model) {
         Room room = roomService.findById(id);
         List<Support> supports = supportService.supportList(staff);
+        List<Data> orgList = DataUtils.orgList(staff.getProjectId());
         model.addAttribute("room", room);
         model.addAttribute("supports", buildSupport(supports, room));
-        model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
+        model.addAttribute("current_orgs", buildFreeOrg(orgList, room));
         return viewPath + "edit";
     }
 
@@ -205,6 +208,17 @@ public class RoomsController extends BaseController {
                 return roomSupport.get();
             } else {
                 return support.toRoomSupport();
+            }
+        }).collect(Collectors.toList());
+    }
+
+    private List<RoomFreeOrg> buildFreeOrg(List<Data> orgList, Room room) {
+        List<String> rfoList = room.getFreeOrg();
+        return orgList.stream().map(data -> {
+            if (rfoList.contains(data.getId())) {
+                return new RoomFreeOrg(room.getId(), data.getId(), data.getText());
+            } else {
+                return new RoomFreeOrg(data.getId(), data.getText());
             }
         }).collect(Collectors.toList());
     }

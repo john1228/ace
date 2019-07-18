@@ -13,7 +13,7 @@ import java.util.List;
 public interface RoomMapper {
     Long recordsTotal(@Param("staff") Staff staff, @Param("criteria") RoomCriteria criteria);
 
-    List<Room> dataList(@Param("staff") Staff staff, @Param("start") int start, @Param("length") int length, @Param("criteria") RoomCriteria criteria);
+    List<Room> dataList(@Param("staff") Staff staff, @Param("criteria") RoomCriteria criteria);
 
     List<Room> roomList(@Param("staff") Staff staff);
 

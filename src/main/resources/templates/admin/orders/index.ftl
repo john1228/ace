@@ -82,7 +82,9 @@
                             url: "/admin/orders/dataList",
                             type: "POST",
                             data: function (data) {
-                                data.keyword = $("#mobile").val()
+                                data.keyword = $("#mobile").val();
+                                data.proId = $("#proId").val();
+                                data.orgId = $("#orgId").val();
                                 data.total = $("#total").val();
                                 data.payAmount = $("#payAmount").val();
                                 data.from = $("#from").val();

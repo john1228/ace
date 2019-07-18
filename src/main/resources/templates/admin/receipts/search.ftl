@@ -4,15 +4,15 @@
 <div class="col-xs-12 col-sm-12 padding-6 form-horizontal">
     <div class="col-xs-12 col-sm-12 form-group">
         <div class="col-xs-12 col-sm-6">
-            <input id="orderNo" class="form-control" placeholder="订单号/手机/姓名"/>
+            <input id="keyword" class="form-control" placeholder="订单号/手机/姓名"/>
         </div>
     </div>
     <div class="col-xs-12 col-sm-10 form-group">
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-3 control-label no-padding-right text-right">订单状态</label>
             <div class="col-sm-9">
-                <select class="form-control">
-                    <option>---请选择---</option>
+                <select class="form-control" id="status">
+                    <option disabled selected>---请选择---</option>
                     <option value="PAIDANDCONFIRM">已付款</option>
                     <option value="COMPLETE">已完成</option>
                     <option value="REFUNDING">退款中</option>

@@ -41,9 +41,27 @@
                 CONCAT('%',#{criteria.keyword},'%')) OR
                 (bb_order_appointments.contact_mobile LIKE CONCAT('%',#{criteria.keyword},'%')))
             </if>
-            <if test="criteria.createdAt!=null">
-                AND bb_orders.created_at BETWEEN #{criteria.createdAt} AND DATE_ADD(#{criteria.createdAt}, INTERVAL 1
-                DAY)
+            <if test="criteria.status!=null">
+                <choose>
+                    <when test="criteria.status.code == 0">
+                        AND bb_invoices.status IS NULL
+                    </when>
+                    <otherwise>
+                        AND bb_invoices.status = #{criteria.status.code}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="criteria.from!=null">
+                AND bb_orders.created_at >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.from} > bb_orders.created_at
+            </if>
+            <if test="criteria.total!=null">
+                AND bb_orders.total >= #{criteria.total}
+            </if>
+            <if test="criteria.payAmount!=null">
+                AND bb_orders.pay_amount >= #{criteria.payAmount}
             </if>
         </where>
     </select>
@@ -78,15 +96,27 @@
             CONCAT('%',#{criteria.keyword},'%')) OR
             (bb_order_appointments.contact_mobile LIKE CONCAT('%',#{criteria.keyword},'%')))
         </if>
-        <if test="criteria.createdAt!=null">
-            AND bb_orders.created_at BETWEEN #{criteria.createdAt} AND DATE_ADD(#{criteria.createdAt}, INTERVAL 1
-            DAY)
+        <if test="criteria.status!=null">
+            <choose>
+                <when test="criteria.status.code == 0">
+                  AND bb_invoices.status IS NULL
+                </when>
+                <otherwise>
+                  AND bb_invoices.status = #{criteria.status.code}
+                </otherwise>
+            </choose>
         </if>
-        <if test="criteria.payAmount!=null">
-            AND bb_orders.pay_amount > #{criteria.payAmount}
+        <if test="criteria.from!=null">
+            AND bb_orders.created_at >= #{criteria.from}
+        </if>
+        <if test="criteria.to!=null">
+            AND #{criteria.from} > bb_orders.created_at
         </if>
         <if test="criteria.total!=null">
-            AND bb_orders.total > #{criteria.total}
+            AND bb_orders.total >= #{criteria.total}
+        </if>
+        <if test="criteria.payAmount!=null">
+            AND bb_orders.pay_amount >= #{criteria.payAmount}
         </if>
         ORDER BY bb_invoices.created_at DESC
         LIMIT #{criteria.start},#{criteria.length}

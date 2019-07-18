@@ -55,10 +55,25 @@ public class Price extends Base {
     private Date createdAt;
     private Date updatedAt;
 
-    public static void main(String[] args){
-        ObjectMapper ob  = new ObjectMapper();
-        Date sd = new Date(System.currentTimeMillis());
-        java.util.Date ud = new java.util.Date();
+    public Integer startH() {
+        return string2Hour(startTime);
+    }
 
+    public Integer endH() {
+        return string2Hour(endTime);
+    }
+
+    private Integer string2Hour(String source) {
+        if (source == null) {
+            return null;
+        } else {
+            String[] sr = source.split(":");
+            Integer hours = Integer.valueOf(sr[0]) * 2;
+            if (sr[0].equals("00")) {
+                return hours;
+            } else {
+                return hours + 1;
+            }
+        }
     }
 }

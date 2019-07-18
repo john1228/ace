@@ -55,7 +55,7 @@
         <@spring.formHiddenInput "price.endTime"/>
     </div>
     <div class="col-sm-10" style="margin-top: 10px">
-        <span id="display">08:00 ~ 20:00</span>
+        <span id="display">${(price.startTime)!"08:00"} ~ ${(price.endTime)!"20:00"}</span>
     </div>
 </div>
 <div class="form-group row">
@@ -63,7 +63,7 @@
             style="color: red">*</span>价格</label>
     <div class="col-sm-10">
         <div class="input-group col-xs-10 col-sm-9">
-            <@spring.formInput "price.price" "class='form-control' placeholder='请填写价格' required"/>
+            <@spring.formInput "price.price" "class='form-control' placeholder='请填写价格' step='0.01' required" "number"/>
             <span class="input-group-btn">
                <button class="btn btn-sm btn-default" type="button">
                     半小时
@@ -88,11 +88,12 @@
 <script type="text/javascript">
     $(function () {
         $("#slider").slider({
+            mode: 'v',
             range: true,
             min: 16,
             max: 40,
             step: 1,
-            values: [16, 40],
+            values: [${(price.startH())!20}, ${(price.endH())!40}],
             showLabels: true,
             slide: function (event, ui) {
                 var startH = parseInt(ui.values[0] / 2);

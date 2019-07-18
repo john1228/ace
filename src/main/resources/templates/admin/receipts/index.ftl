@@ -54,7 +54,8 @@
             </div>
             <script type="text/javascript">
                 $(function () {
-                    $('#receiptList').DataTable({
+                    var $table = $('#receiptList');
+                    $table.DataTable({
                         language: {
                             sProcessing: "处理中...",
                             sLengthMenu: "显示 _MENU_ 项结果",
@@ -85,11 +86,11 @@
                             type: "POST",
                             data: function (data) {
                                 data.keyword = $("#mobile").val();
-                                data.status = $("#project").val();
-                                data.total = $("#total").val();
-                                data.payAmount = $("#payAmount").val();
+                                data.status = $("#status").val();
                                 data.from = $("#from").val();
                                 data.to = $("#to").val();
+                                data.total = $("#total").val();
+                                data.payAmount = $("#payAmount").val();
                             }
 
                         },
@@ -107,6 +108,9 @@
                             {data: "payType", className: 'center'}
                         ]
                     });
+                    $('#query').on("click", function () {
+                        $table.DataTable().draw(true);
+                    })
                 })
             </script>
         </div>

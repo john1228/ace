@@ -48,9 +48,6 @@ public class AdminUserAdvice {
         }
     }
 
-
-
-
     @ModelAttribute("image")
     public String getImgHost() {
         return Aliyun.Instance.imgHost;

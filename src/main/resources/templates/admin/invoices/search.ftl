@@ -11,8 +11,8 @@
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-3 control-label no-padding-right text-right">订单状态</label>
             <div class="col-sm-9">
-                <select class="form-control">
-                    <option>---请选择---</option>
+                <select class="form-control" id="status">
+                    <option disabled selected>---请选择---</option>
                     <#list statuses?keys as key>
                         <option value="${key}">${statuses[key]}</option>
                     </#list>

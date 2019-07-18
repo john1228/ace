@@ -1,6 +1,7 @@
 package com.ace.util.remote;
 
 
+import com.ace.entity.Staff;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -58,6 +59,10 @@ public class DataUtils {
             }
         } catch (Exception exp) {
             log.info("获取组织信息失败:" + exp.getMessage());
+        }
+
+        for (int i = 1; i <= 10; i++) {
+            dataList.add(new Data("001-O-" + i, "001-ON" + i));
         }
         return dataList;
     }

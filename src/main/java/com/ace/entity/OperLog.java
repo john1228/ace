@@ -29,5 +29,6 @@ public class OperLog {
     @NonNull
     @JsonView(AdminView.Table.class)
     private String ip;
+    @JsonView(AdminView.Table.class)
     private String createdAt;
 }

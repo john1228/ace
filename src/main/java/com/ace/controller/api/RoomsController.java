@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "会议室列表")
@@ -35,7 +36,11 @@ public class RoomsController extends BaseController {
             @RequestAttribute("ACCOUNT") Account account,
             Query query
     ) {
-        return new Success(roomService.query(account, query));
+        if (account.getStaffList().size() == 0) {
+            return new Success(new ArrayList<>());
+        } else {
+            return new Success(roomService.query(account, query));
+        }
     }
 
     @JsonView(ApiView.Detail.class)

@@ -12,8 +12,14 @@
     </insert>
 
     <select id="freeOrgs" resultType="com.ace.entity.RoomFreeOrg">
-        SELECT *
+        SELECT room_id AS roomId, org_id AS orgId, org_name AS orgName
         FROM bb_room_free_org
         WHERE room_id = #{room}
     </select>
+
+    <delete id="deleteOrgs">
+        DELETE
+        FROM bb_room_free_org
+        WHERE room_id = #{room}
+    </delete>
 </mapper>

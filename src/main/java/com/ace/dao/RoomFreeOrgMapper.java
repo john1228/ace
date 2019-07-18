@@ -10,4 +10,6 @@ public interface RoomFreeOrgMapper {
     void create(@Param("orgs") List<RoomFreeOrg> supports);
 
     List<RoomFreeOrg> freeOrgs(@Param("room") Long room);
+
+    void deleteOrgs(@Param("room") Long room);
 }

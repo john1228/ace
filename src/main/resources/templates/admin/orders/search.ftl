@@ -9,6 +9,48 @@
             </div>
         </div>
     </div>
+    <#if current_account.isAdmin() >
+        <div class="col-xs-12 col-sm-12 form-group">
+            <div class="col-xs-12 col-sm-6">
+                <label class="col-sm-2 control-label no-padding-right text-right">项目</label>
+                <div class="col-sm-10">
+                    <select class="chosen-select form-control" id="proId">
+                        <option disabled selected>---请选择---</option>
+                        <#list current_project as pro>
+                            <option value="${pro.id}">${pro.text}</option>
+                        </#list>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <label class="col-sm-2 control-label no-padding-right text-right">组织</label>
+                <div class="col-sm-10">
+                    <select class="chosen-select form-control" id="orgId">
+                        <option disabled selected>---请选择---</option>
+                    </select>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $("#proId").on("change", function () {
+                        var orgs;
+                        $.ajax({
+                            type: "GET",
+                            url: "/admin/options/orgs",
+                            data: {link: $("#proId").val()}
+                        }).done(function (data) {
+                            orgs = eval(data);
+                            $('#orgId').html("<option disabled selected>---请选择---</option>");
+                            $(orgs).each(function () {
+                                $('#orgId').append('<option value="' + this.id + '">' + this.text + '</option>');
+                            });
+                            $("#orgId").trigger("liszt:updated");
+                        });
+                    })
+                })
+            </script>
+        </div>
+    </#if>
     <div class="col-xs-12 col-sm-12 form-group">
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-2 control-label no-padding-right text-right">原价</label>
@@ -38,12 +80,6 @@
                     $(this).datepicker({language: 'zh'});
                 });
             </script>
-        </div>
-        <div class="col-xs-12 col-sm-6">
-            <label class="col-sm-2 control-label no-padding-right text-right">项目</label>
-            <div class="col-sm-10">
-                <input class="form-control col-xs-10 col-sm-9" id="project"/>
-            </div>
         </div>
     </div>
 

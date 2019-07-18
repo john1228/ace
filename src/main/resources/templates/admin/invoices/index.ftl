@@ -94,7 +94,8 @@
                                 console.log(data);
                                 data.keyword = $("#keyword").val();
                                 data.status = $("#status").val();
-                                data.createdAt = $("#createdAt").val();
+                                data.from = $("#from").val();
+                                data.to = $("#to").val();
                                 data.total = $("#total").val();
                                 data.payAmount = $("#payAmount").val()
                             }

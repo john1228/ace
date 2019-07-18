@@ -42,7 +42,7 @@
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_rooms
         <where>
-            <if test="criteria.name!=null and criteria.name!=''">
+            <if test="staff!=null">
                 project_id = #{staff.projectId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
@@ -91,7 +91,7 @@
         FROM bb_rooms
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                project_id = #{staff.projectId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
@@ -115,10 +115,7 @@
                 AND #{criteria.quotaTo} >= quota
             </if>
         </where>
-        ORDER BY id DESC
-        <if test="length!=0">
-            LIMIT #{start},#{length}
-        </if>
+        ORDER BY id DESC LIMIT #{criteria.start},#{criteria.length}
     </select>
     <!--筛选员工下的管理的所有会议室，用于筛选-->
     <select id="roomList" resultType="com.ace.entity.Room">
@@ -160,29 +157,14 @@
         supervisor_email AS supervisorEmail,
         free_service AS freeService
         FROM bb_rooms
-        WHERE online = true
-        <choose>
-            <when test="account.staffList==null || account.staffList.isEmpty()">
-                AND ((publish = 1 AND 1 = 0)
-            </when>
-            <otherwise>
-                AND ((publish = 1 AND project_id IN
-                <foreach collection="account.staffList" item="id" open="(" separator="," close=")">
-                    #{staff.projectId}
-                </foreach>)
-            </otherwise>
-        </choose>
-        <choose>
-            <when test="account.staffList==null || account.staffList.isEmpty()">
-                OR (publish = 0 AND 1 = 0))
-            </when>
-            <otherwise>
-                OR (publish = 0 AND org_id IN
-                <foreach collection="account.staffList" item="id" open="(" separator="," close=")">
-                    #{staff.orgId}
-                </foreach>))
-            </otherwise>
-        </choose>
+        WHERE online = true AND
+        ((publish = 1 AND project_id IN
+        <foreach collection="account.staffList" item="staff" open="(" separator="," close=")">
+            #{staff.projectId}
+        </foreach>) OR (publish = 0 AND org_id IN
+        <foreach collection="account.staffList" item="staff" open="(" separator="," close=")">
+            #{staff.orgId}
+        </foreach>))
         <if test="query.keyword != null and query.keyword != ''">
             AND name LIKE CONCAT('%',#{query.keyword},'%')
         </if>

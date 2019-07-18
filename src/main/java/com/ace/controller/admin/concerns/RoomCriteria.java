@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class RoomCriteria {
+public class RoomCriteria extends Criteria {
     private String name;
     private String proId;
     private String orgId;

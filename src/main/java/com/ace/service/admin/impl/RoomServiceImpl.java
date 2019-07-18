@@ -36,7 +36,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void data(Staff staff, DataTable<Room> dataTable, RoomCriteria criteria) {
         dataTable.setRecordsFiltered(roomMapper.recordsTotal(staff, criteria));
-        dataTable.setData(roomMapper.dataList(staff, dataTable.getStart(), dataTable.getLength(), criteria));
+        dataTable.setData(roomMapper.dataList(staff, criteria));
     }
 
     @Override
@@ -46,12 +46,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room findById(Long id) {
-        List<RoomFreeOrg> orgList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            orgList.add(new RoomFreeOrg(id, String.valueOf(i), String.valueOf(i)));
-        }
-        freeOrgMapper.create(orgList);
-        return roomMapper.findById(id);
+        Room room = roomMapper.findById(id);
+        List<RoomFreeOrg> freeOrgs = freeOrgMapper.freeOrgs(id);
+        room.setFreeOrg(freeOrgs.stream().map(RoomFreeOrg::getOrgId).collect(Collectors.toList()));
+        return room;
     }
 
     @Override
@@ -75,6 +73,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public void update(Staff staff, Room room) {
         roomMapper.update(room);
         roomSupportMapper.removeList(room.getId());
@@ -83,15 +82,17 @@ public class RoomServiceImpl implements RoomService {
             selectedSupport.forEach(item -> item.setRoomId(room.getId()));
             roomSupportMapper.create(selectedSupport);
         }
-        List<RoomFreeOrg> freeOrgs = new ArrayList<>();
-        List<Data> orgList = DataUtils.orgList(staff.getProjectId());
-        orgList.forEach(data -> {
-            if (room.getFreeOrg().contains(data.getId())) {
-                freeOrgs.add(new RoomFreeOrg(room.getId(), data.getId(), data.getText()));
-            }
-        });
-        if (freeOrgs.size() != 0)
+        freeOrgMapper.deleteOrgs(room.getId());
+        if (!room.isFree()) {
+            List<RoomFreeOrg> freeOrgs = new ArrayList<>();
+            List<Data> orgList = DataUtils.orgList(staff.getProjectId());
+            orgList.forEach(data -> {
+                if (room.getFreeOrg().contains(data.getId())) {
+                    freeOrgs.add(new RoomFreeOrg(room.getId(), data.getId(), data.getText()));
+                }
+            });
             freeOrgMapper.create(freeOrgs);
+        }
     }
 
     @Override

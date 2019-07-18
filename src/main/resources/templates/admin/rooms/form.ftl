@@ -247,7 +247,7 @@
                                 style="color: red">*</span>层高</label>
                         <div class="col-sm-10">
                             <div class="input-group col-xs-10 col-sm-9">
-                                <@spring.formInput "room.layerHeight" "class='form-control' required"/>
+                                <@spring.formInput "room.layerHeight" "class='form-control' step='0.01' required" "number"/>
                                 <span class="input-group-btn">
                                    <button class="btn btn-sm btn-default" type="button">
                                         米
@@ -287,7 +287,7 @@
                        for="form-field-1"><span style="color: red">*</span>面积</label>
                 <div class="col-sm-10">
                     <div class="input-group col-xs-10 col-sm-9">
-                        <@spring.formInput "room.layerArea" "class='form-control' required"/>
+                        <@spring.formInput "room.layerArea" "class='form-control' step='0.01' required" "number"/>
                         <span class="input-group-btn">
                            <button class="btn btn-sm btn-default" type="button">
                                 m²
@@ -354,7 +354,11 @@
                             <select multiple="multiple" id="freeOrg" name="freeOrg"
                                     class="multiselect col-xs-10 col-sm-9">
                                 <#list current_orgs as org>
-                                    <option value="${org.id}">${org.text}</option>
+                                    <#if org.roomId??>
+                                        <option value="${org.orgId}" selected>${org.orgName}</option>
+                                    <#else>
+                                        <option value="${org.orgId}">${org.orgName}</option>
+                                    </#if>
                                 </#list>
                             </select>
                         </div>
@@ -392,7 +396,7 @@
                                for="form-field-1"><span style="color: red">*</span>最短起租时间</label>
                         <div class="col-sm-10 ">
                             <div class="input-group col-xs-10 col-sm-9">
-                                <@spring.formInput "room.unit" "class='form-control'"/>
+                                <@spring.formInput "room.unit" "class='form-control'" 'number'/>
                                 <span class="input-group-btn">
                                    <button class="btn btn-sm btn-default" type="button">
                                         半小时
@@ -406,7 +410,7 @@
                                for="form-field-1"><span style="color: red">*</span>最短续租时间</label>
                         <div class="col-sm-10">
                             <div class="input-group col-xs-10 col-sm-9">
-                                <@spring.formInput "room.renew" "class='form-control' 'number'"/>
+                                <@spring.formInput "room.renew" "class='form-control'" 'number'/>
                                 <span class="input-group-btn">
                                    <button class="btn btn-sm btn-default" type="button">
                                         半小时
@@ -437,7 +441,7 @@
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>负责人电话</label>
                         <div class="col-sm-10">
-                            <@spring.formInput "room.supervisorMobile","class='col-xs-10 col-sm-9' required"/>
+                            <@spring.formInput "room.supervisorMobile","class='col-xs-10 col-sm-9' required" "tel"/>
                         </div>
                     </div>
                     <div class="form-group row">

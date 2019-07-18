@@ -5,15 +5,18 @@ import com.ace.controller.admin.concerns.AdminView;
 import com.ace.controller.admin.concerns.DataTable;
 import com.ace.controller.admin.concerns.OrderCriteria;
 import com.ace.controller.api.concerns.Result;
+import com.ace.entity.Account;
 import com.ace.entity.Order;
 import com.ace.entity.Staff;
 import com.ace.entity.concern.enums.OrderStatus;
 import com.ace.service.admin.OrderService;
 import com.ace.service.admin.RoomService;
 import com.ace.util.CollectionUtil;
+import com.ace.util.remote.DataUtils;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +39,9 @@ public class OrdersController extends BaseController {
 
 
     @GetMapping({"", "/"})
-    public String index() {
+    public String index(Authentication authentication, Model model) {
+        Account account = (Account) authentication.getCredentials();
+        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
         return viewPath + "index";
     }
 

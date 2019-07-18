@@ -9,12 +9,19 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class RoomFreeOrg {
-    @NonNull
     private Long roomId;
-    @NonNull
     private String orgId;
-    @NonNull
     private String orgName;
+
+    public RoomFreeOrg(String orgId, String orgName) {
+        this.orgId = orgId;
+        this.orgName = orgName;
+    }
+
+    public RoomFreeOrg(Long roomId, String orgId, String orgName) {
+        this.roomId = roomId;
+        this.orgId = orgId;
+        this.orgName = orgName;
+    }
 }

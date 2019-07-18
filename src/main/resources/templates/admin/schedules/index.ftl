@@ -27,17 +27,13 @@
 </div>
 <div class="page-content">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-sm-12">
+            <#include "search.ftl"/>
+        </div>
+        <div class="col-xs-12 col-sm-12">
+            <div class="table-header">排期</div>
             <div class="row">
-                <#include "search.ftl"/>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="table-header">排期</div>
-                    <div class="row">
-                        <#include "calendar.ftl"/>
-                    </div>
-                </div>
+                <#include "calendar.ftl"/>
             </div>
         </div>
     </div>

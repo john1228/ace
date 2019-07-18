@@ -14,6 +14,8 @@ import java.sql.Date;
 @Setter
 public class OrderCriteria extends Criteria {
     private String keyword;
+    private String proId;
+    private String orgId;
     private BigDecimal total;
     private BigDecimal payAmount;
     private Date from;
