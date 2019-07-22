@@ -21,22 +21,22 @@ public class SettingServiceImpl implements SettingService {
 
     @Override
     public Alipay alipay(Staff staff) {
-        return settingMapper.alipay(staff.getProjectId());
+        return settingMapper.alipay();
     }
 
     @Override
     public void updateAlipay(Staff staff, Alipay alipay) {
-        settingMapper.updateAlipay(staff, alipay);
+        settingMapper.updateAlipay(alipay);
     }
 
     @Override
     public Wxpay wxpay(Staff staff) {
-        return settingMapper.wxpay(staff.getProjectId());
+        return settingMapper.wxpay();
     }
 
     @Override
     public void updateWxpay(Staff staff, Wxpay wxpay) {
-        settingMapper.updateWxpay(staff, wxpay);
+        settingMapper.updateWxpay(wxpay);
     }
 
     @Override

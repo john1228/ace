@@ -25,8 +25,7 @@ public class AlipayServiceImpl implements AlipayService {
 
     @Override
     public boolean check(String orderNo, Map<String, String> params) {
-        Room room = roomMapper.appointedRoom(orderNo);
-        Alipay alipay = settingMapper.alipay(room.getProjectId());
+        Alipay alipay = settingMapper.alipay();
         if (alipay == null) {
             return false;
         } else {

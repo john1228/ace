@@ -95,15 +95,15 @@
             </li>
         </ul>
     </li>
-    <#if current_account.isAdmin()>
-        <li class="${(menu == "setting")?string("active open","")}">
-            <a href="#" class="dropdown-toggle">
-                <i class="menu-icon fa fa-cogs"></i>
-                <span class="menu-text">配置管理</span>
-                <b class="arrow fa fa-angle-down"></b>
-            </a>
-            <b class="arrow"></b>
-            <ul class="submenu">
+    <li class="${(menu == "setting")?string("active open","")}">
+        <a href="#" class="dropdown-toggle">
+            <i class="menu-icon fa fa-cogs"></i>
+            <span class="menu-text">配置管理</span>
+            <b class="arrow fa fa-angle-down"></b>
+        </a>
+        <b class="arrow"></b>
+        <ul class="submenu">
+            <#if current_account.isAdmin()>
                 <li class="${(requestUri?starts_with("/admin/settings/alipay"))?string("active","")}">
                     <a href="/admin/settings/alipay">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -118,15 +118,18 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-                <li class="${(requestUri?starts_with("/admin/settings/protocol"))?string("active","")}">
-                    <a href="/admin/settings/protocol">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        <text>下单协议</text>
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-            </ul>
-        </li>
+            <#else>
+                  <li class="${(requestUri?starts_with("/admin/settings/protocol"))?string("active","")}">
+                      <a href="/admin/settings/protocol">
+                          <i class="menu-icon fa fa-caret-right"></i>
+                          <text>下单协议</text>
+                      </a>
+                      <b class="arrow"></b>
+                  </li>
+            </#if>
+        </ul>
+    </li>
+    <#if current_account.isAdmin()>
         <li class="${(menu == "log")?string("active open","")}">
             <a href="#" class="dropdown-toggle">
                 <i class="menu-icon fa fa-bookmark"></i>

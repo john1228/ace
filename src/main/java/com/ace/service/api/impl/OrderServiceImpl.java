@@ -188,9 +188,9 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                     order = orderMapper.findById(orderId);
                     if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
                         //支付宝
-                        Alipay alipay = settingMapper.alipay(room.getProjectId());
-                        Wxpay wxpay = settingMapper.wxpay(room.getProjectId());
                         Payment payment = new Payment();
+                        Alipay alipay = settingMapper.alipay();
+                        Wxpay wxpay = settingMapper.wxpay();
                         if (alipay != null) {
                             payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
                         }
@@ -223,16 +223,11 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         order.setAppointment(appointment);
         if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
             //支付宝
-            Room room = roomMapper.findById(appointment.getRoomId());
-            Alipay alipay = settingMapper.alipay(room.getProjectId());
-            Wxpay wxpay = settingMapper.wxpay(room.getProjectId());
+            Alipay alipay = settingMapper.alipay();
+            Wxpay wxpay = settingMapper.wxpay();
             Payment payment = new Payment();
-            if (alipay != null) {
-                payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
-            }
-            if (wxpay != null) {
-                payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
-            }
+            payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
+            payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
             order.setPayment(payment);
         }
         return order;

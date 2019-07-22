@@ -22,10 +22,14 @@
 
     <select id="dataList" resultMap="supMap">
         SELECT * FROM bb_supports
-        WHERE project_id = #{staff.projectId}
-        <if test="criteria.name!=null and criteria.name!=''">
-            AND name LIKE CONCAT('%',#{criteria.name},'%')
-        </if>
+        <where>
+            <if test="staff!=null">
+                AND project_id = #{staff.projectId}
+            </if>
+            <if test="criteria.name!=null and criteria.name!=''">
+                AND name LIKE CONCAT('%',#{criteria.name},'%')
+            </if>
+        </where>
         ORDER BY id DESC LIMIT #{criteria.start},#{criteria.length}
     </select>
 

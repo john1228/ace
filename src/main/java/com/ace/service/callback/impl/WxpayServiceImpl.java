@@ -25,8 +25,7 @@ public class WxpayServiceImpl implements WxpayService {
 
     @Override
     public boolean check(String orderNo, SortedMap<String, Object> params, String sign) {
-        Room room = roomMapper.appointedRoom(orderNo);
-        Wxpay wxpay = settingMapper.wxpay(room.getProjectId());
+        Wxpay wxpay = settingMapper.wxpay();
         if (wxpay == null) {
             return false;
         } else {

@@ -23,7 +23,7 @@ public class SettingsController extends BaseController {
     SettingService settingService;
 
     @GetMapping("/alipay")
-    public String alipay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+    public String alipay(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, Model model) {
         Alipay alipay = settingService.alipay(staff);
         if (alipay == null)
             alipay = new Alipay();
@@ -33,13 +33,13 @@ public class SettingsController extends BaseController {
 
     @PutMapping("/alipay")
     @Recordable
-    public String updateAlipay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Alipay alipay) {
+    public String updateAlipay(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, Alipay alipay) {
         settingService.updateAlipay(staff, alipay);
         return "redirect:" + viewPath + "alipay";
     }
 
     @GetMapping("/wxpay")
-    public String wxpay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+    public String wxpay(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, Model model) {
         Wxpay wxpay = settingService.wxpay(staff);
         if (wxpay == null)
             wxpay = new Wxpay();
@@ -49,7 +49,7 @@ public class SettingsController extends BaseController {
 
     @PutMapping("/wxpay")
     @Recordable
-    public String updateWxpay(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Wxpay wxpay) {
+    public String updateWxpay(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, Wxpay wxpay) {
         settingService.updateWxpay(staff, wxpay);
         return "redirect:" + viewPath + "wxpay";
     }
