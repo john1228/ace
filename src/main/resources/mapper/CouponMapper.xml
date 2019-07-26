@@ -13,7 +13,7 @@
         <result column="end_date" property="endDate"/>
         <result column="duration" property="duration"/>
         <result column="limit_wday" property="limitWday" typeHandler="com.ace.dao.handler.WeekListTypeHandler"/>
-        <result column="limit_room" property="limitRoom" typeHandler="com.ace.dao.handler.StringListHandler"/>
+        <result column="limit_room" property="limitRoom" typeHandler="com.ace.dao.handler.IntegerListHandler"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_coupons

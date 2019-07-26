@@ -43,6 +43,15 @@ public class OrdersController extends BaseController {
         return new Success(orderService.supplierOrder(account, status, page));
     }
 
+    @JsonView(ApiView.Detail.class)
+    @GetMapping("/{id}")
+    @Authorization
+    @ApiOperation(value = "查看订单")
+    public Result show(@PathVariable("id") String orderNo) {
+
+        return new Success(orderService.show(orderNo));
+    }
+
 
     @JsonView(ApiView.Base.class)
     @PostMapping("/{id}")

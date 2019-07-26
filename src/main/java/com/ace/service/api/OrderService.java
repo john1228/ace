@@ -17,7 +17,7 @@ public interface OrderService {
 
     Order create(Account account, Appointment appointment, Long couponId);
 
-    Order show(Account account, String orderNo);
+    Order show(String orderNo);
 
     void confirm(String orderNo);
 

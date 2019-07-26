@@ -56,12 +56,8 @@ public class OrdersController extends BaseController {
     @GetMapping("/{id}")
     @Authorization
     @ApiOperation(value = "查看订单")
-    public Result show(
-            @RequestAttribute("ACCOUNT") Account account,
-            @PathVariable("id") String orderNo
-    ) {
-
-        return new Success(orderService.show(account, orderNo));
+    public Result show(@PathVariable("id") String orderNo) {
+        return new Success(orderService.show(orderNo));
     }
 
 

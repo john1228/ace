@@ -41,14 +41,14 @@
 
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="profile.html">
+                            <a href="http://bpmp.baobanwang.com/p/index">
                                 <i class="ace-icon fa fa-user"></i>
                                 返回
                             </a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="profile.html">
+                            <a href="/admin/profile/">
                                 <i class="ace-icon fa fa-user"></i>
                                 资料
                             </a>

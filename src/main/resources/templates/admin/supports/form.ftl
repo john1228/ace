@@ -1,5 +1,6 @@
 <link href="/assets/css/bootstrap/fileinput.css" media="all" rel="stylesheet" type="text/css">
 <script src="/assets/js/bootstrap/fileinput.js"></script>
+<script src="/assets/js/bootstrap/locales/zh.js"></script>
 <div class="row">
     <div class="col-xs-12 col-sm-12 widget-container-col">
         <div class="widget-box">

@@ -215,7 +215,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     }
 
     @Override
-    public Order show(Account account, String orderNo) {
+    public Order show(String orderNo) {
         Order order = orderMapper.findByOrderNo(orderNo);
         Appointment appointment = appointmentMapper.selectByOrder(order.getId());
         List<OrderSupport> supportList = orderSupportMapper.supportList(order.getId());

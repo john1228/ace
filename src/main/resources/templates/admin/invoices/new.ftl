@@ -43,8 +43,8 @@
                                         <label class="btn btn-primary">
                                             <input type="radio" name="type" value="GVATI">增值税普通发票
                                         </label>
-                                        <label class="btn btn-primary">
-                                            <input type="radio" name="type" value="VATI">普通增值税专用发票
+                                        <label class="btn btn-primary active">
+                                            <input type="radio" name="type" value="VATI" checked>普通增值税专用发票
                                         </label>
                                     </div>
                                 </div>
@@ -52,7 +52,6 @@
                             <script type="text/javascript">
                                 $(function () {
                                     $("input[name=type]").on("change", function () {
-                                        console.log($(this).val());
                                         if ($(this).val() == "GVATI") {
                                             $(".gvati").hide();
                                             $(".gvati").find(":input").attr("disabled", false);
@@ -67,12 +66,12 @@
                                     })
                                 })
                             </script>
-                            <div class="form-group row vati">
+                            <div class="form-group row vati" style="display: none">
                                 <label class="col-sm-2 control-label no-padding-right">类型</label>
                                 <div class="col-sm-10">
                                     <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn btn-primary">
-                                            <input type="radio" name="content[type]" value="公司">公司
+                                        <label class="btn btn-primary active">
+                                            <input type="radio" name="content[type]" value="公司" checked>公司
                                         </label>
                                         <label class="btn btn-primary">
                                             <input type="radio" name="content[type]" value="个人">个人
@@ -129,8 +128,8 @@
                                 <label class="col-sm-2 control-label no-padding-right">寄送方式</label>
                                 <div class="col-sm-10">
                                     <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn btn-primary">
-                                            <input type="radio" name="method" value="EMAIL">邮件
+                                        <label class="btn btn-primary active">
+                                            <input type="radio" name="method" value="EMAIL" checked>邮件
                                         </label>
                                         <label class="btn btn-primary">
                                             <input type="radio" name="method" value="EXPRESS">快递

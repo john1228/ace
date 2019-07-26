@@ -151,7 +151,8 @@
                                         <thead>
                                         <tr>
                                             <th class="center">编号</th>
-                                            <th class="center">有效期</th>
+                                            <th class="center">开始时间</th>
+                                            <th class="center">结束时间</th>
                                             <th class="center">状态</th>
                                         </tr>
                                         </thead>
@@ -191,8 +192,6 @@
                                                 },
                                                 columns: [
                                                     {data: "id", className: 'center'},
-                                                    {data: "orgId", className: "center"},
-                                                    {data: "empId", className: "center"},
                                                     {data: "startDate", className: 'center'},
                                                     {data: "endDate", className: 'center'},
                                                     {

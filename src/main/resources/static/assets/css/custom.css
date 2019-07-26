@@ -213,6 +213,7 @@ td .btn {
     top: 20%;
 }
 
-/*.chosen-container {*/
-    /*width: 100;*/
-/*}*/
+.multiselect-container {
+    height: 300px;
+    overflow-y: scroll;
+}

@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -18,19 +17,9 @@ import java.util.stream.Collectors;
 public class IntegerListHandler extends BaseTypeHandler<List<Integer>> {
     Logger logger = LoggerFactory.getLogger(IntegerListHandler.class);
 
-
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, List<Integer> params, JdbcType jdbcType) throws SQLException {
-        logger.info("设置");
-        StringBuilder sb = new StringBuilder();
-        params.forEach(item -> {
-            if (sb.length() == 0) {
-                sb.append(item);
-            } else {
-                sb.append(",").append(item);
-            }
-        });
-        ps.setString(i, sb.toString());
+        ps.setString(i, String.join(",", params.stream().map(integer -> integer.toString()).collect(Collectors.toList())));
     }
 
     @Override
@@ -59,6 +48,13 @@ public class IntegerListHandler extends BaseTypeHandler<List<Integer>> {
                 results.add(Integer.valueOf(item));
             }
             return results;
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Integer> strs = Arrays.asList(1, 2, 3, 4);
+        for (Integer integer : strs) {
+            System.err.println(integer.toString());
         }
     }
 }
