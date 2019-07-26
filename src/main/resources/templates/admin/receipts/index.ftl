@@ -37,17 +37,16 @@
                 <table id="receiptList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th class="center">订单号</th>
-                        <th class="center">流水号</th>
-                        <th class="center">项目</th>
-                        <th class="center">组织</th>
-                        <th class="center">会议室</th>
-                        <th class="center">订单金额</th>
-                        <th class="center">应付金额</th>
-                        <th class="center">流水金额</th>
-                        <th class="center">下单时间</th>
-                        <th class="center">支付时间</th>
-                        <th class="center">支付方式</th>
+                        <th class="center" width="10%">订单号</th>
+                        <th class="center" width="15%">流水号</th>
+                        <th class="center" width="10%">项目</th>
+                        <th class="center" width="7%">会议室</th>
+                        <th class="center" width="7%">订单金额</th>
+                        <th class="center" width="7%">应付金额</th>
+                        <th class="center" width="7%">流水金额</th>
+                        <th class="center" width="10%">下单时间</th>
+                        <th class="center" width="10%">支付时间</th>
+                        <th class="center" width="7%">支付方式</th>
                     </tr>
                     </thead>
                 </table>
@@ -85,12 +84,14 @@
                             url: "/admin/receipts/dataList",
                             type: "POST",
                             data: function (data) {
-                                data.keyword = $("#mobile").val();
+                                data.keyword = $("#keyword").val();
                                 data.status = $("#status").val();
                                 data.from = $("#from").val();
                                 data.to = $("#to").val();
-                                data.total = $("#total").val();
-                                data.payAmount = $("#payAmount").val();
+                                data.payAmountFrm = $("#payAmountFrm").val();
+                                data.payAmountTo = $("#payAmountTo").val();
+                                data.totalFrm = $("#totalFrm").val();
+                                data.totalTo = $("#totalTo").val();
                             }
 
                         },
@@ -98,7 +99,6 @@
                             {data: "orderNo", className: 'center'},
                             {data: "no", className: 'center'},
                             {data: "projectName", className: 'center'},
-                            {data: "orgName", className: 'center'},
                             {data: "roomName", className: 'center'},
                             {data: "total", className: 'center'},
                             {data: "payAmount", className: 'center'},

@@ -18,16 +18,20 @@
         INNER JOIN bb_rooms brm ON boa.room_id = brm.id
         <where>
             <if test="criteria.keyword!=null and criteria.keyword!=''">
-                AND ((CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
-                CONCAT('%',#{criteria.keyword},'%')) OR (boa.contact_name LIKE
-                CONCAT('%',#{criteria.keyword},'%')) OR
-                (boa.contact_mobile LIKE CONCAT('%',#{criteria.keyword},'%')))
+                AND CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
+                CONCAT('%',#{criteria.keyword},'%')
             </if>
-            <if test="criteria.total!=null">
-                AND bo.total > #{criteria.total}
+            <if test="criteria.totalFrm!=null">
+                AND bo.total >= #{criteria.totalFrm}
             </if>
-            <if test="criteria.payAmount!=null">
-                AND bo.pay_amount > #{criteria.payAmount}
+            <if test="criteria.totalTo!=null">
+                AND #{criteria.totalTo} >= bo.total
+            </if>
+            <if test="criteria.payAmountFrm!=null">
+                AND bo.pay_amount >= #{criteria.payAmountFrm}
+            </if>
+            <if test="criteria.payAmountTo!=null">
+                AND #{criteria.payAmountTo} >= bo.pay_amount
             </if>
             <if test="criteria.from!=null">
                 AND bo.created_at >= #{criteria.from}
@@ -60,16 +64,20 @@
         INNER JOIN bb_rooms brm ON boa.room_id = brm.id
         <where>
             <if test="criteria.keyword!=null and criteria.keyword!=''">
-                AND ((CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
-                CONCAT('%',#{criteria.keyword},'%')) OR (boa.contact_name LIKE
-                CONCAT('%',#{criteria.keyword},'%')) OR
-                (boa.contact_mobile LIKE CONCAT('%',#{criteria.keyword},'%')))
+                AND CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
+                CONCAT('%',#{criteria.keyword},'%')
             </if>
-            <if test="criteria.total!=null">
-                AND bo.total > #{criteria.total}
+            <if test="criteria.totalFrm!=null">
+                AND bo.total >= #{criteria.totalFrm}
             </if>
-            <if test="criteria.payAmount!=null">
-                AND bo.pay_amount > #{criteria.payAmount}
+            <if test="criteria.totalTo!=null">
+                AND #{criteria.totalTo} >= bo.total
+            </if>
+            <if test="criteria.payAmountFrm!=null">
+                AND bo.pay_amount >= #{criteria.payAmountFrm}
+            </if>
+            <if test="criteria.payAmountTo!=null">
+                AND #{criteria.payAmountTo} >= bo.pay_amount
             </if>
             <if test="criteria.from!=null">
                 AND bo.created_at >= #{criteria.from}

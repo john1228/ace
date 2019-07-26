@@ -19,6 +19,8 @@ public class ReceiptCriteria extends Criteria {
     private OrderStatus status;
     private Date from;
     private Date to;
-    private BigDecimal payAmount;
-    private BigDecimal total;
+    private BigDecimal payAmountFrm;
+    private BigDecimal payAmountTo;
+    private BigDecimal totalFrm;
+    private BigDecimal totalTo;
 }
