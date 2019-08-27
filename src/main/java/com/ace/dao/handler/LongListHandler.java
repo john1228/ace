@@ -2,6 +2,7 @@ package com.ace.dao.handler;
 
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.logging.log4j.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,47 +15,41 @@ import java.util.stream.Collectors;
 /**
  * Created by john on 16-10-21.
  */
-public class IntegerListHandler extends BaseTypeHandler<List<Integer>> {
-    Logger logger = LoggerFactory.getLogger(IntegerListHandler.class);
+public class LongListHandler extends BaseTypeHandler<List<Long>> {
+    Logger logger = LoggerFactory.getLogger(LongListHandler.class);
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, List<Integer> params, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, List<Long> params, JdbcType jdbcType) throws SQLException {
         ps.setString(i, String.join(",", params.stream().map(integer -> integer.toString()).collect(Collectors.toList())));
     }
 
     @Override
-    public List<Integer> getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public List<Long> getNullableResult(ResultSet rs, String columnName) throws SQLException {
         return toIntList(rs.getString(columnName));
     }
 
     @Override
-    public List<Integer> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public List<Long> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
 
         return toIntList(rs.getString(columnIndex));
     }
 
     @Override
-    public List<Integer> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public List<Long> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         return toIntList(cs.getString(columnIndex));
     }
 
-    private List<Integer> toIntList(String source) {
+    private List<Long> toIntList(String source) {
         if (source == null) {
             return new ArrayList<>();
         } else {
-            List<Integer> results = new ArrayList<>();
+            List<Long> results = new ArrayList<>();
             String[] items = source.split(",");
             for (String item : items) {
-                results.add(Integer.valueOf(item));
+                if (Strings.isNotBlank(item))
+                    results.add(Long.parseLong(item));
             }
             return results;
-        }
-    }
-
-    public static void main(String[] args) {
-        List<Integer> strs = Arrays.asList(1, 2, 3, 4);
-        for (Integer integer : strs) {
-            System.err.println(integer.toString());
         }
     }
 }

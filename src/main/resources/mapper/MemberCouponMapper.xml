@@ -13,6 +13,8 @@
         <result column="start_date" property="startDate"/>
         <result column="end_date" property="endDate"/>
         <result column="status" property="status"/>
+        <result column="limit_wday" property="limitWday" typeHandler="com.ace.dao.handler.WeekListTypeHandler"/>
+        <result column="limit_room" property="limitRoom" typeHandler="com.ace.dao.handler.LongListHandler"/>
         <result column="created_at" property="createdAt"/>
         <result column="updated_at" property="updatedAt"/>
     </resultMap>
@@ -57,7 +59,7 @@
             #{mc.startDate},
             #{mc.endDate},
             #{mc.limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
-            #{mc.limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler})
+            #{mc.limitRoom,typeHandler=com.ace.dao.handler.LongListHandler})
         </foreach>
     </insert>
 
@@ -78,7 +80,8 @@
         SELECT *
         FROM bb_member_coupons
         JOIN bb_coupons ON bb_member_coupons.coupon_id = bb_coupons.id
-        WHERE bb_coupons.project_id = #{project} AND bb_member_coupons.min > #{total} AND ((bb_member_coupons.org_id in
+        WHERE bb_coupons.project_id = #{project} AND #{total} >= bb_member_coupons.min AND CURRENT_DATE BETWEEN
+        bb_member_coupons.start_date AND bb_member_coupons.end_date AND ((bb_member_coupons.org_id in
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.orgId}
         </foreach>

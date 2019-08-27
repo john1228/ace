@@ -1,5 +1,7 @@
 package com.ace.entity.concern.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * @author john
  * @date 19-5-15 上午11:00
@@ -18,6 +20,7 @@ public enum RoomPublish {
         return code;
     }
 
+    @JsonValue
     public String getName() {
         return name;
     }

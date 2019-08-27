@@ -28,6 +28,7 @@ public class Room extends Base {
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     private long id;
     private String projectId;
+    private String orgId;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
     @NotEmpty(message = "场地名字不能为空")
     private String name;
@@ -79,6 +80,7 @@ public class Room extends Base {
     private String supervisorEmail;
     private boolean payable;
     private RoomCFM cfm = RoomCFM.AUTO;
+    @JsonView({ApiView.Detail.class})
     private Integer rlt;
     @JsonView({ApiView.Base.class, ApiView.Detail.class})
     private String freeService;

@@ -13,13 +13,13 @@
         <result column="end_date" property="endDate"/>
         <result column="duration" property="duration"/>
         <result column="limit_wday" property="limitWday" typeHandler="com.ace.dao.handler.WeekListTypeHandler"/>
-        <result column="limit_room" property="limitRoom" typeHandler="com.ace.dao.handler.IntegerListHandler"/>
+        <result column="limit_room" property="limitRoom" typeHandler="com.ace.dao.handler.LongListHandler"/>
     </resultMap>
     <select id="recordsTotal" resultType="java.lang.Long">
         SELECT count(1) AS recordsTotal FROM bb_coupons
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null">
                 AND bb_coupons.name LIKE CONCAT('%',#{criteria.name},'%')
@@ -37,7 +37,7 @@
         SELECT * FROM bb_coupons
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
@@ -54,6 +54,7 @@
 
     <insert id="create" useGeneratedKeys="true" keyProperty="coupon.id">
         insert into bb_coupons (project_id,
+                                org_id,
                                 name,
                                 type,
                                 discount,
@@ -67,6 +68,7 @@
                                 limit_wday,
                                 limit_room)
         values (#{staff.projectId},
+                #{staff.orgId},
                 #{coupon.name},
                 #{coupon.type},
                 #{coupon.discount},
@@ -78,7 +80,7 @@
                 #{coupon.endDate},
                 #{coupon.duration},
                 #{coupon.limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
-                #{coupon.limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler})
+                #{coupon.limitRoom,typeHandler=com.ace.dao.handler.LongListHandler})
     </insert>
 
     <select id="findById" resultMap="couponMap">
@@ -96,7 +98,7 @@
             min        = #{min},
             resume     = #{resume},
             limit_wday = #{limitWday,typeHandler=com.ace.dao.handler.WeekListTypeHandler},
-            limit_room = #{limitRoom,typeHandler=com.ace.dao.handler.IntegerListHandler}
+            limit_room = #{limitRoom,typeHandler=com.ace.dao.handler.LongListHandler}
         where id = #{id}
     </update>
     <delete id="destroy">

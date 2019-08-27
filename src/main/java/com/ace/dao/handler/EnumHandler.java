@@ -20,6 +20,7 @@ import org.apache.ibatis.type.MappedTypes;
         InvoiceStatus.class,
         InvoiceType.class,
         MMethod.class,
+        RefundStatus.class
 })
 public class EnumHandler<E extends Enum<E>> extends BaseEnumTypeHandler {
     public EnumHandler(Class<E> type) {

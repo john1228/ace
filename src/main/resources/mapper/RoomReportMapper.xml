@@ -4,23 +4,23 @@
 
     <select id="roomList" resultType="com.ace.entity.Room">
         SELECT id, name
-        FROM ace.bb_rooms
+        FROM bb_rooms
     </select>
 
-    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+    <insert id="create">
         INSERT INTO bb_room_reports
         (report_date,room_id,room_name,online,offline,order_amount,room_amount,rented_amount,idle_amount)
         VALUES
         <foreach collection="reports" item="report" separator=",">
-            (CURDATE(),#{report.roomId},
-            #{report.roomName},#{report.online},#{report.offline},#{report.orderAmount},1,#{report.rentedAmount},#{report.idleAmount})
+            (CURDATE(),#{report.id},
+            #{report.name},#{report.online},#{report.offline},#{report.orderAmount},1,#{report.rentedAmount},#{report.idleAmount})
         </foreach>
     </insert>
 
 
     <select id="reports" resultType="com.ace.entity.RoomReport">
-        SELECT bb_room_reports.room_id,
-        bb_room_reports.room_name,
+        SELECT bb_room_reports.room_id AS id,
+        bb_room_reports.room_name AS name,
         SUM(bb_room_reports.online) AS online,
         SUM(bb_room_reports.offline) AS offline,
         SUM(bb_room_reports.order_amount) AS orderAmount,

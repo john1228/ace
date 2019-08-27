@@ -31,12 +31,6 @@
             <table id="orderList" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th class="center">
-                        <label>
-                            <input type="checkbox" class="ace" onclick="checkAll(this)"/>
-                            <span class="lbl"></span>
-                        </label>
-                    </th>
                     <th class="center">订单号</th>
                     <th class="center">下单账户</th>
                     <th class="center">下单账户名</th>
@@ -107,16 +101,6 @@
                         </#if>
                         columns:
                                 [
-                                    {
-                                        data: "id",
-                                        render: function (data) {
-                                            return '<label>' +
-                                                    '<input type="checkbox" class="ace" name="checks[]" value="' + data + '"  />' +
-                                                    '<span class="lbl"></span>' +
-                                                    '</label>';
-                                        },
-                                        className: 'center'
-                                    },
                                     {data: "orderNo", className: 'center'},
                                     {data: "accountId", className: 'center'},
                                     {data: "accountName", className: 'center'},
@@ -124,9 +108,7 @@
                                     {data: "coupon", className: 'center'},
                                     {data: "payAmount", className: 'center'},
                                     {
-                                        data: "status",
-                                        className: 'center',
-                                        render: function (data) {
+                                        data: "status", className: 'center', render: function (data) {
                                             switch (data) {
                                                 case "CANCELED":
                                                     return "已取消";
@@ -138,9 +120,14 @@
                                                     return "已付款未确认";
                                                 case "PAIDANDCONFIRM":
                                                     return "已付款已确认";
+                                                case "COMPLETE":
+                                                    return "已完成";
+                                                case "REFUNDING":
+                                                    return "退款中";
                                                 case "REFUNDED":
                                                     return "已退款";
-
+                                                default:
+                                                    return "异常状态";
                                             }
                                         }
                                     },

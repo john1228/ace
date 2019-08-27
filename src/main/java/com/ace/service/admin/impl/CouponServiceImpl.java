@@ -20,7 +20,6 @@ import java.util.List;
 
 @Service("admin-coupon-service")
 public class CouponServiceImpl implements CouponService {
-    Logger logger = LoggerFactory.getLogger(CouponServiceImpl.class);
 
     @Resource
     private CouponMapper couponMapper;

@@ -2,9 +2,8 @@ DROP TABLE IF EXISTS `bb_room_reports`;
 CREATE TABLE bb_room_reports (
   id            bigint(11) unsigned NOT NULL AUTO_INCREMENT,
   report_date   DATE COMMENT '报表时间',
-  room_id       bigint(11)                   DEFAULT 0
-  COMMENT '出租方式',
-  room_name     varchar(128) COMMENT '开始日期',
+  room_id       bigint(11)  DEFAULT 0 COMMENT '房间编号',
+  room_name     varchar(128) COMMENT '房间名字',
   online        decimal(11) COMMENT '线上订单收入',
   offline       decimal(11) COMMENT '线下订单收入',
   order_amount  bigint(11) COMMENT '订单总数',

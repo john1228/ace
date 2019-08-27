@@ -91,8 +91,10 @@ public class RoomsController extends BaseController {
         }
         try {
             List<String> images = new ArrayList<>();
-            for (MultipartFile tmp : image) {
-                images.add(Aliyun.Instance.upload(tmp));
+            for (MultipartFile file : image) {
+                if (file.isEmpty()) {
+                    images.add(Aliyun.Instance.upload(file));
+                }
             }
             room.setImage(images);
         } catch (Exception exp) {
@@ -148,28 +150,37 @@ public class RoomsController extends BaseController {
                 result.addError(new FieldError("会议室", "封面", "更新列表图出错"));
             }
         }
-        try {
-            //图片处理
-            List<String> imgList = new ArrayList<>(old.getImage());
-            for (String idx : removeList) {
-                imgList.remove(Integer.parseInt(idx));
-            }
-            for (MultipartFile tmp : image) {
-                if (!tmp.isEmpty()) {
-                    String imgPath = Aliyun.Instance.upload(tmp);
-                    imgList.add(imgPath);
+        //图片处理
+        List<String> nImgList = new ArrayList<>();
+        List<String> oImgList = old.getImage();
+        for (int i = 0; i < 3; i++) {
+            MultipartFile file = image[i];
+            if (file.isEmpty()) {
+                if (oImgList.size() > i) {
+                    String pImg = oImgList.get(i);
+                    if (!removeList.contains(String.valueOf(i))) {
+                        nImgList.add(pImg);
+                    }
+                }
+            } else {
+                try {
+                    String imgPath = Aliyun.Instance.upload(file);
+                    nImgList.add(i, imgPath);
+                } catch (Exception exp) {
+                    log.info("错误：" + exp.getMessage());
+                    result.addError(new FieldError("会议室", "图片" + i, "更新场地图失败"));
                 }
             }
-            room.setImage(imgList);
-        } catch (Exception exp) {
-            result.addError(new FieldError("会议室", "图片", "更新场地图失败"));
         }
+        room.setImage(nImgList);
+
         if (result.hasErrors()) {
             List<Support> supports = supportService.supportList(staff);
+            List<Data> orgList = DataUtils.orgList(staff.getProjectId());
             model.addAttribute("room", room);
             model.addAttribute("errors", result.getAllErrors());
-            model.addAttribute("current_orgs", DataUtils.orgList(staff.getProjectId()));
             model.addAttribute("supports", buildSupport(supports, old));
+            model.addAttribute("current_orgs", buildFreeOrg(orgList, room));
             return viewPath + "edit";
         } else {
             roomService.update(staff, room);

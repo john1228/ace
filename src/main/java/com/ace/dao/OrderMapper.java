@@ -4,9 +4,11 @@ import com.ace.controller.admin.concerns.OrderCriteria;
 import com.ace.entity.Account;
 import com.ace.entity.Order;
 import com.ace.entity.Staff;
+import com.ace.entity.concern.Period;
 import com.ace.entity.concern.enums.OrderStatus;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.Date;
 import java.util.List;
 
 
@@ -34,4 +36,7 @@ public interface OrderMapper {
 
     //订单确认试用
     void using();
+
+    //已预约列表
+    List<Period> appointedList(@Param("roomId") Long roomId, @Param("from") Date from, @Param("to") Date to);
 }

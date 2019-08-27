@@ -12,7 +12,7 @@
         SELECT count(1) AS recordsTotal FROM bb_supports
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
@@ -24,7 +24,7 @@
         SELECT * FROM bb_supports
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
@@ -36,12 +36,12 @@
     <select id="all" resultMap="supMap">
         SELECT *
         FROM bb_supports
-        WHERE project_id = #{staff.projectId}
+        WHERE org_id = #{staff.orgId}
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="support.id">
-        insert into bb_supports (project_id, name, cover, unit)
-        values (#{staff.projectId}, #{support.name}, #{support.cover}, #{support.unit})
+        insert into bb_supports (project_id, org_id, name, cover, unit)
+        values (#{staff.projectId}, #{staff.orgId}, #{support.name}, #{support.cover}, #{support.unit})
     </insert>
 
     <select id="findById" resultMap="supMap">

@@ -19,7 +19,6 @@ public enum RoomRental {
         return code;
     }
 
-
     public String getName() {
         return this.name;
     }

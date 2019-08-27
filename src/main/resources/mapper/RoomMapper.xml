@@ -12,6 +12,7 @@
         <id column="id" property="id"/>
         <result column="project_id" property="projectId"/>
         <result column="project_name" property="projectName"/>
+        <result column="org_id" property="orgId"/>
         <result column="name" property="name"/>
         <result column="cover" property="cover"/>
         <result column="image" property="image" typeHandler="com.ace.dao.handler.StringListHandler"/>
@@ -43,7 +44,7 @@
         SELECT count(1) AS recordsTotal FROM bb_rooms
         <where>
             <if test="staff!=null">
-                project_id = #{staff.projectId}
+                org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
@@ -91,7 +92,7 @@
         FROM bb_rooms
         <where>
             <if test="staff!=null">
-                project_id = #{staff.projectId}
+                org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND name LIKE CONCAT('%',#{criteria.name},'%')
@@ -123,7 +124,7 @@
         FROM bb_rooms
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
         </where>
     </select>
@@ -169,7 +170,7 @@
             AND name LIKE CONCAT('%',#{query.keyword},'%')
         </if>
         <if test="query.quota != null and query.quota != 0">
-            AND quota > #{query.quota}
+            AND quota >= #{query.quota}
         </if>
         ORDER BY ${query.sort.column} ${query.sort.order} LIMIT #{query.start},#{query.pageSize}
     </select>

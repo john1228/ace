@@ -34,7 +34,7 @@ public class ScheduleTask {
 //        orderMapper.using();
     }
 
-    @Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 10 01 * * ?")
     public void generateReport() {
         log.info("定时统计会议室使用情况");
         List<Room> roomList = reportMapper.roomList();
@@ -57,9 +57,9 @@ public class ScheduleTask {
             //线下订单
             Optional<Map<String, BigDecimal>> fof = offline.stream().filter(item -> item.get("id").longValue() == room.getId()).findFirst();
             if (fof.isPresent()) {
-                report.setOnline(fof.get().get("amount"));
+                report.setOffline(fof.get().get("amount"));
             } else {
-                report.setOnline(new BigDecimal(0));
+                report.setOffline(new BigDecimal(0));
             }
             //订单数
             Optional<Map<String, BigDecimal>> foa = orderAmt.stream().filter(item -> item.get("id").longValue() == room.getId()).findFirst();

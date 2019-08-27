@@ -26,7 +26,7 @@
         INNER JOIN bb_rooms ON bb_rooms.id = bb_room_prices_ref.room_id
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')
@@ -44,7 +44,7 @@
         INNER JOIN bb_rooms ON bb_room_prices_ref.room_id = bb_rooms.id
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.name!=null and criteria.name!=''">
                 AND bb_rooms.name LIKE CONCAT('%',#{criteria.name},'%')

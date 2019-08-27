@@ -707,7 +707,6 @@
 </div>
 <script type="text/javascript">
     var isFree = $("input[name='free']:checked").val();
-    console.log("##" + isFree);
     $(function () {
         var isFree = $("input[name='free']:checked").val();
         if (isFree) {

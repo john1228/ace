@@ -56,10 +56,14 @@ public class RoomsController extends BaseController {
     @Authorization
     @ApiOperation(value = "会议室排期")
     public Result schedule(@PathVariable("id") Long id, @RequestParam("date") Date date) {
-        List<Schedule> scheduleList = roomService.schedule(id, date);
-        for (Schedule schedule : scheduleList) {
-            System.err.println(schedule.getDate().toString());
-        }
-        return new Success(scheduleList);
+        return new Success(roomService.schedule(id, date));
+    }
+
+    @JsonView(ApiView.Base.class)
+    @GetMapping("/{id}/protocol")
+    @Authorization
+    @ApiOperation(value = "会议室协议")
+    public Result protocol(@PathVariable("id") Long id) {
+        return new Success(roomService.protocol(id));
     }
 }

@@ -52,5 +52,5 @@ public abstract class Coupon extends Base {
     @JsonView({ApiView.Detail.class, AdminView.Table.class})
     private List<Week> limitWday = new ArrayList<>();
     @JsonView(ApiView.Detail.class)
-    private List<Integer> limitRoom = new ArrayList<>();
+    private List<Long> limitRoom = new ArrayList<>();
 }

@@ -15,4 +15,6 @@ public interface RoomService {
     Room show(Long id);
 
     List<Schedule> schedule(Long room, Date date);
+
+    String protocol(Long room);
 }

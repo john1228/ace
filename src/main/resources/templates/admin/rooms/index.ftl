@@ -34,6 +34,7 @@
                                    width="100%">
                                 <thead>
                                 <tr>
+                                    <th class="center">系统编号</th>
                                     <th class="center">编号</th>
                                     <th class="center">名称</th>
                                     <th class="center">发布类型</th>
@@ -105,30 +106,13 @@
                                     ],
                                 </#if>
                                 columns: [
+                                    {data: "id", className: 'center'},
                                     {data: "serialNo", className: 'center'},
                                     {data: "name", className: 'center'},
+                                    {data: "publish", className: 'center'},
                                     {
-                                        data: "publish",
-                                        className: 'center',
-                                        render: function (data) {
-                                            switch (data) {
-                                                case "PRIVATE":
-                                                    return '自有';
-                                                case "PUBLIC":
-                                                    return "公开";
-                                            }
-                                        }
-                                    },
-                                    {
-                                        data: "rental",
-                                        className: 'center',
-                                        render: function (data) {
-                                            switch (data) {
-                                                case "HOUR":
-                                                    return "小时";
-                                                case "PERIOD":
-                                                    return "整段";
-                                            }
+                                        data: "rental", className: 'center', render: function (data) {
+                                            return data=='HOUR' ? '小时' : '整段';
                                         }
                                     },
                                     {

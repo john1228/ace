@@ -14,8 +14,7 @@ import com.ace.service.concerns.OrderTools;
 import com.ace.service.concerns.RoomTools;
 import com.ace.util.AlipayBuilder;
 import com.ace.util.wxpay.WxpayBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service("api_order_service")
+@Log4j2
 public class OrderServiceImpl extends BaseService implements OrderService {
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     @Resource
     private RoomMapper roomMapper;
     @Resource
@@ -47,17 +46,18 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Resource
     private OrderSupportMapper orderSupportMapper;
     @Resource
-    private RedisTemplate<String, Period> redisTemplate;
-    @Resource
     private OrderTools orderTools;
     @Resource
     private RoomTools roomTools;
     @Resource
     private JobTools jobTools;
     @Resource
-    private ReceiptMapper receiptMapper;
+    private RefundMapper refundMapper;
     @Resource
-    private SettingMapper settingMapper;
+    private AlipayMapper alipayMapper;
+    @Resource
+    private WxpayMapper wxpayMapper;
+
 
     @Override
     public List<Order> customerOrder(Account account, ListStatus status, int page) {
@@ -125,6 +125,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
                 order.setTotal(total);
                 //校验优惠券
+                log.info("使用优惠券编号:" + couponId);
                 if (couponId != 0) {
                     Date date = new Date(System.currentTimeMillis());
                     MemberCoupon coupon = mcMapper.findById(couponId);
@@ -135,6 +136,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                         account.setErrMsg("优惠券已经过期");
                         return null;
                     } else {
+
                         if (!coupon.getLimitWday().contains(week)) {
                             account.setErrMsg("优惠券不能用于该日期");
                             return null;
@@ -189,8 +191,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                     if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
                         //支付宝
                         Payment payment = new Payment();
-                        Alipay alipay = settingMapper.alipay();
-                        Wxpay wxpay = settingMapper.wxpay();
+                        Alipay alipay = alipayMapper.findBy(room.getProjectId());
+                        Wxpay wxpay = wxpayMapper.findBy(room.getProjectId());
                         if (alipay != null) {
                             payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
                         }
@@ -216,6 +218,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     public Order show(String orderNo) {
+        Room room = roomMapper.appointedRoom(orderNo);
         Order order = orderMapper.findByOrderNo(orderNo);
         Appointment appointment = appointmentMapper.selectByOrder(order.getId());
         List<OrderSupport> supportList = orderSupportMapper.supportList(order.getId());
@@ -223,8 +226,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         order.setAppointment(appointment);
         if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
             //支付宝
-            Alipay alipay = settingMapper.alipay();
-            Wxpay wxpay = settingMapper.wxpay();
+            Alipay alipay = alipayMapper.findBy(room.getProjectId());
+            Wxpay wxpay = wxpayMapper.findBy(room.getProjectId());
             Payment payment = new Payment();
             payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
             payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
@@ -264,8 +267,27 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     }
 
     @Override
+    @Transactional
     public void cancel(String orderNo) {
-        orderMapper.update(orderNo, OrderStatus.CANCELED);
+        Order order = orderMapper.findByOrderNo(orderNo);
+        switch (order.getStatus()) {
+            case PAIDANDCONFIRM:
+                if (order.getPayAmount().compareTo(new BigDecimal("0")) == 1)
+                    refundMapper.create(RefundApplication.build(order));
+                orderMapper.update(orderNo, OrderStatus.REFUNDING);
+                break;
+            case UNPAID2CONFIRM:
+                orderMapper.update(orderNo, OrderStatus.CANCELED);
+                break;
+            case CONFIRM2PAID:
+                orderMapper.update(orderNo, OrderStatus.CANCELED);
+                break;
+            case PAID2CONFIRM:
+                if (order.getPayAmount().compareTo(new BigDecimal("0")) == 1)
+                    refundMapper.create(RefundApplication.build(order));
+                orderMapper.update(orderNo, OrderStatus.REFUNDING);
+                break;
+        }
     }
 
     @Override
@@ -283,43 +305,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         }
     }
 
-    @Override
-    public BigDecimal check(String orderNo) {
-        Order order = orderMapper.findByOrderNo(orderNo);
-        Appointment appointment = order.getAppointment();
-        Room room = roomMapper.findById(appointment.getRoomId());
-        SimpleDateFormat wf = new SimpleDateFormat("EEEE", Locale.ENGLISH);
-        Date appointedDate = new Date(appointment.getStartTime().getTime());
-        Week week = Week.valueOf(wf.format(appointedDate).toUpperCase());
-        //价格计算
-        List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
-        try {
-            //计算总价
-            BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
-            order.setTotal(total);
-            logger.info("房间价格:" + order.getTotal());
-            //计算服务费用
-            List<RoomSupport> roomSupports = rsMapper.supportList(room.getId());
-            StringBuilder errMsg = new StringBuilder();
-            List<OrderSupport> supports = orderSupportMapper.supportList(order.getId());
-            logger.info("服务数量:" + supports.size());
-            BigDecimal supportFee = orderTools.cacl(supports, roomSupports, errMsg);
-            if (errMsg.length() != 0) {
-                return null;
-            } else {
-                logger.info("计算服务失败" + supportFee.toString());
-            }
-            logger.info("服务费用:" + supportFee);
-            return order.getTotal();
-        } catch (Exception e) {
-            return new BigDecimal("-1");
-        }
-    }
-
     @Transactional
     protected Long createOrder(Order order, Appointment appointment) {
-        SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
-        Date appointedDate = new Date(appointment.getStartTime().getTime());
         orderMapper.create(order);
         Long orderId = order.getId();
         //创建预约
@@ -330,11 +317,10 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             appointment.getService().forEach(service -> service.setOrderId(orderId));
             orderSupportMapper.create(appointment.getService());
         }
-        //缓存预约时间
-        redisTemplate.opsForSet().add("ROOM::" + appointment.getRoomId() + "::APPOINTED::" + appointedDate.toString(), new Period(
-                hf.format(appointment.getStartTime()),
-                hf.format(appointment.getEndTime())
-        ));
         return orderId;
+    }
+
+    public static void main(String[] args) {
+        System.err.println(new BigDecimal(1).compareTo(new BigDecimal("0")));
     }
 }

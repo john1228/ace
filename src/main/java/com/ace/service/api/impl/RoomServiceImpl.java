@@ -1,19 +1,13 @@
 package com.ace.service.api.impl;
 
 import com.ace.controller.api.concerns.Query;
-import com.ace.dao.PriceMapper;
-import com.ace.dao.RoomClosedMapper;
-import com.ace.dao.RoomMapper;
-import com.ace.dao.handler.RoomReportMapper;
+import com.ace.dao.*;
 import com.ace.entity.*;
 import com.ace.entity.concern.Period;
-import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import com.ace.service.api.RoomService;
 import com.ace.util.Aliyun;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +28,15 @@ public class RoomServiceImpl extends BaseService implements RoomService {
     @Resource
     private RoomClosedMapper rcMapper;
     @Resource
-    private RedisTemplate<String, Period> redisTemplate;
+    private ProtocolMapper protocolMapper;
     @Resource
-    private RoomReportMapper reportMapper;
+    private OrderMapper orderMapper;
 
 
     @Override
     public List<Room> query(Account account, Query query) {
         Date date = query.getDate();
+        Long timemills = date.getTime();
         SimpleDateFormat df = new SimpleDateFormat("EEEE", Locale.ENGLISH);
         Week week = Week.valueOf(df.format(query.getDate()).toUpperCase());
         List<Room> roomList = rMapper.query(account, query);
@@ -86,8 +81,8 @@ public class RoomServiceImpl extends BaseService implements RoomService {
                     openList.add(period);
                 }
             });
-            Set<Period> appointed = redisTemplate.opsForSet().members("ROOM::" + room.getId() + "::APPOINTED::" + date.toString());
-            room.getAppointed().addAll(appointed);
+            List<Period> appointedList = orderMapper.appointedList(room.getId(), new Date(timemills), new Date(timemills + 24 * 3600 * 1000));
+            room.getAppointed().addAll(appointedList);
         }
         return roomList;
     }
@@ -105,9 +100,13 @@ public class RoomServiceImpl extends BaseService implements RoomService {
     public List<Schedule> schedule(Long room, Date date) {
         List<Schedule> schedules = new ArrayList<>();
         Long current = date.getTime();
+        Date from = new Date(System.currentTimeMillis());
+        Date to = new Date(System.currentTimeMillis());
         for (int i = 0; i < 7; i++) {
             Long timemills = current + i * 24 * 3600 * 1000;
             date.setTime(timemills);
+            from.setTime(timemills);
+            to.setTime(timemills + 24 * 3600 * 1000);
 
             SimpleDateFormat df = new SimpleDateFormat("EEEE", Locale.ENGLISH);
             Week week = Week.valueOf(df.format(date).toUpperCase());
@@ -115,13 +114,17 @@ public class RoomServiceImpl extends BaseService implements RoomService {
                     item.getWday().contains(week)
             ).collect(Collectors.toSet());
             List<Period> opens = prices.stream().map(price -> new Period(price.getStartTime(), price.getEndTime(), price.getPrice())).collect(Collectors.toList());
-            Set<Period> appointed = redisTemplate.opsForSet().members("ROOM::" + room + "::APPOINTED::" + date.toString());
-
-            Schedule schedule = new Schedule(new Date(timemills), opens, new ArrayList<>(appointed));
+            List<Period> appointedList = orderMapper.appointedList(room, from, to);
+            Schedule schedule = new Schedule(new Date(timemills), opens, appointedList);
             schedules.add(schedule);
         }
         return schedules;
     }
 
 
+    @Override
+    public String protocol(Long id) {
+        Room room = rMapper.findById(id);
+        return protocolMapper.findBy(room.getOrgId());
+    }
 }

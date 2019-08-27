@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ace.dao.RefundMapper">
+    <select id="recordsTotal" resultType="java.lang.Long">
+        SELECT count(1) AS recordsTotal FROM bb_order_refund_applications bora
+        LEFT JOIN bb_orders bo ON bora.order_id = bo.id
+        INNER JOIN bb_order_appointments boa ON bora.order_id = boa.order_id
+        INNER join bb_rooms br ON boa.room_id = br.id
+        <where>
+            <if test="staff!=null">
+                AND br.org_id = #{staff.orgId}
+            </if>
+            <if test="criteria.orderNo!=null and criteria.orderNo!=''">
+                AND (CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
+                CONCAT('%',#{criteria.orderNo},'%'))
+            </if>
+            <if test="criteria.roomName!=null and criteria.roomName!=''">
+                AND br.name LIKE CONCAT('%',#{criteria.roomName},'%')
+            </if>
+            <if test="criteria.contactName!=null and criteria.contactName!=''">
+                AND boa.contact_name LIKE CONCAT('%',#{criteria.contactName},'%')
+            </if>
+            <if test="criteria.contactMobile!=null and criteria.contactMobile!=''">
+                AND boa.contact_mobile LIKE CONCAT('%',#{criteria.contactMobile},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="dataList" resultType="com.ace.entity.RefundApplication">
+        SELECT
+        bora.id,
+        CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) AS orderNo,
+        br.project_name AS projectName,
+        br.name AS roomName,
+        boa.contact_name AS contactName,
+        boa.contact_mobile AS contactMobile,
+        bora.amount,
+        bora.confirm_amount AS confirmAmount,
+        bora.status,
+        bora.created_at AS createdAt,
+        bora.updated_at AS updatedAt
+        FROM bb_order_refund_applications bora
+        LEFT JOIN bb_orders bo ON bora.order_id = bo.id
+        INNER JOIN bb_order_appointments boa ON bora.order_id = boa.order_id
+        INNER join bb_rooms br ON boa.room_id = br.id
+        <where>
+            <if test="staff!=null">
+                AND br.org_id = #{staff.orgId}
+            </if>
+            <if test="criteria.orderNo!=null and criteria.orderNo!=''">
+                AND (CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
+                CONCAT('%',#{criteria.orderNo},'%'))
+            </if>
+            <if test="criteria.roomName!=null and criteria.roomName!=''">
+                AND br.name LIKE CONCAT('%',#{criteria.roomName},'%')
+            </if>
+            <if test="criteria.contactName!=null and criteria.contactName!=''">
+                AND boa.contact_name LIKE CONCAT('%',#{criteria.contactName},'%')
+            </if>
+            <if test="criteria.contactMobile!=null and criteria.contactMobile!=''">
+                AND boa.contact_mobile LIKE CONCAT('%',#{criteria.contactMobile},'%')
+            </if>
+        </where>
+        ORDER BY bora.id DESC LIMIT #{start},#{length}
+    </select>
+
+    <insert id="create">
+        INSERT INTO bb_order_refund_applications (account_id, account_name, order_id, amount, confirm_amount)
+        VALUES (#{accountId}, #{accountName}, #{orderId}, #{amount}, #{confirmAmount})
+    </insert>
+
+    <update id="reject">
+        UPDATE bb_order_refund_applications
+        SET status = -1
+        WHERE id = #{id}
+    </update>
+    <update id="agree">
+        UPDATE bb_order_refund_applications
+        SET status         = 1,
+            confirm_amount = #{confirmAmt}
+        WHERE id = #{id}
+    </update>
+</mapper>

@@ -25,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Price extends Base {
     private Long id;
-    @Size(min = 1, message = "教室不能为空")
+    @Size(min = 1, message = "会议室不能为空")
     private List<Integer> roomId = new ArrayList<>();
     @JsonView(AdminView.Table.class)
     private List<String> roomName;

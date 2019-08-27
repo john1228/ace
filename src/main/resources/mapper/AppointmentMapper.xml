@@ -19,10 +19,11 @@
     </resultMap>
     <select id="isExists" resultType="boolean">
         SELECT count(1)
-        FROM bb_order_appointments
-        where room_id = #{room}
-          AND #{end} > start_time
-          AND end_time > #{start}
+        FROM bb_order_appointments boa
+                 LEFT JOIN bb_orders bo ON boa.order_id = bo.id
+        WHERE bo.status IN (0, 1, 2, 3, 4)
+          AND boa.room_id = #{room}
+          AND (boa.start_time BETWEEN #{start} AND #{end})
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">

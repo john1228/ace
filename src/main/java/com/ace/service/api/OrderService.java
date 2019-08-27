@@ -24,6 +24,4 @@ public interface OrderService {
     void cancel(String orderNo);
 
     void paying(Receipt receipt, String payType);
-
-    BigDecimal check(String orderNo);
 }

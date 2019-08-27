@@ -30,7 +30,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <form action="/admin/settings/protocol" role="form" class="form-horizontal" method="post">
+                        <form action="/admin/protocol" role="form" class="form-horizontal" method="post">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input type="hidden" name="_method" value="put">
                             <div class="form-group row">

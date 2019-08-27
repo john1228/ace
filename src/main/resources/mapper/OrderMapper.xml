@@ -57,7 +57,7 @@
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
         <where>
             <if test="staff!=null">
-                AND bb_rooms.project_id = #{staff.projectId}
+                AND bb_rooms.org_id = #{staff.orgId}
             </if>
             <if test="criteria.keyword!=null and criteria.keyword!=''">
                 AND ((CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
@@ -72,10 +72,10 @@
                 AND bb_rooms.org_id = #{criteria.orgId}
             </if>
             <if test="criteria.total!=null">
-                AND bb_orders.total > #{criteria.total}
+                AND bb_orders.total = #{criteria.total}
             </if>
             <if test="criteria.payAmount!=null">
-                AND bb_orders.pay_amount > #{criteria.payAmount}
+                AND bb_orders.pay_amount = #{criteria.payAmount}
             </if>
             <if test="criteria.from!=null">
                 AND bb_orders.created_at >= #{criteria.from}
@@ -107,7 +107,7 @@
         INNER JOIN bb_rooms ON bb_rooms.id = bb_order_appointments.room_id
         <where>
             <if test="staff!=null">
-                AND project_id = #{staff.projectId}
+                AND org_id = #{staff.orgId}
             </if>
             <if test="criteria.keyword!=null and criteria.keyword!=''">
                 AND ((CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) LIKE
@@ -122,10 +122,10 @@
                 AND bb_rooms.org_id = #{criteria.orgId}
             </if>
             <if test="criteria.total!=null">
-                AND bb_orders.total > #{criteria.total}
+                AND bb_orders.total = #{criteria.total}
             </if>
             <if test="criteria.payAmount!=null">
-                AND bb_orders.pay_amount > #{criteria.payAmount}
+                AND bb_orders.pay_amount = #{criteria.payAmount}
             </if>
             <if test="criteria.from!=null">
                 AND bb_orders.created_at >= #{criteria.from}
@@ -293,4 +293,13 @@
         WHERE CURRENT_TIMESTAMP > bb_order_appointments.end_time
           AND status = 3
     </update>
+
+    <select id="appointedList" resultType="com.ace.entity.concern.Period">
+        SELECT DATE_FORMAT(boa.start_time, '%H:%i') AS startTime, DATE_FORMAT(boa.end_time, '%H:%i') AS endTime
+        FROM bb_order_appointments boa
+                 LEFT JOIN bb_orders bo ON boa.order_id = bo.id
+        WHERE bo.status IN (0, 1, 2, 3, 4)
+          AND boa.room_id = #{roomId}
+          AND (boa.start_time BETWEEN #{from} AND #{to})
+    </select>
 </mapper>

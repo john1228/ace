@@ -36,7 +36,6 @@ public class OrderJob extends QuartzJobBean {
     @Transactional
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         log.info("执行任务:{}", context.getJobDetail().getKey());
-        SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
         JobDataMap dataMap = context.getMergedJobDataMap();
         String orderNo = dataMap.getString("order_no");
         Order order = orderService.findByOrderNo(orderNo);
@@ -45,12 +44,7 @@ public class OrderJob extends QuartzJobBean {
             Appointment appointment = order.getAppointment();
             String appointDate = new Date(appointment.getStartTime().getTime()).toString();
             String key = "ROOM::" + order.getAppointment().getRoomId() + "::APPOINTED::" + appointDate;
-            Optional<Period> optional = redisTemplate.opsForSet().members(key).stream().filter(period -> period.getStartTime().equals(hf.format(appointment.getStartTime())) &&
-                    period.getEndTime().equals(hf.format(appointment.getEndTime()))).findFirst();
-            if (optional.isPresent()) {
-                log.info("移除");
-                redisTemplate.opsForSet().remove(key, optional.get());
-            }
+            redisTemplate.opsForHash().delete(key, order.getId());
         }
     }
 }

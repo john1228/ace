@@ -1,7 +1,7 @@
 package com.ace.service.callback.impl;
 
 import com.ace.dao.RoomMapper;
-import com.ace.dao.SettingMapper;
+import com.ace.dao.WxpayMapper;
 import com.ace.entity.Room;
 import com.ace.entity.Wxpay;
 import com.ace.service.callback.WxpayService;
@@ -20,12 +20,13 @@ public class WxpayServiceImpl implements WxpayService {
     @Resource
     RoomMapper roomMapper;
     @Resource
-    SettingMapper settingMapper;
+    WxpayMapper wxpayMapper;
 
 
     @Override
     public boolean check(String orderNo, SortedMap<String, Object> params, String sign) {
-        Wxpay wxpay = settingMapper.wxpay();
+        Room room = roomMapper.appointedRoom(orderNo);
+        Wxpay wxpay = wxpayMapper.findBy(room.getProjectId());
         if (wxpay == null) {
             return false;
         } else {

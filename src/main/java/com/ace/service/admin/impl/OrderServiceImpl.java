@@ -35,8 +35,6 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     private AppointmentMapper appointmentMapper;
     @Resource
-    private RedisTemplate<String, Period> redisTemplate;
-    @Resource
     private JobTools jt;
 
     @Override
@@ -68,11 +66,6 @@ public class OrderServiceImpl implements OrderService {
                 appointment.getService().forEach(service -> service.setOrderId(order.getId()));
                 orderSupportMapper.create(appointment.getService());
             }
-            //缓存预约时间
-            redisTemplate.opsForSet().add("ROOM::" + appointment.getRoomId() + "::APPOINTED::" + appointed.toString(), new Period(
-                    hf.format(appointment.getStartTime()),
-                    hf.format(appointment.getEndTime())
-            ));
         }
     }
 

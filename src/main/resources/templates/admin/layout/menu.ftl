@@ -93,6 +93,13 @@
                 </a>
                 <b class="arrow"></b>
             </li>
+            <li class="${(requestUri?starts_with("/admin/applications"))?string("active","")}">
+                <a href="/admin/applications">
+                    <i class="menu-icon fa fa-caret-right"></i>
+                    <text>退款申请</text>
+                </a>
+                <b class="arrow"></b>
+            </li>
         </ul>
     </li>
     <li class="${(menu == "setting")?string("active open","")}">
@@ -104,23 +111,23 @@
         <b class="arrow"></b>
         <ul class="submenu">
             <#if current_account.isAdmin()>
-                <li class="${(requestUri?starts_with("/admin/settings/alipay"))?string("active","")}">
-                    <a href="/admin/settings/alipay">
+                <li class="${(requestUri?starts_with("/admin/alipays"))?string("active","")}">
+                    <a href="/admin/alipays">
                         <i class="menu-icon fa fa-caret-right"></i>
                         <text>支付宝配置</text>
                     </a>
                     <b class="arrow"></b>
                 </li>
-                <li class="${(requestUri?starts_with("/admin/settings/wxpay"))?string("active","")}">
-                    <a href="/admin/settings/wxpay">
+                <li class="${(requestUri?starts_with("/admin/wxpays"))?string("active","")}">
+                    <a href="/admin/wxpays/">
                         <i class="menu-icon fa fa-caret-right"></i>
                         <text>微信配置</text>
                     </a>
                     <b class="arrow"></b>
                 </li>
             <#else>
-                  <li class="${(requestUri?starts_with("/admin/settings/protocol"))?string("active","")}">
-                      <a href="/admin/settings/protocol">
+                  <li class="${(requestUri?starts_with("/admin/protocol"))?string("active","")}">
+                      <a href="/admin/protocol">
                           <i class="menu-icon fa fa-caret-right"></i>
                           <text>下单协议</text>
                       </a>
