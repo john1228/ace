@@ -13,8 +13,9 @@
 <link href="/assets/font-awesome/4.5.0/css/font-awesome-ie7.min.css" rel="stylesheet"/>
 <![endif]-->
 <!-- page specific plugin styles -->
-<link href="/assets/css/jquery-ui/custom.min.css" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/css/jquery-ui/custom.min.css"/>
 <link rel="stylesheet" href="/assets/css/jquery-ui/gritter.min.css"/>
+<link rel="stylesheet" href="/assets/css/jquery-ui/min.css"/>
 <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
 <link rel="stylesheet" href="/assets/css/date-range-picker.min.css"/>
 <link rel="stylesheet" href="/assets/css/bootstrap/timepicker.min.css"/>
@@ -40,6 +41,7 @@
 <!-- basic scripts -->
 <script src="/assets/js/jquery/2.1.4.min.js"></script>
 <script src="/assets/js/jquery-ui/min.js"></script>
+<script src="/assets/js/jquery-ui/zh.js"></script>
 <script src="/assets/js/jquery/mobile.custom.min.js"></script>
 <script src="/assets/js/jquery/chosen.min.js"></script>
 <!-- ace settings handler -->
@@ -48,7 +50,6 @@
 <!--select2-->
 <link href="/assets/css/select2/min.css" rel="stylesheet"/>
 <script src="/assets/js/select2/min.js"></script>
-<script src="/assets/js/bootstrap/datepicker.min.js"></script>
 <!--[if IE]>
 <script type="text/javascript">
     window.jQuery || document.write("<script src='https://code.jquery.com/jquery-1.10.2.js' integrity='sha256-it5nQKHTz+34HijZJQkpNBIHsjpV8b6QzMJs9tmOBSo=' crossorigin='anonymous'>" + "<" + "/script>");

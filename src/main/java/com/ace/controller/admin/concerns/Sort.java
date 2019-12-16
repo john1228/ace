@@ -12,7 +12,13 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class Sort {
+    /**
+     * 排序字段
+     */
     private String column;
+    /**
+     * 排序方式(asc-升序 desc-降序)
+     */
     private String order;
 
     public Sort(String column, String order) {

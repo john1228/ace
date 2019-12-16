@@ -116,7 +116,7 @@
                 AND #{criteria.quotaTo} >= quota
             </if>
         </where>
-        ORDER BY id DESC LIMIT #{criteria.start},#{criteria.length}
+        ORDER BY updated_at DESC LIMIT #{criteria.start},#{criteria.length}
     </select>
     <!--筛选员工下的管理的所有会议室，用于筛选-->
     <select id="roomList" resultType="com.ace.entity.Room">
@@ -142,7 +142,8 @@
         SELECT
         id,
         serial_no AS serialNo,
-        CONCAT(project_name,name) AS name,
+        project_name AS projectName,
+        name,
         CONCAT('https://bb-platform.oss-cn-hangzhou.aliyuncs.com/',cover) AS cover,
         type,
         publish,
@@ -244,6 +245,16 @@
         SELECT *
         FROM bb_rooms
         WHERE id = #{id}
+    </select>
+
+    <select id="isExists" resultType="java.lang.Boolean">
+        SELECT COUNT(1)
+        FROM bb_rooms
+        WHERE serial_no = #{serialNo}
+        AND org_id = #{staff.orgId}
+        <if test="self_id != null and self_id != 0">
+            AND id != #{self_id}
+        </if>
     </select>
 
     <update id="update">

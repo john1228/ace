@@ -66,6 +66,7 @@
                                         sLast: "末页"
                                     }
                                 },
+                                bLengthChange: false,
                                 searching: false,
                                 processing: true,
                                 serverSide: true,
@@ -97,12 +98,12 @@
                                     {data: "updatedAt", className: 'center'},
                                     {
                                         data: "projectId",
+                                        className: 'center',
                                         render: function (data) {
                                             return '<a class="btn btn-xs btn-info" href="/admin/alipays/' + data + '">查看</a>' +
                                                     '<a class="btn btn-xs btn-danger" href="/admin/alipays/' + data + '/edit">编辑</a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="/admin/alipays/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
-                                        },
-                                        className: 'center'
+                                                    '<a class="btn btn-xs btn-warning" href="/admin/alipays/' + data + '" data-method="DELETE" data-message="删除成功" data-confirm="您确定要删除这条记录吗?">删除</a>';
+                                        }
                                     }
                                 ]
                             });

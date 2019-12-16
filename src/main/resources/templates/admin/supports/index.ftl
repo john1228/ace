@@ -64,6 +64,7 @@
                                 sLast: "末页"
                             }
                         },
+                        bLengthChange: false,
                         searching: false,
                         processing: true,
                         serverSide: true,
@@ -108,7 +109,7 @@
                                     <#if !current_account.isAdmin()>
                                         _btn = _btn +
                                                 '<a class="btn btn-xs btn-danger" href="/admin/supports/' + data + '/edit">编辑</a>' +
-                                                '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
+                                                '<a class="btn btn-xs btn-warning" href="/admin/supports/' + data + '" data-method="DELETE" data-message="删除成功" data-confirm="您确定要删除这条记录吗?">删除</a>';
                                     </#if>
                                     return _btn;
                                 }

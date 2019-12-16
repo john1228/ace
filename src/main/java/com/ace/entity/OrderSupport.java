@@ -9,17 +9,28 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 /**
- * @author john
- * @date 19-5-20 下午7:07
+ * 预订服务信息
  */
 @Setter
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderSupport extends Support {
+    /**
+     * 关联服务编号
+     */
     private Long supportId;
+    /**
+     * 关联订单
+     */
     private Long orderId;
+    /**
+     * 价格
+     */
     @JsonView(ApiView.Detail.class)
     private BigDecimal price;
+    /**
+     * 数量
+     */
     @JsonView(ApiView.Detail.class)
     private Integer amount;
 }

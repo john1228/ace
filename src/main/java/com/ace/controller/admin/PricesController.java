@@ -24,6 +24,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.stream.Collectors;
 
+/**
+ * 价格体系管理
+ */
 
 @Controller
 @RequestMapping("/admin/prices")
@@ -59,7 +62,9 @@ public class PricesController extends BaseController {
         return viewPath + "new";
     }
 
-
+    /**
+     * 添加
+     **/
     @PostMapping({"", "/"})
     @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Price price, BindingResult result, Model model) {
@@ -93,6 +98,16 @@ public class PricesController extends BaseController {
         return viewPath + "edit";
     }
 
+    /**
+     * 更新价格
+     *
+     * @param id
+     * @param staff
+     * @param price
+     * @param result
+     * @param model
+     * @return
+     */
     @PutMapping({"/{id}/", "/{id}/edit"})
     @Recordable
     public String update(
@@ -116,6 +131,12 @@ public class PricesController extends BaseController {
 
     }
 
+    /**
+     * 删除价格
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @Recordable
     @ResponseBody

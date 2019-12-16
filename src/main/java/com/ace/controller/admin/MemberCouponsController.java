@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-
+/**
+ * 用户优惠券
+ */
 @Controller
 @RequestMapping("/admin/")
 public class MemberCouponsController extends BaseController {
-    Logger logger = LoggerFactory.getLogger(MemberCouponsController.class);
     static String viewPath = "/admin/member_coupons/";
     @Resource
     private MemberCouponService mcService;
@@ -27,6 +28,17 @@ public class MemberCouponsController extends BaseController {
     public String index(Model model) {
         return viewPath + "index";
     }
+
+    /**
+     * 用户优惠券列表
+     *
+     * @param couponId
+     * @param draw
+     * @param start
+     * @param length
+     * @param keyword
+     * @return
+     */
 
     @ResponseBody
     @GetMapping({"system_coupons/{id}/member_coupons/dataList", "member_coupons/dataList"})

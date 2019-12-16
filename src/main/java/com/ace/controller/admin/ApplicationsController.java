@@ -14,18 +14,24 @@ import com.ace.util.CollectionUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * 退款申请处理
+ *
  * @author john
  * @date 19-7-29 下午2:07
  */
 @Controller
 @RequestMapping("/admin/applications")
 @Log4j2
+
 public class ApplicationsController extends BaseController {
     static String viewPath = "/admin/applications/";
 
@@ -49,22 +55,50 @@ public class ApplicationsController extends BaseController {
         return dataTable;
     }
 
-    @PostMapping("/{id}/reject")
+    /**
+     * 驳回退款
+     *
+     * @param staff
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/{id}/reject")
     @Recordable
     @ResponseBody
-    public String confirm(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, @PathVariable("id") Long id) {
+    public String reject(@SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff, @PathVariable("id") Long id) {
         refundService.reject(staff, id);
         return "SUCCESS";
     }
 
+    /**
+     * 批准退款
+     *
+     * @param staff
+     * @param id
+     * @param confirmAmt
+     * @return
+     */
     @PostMapping("/{id}/agree")
     @Recordable
     public String agree(
             @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
             @PathVariable("id") Long id,
-            @RequestParam("confirmAmount") BigDecimal confirmAmt
+            @RequestParam(value = "amount", defaultValue = "0") BigDecimal total,
+            @RequestParam(value = "confirmAmount", defaultValue = "0") BigDecimal confirmAmt,
+            Model model
     ) {
-        refundService.agree(staff, id, confirmAmt);
+        List<ObjectError> errList = new ArrayList<>();
+        if (confirmAmt.compareTo(new BigDecimal("0")) == -1) {
+            errList.add(new ObjectError("确认退款金额", "不能小于0"));
+            model.addAttribute("errors", errList);
+        }
+        if (total.compareTo(confirmAmt) == -1) {
+            errList.add(new ObjectError("确认退款金额", "不能大于可退款金额"));
+            model.addAttribute("errors", errList);
+        }
+        if (errList.size() == 0) {
+            refundService.agree(staff, id, confirmAmt);
+        }
         return "redirect:" + viewPath;
     }
 }

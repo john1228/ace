@@ -23,6 +23,8 @@ public interface RoomMapper {
 
     Room findById(@Param("id") Long id);
 
+    boolean isExists(@Param("staff") Staff staff, @Param("serialNo") String serialNo, @Param("self_id") Long selfId);
+
     void update(Room room);
 
     void enable(Long id);

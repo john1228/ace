@@ -82,7 +82,7 @@
                         <div class="col-sm-10">
                             <select id="limitRoom" name="limitRoom" class="multiselect" multiple>
                                 <#list rooms as id,name>
-                                    <option value="${id}" ${coupon.limitRoom?seq_contains(id)?string('selected="selected"', '')}>${name}</option>
+                                    <option value="${id}" ${coupon.limitRoom?seq_contains(id?eval)?string('selected="selected"', '')}>${name}</option>
                                 </#list>
                             </select>
                         </div>

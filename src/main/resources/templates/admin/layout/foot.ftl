@@ -42,16 +42,20 @@
     $(document).ready(function () {
         $(".table").on("click", 'a[data-method="DELETE"]', function (e) {
             var message = $(this).data("message");
+            var confirmMsg = $(this).data("confirm");
+            if (confirmMsg != undefined) {
+                if (confirm(confirmMsg))
+                    $.ajax({
+                        url: $(this).attr("href"), type: 'DELETE', data: {}, success: function (data) {
+                            if (data == "SUCCESS") {
+                                layer.msg(message, function () {
+                                    window.location.reload();
+                                })
+                            }
+                        }
+                    })
+            }
             e.preventDefault();
-            $.ajax({
-                url: $(this).attr("href"), type: 'DELETE', data: {}, success: function (data) {
-                    if (data == "SUCCESS") {
-                        layer.msg(message, function () {
-                            window.location.reload();
-                        })
-                    }
-                }
-            })
         });
         $(".table").on("click", 'a[data-method="POST"]', function (e) {
             var message = $(this).data("message");

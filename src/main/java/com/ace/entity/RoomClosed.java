@@ -7,8 +7,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * @author john
- * @date 19-5-18 下午11:48
+ * 会议室不开放日期设置
  */
 @Setter
 @Getter

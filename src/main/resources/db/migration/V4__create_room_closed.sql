@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `bb_room_closed`;
 CREATE TABLE bb_room_closed (
   id           bigint(11) unsigned NOT NULL AUTO_INCREMENT,
-  room_id      bigint(32)         NOT NULL COMMENT '账户',
+  room_id      bigint(32)          NOT NULL COMMENT '关联会议室',
   start_date   date                COMMENT '指定日期的开始日期',
   end_date     date                COMMENT '指定日期的结束日期',
   start_time   varchar(5)          COMMENT '开始时间',

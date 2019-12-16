@@ -33,8 +33,16 @@
                                            start_time,
                                            end_time,
                                            contact_name,
-                                           contact_mobile)
-        values (#{orderId}, #{roomId}, #{meetingName}, #{startTime}, #{endTime}, #{contactName}, #{contactMobile})
+                                           contact_mobile,
+                                           remark)
+        values (#{orderId},
+                #{roomId},
+                #{meetingName},
+                #{startTime},
+                #{endTime},
+                #{contactName},
+                #{contactMobile},
+                #{remark})
     </insert>
     <select id="selectByOrder" resultType="com.ace.entity.Appointment">
         SELECT room_id                    AS roomId,

@@ -17,6 +17,9 @@
         INNER JOIN bb_order_appointments boa ON bo.id = boa.order_id
         INNER JOIN bb_rooms brm ON boa.room_id = brm.id
         <where>
+            <if test="staff!=null">
+                brm.org_id = #{staff.orgId}
+            </if>
             <if test="criteria.keyword!=null and criteria.keyword!=''">
                 AND CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
                 CONCAT('%',#{criteria.keyword},'%')
@@ -49,6 +52,7 @@
         SELECT
         br.order_no AS orderNo,
         br.no AS no,
+        brm.project_id AS projectId,
         brm.project_name AS projectName,
         brm.org_name AS orgName,
         brm.name AS roomName,
@@ -63,6 +67,9 @@
         INNER JOIN bb_order_appointments boa ON bo.id = boa.order_id
         INNER JOIN bb_rooms brm ON boa.room_id = brm.id
         <where>
+            <if test="staff!=null">
+                brm.org_id = #{staff.orgId}
+            </if>
             <if test="criteria.keyword!=null and criteria.keyword!=''">
                 AND CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) LIKE
                 CONCAT('%',#{criteria.keyword},'%')
@@ -103,5 +110,27 @@
         from bb_receipts
         where id = #{id}
         limit 1
+    </select>
+
+
+    <select id="findByOrderNo" resultType="com.ace.entity.ReceiptDetail">
+        SELECT br.order_no      AS orderNo,
+               br.no            AS no,
+               brm.project_id   AS projectId,
+               brm.project_name AS projectName,
+               brm.org_name     AS orgName,
+               brm.name         AS roomName,
+               bo.total         AS total,
+               bo.pay_amount    AS payAmount,
+               br.price         AS price,
+               bo.created_at    AS createdAt,
+               br.created_at    AS paidAt,
+               bo.pay_type      AS payType
+        FROM bb_receipts br
+                 LEFT JOIN bb_orders bo ON br.order_no = CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0))
+                 INNER JOIN bb_order_appointments boa ON bo.id = boa.order_id
+                 INNER JOIN bb_rooms brm ON boa.room_id = brm.id
+        WHERE br.order_no = #{no}
+        LIMIT 1
     </select>
 </mapper>

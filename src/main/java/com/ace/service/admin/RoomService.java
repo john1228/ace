@@ -25,4 +25,6 @@ public interface RoomService {
     void disable(Staff staff, Long id);
 
     List<RoomSupport> roomSupports(Long roomId);
+
+    boolean isExists(Staff staff, String serialNo, Long selfId);
 }

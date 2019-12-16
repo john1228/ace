@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-
+/**
+ * 发票管理
+ */
 @Controller
 @RequestMapping("/admin/invoices")
 public class InvoicesController extends BaseController {
@@ -36,9 +38,10 @@ public class InvoicesController extends BaseController {
     @PostMapping("/dataList")
     public DataTable<InvoiceOrder> dataList(
             @SessionAttribute(value = CURRENT_OPERATOR, required = false) Staff staff,
+            DataTable<InvoiceOrder> dataTable,
             InvoiceCriteria criteria
     ) {
-        DataTable<InvoiceOrder> dataTable = invoiceService.dataTable(staff, criteria);
+        invoiceService.dataTable(staff, criteria, dataTable);
         return dataTable;
     }
 
@@ -49,7 +52,15 @@ public class InvoicesController extends BaseController {
         return viewPath + "new";
     }
 
-
+    /**
+     * 添加发票
+     *
+     * @param orderNo
+     * @param invoice
+     * @param result
+     * @param model
+     * @return
+     */
     @PostMapping(value = {"", "/"})
     @Recordable
     public String create(@RequestParam("orderNo") String orderNo, @Valid Invoice invoice, BindingResult result, Model model) {
@@ -74,6 +85,13 @@ public class InvoicesController extends BaseController {
         return viewPath + "show";
     }
 
+    /**
+     * 更新发票信息
+     *
+     * @param orderNo
+     * @param invoice
+     * @return
+     */
     @PostMapping("/{orderNo}/mail")
     @Recordable
     public String update(@PathVariable("orderNo") String orderNo, Invoice invoice) {

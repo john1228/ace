@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
- * @author john
- * @date 19-7-12 下午6:00
+ * 流水关联订单 {@link Order}
  */
 @Setter
 @Getter
 public class ReceiptDetail {
     private String orderNo;
     private String no;
+    private String projectId;
     private String projectName;
     private String orgName;
     private String roomName;

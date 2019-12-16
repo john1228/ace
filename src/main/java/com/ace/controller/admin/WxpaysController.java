@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-
+/**
+ * 微信支付配置管理
+ */
 @Controller
 @RequestMapping("/admin/wxpays")
 @Log4j2
@@ -32,7 +34,7 @@ public class WxpaysController extends BaseController {
     @GetMapping({"", "/"})
     public String index(Authentication authentication, Model model) {
         Account account = (Account) authentication.getCredentials();
-        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+        model.addAttribute("current_project", DataUtils.proList(account.getToken()));
         return viewPath + "index";
     }
 
@@ -47,18 +49,21 @@ public class WxpaysController extends BaseController {
     @GetMapping("/new")
     public String add(Authentication authentication, Model model) {
         Account account = (Account) authentication.getCredentials();
-        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+        model.addAttribute("current_project", DataUtils.proList(account.getToken()));
         model.addAttribute("wxpay", new Wxpay());
         return viewPath + "new";
     }
 
-
+    /**
+     * 添加
+     **/
     @PostMapping({"", "/"})
     @Recordable
     public String create(Authentication authentication, @Valid Wxpay wxpay, BindingResult result, Model model) {
         if (result.hasErrors()) {
             Account account = (Account) authentication.getCredentials();
-            model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+            model.addAttribute("current_project", DataUtils.proList(account.getToken()));
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("wxpay", wxpay);
             return viewPath + "new";
         } else {
@@ -76,16 +81,20 @@ public class WxpaysController extends BaseController {
     @GetMapping("/{project_id}/edit")
     public String edit(Authentication authentication, @PathVariable("project_id") String projectId, Model model) {
         Account account = (Account) authentication.getCredentials();
-        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+        model.addAttribute("current_project", DataUtils.proList(account.getToken()));
         model.addAttribute("wxpay", wxpayService.findById(projectId));
         return viewPath + "edit";
     }
 
+    /**
+     * 更新
+     **/
     @PutMapping("/{project_id}")
     public String update(Authentication authentication, @Valid Wxpay wxpay, BindingResult result, Model model) {
         if (result.hasErrors()) {
             Account account = (Account) authentication.getCredentials();
-            model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+            model.addAttribute("current_project", DataUtils.proList(account.getToken()));
+            model.addAttribute("errors", result.getAllErrors());
             model.addAttribute("wxpay", wxpay);
             return viewPath + "edit";
         } else {
@@ -94,6 +103,9 @@ public class WxpaysController extends BaseController {
         }
     }
 
+    /**
+     * 删除
+     **/
     @DeleteMapping("/{project_id}")
     @Recordable
     @ResponseBody

@@ -32,10 +32,10 @@
                 <thead>
                 <tr>
                     <th class="center">订单号</th>
-                    <th class="center">下单账户</th>
-                    <th class="center">下单账户名</th>
+                    <th class="center">联系人</th>
+                    <th class="center">联系电话</th>
                     <th class="center">订单金额</th>
-                    <th class="center">优惠券抵用金额</th>
+                    <th class="center">优惠金额</th>
                     <th class="center">实付金额</th>
                     <th class="center">订单状态</th>
                     <th class="center">下单时间</th>
@@ -67,6 +67,7 @@
                                 sLast: "末页"
                             }
                         },
+                        bLengthChange: false,
                         searching: false,
                         processing: true,
                         serverSide: true,
@@ -81,6 +82,7 @@
                                 data.orgId = $("#orgId").val();
                                 data.total = $("#total").val();
                                 data.payAmount = $("#payAmount").val();
+                                data.status = $("#status").val();
                                 data.from = $("#from").val();
                                 data.to = $("#to").val();
                                 data.projectName = $("#project").val();
@@ -102,8 +104,8 @@
                         columns:
                                 [
                                     {data: "orderNo", className: 'center'},
-                                    {data: "accountId", className: 'center'},
                                     {data: "accountName", className: 'center'},
+                                    {data: "accountId", className: 'center'},
                                     {data: "total", className: 'center'},
                                     {data: "coupon", className: 'center'},
                                     {data: "payAmount", className: 'center'},
@@ -151,7 +153,7 @@
                                         render: function (data, type, row) {
                                             var _btn = '<a class="btn btn-xs btn-info" href="/admin/orders/' + data + '">查看</a>';
                                             <#if !current_account.isAdmin()>
-                                                if (row.status == "UNPAID2CONFIRM") {
+                                                if (row.status == "UNPAID2CONFIRM" || row.status == "PAID2CONFIRM") {
                                                     _btn = _btn + '<a class="btn btn-xs btn-warning" href="/admin/orders/' + data + '/confirm" data-method="POST" data-message="确认成功">确认</a>';
                                                 }
                                             </#if>

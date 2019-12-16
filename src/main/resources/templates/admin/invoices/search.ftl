@@ -4,7 +4,7 @@
 <div class="col-xs-12 col-sm-12 padding-6 form-horizontal">
     <div class="col-xs-12 col-sm-12 form-group">
         <div class="col-xs-12 col-sm-6">
-            <input id="orderNo" class="form-control" placeholder="订单号/手机/姓名"/>
+            <input id="keyword" class="form-control" placeholder="订单号/手机/姓名"/>
         </div>
     </div>
     <div class="col-xs-12 col-sm-10 form-group">
@@ -22,9 +22,15 @@
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-3 control-label no-padding-right text-right">订单日期</label>
             <div class="col-sm-9">
-                <input id="createdAt" class="form-control" placeholder="下单日期"/>
+                <div class="col-xs-12 input-group input-daterange">
+                    <input id="createdFrom" class="form-control" readonly="readonly">
+                    <div class="input-group-addon">至</div>
+                    <input id="createdTo" class="form-control" readonly="readonly">
+                </div>
                 <script type="text/javascript">
-                    $("#createdAt").datepicker({language: 'zh'});
+                    $('.input-daterange input').each(function () {
+                        $(this).datepicker();
+                    });
                 </script>
             </div>
         </div>
@@ -33,13 +39,25 @@
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-3 control-label no-padding-right text-right">支付金额</label>
             <div class="col-sm-9">
-                <input id="payAmount" class="form-control" placeholder="订单实付金额"/>
+                <div class="input-group">
+                    <input type="text" class="input-sm form-control" id="payAmtFrom">
+                    <span class="input-group-addon">
+                            <i class="fa fa-exchange"></i>
+                        </span>
+                    <input type="text" class="input-sm form-control" id="payAmtTo">
+                </div>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">
             <label class="col-sm-3 control-label no-padding-right text-right">订单金额</label>
             <div class="col-sm-9">
-                <input id="total" class="form-control" placeholder="订单总金额"/>
+                <div class="input-group">
+                    <input type="text" class="input-sm form-control" id="totalFrom">
+                    <span class="input-group-addon">
+                            <i class="fa fa-exchange"></i>
+                        </span>
+                    <input type="text" class="input-sm form-control" id="totalTo">
+                </div>
             </div>
         </div>
     </div>

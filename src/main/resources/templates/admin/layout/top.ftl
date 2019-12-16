@@ -21,7 +21,7 @@
         <div class="navbar-buttons navbar-header">
             <ul class="nav ace-nav">
                 <li class="light-blue">
-                    <a href="http://bpmp.baobanwang.com/p/index" class="btn btn-white">
+                    <a href="http://pmp.baobanwang.com/p/index" class="btn btn-white">
                         <span class="glyphicon glyphicon-send"></span> 点击返回
                     </a>
                 </li>
@@ -41,7 +41,7 @@
 
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="http://bpmp.baobanwang.com/p/index">
+                            <a href="http://pmp.baobanwang.com/p/index">
                                 <i class="ace-icon fa fa-user"></i>
                                 返回
                             </a>

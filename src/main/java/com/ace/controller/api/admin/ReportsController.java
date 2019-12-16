@@ -12,10 +12,8 @@ import javax.annotation.Resource;
 import java.sql.Date;
 
 /**
- * @author john
- * @date 19-5-18 下午1:36
+ * 管理端-财务管理
  */
-@Api(tags = "管理端-财务管理")
 @RestController
 @RequestMapping("/api/admin/reports")
 public class ReportsController {
@@ -23,6 +21,15 @@ public class ReportsController {
     @Resource
     ReportService reportService;
 
+    /**
+     * 财务查询
+     * <br/>
+     * account - 账户信息 {@link Account}
+     * <br/>
+     * from - 开始日期
+     * <br/>
+     * to - 结束日期
+     */
     @GetMapping
     @Authorization
     public Result index(@RequestAttribute("ACCOUNT") Account account, @RequestParam(value = "from") Date from, @RequestParam(value = "to") Date to) {

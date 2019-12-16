@@ -7,18 +7,22 @@ import lombok.Setter;
 import org.apache.http.Consts;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.util.Strings;
-import org.jdom.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.net.ssl.SSLContext;
+import java.io.*;
 import java.math.BigDecimal;
+import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -94,6 +98,44 @@ public class WxPayClient {
         }
 
         return null;
+    }
+
+    public boolean refund(WxpayRefundRequest request) {
+        SortedMap<String, Object> params = new TreeMap<>();
+        params.put("appid", appId);
+        params.put("mch_id", mchId);
+        params.put("nonce_str", UUID.randomUUID().toString().replace("-", ""));
+        params.put("out_trade_no", request.getOrderNo());
+        params.put("out_refund_no", request.getOrderNo() + "-" + System.currentTimeMillis());
+        params.put("total_fee", request.getTotalFee().multiply(new BigDecimal(100)).intValue());
+        params.put("refund_fee", request.getRefundFee().multiply(new BigDecimal(100)).intValue());
+
+        try {
+            String signed = md5(params);
+            StringBuilder reqXml = new StringBuilder("<xml>");
+            params.forEach((k, v) -> reqXml.append("<" + k + "><![CDATA[").append(v).append("]]></" + k + ">"));
+            reqXml.append("<sign><![CDATA[").append(signed).append("]]></sign>").append("</xml>");
+
+            ClassPathResource resource = new ClassPathResource("cert/wxpay/apiclient_cert.p12");
+            InputStream inputStream = resource.getInputStream();
+            KeyStore keyStore = KeyStore.getInstance("PKCS12");
+            keyStore.load(inputStream, mchId.toCharArray());
+
+            SSLContext sslContext = SSLContexts.custom().loadKeyMaterial(keyStore, mchId.toCharArray()).build();
+            SSLConnectionSocketFactory sslf = new SSLConnectionSocketFactory(sslContext);
+            CloseableHttpClient client = HttpClients.custom().setSSLSocketFactory(sslf).build();
+            HttpPost post = new HttpPost(gateway);
+            post.setEntity(new StringEntity(reqXml.toString(), Consts.UTF_8));
+            CloseableHttpResponse response = client.execute(post);
+            String result = EntityUtils.toString(response.getEntity(), "utf-8");
+            logger.info("申请退款结果:" + result);
+            SortedMap<String, Object> resultMap = XMLUtils.xmlToMap(result);
+            if ("SUCCESS".equals(resultMap.get("result_code"))) return true;
+        } catch (Exception e) {
+            logger.info("微信统一下单失败:" + e.getMessage());
+        }
+
+        return false;
     }
 
     public boolean signatureCheck(SortedMap<String, Object> params, String sign) throws NoSuchAlgorithmException {

@@ -11,6 +11,8 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
+ * 会议室不开放时间管理
+ *
  * @author john
  * @date 19-5-20 上午9:53
  */
@@ -28,6 +30,12 @@ public class ClosedController {
         return dataTable;
     }
 
+    /**
+     * 添加
+     *
+     * @param closed
+     * @return
+     */
     @PostMapping(value = {"", "/"})
     @Recordable
     public RedirectView create(@Valid RoomClosed closed) {

@@ -9,6 +9,6 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 public class Base {
-    @JsonView(ApiView.Detail.class)
+    @JsonView({ApiView.Base.class, ApiView.Detail.class})
     String projectName;
 }

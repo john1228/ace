@@ -1,5 +1,7 @@
 package com.ace.service.api.impl;
 
+import com.ace.config.AlipayConfig;
+import com.ace.config.WxpayConfig;
 import com.ace.controller.api.concerns.ListStatus;
 import com.ace.dao.*;
 import com.ace.entity.*;
@@ -22,9 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service("api_order_service")
 @Log4j2
@@ -35,6 +39,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     private RoomSupportMapper rsMapper;
     @Resource
     private RoomClosedMapper rcMapper;
+    @Resource
+    private RoomFreeOrgMapper freeOrgMapper;
     @Resource
     private MemberCouponMapper mcMapper;
     @Resource
@@ -54,32 +60,26 @@ public class OrderServiceImpl extends BaseService implements OrderService {
     @Resource
     private RefundMapper refundMapper;
     @Resource
-    private AlipayMapper alipayMapper;
+    private AlipayConfig alipayConfig;
     @Resource
-    private WxpayMapper wxpayMapper;
+    private WxpayConfig wxpayConfig;
+    @Resource
+    private ReceiptMapper receiptMapper;
 
 
     @Override
     public List<Order> customerOrder(Account account, ListStatus status, int page) {
         switch (status) {
             case CANCELED:
-                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
-                        OrderStatus.CANCELED
-                }), page, pageSize);
+                return orderMapper.customerOrder(account, Arrays.asList(OrderStatus.CANCELED), page, pageSize);
             case PENDING:
-                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
-                        OrderStatus.UNPAID2CONFIRM,
-                        OrderStatus.CONFIRM2PAID
-                }), page, pageSize);
+                return orderMapper.customerOrder(account, Arrays.asList(OrderStatus.UNPAID2CONFIRM,
+                        OrderStatus.CONFIRM2PAID), page, pageSize);
             case CONFIRMING:
-                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
-                        OrderStatus.PAID2CONFIRM,
-                        OrderStatus.UNPAID2CONFIRM
-                }), page, pageSize);
+                return orderMapper.customerOrder(account, Arrays.asList(OrderStatus.PAID2CONFIRM,
+                        OrderStatus.UNPAID2CONFIRM), page, pageSize);
             case PAID:
-                return orderMapper.customerOrder(account, Arrays.asList(new OrderStatus[]{
-                        OrderStatus.PAIDANDCONFIRM
-                }), page, pageSize);
+                return orderMapper.customerOrder(account, Arrays.asList(OrderStatus.PAIDANDCONFIRM), page, pageSize);
             default:
                 return orderMapper.customerOrder(account, null, page, pageSize);
         }
@@ -107,7 +107,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             Date appointedDate = new Date(appointment.getStartTime().getTime());
             Week week = Week.valueOf(wf.format(appointedDate).toUpperCase());
             //校验时间是否有效
-            List<RoomClosed> closedList = rcMapper.closedList(Arrays.asList(new Room[]{room}), appointedDate);
+            List<RoomClosed> closedList = rcMapper.closedList(Arrays.asList(room), appointedDate);
             if (roomTools.check(closedList, appointment.getStartTime(), appointment.getEndTime())) {
                 account.setErrMsg("该时间段不开放预约");
                 return null;
@@ -118,14 +118,13 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 account.setErrMsg("您租借的时间太短，最少租用时长为" + room.getUnit() * 30 + "分钟");
                 return null;
             }
-            //价格计算
-            List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
             try {
+                //价格计算
+                List<Price> prices = priceMapper.prices(appointment.getRoomId(), appointedDate);
                 //计算总价
                 BigDecimal total = orderTools.fittedPrice(prices, appointment.getStartTime(), appointment.getEndTime(), room.getRental());
                 order.setTotal(total);
                 //校验优惠券
-                log.info("使用优惠券编号:" + couponId);
                 if (couponId != 0) {
                     Date date = new Date(System.currentTimeMillis());
                     MemberCoupon coupon = mcMapper.findById(couponId);
@@ -144,7 +143,7 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                             account.setErrMsg("优惠券不能用于该会议室");
                             return null;
                         } else {
-                            order.setCoupon(new BigDecimal(coupon.getDiscount()));
+                            order.setCoupon(coupon.getDiscount());
                         }
                     }
                     mcMapper.use(couponId, CouponStatus.USED);
@@ -159,58 +158,56 @@ public class OrderServiceImpl extends BaseService implements OrderService {
                 }
                 order.setTotal(order.getTotal().add(supportFee));
                 order.setPayAmount(order.getTotal().subtract(order.getCoupon()));
-                if (order.getPayAmount().compareTo(new BigDecimal(0)) == 0) {
-                    switch (room.getCfm()) {
-                        case AUTO:
-                            order.setStatus(OrderStatus.PAIDANDCONFIRM);
-                            break;
-                        case AFTER:
-                            order.setStatus(OrderStatus.PAID2CONFIRM);
-                            break;
-                        case BEFORE:
-                            order.setStatus(OrderStatus.PAID2CONFIRM);
-                            break;
-                    }
+            } catch (Exception exp) {
+                account.setErrMsg("创建订单失败");
+                return null;
+            }
+            //免费组织
+            List<String> orgList = account.getStaffList().stream().map(staff -> staff.getOrgId()).collect(Collectors.toList());
+            List<RoomFreeOrg> roomFreeOrgs = freeOrgMapper.freeOrgs(appointment.getRoomId());
+            Optional<RoomFreeOrg> hasFree = roomFreeOrgs.stream().filter(freeOrg -> orgList.contains(freeOrg.getOrgId())).findFirst();
+            if (hasFree.isPresent()) {
+                RoomFreeOrg freeOrg = hasFree.get();
+                order.setPayAmount(new BigDecimal(0));
+                order.setRemark("免费组织:" + freeOrg.getOrgName() + "(" + freeOrg.getOrgId() + ")");
+            }
+            if (order.getPayAmount().compareTo(new BigDecimal(0)) == 0) {
+                switch (room.getCfm()) {
+                    case AUTO:
+                        order.setStatus(OrderStatus.PAIDANDCONFIRM);
+                        break;
+                    case AFTER:
+                        order.setStatus(OrderStatus.PAID2CONFIRM);
+                        break;
+                    case BEFORE:
+                        order.setStatus(OrderStatus.PAID2CONFIRM);
+                        break;
+                }
 
-                } else {
-                    switch (room.getCfm()) {
-                        case AUTO:
-                            order.setStatus(OrderStatus.CONFIRM2PAID);
-                            break;
-                        case AFTER:
-                            order.setStatus(OrderStatus.UNPAID2CONFIRM);
-                            break;
-                        case BEFORE:
-                            order.setStatus(OrderStatus.UNPAID2CONFIRM);
-                            break;
-                    }
+            } else {
+                switch (room.getCfm()) {
+                    case AUTO:
+                        order.setStatus(OrderStatus.CONFIRM2PAID);
+                        break;
+                    case AFTER:
+                        order.setStatus(OrderStatus.UNPAID2CONFIRM);
+                        break;
+                    case BEFORE:
+                        order.setStatus(OrderStatus.UNPAID2CONFIRM);
+                        break;
                 }
-                Long orderId = createOrder(order, appointment);
-                if (orderId != null && orderId != 0L) {
-                    order = orderMapper.findById(orderId);
-                    if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
-                        //支付宝
-                        Payment payment = new Payment();
-                        Alipay alipay = alipayMapper.findBy(room.getProjectId());
-                        Wxpay wxpay = wxpayMapper.findBy(room.getProjectId());
-                        if (alipay != null) {
-                            payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
-                        }
-                        if (wxpay != null) {
-                            payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
-                        }
-                        order.setPayment(payment);
-                    }
-                    if (order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
-                        jobTools.cancelOrder(order.getOrderNo());
-                    }
-                    return order;
-                } else {
-                    account.setErrMsg("创建订单失败");
-                    return null;
+            }
+            Long orderId = createOrder(order, appointment);
+            if (orderId != null && orderId != 0L) {
+                order = orderMapper.findById(orderId);
+                if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID))
+                    order.setPayment(new Payment(AlipayBuilder.instance.getPay(alipayConfig, order), WxpayBuilder.instance.getPay(wxpayConfig, order)));
+                if (order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
+                    jobTools.cancelOrder(order.getOrderNo());
                 }
-            } catch (Exception e) {
-                account.setErrMsg("该时间段未开放预约");
+                return order;
+            } else {
+                account.setErrMsg("创建订单失败");
                 return null;
             }
         }
@@ -224,15 +221,8 @@ public class OrderServiceImpl extends BaseService implements OrderService {
         List<OrderSupport> supportList = orderSupportMapper.supportList(order.getId());
         appointment.setService(supportList);
         order.setAppointment(appointment);
-        if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID)) {
-            //支付宝
-            Alipay alipay = alipayMapper.findBy(room.getProjectId());
-            Wxpay wxpay = wxpayMapper.findBy(room.getProjectId());
-            Payment payment = new Payment();
-            payment.setAlipay(AlipayBuilder.instance.getPay(alipay, order));
-            payment.setWxpay(WxpayBuilder.instance.getPay(wxpay, order));
-            order.setPayment(payment);
-        }
+        if (order.getStatus().equals(OrderStatus.UNPAID2CONFIRM) || order.getStatus().equals(OrderStatus.CONFIRM2PAID))
+            order.setPayment(new Payment(AlipayBuilder.instance.getPay(alipayConfig, order), WxpayBuilder.instance.getPay(wxpayConfig, order)));
         return order;
     }
 
@@ -268,31 +258,43 @@ public class OrderServiceImpl extends BaseService implements OrderService {
 
     @Override
     @Transactional
-    public void cancel(String orderNo) {
+    public String cancel(String orderNo, boolean customer) {
         Order order = orderMapper.findByOrderNo(orderNo);
-        switch (order.getStatus()) {
-            case PAIDANDCONFIRM:
-                if (order.getPayAmount().compareTo(new BigDecimal("0")) == 1)
-                    refundMapper.create(RefundApplication.build(order));
-                orderMapper.update(orderNo, OrderStatus.REFUNDING);
-                break;
-            case UNPAID2CONFIRM:
-                orderMapper.update(orderNo, OrderStatus.CANCELED);
-                break;
-            case CONFIRM2PAID:
-                orderMapper.update(orderNo, OrderStatus.CANCELED);
-                break;
-            case PAID2CONFIRM:
-                if (order.getPayAmount().compareTo(new BigDecimal("0")) == 1)
-                    refundMapper.create(RefundApplication.build(order));
-                orderMapper.update(orderNo, OrderStatus.REFUNDING);
-                break;
+        boolean canRF = false;
+        if (customer) {
+            Room room = roomMapper.findById(order.getAppointment().getRoomId());
+            Timestamp freeRF = new Timestamp(room.getRlt() * 3600 + order.getCreatedAt().getTime());
+            if (order.getAppointment().getStartTime().after(freeRF))
+                canRF = true;
         }
+        if (canRF) {
+            switch (order.getStatus()) {
+                case PAIDANDCONFIRM:
+                case PAID2CONFIRM:
+                    if (order.getPayAmount().compareTo(new BigDecimal("0")) == 1)
+                        refundMapper.create(RefundApplication.build(order));
+                    orderMapper.update(orderNo, OrderStatus.REFUNDING);
+                    break;
+                case UNPAID2CONFIRM:
+                case CONFIRM2PAID:
+                    orderMapper.update(orderNo, OrderStatus.CANCELED);
+                    break;
+            }
+            return null;
+        } else {
+            return "您预约的会议室已过取消时间";
+        }
+
     }
 
     @Override
     @Transactional
     public void paying(Receipt receipt, String payType) {
+        try {
+            receiptMapper.create(receipt);
+        } catch (Exception exp) {
+            log.info("流水创建失败:" + exp.getMessage());
+        }
         Order order = orderMapper.findByOrderNo(receipt.getOrderNo());
         orderMapper.defray(order.getOrderNo(), OrderStatus.PAID2CONFIRM, payType);
         switch (order.getStatus()) {
@@ -318,9 +320,5 @@ public class OrderServiceImpl extends BaseService implements OrderService {
             orderSupportMapper.create(appointment.getService());
         }
         return orderId;
-    }
-
-    public static void main(String[] args) {
-        System.err.println(new BigDecimal(1).compareTo(new BigDecimal("0")));
     }
 }

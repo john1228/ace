@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
+ * 管理员资料查看
+ *
  * @author john
  * @date 19-7-23 上午11:44
  */

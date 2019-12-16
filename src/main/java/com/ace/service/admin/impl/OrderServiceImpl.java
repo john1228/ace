@@ -11,6 +11,7 @@ import com.ace.service.admin.OrderService;
 import com.ace.service.concerns.JobTools;
 import com.ace.service.concerns.OrderTools;
 import com.ace.service.concerns.RoomTools;
+import com.ace.util.AlipayBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
     private AppointmentMapper appointmentMapper;
     @Resource
     private JobTools jt;
+    @Resource
+    private RefundMapper rfMapper;
 
     @Override
     public void dataTable(Staff staff, OrderCriteria criteria, DataTable<Order> dataTable) {
@@ -55,7 +58,6 @@ public class OrderServiceImpl implements OrderService {
             staff.getErrMsg().append("已经有客户预约了该时间段");
         } else {
             SimpleDateFormat hf = new SimpleDateFormat("HH:mm");
-            Date appointed = new Date(appointment.getStartTime().getTime());
             //价格计算
             order.setStatus(OrderStatus.PAIDANDCONFIRM);
             orderMapper.create(order);
@@ -86,6 +88,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(String orderNo) {
-        orderMapper.update(orderNo, OrderStatus.CANCELED);
+        Order order = orderMapper.findByOrderNo(orderNo);
+        switch (order.getStatus()) {
+            case UNPAID2CONFIRM:
+            case CONFIRM2PAID:
+                orderMapper.update(orderNo, OrderStatus.CANCELED);
+                break;
+            case PAIDANDCONFIRM:
+            case PAID2CONFIRM:
+                if (order.getPayAmount().compareTo(new BigDecimal("0")) == 1)
+                    rfMapper.create(RefundApplication.build(order));
+                orderMapper.update(orderNo, OrderStatus.REFUNDING);
+                break;
+        }
     }
 }

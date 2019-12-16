@@ -24,15 +24,15 @@
     <div class="col-sm-10">
         <div class="col-xs-12 col-sm-9 input-group input-daterange">
             <input type="text" class="form-control" name="startDate" id="startDate"
-                   value="${price.startDate!}">
+                   value="${price.startDate!}" readonly="readonly">
             <div class="input-group-addon">至</div>
             <input type="text" class="form-control" name="endDate" id="endDate"
-                   value="${price.endDate!}">
+                   value="${price.endDate!}" readonly="readonly">
         </div>
     </div>
     <script type="text/javascript">
         $('.input-daterange input').each(function () {
-            $(this).datepicker({language: 'zh'});
+            $(this).datepicker();
         });
     </script>
 </div>

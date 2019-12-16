@@ -16,10 +16,10 @@
                 <div class="form-group row  col-xs-12 col-sm-12">
                     <label class="col-sm-2 no-padding-right text-right">开始时间</label>
                     <div class="col-sm-10">
-                        <input class="form-control datepicker" id="date"/>
+                        <input class="form-control datepicker" id="date" readonly="readonly"/>
                     </div>
                     <script type="text/javascript">
-                        $(".datepicker").datepicker({language: 'zh'});
+                        $(".datepicker").datepicker();
                     </script>
                 </div>
             </div>

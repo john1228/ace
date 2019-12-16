@@ -15,8 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.Date;
 
 /**
- * @author john
- * @date 19-5-7 下午5:05
+ * 会议室排期
  */
 @Getter
 @Setter
@@ -25,8 +24,14 @@ public class Schedule {
     Logger logger = LoggerFactory.getLogger(Schedule.class);
     @JsonView(ApiView.Base.class)
     private Date date;
+    /**
+     * 开放时间
+     */
     @JsonView(ApiView.Base.class)
     private List<Period> open;
+    /**
+     * 已预订时间
+     */
     @JsonView(ApiView.Base.class)
     private List<Period> appointed;
 

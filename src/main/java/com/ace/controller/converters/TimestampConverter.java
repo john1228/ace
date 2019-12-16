@@ -8,6 +8,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
+ * 字符串转换时间戳
+ *
  * @author john
  * @date 19-5-7 下午5:41
  */

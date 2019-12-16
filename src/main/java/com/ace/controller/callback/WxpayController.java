@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.SortedMap;
 
 /**
+ * 微信支付回调处理
  * @author john
  * @date 19-6-5 上午9:38
  */

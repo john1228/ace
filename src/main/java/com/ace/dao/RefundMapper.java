@@ -1,6 +1,7 @@
 package com.ace.dao;
 
 import com.ace.controller.admin.concerns.RefundCriteria;
+import com.ace.entity.Order;
 import com.ace.entity.RefundApplication;
 import com.ace.entity.Staff;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,6 @@ public interface RefundMapper {
     void agree(@Param("staff") Staff staff, @Param("id") Long id, @Param("confirmAmt") BigDecimal confirmAmt);
 
     void reject(@Param("staff") Staff staff, @Param("id") Long id);
+
+    Order refundOrder(@Param("id") Long refundId);
 }

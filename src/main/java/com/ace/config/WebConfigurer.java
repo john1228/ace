@@ -22,8 +22,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class WebConfigurer implements WebMvcConfigurer {
 
-    final static Logger log = LoggerFactory.getLogger(WebConfigurer.class);
-
     @Bean
     public AdminInterceptor adminInterceptor() {
         return new AdminInterceptor();

@@ -13,6 +13,7 @@ import java.util.Optional;
 
 
 /**
+ * 字符串转换枚举ListStatus转换器
  * @author john
  * @date 19-5-7 下午5:41
  */

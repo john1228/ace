@@ -8,7 +8,7 @@ import com.ace.entity.Staff;
 
 public interface InvoiceService {
 
-    DataTable<InvoiceOrder> dataTable(Staff staff, InvoiceCriteria criteria);
+    void dataTable(Staff staff, InvoiceCriteria criteria, DataTable<InvoiceOrder> dataTable);
 
     Invoice findByOrderNo(String orderNo);
 

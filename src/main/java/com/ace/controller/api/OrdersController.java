@@ -11,15 +11,17 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
 /**
+ * 订单管理
+ *
  * @author john
  * @date 19-5-7 下午6:23
  */
-@Api(tags = "订单管理")
 @RestController("api_orders")
 @RequestMapping("/api/orders")
 @Log4j2
@@ -27,10 +29,16 @@ public class OrdersController extends BaseController {
     @Resource
     OrderService orderService;
 
+    /**
+     * 用户订单
+     * <br/>
+     * list - 订单状态
+     * <br/>
+     * page - 页码
+     **/
     @JsonView(ApiView.Base.class)
     @GetMapping("")
     @Authorization
-    @ApiOperation(value = "查询订单")
     public Result index(
             @RequestAttribute("ACCOUNT") Account account,
             @RequestParam(value = "list", defaultValue = "") ListStatus status,
@@ -39,6 +47,13 @@ public class OrdersController extends BaseController {
         return new Success(orderService.customerOrder(account, status, page));
     }
 
+    /**
+     * 用户下单
+     * <br/>
+     * appointment - 下单信息 {@link Appointment}
+     * <br/>
+     * coupon - 使用优惠券编号
+     */
     @JsonView(ApiView.Detail.class)
     @PostMapping("")
     @Authorization
@@ -52,21 +67,33 @@ public class OrdersController extends BaseController {
         }
     }
 
+    /**
+     * 查看订单
+     * <br/>
+     * orderNo - 订单号
+     **/
     @JsonView(ApiView.Detail.class)
     @GetMapping("/{id}")
     @Authorization
-    @ApiOperation(value = "查看订单")
     public Result show(@PathVariable("id") String orderNo) {
         return new Success(orderService.show(orderNo));
     }
 
 
+    /**
+     * 取消订单
+     * <br/>
+     * orderNo - 订单号
+     */
     @JsonView(ApiView.Base.class)
     @PostMapping("/{id}/delete")
     @Authorization
-    @ApiOperation(value = "取消订单")
     public Result delete(@PathVariable("id") String orderNo) {
-        orderService.cancel(orderNo);
-        return new Success(null);
+        String msg = orderService.cancel(orderNo, true);
+        if (Strings.isNotBlank(msg)) {
+            return new Failure(msg);
+        } else {
+            return new Success(null);
+        }
     }
 }

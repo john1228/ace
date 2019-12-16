@@ -46,7 +46,7 @@
                                     <th class="center">联系电话</th>
                                     <th class="center">邮箱</th>
                                     <th class="center">状态</th>
-                                    <th class="center">操作</th>
+                                    <th class="center" width="15%">操作</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -75,6 +75,7 @@
                                         sLast: "末页"
                                     }
                                 },
+                                bLengthChange: false,
                                 searching: false,
                                 processing: true,
                                 serverSide: true,
@@ -112,7 +113,7 @@
                                     {data: "publish", className: 'center'},
                                     {
                                         data: "rental", className: 'center', render: function (data) {
-                                            return data=='HOUR' ? '小时' : '整段';
+                                            return data == 'HOUR' ? '小时' : '整段';
                                         }
                                     },
                                     {

@@ -9,6 +9,7 @@ import java.util.List;
 
 
 /**
+ * 列表排序转换器
  * @author john
  * @date 19-5-7 下午5:41
  */

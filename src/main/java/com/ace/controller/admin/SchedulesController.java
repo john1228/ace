@@ -30,6 +30,12 @@ public class SchedulesController extends BaseController {
         return viewPath + "index";
     }
 
+    /**
+     * 会议室排期查询
+     *
+     * @param criteria
+     * @return
+     */
     @ResponseBody
     @PostMapping({"", "/"})
     @JsonView(AdminView.Table.class)

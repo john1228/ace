@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 /**
  * @author john
@@ -12,12 +13,20 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class RoomReport {
-    private Long id;
-    private String name;
-    private BigDecimal online;
-    private BigDecimal offline;
-    private int orderAmount;
-    private int roomAmount;
-    private BigDecimal rentedAmount;
-    private BigDecimal idleAmount;
+    private String projectId;
+    private String reportDate;
+    private String projectName;
+    private Long roomId;
+    private String roomName;
+    private Long onlineOrderAmount;
+    private Long offlineOrderAmount;
+    private BigDecimal onlineRoomIncome;
+    private BigDecimal offlineRoomIncome;
+    private BigDecimal onlineServiceIncome;
+    private BigDecimal offlineServiceIncome;
+    private BigDecimal refundAmount;
+    private BigDecimal discountAmount;
+    private BigDecimal actualIncome;
+    private Long rentedAmount;
+    private Long idleAmount;
 }

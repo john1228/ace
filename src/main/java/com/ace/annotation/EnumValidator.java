@@ -8,6 +8,9 @@ import javax.validation.ReportAsSingleViolation;
 import javax.validation.constraints.NotNull;
 import java.lang.annotation.*;
 
+/**
+ * 自定义枚举校验
+ */
 @Documented
 @Constraint(validatedBy = EnumValidatorImpl.class)
 @Retention(RetentionPolicy.RUNTIME)

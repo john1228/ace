@@ -110,6 +110,8 @@
                                             src="/assets/js/froala_editor/plugins/fullscreen.min.js"></script>
                                     <script type="text/javascript"
                                             src="/assets/js/froala_editor/plugins/quote.min.js"></script>
+                                    <script type="text/javascript"
+                                            src="/assets/js/froala_editor/languages/zh_cn.js"></script>
                                     <script type="text/javascript">
                                         new FroalaEditor("#protocol", {
                                             language: 'zh_cn',

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,50 +39,64 @@ public class ScheduleTask {
     @Scheduled(cron = "0 10 01 * * ?")
     public void generateReport() {
         log.info("定时统计会议室使用情况");
+        Long currentMillisecond = System.currentTimeMillis();
+        Long oneDayMillisecond = 24 * 3600 * 1000L;
+        Date date = new Date(currentMillisecond - (currentMillisecond + 60 * 60 * 8 * 1000) % oneDayMillisecond - oneDayMillisecond);
+
         List<Room> roomList = reportMapper.roomList();
-        List<Map<String, BigDecimal>> online = reportMapper.online();
-        List<Map<String, BigDecimal>> offline = reportMapper.offline();
-        List<Map<String, BigDecimal>> orderAmt = reportMapper.offline();
-        List<Map<String, BigDecimal>> appointedAmt = reportMapper.offline();
+        List<Map<String, Object>> onlineAmt = reportMapper.onlineAmt(date.toString());
+        List<Map<String, Object>> offlineAmt = reportMapper.offlineAmt(date.toString());
+
+        List<Map<String, Object>> onlineIncome = reportMapper.onlineIncome(date.toString());
+        List<Map<String, Object>> offlineIncome = reportMapper.offlineIncome(date.toString());
+
+        List<Map<String, Object>> onlineServiceIncome = reportMapper.onlineServiceIncome(date.toString());
+        List<Map<String, Object>> offlineServiceIncome = reportMapper.offlineServiceIncome(date.toString());
+
+        List<Map<String, Object>> refundAmt = reportMapper.refundAmt(date.toString());
+        List<Map<String, Object>> discountAmt = reportMapper.offlineServiceIncome(date.toString());
+        List<Map<String, Object>> actualIncome = reportMapper.actualIncome(date.toString());
+        List<Map<String, Object>> rentedAmt = reportMapper.rentedAmt(date.toString());
 
         List<RoomReport> reports = roomList.stream().map(room -> {
             RoomReport report = new RoomReport();
-            report.setId(room.getId());
-            report.setName(room.getName());
-            //线上订单
-            Optional<Map<String, BigDecimal>> fon = online.stream().filter(item -> item.get("id").longValue() == room.getId()).findFirst();
-            if (fon.isPresent()) {
-                report.setOnline(fon.get().get("amount"));
-            } else {
-                report.setOnline(new BigDecimal(0));
-            }
+            report.setReportDate(date.toString());
+            report.setProjectId(room.getProjectId());
+            report.setProjectName(room.getProjectName());
+            report.setRoomId(room.getId());
+            report.setRoomName(room.getName());
+            //订单数量
+            Optional<Map<String, Object>> rolAmt = onlineAmt.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            Optional<Map<String, Object>> roflAmt = offlineAmt.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setOnlineOrderAmount(rolAmt.isPresent() ? (Long) rolAmt.get().get("amount") : Long.valueOf(0L));
+            report.setOfflineOrderAmount(roflAmt.isPresent() ? (Long) roflAmt.get().get("amount") : Long.valueOf(0L));
+            //服务收入
+            Optional<Map<String, Object>> osIncome = onlineServiceIncome.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            Optional<Map<String, Object>> ofsIncome = offlineServiceIncome.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setOnlineServiceIncome(osIncome.isPresent() ? (BigDecimal) osIncome.get().get("amount") : new BigDecimal(0));
+            report.setOfflineServiceIncome(ofsIncome.isPresent() ? (BigDecimal) osIncome.get().get("amount") : new BigDecimal(0));
+            //房间收入
+            Optional<Map<String, Object>> ooIncome = onlineIncome.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            Optional<Map<String, Object>> ofoIncome = offlineIncome.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setOnlineRoomIncome(ooIncome.isPresent() ? ((BigDecimal) ooIncome.get().get("amount")).subtract(report.getOnlineServiceIncome()) : new BigDecimal("0"));
+            report.setOfflineRoomIncome(ofoIncome.isPresent() ? ((BigDecimal) ofoIncome.get().get("amount")).subtract(report.getOnlineServiceIncome()) : new BigDecimal("0"));
+            //退款金额
+            Optional<Map<String, Object>> rfAmt = refundAmt.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setRefundAmount(rfAmt.isPresent() ? (BigDecimal) rfAmt.get().get("amount") : new BigDecimal(0));
+            //折扣金额
+            Optional<Map<String, Object>> dsAmt = discountAmt.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setDiscountAmount(dsAmt.isPresent() ? (BigDecimal) dsAmt.get().get("amount") : new BigDecimal(0));
             //线下订单
-            Optional<Map<String, BigDecimal>> fof = offline.stream().filter(item -> item.get("id").longValue() == room.getId()).findFirst();
-            if (fof.isPresent()) {
-                report.setOffline(fof.get().get("amount"));
-            } else {
-                report.setOffline(new BigDecimal(0));
-            }
-            //订单数
-            Optional<Map<String, BigDecimal>> foa = orderAmt.stream().filter(item -> item.get("id").longValue() == room.getId()).findFirst();
-            if (foa.isPresent()) {
-                report.setOrderAmount(foa.get().get("amount").intValue());
-            } else {
-                report.setOrderAmount(0);
-            }
+            Optional<Map<String, Object>> atIncome = actualIncome.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setActualIncome(atIncome.isPresent() ? (BigDecimal) atIncome.get().get("amount") : new BigDecimal(0));
             //租用时间
-            Optional<Map<String, BigDecimal>> faa = appointedAmt.stream().filter(item -> item.get("id").longValue() == room.getId()).findFirst();
-            if (faa.isPresent()) {
-                BigDecimal rented = faa.get().get("amount").divide(new BigDecimal(60), 2, BigDecimal.ROUND_HALF_DOWN);
-                BigDecimal idle = new BigDecimal(12).subtract(rented);
-                report.setRentedAmount(rented);
-                report.setIdleAmount(idle);
-            } else {
-                report.setRentedAmount(new BigDecimal(0));
-                report.setIdleAmount(new BigDecimal(12));
-            }
+            Optional<Map<String, Object>> rtAmt = rentedAmt.stream().filter(item -> ((BigInteger) item.get("id")).longValue() == room.getId()).findFirst();
+            report.setRentedAmount(rtAmt.isPresent() ? ((BigDecimal) rtAmt.get().get("amount")).longValue() : 0L);
+            //空闲时间
+            report.setIdleAmount(12 * 60 - report.getRentedAmount());
             return report;
         }).collect(Collectors.toList());
         reportMapper.create(reports);
+        log.info("完成计算");
     }
 }

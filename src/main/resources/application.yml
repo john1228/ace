@@ -5,8 +5,6 @@ logging:
         dao: DEBUG
   pattern:
     console: ${LOG_LEVEL_PATTERN:-%5p}{magenta} %clr(---){faint} %clr(%-40.40logger{39}){cyan}[%line]%clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:%wEx}
-mapper:
-  mappers: com.ace.tk.TKMapper
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.ace.entity
@@ -14,11 +12,6 @@ mybatis:
   configuration:
     lazy-loading-enabled: true
     aggressive-lazy-loading: true
-pagehelper:
-  helperDialect: mysql
-  params: count=countSql
-  reasonable: true
-  supportMethodsArguments: true
 server:
   port: 9093
   servlet:
@@ -61,9 +54,9 @@ spring:
     url: jdbc:mysql://101.37.27.163:3306/rmpdb?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: baobanwang_rmp
     password: Rmp123456
-#    url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
-#    username: ace
-#    password: Ace!1228
+    #    url: jdbc:mysql://rdsd13n5cbikz7c8y41f0.mysql.rds.aliyuncs.com:3306/ace?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    #    username: ace
+    #    password: Ace!1228
     validationQuery: 'SELECT 1 FROM DUAL'
   freemarker:
     cache: false
@@ -95,5 +88,37 @@ spring:
       flush-mode: on_save
       namespace: spring:session
     store-type: redis
-web:
-  upload-path: resources/
+
+alipay:
+  seller: 2019030863456715
+  privateKey: MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDJocEL7MfxgDiB
+    VHoJBKtpaQW+3kBYmR5bL2i8caYpzv+tGWYGTBeel7TaKuu41/NSlQJX3HFqtPBZ
+    C0Y+LFnUfQEZurp1rPX3ms6iELZ6n3gifp8w6NO4O7p8Ch2Uj94Jv0vbe0sPYdy+
+    LhvTyHDOWfkMSuhqEgjtjsvsUnf6i8TD7mwuhUpX03hZewgShnRbNfdGMD66ie9J
+    HEIk91ZcJ2JkDlGf3zF5AqpSQNLl4K1t9HLBJgZ2cwo7KkTIql/w1KjW3C5YKzPd
+    /iZSMG2cVhg5WmOoiKqhmawpvm7iv14NviTHfBhYAdIgpDBt4l6qCQ8B1yqNahD2
+    DZxwOpxvAgMBAAECggEBAILUbgpqzSGqbP+d7MFFQmPXPV8nnuDeGZBZJsB/ja27
+    HrMWs9iKLxk8nqChEOqTVNLU1PxlkUIHvZxJcH6PEIqLwdcMDkikvcS3sjP+XCkc
+    qDrZpjl6GUaFmu85MRBgeVYhxfrX+VA106GjEXNNr8R1JOARCtUodpqN+UuSBz+N
+    oHMWN7b559DG4ybTorf1UBvkY9DPEN8TIfM6aQ5hhwMkKCsJVbVNcORGdLDPacsH
+    BeT4ICLs2ETwbIaEH0pdqEr0XqKcqf8aTD1/DGWBJduLqjeNzRUVr3gmnK3C0qur
+    RdRp28ueDRZGRUGZT78K88/CMPdslYUV62yveeKrfWECgYEA/4MkWySqzJ0hlxSu
+    P1qnVWKpoqYEYOld0F/qUkc0ZQDwdmMkkUrUzIwxZPaebNBZBVOVxRQGrXwusP6c
+    0d+U/jSIAgTrE9Av18pypmkff8NcEDpk0+HYK73Avz0tSiX0PghhVzqXuANsVTTE
+    hfrCO145djFFaZbqDh7lRvGqkfMCgYEAygRIcsYtboSwpvvLi/EDsuoSoR9MlO/B
+    LEkU3r2Ai18MYDJp4RcDqZ3QLnY3+KXEbipStCjdx/piGnDgJ5JW/DVZI83aMwvq
+    0f/4xAG9Rvcj8d7iRPDKI1lS3T7UOq8Udx9APf9cGbNFvHJS6DbPyb+aIkGwtzNC
+    MX4pnmveLpUCgYBCwh3mnl7t1QQouCOKtAHSYlPWBjBQrchwIA9V7fq3hRZOqDqu
+    p3GP+/UP3wunfIw1ww/3jPLtsut0HSIWB6ei/1ClzmkpJRTK+b8Y0ZCETiOorckY
+    PwK+8vYAQViq7d2xs3jTVKC9WE+et4m9Q7Yp0sWKpvbuzppalCHtdkjNlwKBgQCX
+    dGqUkfuRti1yo6hQ/JrXUiIxZfPWXYGoIApjjBOJafMvU9yJguWeDtD7ZGpGIpGI
+    PnbO1yyfNxrB1ApZ4J8SazSvYS/LwY2Fb7Ej0mIDiFoMhhuBsDz8D4XOlcIrVQO0
+    41sYoBB+vCb2R4fczOsvyFRYhoNkdiuUS5AMU7a5mQKBgQD7r5vL3rFrG+K0scon
+    rjUybbrMdMkMTLJdQBq96bvOQhvz2NoPz2/iGIHlzgcb6ie6vkiiCV2IQK7ccLMi
+    u2Tax4r811yoqHSBdsAwpCBiNCKrI6TRs1ehQz+P9YQmtDg6H874SNgUaJCiPmJT
+    BCVuqZ3unkbWyK+oM7gP8IbXHA==
+  publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkvlK17Q7AMXNHZxh9vOZJWMf4N7/TmGVDSv4k8gx4h3XyuWXkdilMcSGKzw/6nFSLHReAhG/aTXHPLehtPH0SQrcAgM2SH+UrPNfCcg6KgJyBWl4Cxmj/BPL+KEDnixTB1sAQo41/niHBPyN24T/j24xBoMjMwjtok4pzl9IFGUvjg4QbdstUGcW3WndlIubTUOFVG6K/XFDDHuK+w0HGMenl5jCdL8PQEVLGTnszgyKBeuzGYF9/q0lkh4yfoFCCjvS+K7S0XCWgIG3gAjjmh/aZKQCLxuEr4rLiPPFkiTgdEuZEonOVc3kkYWzZ2f/qpTOvBxKe3AXrQV57W7SGwIDAQAB
+wxpay:
+  seller: 1527342701
+  appId: wx65004b49fd9e9a2d
+  appKey: 9131012033275022XL31687403002649

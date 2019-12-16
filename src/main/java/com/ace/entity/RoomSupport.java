@@ -9,13 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 /**
- * @author john
- * @date 19-5-9 下午4:48
+ * 会议室关联服务
  */
 @Getter
 @Setter
@@ -27,6 +28,8 @@ public class RoomSupport extends Support {
     private Long supportId;
     private String remark;
     @JsonView({ApiView.Base.class, ApiView.Detail.class, AdminView.Table.class})
+    @NotBlank(message = "选择服务价格必须设置")
+    @Min(value = 0, message = "服务价格不能小于0")
     private BigDecimal price;
 
     public void copyTo(OrderSupport orderSupport) {

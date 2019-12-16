@@ -22,20 +22,18 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//允许进入页面方法前检验
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
     @Resource
     TokenService tokenService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        logger.info("sss");
         http.headers().frameOptions().disable();
         http.authorizeRequests()
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/admin/")
-                .loginPage("http://bpmp.baobanwang.com/page/logout")
+                .loginPage("http://pmp.baobanwang.com/page/logout")
                 .permitAll();
         http.addFilterAt(tokenAuth(), UsernamePasswordAuthenticationFilter.class);
         super.configure(http);

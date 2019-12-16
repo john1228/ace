@@ -48,9 +48,10 @@
 
     <update id="update">
         UPDATE bb_wxpay
-        SET app_id     = #{appId},
-            mch_id     = #{mchId},
-            secret_key = #{secretKey}
+        SET project_name = #{projectName},
+            app_id       = #{appId},
+            mch_id       = #{mchId},
+            secret_key   = #{secretKey}
         WHERE project_id = #{projectId}
     </update>
 

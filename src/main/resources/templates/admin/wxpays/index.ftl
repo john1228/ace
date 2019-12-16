@@ -67,6 +67,7 @@
                                         sLast: "末页"
                                     }
                                 },
+                                bLengthChange: false,
                                 searching: false,
                                 processing: true,
                                 serverSide: true,
@@ -102,7 +103,7 @@
                                         render: function (data) {
                                             return '<a class="btn btn-xs btn-info" href="/admin/wxpays/' + data + '">查看</a>' +
                                                     '<a class="btn btn-xs btn-danger" href="/admin/wxpays/' + data + '/edit">编辑</a>' +
-                                                    '<a class="btn btn-xs btn-warning" href="/admin/wxpays/' + data + '" data-method="DELETE" data-message="删除成功">删除</a>';
+                                                    '<a class="btn btn-xs btn-warning" href="/admin/wxpays/' + data + '" data-method="DELETE" data-message="删除成功" data-confirm="您确定要删除这条记录吗?">删除</a>';
                                         },
                                         className: 'center'
                                     }

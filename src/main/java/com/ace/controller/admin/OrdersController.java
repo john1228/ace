@@ -22,12 +22,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 订单管理
+ */
 @Controller
 @RequestMapping("/admin/orders")
 public class OrdersController extends BaseController {
@@ -41,7 +45,8 @@ public class OrdersController extends BaseController {
     @GetMapping({"", "/"})
     public String index(Authentication authentication, Model model) {
         Account account = (Account) authentication.getCredentials();
-        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+        model.addAttribute("current_project", DataUtils.proList(account.getToken()));
+        model.addAttribute("statuses", CollectionUtil.toCollection(OrderStatus.class));
         return viewPath + "index";
     }
 
@@ -57,13 +62,16 @@ public class OrdersController extends BaseController {
         return dataTable;
     }
 
+
     @GetMapping("/new")
     public String add(Model model) {
         model.addAttribute("order", new Order());
         return viewPath + "new";
     }
 
-
+    /**
+     * 创建线下订单
+     **/
     @PostMapping(value = {"", "/"})
     @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid Order order, Model model) {
@@ -84,6 +92,13 @@ public class OrdersController extends BaseController {
         return viewPath + "show";
     }
 
+    /**
+     * 线上订单确认
+     *
+     * @param staff
+     * @param orderNo
+     * @return
+     */
     @PostMapping("/{id}/confirm")
     @Recordable
     @ResponseBody
@@ -92,7 +107,12 @@ public class OrdersController extends BaseController {
         return "SUCCESS";
     }
 
-
+    /**
+     * 线上订单取消
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @Recordable
     public String destroy(@PathVariable("id") String id) {

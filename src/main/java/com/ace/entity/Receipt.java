@@ -13,13 +13,37 @@ import java.util.Map;
 @Getter
 @NoArgsConstructor
 public class Receipt {
+    /**
+     * 流水编号
+     */
     private Integer id;
+    /**
+     * 第三方支付流水编号
+     */
     private String no;
+    /**
+     * 订单编号
+     */
     private String orderNo;
+    /**
+     * 收款账户
+     */
     private String seller;
+    /**
+     * 付款账户
+     */
     private String buyer;
+    /**
+     * 付款金额
+     */
     private BigDecimal price;
+    /**
+     * 流水创建日期
+     */
     private Date createdAt;
+    /**
+     * 流水更新日期
+     */
     private Date updatedAt;
 
     public Receipt(Map<String, String> params) {

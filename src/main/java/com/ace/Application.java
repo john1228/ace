@@ -1,7 +1,11 @@
 package com.ace;
 
 
+import com.ace.config.AlipayConfig;
+import com.ace.config.WxpayConfig;
+import com.ace.entity.Alipay;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 

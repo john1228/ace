@@ -62,6 +62,20 @@
                     <b class="arrow"></b>
                 </li>
             </#if>
+            <li class="${(requestUri?starts_with("/admin/operations"))?string("active","")}">
+                <a href="/admin/operations">
+                    <i class="menu-icon fa fa-caret-right"></i>
+                    <text>运营报表</text>
+                </a>
+                <b class="arrow"></b>
+            </li>
+            <li class="${(requestUri?starts_with("/admin/channels"))?string("active","")}">
+                <a href="/admin/channels">
+                    <i class="menu-icon fa fa-caret-right"></i>
+                    <text>渠道报表</text>
+                </a>
+                <b class="arrow"></b>
+            </li>
         </ul>
     </li>
     <li class="${(menu == "order")?string("active open","")}">
@@ -102,40 +116,25 @@
             </li>
         </ul>
     </li>
-    <li class="${(menu == "setting")?string("active open","")}">
-        <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fa fa-cogs"></i>
-            <span class="menu-text">配置管理</span>
-            <b class="arrow fa fa-angle-down"></b>
-        </a>
-        <b class="arrow"></b>
-        <ul class="submenu">
-            <#if current_account.isAdmin()>
-                <li class="${(requestUri?starts_with("/admin/alipays"))?string("active","")}">
-                    <a href="/admin/alipays">
+    <#if !current_account.isAdmin()>
+        <li class="${(menu == "setting")?string("active open","")}">
+            <a href="#" class="dropdown-toggle">
+                <i class="menu-icon fa fa-cogs"></i>
+                <span class="menu-text">配置管理</span>
+                <b class="arrow fa fa-angle-down"></b>
+            </a>
+            <b class="arrow"></b>
+            <ul class="submenu">
+                <li class="${(requestUri?starts_with("/admin/protocol"))?string("active","")}">
+                    <a href="/admin/protocol">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        <text>支付宝配置</text>
+                        <text>下单协议</text>
                     </a>
                     <b class="arrow"></b>
                 </li>
-                <li class="${(requestUri?starts_with("/admin/wxpays"))?string("active","")}">
-                    <a href="/admin/wxpays/">
-                        <i class="menu-icon fa fa-caret-right"></i>
-                        <text>微信配置</text>
-                    </a>
-                    <b class="arrow"></b>
-                </li>
-            <#else>
-                  <li class="${(requestUri?starts_with("/admin/protocol"))?string("active","")}">
-                      <a href="/admin/protocol">
-                          <i class="menu-icon fa fa-caret-right"></i>
-                          <text>下单协议</text>
-                      </a>
-                      <b class="arrow"></b>
-                  </li>
-            </#if>
-        </ul>
-    </li>
+            </ul>
+        </li>
+ 　　</#if>
     <#if current_account.isAdmin()>
         <li class="${(menu == "log")?string("active open","")}">
             <a href="#" class="dropdown-toggle">

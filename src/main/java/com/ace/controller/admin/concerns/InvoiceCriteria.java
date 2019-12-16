@@ -18,8 +18,10 @@ import java.sql.Date;
 public class InvoiceCriteria extends Criteria {
     private String keyword;
     private InvoiceStatus status;
-    private Date from;
-    private Date to;
-    private Integer total;
-    private Integer payAmount;
+    private Date createdFrom;
+    private Date createdTo;
+    private Integer totalFrom;
+    private Integer totalTo;
+    private Integer payAmtFrom;
+    private Integer payAmtTo;
 }

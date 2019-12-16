@@ -80,4 +80,10 @@
             confirm_amount = #{confirmAmt}
         WHERE id = #{id}
     </update>
+    <select id="refundOrder" resultType="com.ace.entity.Order">
+        SELECT CONCAT(DATE_FORMAT(bo.created_at, '%Y%m%d'), LPAD(bo.id, 6, 0)) AS orderNo, bo.status
+        FROM bb_orders bo
+                 LEFT JOIN bb_order_refund_applications bora ON bo.id = bora.order_id
+        WHERE bora.id = #{id}
+    </select>
 </mapper>

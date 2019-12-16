@@ -5,7 +5,7 @@
         INSERT INTO bb_rooms_supports ( room_id, support_id, remark, price)
         VALUES
         <foreach collection="supports" item="support" separator=",">
-            (#{support.roomId}, #{support.supportId},#{support.remark},#{support.price})
+            (#{support.roomId}, #{support.supportId},#{support.remark},ifnull(#{support.price},0))
         </foreach>
     </insert>
 

@@ -4,8 +4,7 @@ package com.ace.annotation;
 import java.lang.annotation.*;
 
 /**
- * @author john
- * @date 19-5-23 下午5:02
+ * 自定义注解，标示该请求是否要记录
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

@@ -83,7 +83,7 @@ public class RoomServiceImpl implements RoomService {
             roomSupportMapper.create(selectedSupport);
         }
         freeOrgMapper.deleteOrgs(room.getId());
-        if (!room.isFree()) {
+        if (!room.isFree() && room.getFreeOrg().size() != 0) {
             List<RoomFreeOrg> freeOrgs = new ArrayList<>();
             List<Data> orgList = DataUtils.orgList(staff.getProjectId());
             orgList.forEach(data -> {
@@ -108,6 +108,11 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomSupport> roomSupports(Long roomId) {
         return roomSupportMapper.supportList(roomId);
+    }
+
+    @Override
+    public boolean isExists(Staff staff, String serialNo, Long selfId) {
+        return roomMapper.isExists(staff, serialNo, selfId);
     }
 
 }

@@ -3,6 +3,7 @@ package com.ace.service.concerns;
 import com.ace.entity.OrderSupport;
 import com.ace.entity.Price;
 import com.ace.entity.RoomSupport;
+import com.ace.entity.Support;
 import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
 import lombok.extern.slf4j.Slf4j;
@@ -85,7 +86,7 @@ public class OrderTools {
     public BigDecimal cacl(List<OrderSupport> orderSupports, List<RoomSupport> roomSupports, StringBuilder errMsg) {
         BigDecimal total = new BigDecimal("0");
         for (OrderSupport orderSupport : orderSupports) {
-            Optional<RoomSupport> found = roomSupports.stream().filter(roomSupport -> roomSupport.getId() == orderSupport.getSupportId()).findFirst();
+            Optional<RoomSupport> found = roomSupports.stream().filter(roomSupport -> roomSupport.getId().longValue() == orderSupport.getSupportId().longValue()).findFirst();
             if (found.isPresent()) {
                 RoomSupport roomSupport = found.get();
                 roomSupport.copyTo(orderSupport);

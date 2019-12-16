@@ -17,4 +17,6 @@ public interface ReceiptMapper {
     void create(Receipt receipt);
 
     Receipt findById(@Param("id") Integer id);
+
+    ReceiptDetail findByOrderNo(@Param("no") String orderNo);
 }

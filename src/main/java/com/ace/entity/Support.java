@@ -10,6 +10,9 @@ import lombok.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
+/**
+ * 服务
+ */
 @Getter
 @Setter
 @NoArgsConstructor

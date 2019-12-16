@@ -3,32 +3,139 @@
 <mapper namespace="com.ace.dao.handler.RoomReportMapper">
 
     <select id="roomList" resultType="com.ace.entity.Room">
-        SELECT id, name
+        SELECT id, name, project_id AS projectId, project_name AS projectName
         FROM bb_rooms
     </select>
 
     <insert id="create">
         INSERT INTO bb_room_reports
-        (report_date,room_id,room_name,online,offline,order_amount,room_amount,rented_amount,idle_amount)
+        (report_date,
+        project_id,
+        project_name,
+        room_id,
+        room_name,
+        online_order_amount,
+        offline_order_amount,
+        online_room_income,
+        offline_room_income,
+        online_service_income,
+        offline_service_income,
+        refund_amount,
+        discount_amount,
+        actual_income,
+        rented_amount,
+        idle_amount)
         VALUES
         <foreach collection="reports" item="report" separator=",">
-            (CURDATE(),#{report.id},
-            #{report.name},#{report.online},#{report.offline},#{report.orderAmount},1,#{report.rentedAmount},#{report.idleAmount})
+            (STR_TO_DATE(#{report.reportDate},"%Y-%m-%d") ,
+            #{report.projectId},
+            #{report.projectName},
+            #{report.roomId},
+            #{report.roomName},
+            #{report.onlineOrderAmount},
+            #{report.offlineOrderAmount},
+            #{report.onlineRoomIncome},
+            #{report.offlineRoomIncome},
+            #{report.onlineServiceIncome},
+            #{report.offlineServiceIncome},
+            #{report.refundAmount},
+            #{report.discountAmount},
+            #{report.actualIncome},
+            #{report.rentedAmount},
+            #{report.idleAmount})
         </foreach>
     </insert>
 
+    <select id="recordsTotal" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT(room_id))
+        FROM bb_room_reports bbrr
+        LEFT JOIN bb_rooms bbr ON bbrr.room_id = bbr.id
+        <where>
+            <if test="staff!=null">
+                bbr.org_id = #{staff.orgId}
+            </if>
+            <if test="criteria.projectId!=null and criteria.projectId!=''">
+                AND bbr.project_id = #{criteria.projectId}
+            </if>
+            <if test="criteria.from!=null">
+                AND bbrr.report_date >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= bbrr.report_date
+            </if>
+        </where>
+    </select>
 
-    <select id="reports" resultType="com.ace.entity.RoomReport">
-        SELECT bb_room_reports.room_id AS id,
-        bb_room_reports.room_name AS name,
-        SUM(bb_room_reports.online) AS online,
-        SUM(bb_room_reports.offline) AS offline,
-        SUM(bb_room_reports.order_amount) AS orderAmount,
-        1 AS roomAmount,
-        SUM(bb_room_reports.rented_amount) AS rentedAmount,
-        SUM(bb_room_reports.idle_amount) AS idleAmount
-        FROM bb_room_reports LEFT JOIN bb_rooms ON bb_rooms.id = bb_room_reports.room_id
-        WHERE bb_rooms.project_id IN
+    <select id="operationReport" resultType="com.ace.entity.OperReport">
+        SELECT bbrr.project_name AS pName,
+        room_name AS rName,
+        SUM(rented_amount) AS rtAmt,
+        SUM(idle_amount) AS idAmt,
+        SUM(online_order_amount + offline_order_amount) AS orAmt,
+        SUM(online_service_income + offline_service_income) AS serAmt,
+        SUM(refund_amount) AS rfAmt,
+        SUM(discount_amount) AS disAmt,
+        SUM(actual_income) AS actAmt
+        FROM bb_room_reports bbrr LEFT JOIN bb_rooms bbr ON bbrr.room_id = bbr.id
+        <where>
+            <if test="staff!=null">
+                bbr.org_id = #{staff.orgId}
+            </if>
+            <if test="criteria.projectId!=null and criteria.projectId!=''">
+                AND bbrr.project_id = #{criteria.projectId}
+            </if>
+            <if test="criteria.from!=null">
+                AND report_date >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= report_date
+            </if>
+        </where>
+        GROUP BY room_id
+        ORDER BY room_id DESC
+        LIMIT #{criteria.start},#{criteria.length}
+    </select>
+    <select id="channelReport" resultType="com.ace.entity.ChannelReport">
+        SELECT bbrr.project_name AS pName,
+        room_name AS rName,
+        SUM(online_order_amount) AS olAmt,
+        SUM(offline_order_amount) AS oflAmt,
+        SUM(online_order_amount + offline_order_amount) AS aoAmt,
+        SUM(online_room_income) AS olmIncome,
+        SUM(offline_room_income) AS oflmIncome,
+        SUM(online_service_income) AS olsIncome,
+        SUM(offline_service_income) AS oflsIncome,
+        SUM(online_room_income + online_service_income) AS olIncome,
+        SUM(offline_room_income + offline_service_income) AS oflIncome
+        FROM bb_room_reports bbrr LEFT JOIN bb_rooms bbr ON bbrr.room_id = bbr.id
+        <where>
+            <if test="staff!=null">
+                bbr.org_id = #{staff.orgId}
+            </if>
+            <if test="criteria.projectId!=null and criteria.projectId!=''">
+                AND bbrr.project_id = #{criteria.projectId}
+            </if>
+            <if test="criteria.from!=null">
+                AND report_date >= #{criteria.from}
+            </if>
+            <if test="criteria.to!=null">
+                AND #{criteria.to} >= report_date
+            </if>
+        </where>
+        GROUP BY room_id
+        ORDER BY room_id DESC
+        LIMIT #{criteria.start},#{criteria.length}
+    </select>
+
+    <select id="reports" resultType="com.ace.entity.DataReport">
+        SELECT room_name AS name,
+        SUM(online_order_amount + offline_order_amount) AS orderAmount,
+        SUM(online_room_income + online_service_income) AS online,
+        SUM(offline_room_income + offline_service_income) AS offline,
+        SUM(rented_amount) AS rentedAmount,
+        SUM(idle_amount) AS idleAmount
+        FROM bb_room_reports
+        WHERE project_id IN
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}
         </foreach>
@@ -36,42 +143,103 @@
         AND #{to} > report_date
         GROUP BY room_id
     </select>
-
-    <select id="online" resultType="java.util.HashMap">
-        SELECT room_id as id, SUM(bbo.total) AS amount
+    <!--线上订单收入-->
+    <select id="onlineAmt" resultType="java.util.HashMap">
+        SELECT room_id as id, COUNT(1) AS amount
         FROM bb_orders bbo
                  LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
-        WHERE bbo.status = 3
+        WHERE bbo.status IN (3, 5, 6)
           AND bbo.account_id != "0"
-          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
         GROUP BY room_id
     </select>
-
-    <select id="offline" resultType="java.util.HashMap">
+    <!--线下订单收入-->
+    <select id="offlineAmt" resultType="java.util.HashMap">
+        SELECT room_id as id, COUNT(1) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status IN (3, 5, 6)
+          AND bbo.account_id = "0"
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
+        GROUP BY room_id
+    </select>
+    <!--线上订单收入-->
+    <select id="onlineIncome" resultType="java.util.HashMap">
         SELECT room_id as id, SUM(bbo.total) AS amount
         FROM bb_orders bbo
                  LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
-        WHERE bbo.status = 3
-          AND bbo.account_id = "0"
-          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        WHERE bbo.status IN (3, 5, 6)
+          AND bbo.account_id != "0"
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
         GROUP BY room_id
     </select>
-
-    <select id="orderAmt" resultType="java.util.HashMap">
-        SELECT room_id as id, count(1) AS amount
+    <!--线下订单收入-->
+    <select id="offlineIncome" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(bbo.total) AS amount
         FROM bb_orders bbo
                  LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
-        WHERE bbo.status = 3
-          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        WHERE bbo.status IN (3, 5, 6)
+          AND bbo.account_id = "0"
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
         GROUP BY room_id
     </select>
-
-    <select id="appointedAmt" resultType="java.util.HashMap">
+    <!--线上服务收入-->
+    <select id="onlineServiceIncome" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(bos.support_amount * bos.support_price) AS amount
+        FROM bb_order_supports bos
+                 LEFT JOIN bb_orders bo ON bos.order_id = bo.id
+                 INNER JOIN bb_order_appointments bboa ON bo.id = bboa.order_id
+        WHERE bo.status IN (3, 5, 6)
+          AND bo.account_id != "0"
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
+        GROUP BY room_id
+    </select>
+    <!--线下服务收入-->
+    <select id="offlineServiceIncome" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(bos.support_amount * bos.support_price) AS amount
+        FROM bb_order_supports bos
+                 LEFT JOIN bb_orders bo ON bos.order_id = bo.id
+                 INNER JOIN bb_order_appointments bboa ON bo.id = bboa.order_id
+        WHERE bo.status IN (3, 5, 6)
+          AND bo.account_id != "0"
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
+        GROUP BY room_id
+    </select>
+    <!--退款金额-->
+    <select id="refundAmt" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(bora.confirm_amount) AS amount
+        FROM bb_order_refund_applications bora
+                 LEFT JOIN bb_orders bo ON bo.id = bora.order_id
+                 INNER JOIN bb_order_appointments bboa ON bo.id = bboa.order_id
+        WHERE bo.status in (5, 6)
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
+        GROUP BY room_id
+    </select>
+    <!--优惠金额-->
+    <select id="discountAmt" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(coupon) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status IN (3, 5, 6)
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
+        GROUP BY room_id
+    </select>
+    <!--实际收入-->
+    <select id="actualIncome" resultType="java.util.HashMap">
+        SELECT room_id as id, SUM(pay_amount) AS amount
+        FROM bb_orders bbo
+                 LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
+        WHERE bbo.status IN (3, 5, 6)
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
+        GROUP BY room_id
+    </select>
+    <!--租用时间-->
+    <select id="rentedAmt" resultType="java.util.HashMap">
         SELECT room_id as id, SUM(TIMESTAMPDIFF(MINUTE, bboa.start_time, bboa.end_time)) AS amount
         FROM bb_orders bbo
                  LEFT JOIN bb_order_appointments bboa ON bbo.id = bboa.order_id
-        WHERE bbo.status = 3
-          AND (bboa.start_time BETWEEN DATE_SUB(CURDATE(), INTERVAL -1 day) AND CURDATE())
+        WHERE bbo.status IN (3, 5, 6)
+          AND (bboa.start_time BETWEEN STR_TO_DATE(#{report_date}, '%Y-%m-%d') AND DATE_SUB(STR_TO_DATE(#{report_date}, '%Y-%m-%d'), INTERVAL -1 DAY))
         GROUP BY room_id
     </select>
 </mapper>

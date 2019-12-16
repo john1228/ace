@@ -21,7 +21,7 @@ public interface OrderService {
 
     void confirm(String orderNo);
 
-    void cancel(String orderNo);
+    String cancel(String orderNo, boolean customer);
 
     void paying(Receipt receipt, String payType);
 }

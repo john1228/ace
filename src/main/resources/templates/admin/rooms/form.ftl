@@ -7,7 +7,6 @@
 <script src="/assets/js/bootstrap/locales/zh.js"></script>
 <link href="/assets/css/bootstrap/tags-input.css" media="all" rel="stylesheet" type="text/css">
 <script src="/assets/js/bootstrap/tags-input.js"></script>
-<script src="/assets/js/bootstrap/locales/zh.js"></script>
 <script src="/assets/js/bootstrap/multiselect.min.js"></script>
 <@spring.bind path="room"/>
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -347,7 +346,8 @@
                             <label for="free1">收费</label>
                         </div>
                     </div>
-                    <div class="form-group row" id="freeOrgContainer">
+                    <div class="form-group row" id="freeOrgContainer"
+                         style="display: ${(room.free)?string("none","block")}">
                         <label class="col-sm-2 control-label no-padding-right"
                                for="form-field-1"><span style="color: red">*</span>免费组织</label>
                         <div class="col-sm-10 form-radio-group">
@@ -380,14 +380,14 @@
                                for="form-field-1"><span style="color: red">*</span>开放日期</label>
                         <div class="col-sm-10">
                             <div class="col-xs-12 col-sm-9 input-group input-daterange">
-                                    <@spring.formInput "room.openDate",'class="form-control"'/>
+                                    <@spring.formInput "room.openDate",'class="form-control" readonly="readonly"'/>
                                 <div class="input-group-addon">至</div>
-                                    <@spring.formInput "room.closeDate",'class="form-control"'/>
+                                    <@spring.formInput "room.closeDate",'class="form-control" readonly="readonly"'/>
                             </div>
                         </div>
                         <script type="text/javascript">
                             $('.input-daterange input').each(function () {
-                                $(this).datepicker({language: 'zh'});
+                                $(this).datepicker();
                             });
                         </script>
                     </div>
@@ -465,18 +465,6 @@
             <div class="widget-body padding-6">
                 <div class="widget-main padding-6">
                     <div class="row">
-                        <div class="form-group row col-xs-12 col-sm-6">
-                            <label class="col-sm-2 control-label no-padding-right"
-                                   for="form-field-1"><span style="color: red">*</span>是否支付</label>
-                            <div class="col-sm-10 form-radio-group">
-                                <input type="radio" id="payable0" name="payable"
-                                       value="true" ${(room.payable)?string("checked='checked'","")}>
-                                <label for="payable0">是</label>
-                                <input type="radio" id="payable1" name="payable"
-                                       value="false" ${(room.payable)?string("","checked='checked'")}>
-                                <label for="payable1">否</label>
-                            </div>
-                        </div>
                         <div class="form-group row col-xs-12 col-sm-6">
                             <label class="col-sm-2 control-label no-padding-right"
                                    for="form-field-1"><span style="color: red">*</span>确认方式</label>
@@ -658,14 +646,14 @@
                                     <td class="center">
                                         <div class="input-group">
                                             <input name="supportList[${support_index}].price"
-                                                   class="form-control" value="${support.price!}">
+                                                   class="form-control" value="${support.price!0}" type="number"
+                                                   step="0.01" min="0">
                                             <span class="input-group-btn">
                                                <button class="btn btn-sm btn-default" type="button">
                                                     元
                                                </button>
                                             </span>
                                         </div>
-
                                     </td>
                                 </tr>
                                 </#list>
@@ -706,14 +694,7 @@
     </div>
 </div>
 <script type="text/javascript">
-    var isFree = $("input[name='free']:checked").val();
     $(function () {
-        var isFree = $("input[name='free']:checked").val();
-        if (isFree) {
-            $("#freeOrgContainer").show();
-        } else {
-            $("#freeOrgContainer").hide();
-        }
         $('.multiselect').multiselect({
             nonSelectedText: "请选择",
             nSelectedText: "已选择",

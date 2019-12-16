@@ -19,7 +19,7 @@
         <div class="col-sm-10">
             <input name="name" id="date" class="form-control" autocomplete="off" placeholder="查看日期一周的排期情况"/>
             <script>
-                $("#date").datepicker({language: 'zh'});
+                $("#date").datepicker();
             </script>
         </div>
     </div>

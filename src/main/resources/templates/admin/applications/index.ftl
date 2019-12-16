@@ -74,6 +74,7 @@
                                 sLast: "末页"
                             }
                         },
+                        bLengthChange: false,
                         searching: false,
                         processing: true,
                         serverSide: true,
@@ -109,21 +110,25 @@
                                                 '<div class="modal fade" id="exampleModal' + data + '" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
                                                 '<form action="/admin/applications/' + data + '/agree" method="POST">' +
                                                 '<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>' +
+                                                '<input type="hidden" name="amount" value="' + row.amount + '"/>' +
                                                 '<div class="modal-dialog" role="document"><div class="modal-content">' +
                                                 '<div class="modal-header"><h5 class="smaller lighter blue no-margin" id="test2">退款审批' + row.orderNo + '</h5>' +
                                                 '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>' +
                                                 '<div class="modal-body form-horizontal">' +
                                                 '<div class="row">' +
                                                 '<label class="col-sm-2 control-label no-padding-right">订单金额</label>' +
-                                                '<div class="col-sm-10" style="text-align: left">' + row.amount + '</div></div>' +
+                                                '<div class="col-sm-10" style="text-align: left;padding-top:7px">' +
+                                                '<span style="color:red">' + row.amount + '</span>' +
+                                                '</div></div>' +
                                                 '<div class="row">' +
                                                 '<label class="col-sm-2 control-label no-padding-right">退款金额</label>' +
-                                                '<div class="col-sm-10" style="text-align: left"><input type="text" name="confirmAmount" value=" ' + row.amount + '"/></div></div>' +
-                                                '</div>' +
+                                                '<div class="col-sm-10" style="text-align: left">' +
+                                                '<input type="number" style="width: 100%;" step="0.01" min="0" max="' + row.amount + '" placeholder="最大可退款金额:' + row.amount + '￥" name="confirmAmount" value=" ' + row.amount + '"/>' +
+                                                '</div></div></div>' +
                                                 '<div class="modal-footer">' +
                                                 '<button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>' +
                                                 '<button type="submit" class="btn btn-primary">确定</button></div></div></div></form></div>' +
-                                                '<a class="btn btn-xs btn-warning" href="/admin/applications/' + data + '/reject" data-method="POST" data-message="拒绝成功">拒绝</a>';
+                                                '<a class="btn btn-xs btn-warning" href="/admin/applications/' + data + '/reject" data-method="DELETE" data-confirm="确定要拒绝该退款申请吗？" data-message="拒绝成功">拒绝</a>';
                                     } else {
                                         return "";
                                     }

@@ -16,15 +16,6 @@
         </li>
         <li class="active">订单管理</li>
     </ul>
-    <div class="nav-search" id="nav-search">
-        <form class="form-search">
-				<span class="input-icon">
-					<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input"
-                           autocomplete="off"/>
-					<i class="icon-search nav-search-icon"></i>
-				</span>
-        </form>
-    </div>
 </div>
 <div class="page-content">
     <div class="row">
@@ -82,6 +73,7 @@
                                 sLast: "末页"
                             }
                         },
+                        bLengthChange: false,
                         searching: false,
                         processing: true,
                         serverSide: true,
@@ -91,13 +83,14 @@
                             url: "/admin/invoices/dataList",
                             type: "POST",
                             data: function (data) {
-                                console.log(data);
                                 data.keyword = $("#keyword").val();
                                 data.status = $("#status").val();
-                                data.from = $("#from").val();
-                                data.to = $("#to").val();
-                                data.total = $("#total").val();
-                                data.payAmount = $("#payAmount").val()
+                                data.createdFrom = $("#createdFrom").val();
+                                data.createdTo = $("#createdTo").val();
+                                data.totalFrom = $("#totalFrom").val();
+                                data.totalTo = $("#totalTo").val();
+                                data.payAmtFrom = $("#payAmtFrom").val();
+                                data.payAmtTo = $("#payAmtTo").val();
                             }
                         },
                         columns: [

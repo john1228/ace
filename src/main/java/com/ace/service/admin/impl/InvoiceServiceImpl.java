@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * 发票管理
+ */
 @Service("admin_invoice_service")
 public class InvoiceServiceImpl implements InvoiceService {
     Logger logger = LoggerFactory.getLogger(InvoiceServiceImpl.class);
@@ -27,13 +30,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     private OrderMapper orderMapper;
 
     @Override
-    public DataTable<InvoiceOrder> dataTable(Staff staff, InvoiceCriteria criteria) {
-        DataTable<InvoiceOrder> dataTable = new DataTable<>();
-        dataTable.setStart(criteria.getStart());
-        dataTable.setLength(criteria.getLength());
+    public void dataTable(Staff staff, InvoiceCriteria criteria, DataTable<InvoiceOrder> dataTable) {
         dataTable.setRecordsFiltered(invoiceMapper.recordsTotal(staff, criteria));
         dataTable.setData(invoiceMapper.dataList(staff, criteria));
-        return dataTable;
     }
 
     @Override
@@ -44,8 +43,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public void create(String orderNo, Invoice invoice) {
         Order order = orderMapper.findByOrderNo(orderNo);
-        if (order.getStatus() == OrderStatus.PAIDANDCONFIRM || true) {
+        if (order.getStatus() == OrderStatus.PAIDANDCONFIRM) {
             invoice.setOrderId(order.getId());
+            invoice.setStatus(InvoiceStatus.INVOICED);
             invoiceMapper.create(invoice);
         }
     }
@@ -64,7 +64,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     public void mail(String orderNo, Invoice invoice) {
         Invoice was = invoiceMapper.findBy(orderNo);
         was.setExpress(invoice.getExpress());
-        logger.info("邮寄");
         invoiceMapper.mail(was, InvoiceStatus.SHIPPED);
     }
 }

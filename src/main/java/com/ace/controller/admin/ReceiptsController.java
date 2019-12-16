@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Map;
 
-
+/**
+ * 流水管理
+ */
 @Controller
 @RequestMapping("/admin/receipts")
 public class ReceiptsController extends BaseController {
@@ -40,6 +42,13 @@ public class ReceiptsController extends BaseController {
         return dataTable;
     }
 
+    /**
+     * 流水详情
+     *
+     * @param id
+     * @param model
+     * @return
+     */
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         Receipt receipt = receiptService.findById(id);

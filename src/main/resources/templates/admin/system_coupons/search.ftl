@@ -17,14 +17,14 @@
                     <label class="col-sm-2 no-padding-right text-right">有效期</label>
                     <div class="col-sm-10">
                         <div class="col-xs-12 input-group input-daterange">
-                            <input id="from" class="form-control">
+                            <input id="from" class="form-control" readonly="readonly">
                             <div class="input-group-addon">至</div>
-                            <input id="to" class="form-control">
+                            <input id="to" class="form-control" readonly="readonly">
                         </div>
                     </div>
                     <script type="text/javascript">
                         $('.input-daterange input').each(function () {
-                            $(this).datepicker({language: 'zh'});
+                            $(this).datepicker(+);
                         });
                     </script>
                 </div>

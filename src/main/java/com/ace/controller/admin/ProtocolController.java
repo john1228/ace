@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
+ * 协议管理
+ *
  * @author john
  * @date 19-6-5 下午7:00
  */
@@ -20,12 +22,32 @@ public class ProtocolController extends BaseController {
     @Resource
     ProtocolService protocolService;
 
+    /**
+     * 查看协议
+     *
+     * @param staff
+     * @param model
+     * @return
+     */
     @GetMapping({"/", ""})
     public String protocol(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
+        model.addAttribute("protocol", protocolService.protocol(staff));
+        return viewPath + "show";
+    }
+
+    @GetMapping({"/edit", "edit/"})
+    public String editProtocol(@SessionAttribute(CURRENT_OPERATOR) Staff staff, Model model) {
         model.addAttribute("protocol", protocolService.protocol(staff));
         return viewPath + "edit";
     }
 
+    /**
+     * 更新协议
+     *
+     * @param staff
+     * @param protocol
+     * @return
+     */
     @PutMapping
     @Recordable
     public String updateProtocol(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("protocol") String protocol) {

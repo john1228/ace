@@ -21,7 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-
+/**
+ * 服务管理
+ */
 @Controller
 @RequestMapping("/admin/supports")
 @Log4j2
@@ -54,6 +56,9 @@ public class SupportsController extends BaseController {
     }
 
 
+    /**
+     * 添加
+     **/
     @PostMapping({"", "/"})
     @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @RequestParam("coverFile") MultipartFile cover, @Valid Support support, BindingResult result, Model model) {
@@ -85,6 +90,9 @@ public class SupportsController extends BaseController {
         return viewPath + "edit";
     }
 
+    /**
+     * 更新
+     **/
     @PutMapping({"/{id}", "/{id}/"})
     @Recordable
     public String update(
@@ -107,6 +115,9 @@ public class SupportsController extends BaseController {
 
     }
 
+    /**
+     * 删除
+     **/
     @DeleteMapping("/{id}")
     @Recordable
     @ResponseBody

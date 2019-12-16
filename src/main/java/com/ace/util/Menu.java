@@ -8,8 +8,8 @@ import java.util.List;
  * @date 19-5-22 下午6:37
  */
 public enum Menu {
-    room(new String[]{"/admin/supports", "/admin/rooms", "/admin/schedules", "/admin/prices", "/admin/coupons"}),
-    order(new String[]{"/admin/orders", "/admin/invoices", "/admin/receipts"}),
+    room(new String[]{"/admin/supports", "/admin/rooms", "/admin/schedules", "/admin/prices", "/admin/coupons", "/admin/channels", "/admin/operations"}),
+    order(new String[]{"/admin/orders", "/admin/invoices", "/admin/receipts", "/admin/applications"}),
     setting(new String[]{"/admin/protocol", "/admin/alipays", "/admin/wxpays"}),
     log(new String[]{"/admin/oper_logs"});
     private List<String> items;

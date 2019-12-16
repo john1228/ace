@@ -52,6 +52,7 @@ public class CouponServiceImpl implements CouponService {
         couponMapper.destroy(id);
     }
 
+    //发放优惠券
     @Override
     @Transactional
     public void grant(SystemCoupon coupon, Grant grant) {

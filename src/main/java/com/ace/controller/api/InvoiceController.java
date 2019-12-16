@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
+ * 发票管理
+ *
  * @author john
  * @date 19-5-14 下午3:08
  */
-@Api(tags = "发票管理")
 @RestController
 @RequestMapping("/api/invoices")
 public class InvoiceController {
@@ -25,9 +26,17 @@ public class InvoiceController {
     @Resource
     private InvoiceService invoiceService;
 
+    /**
+     * 新增发票和修改发票
+     * <br/>
+     * account - 登录账户 {@link Account}
+     * <br/>
+     * orderNo - 订单号
+     * <br/>
+     * invoice - 发票信息 {@link Invoice}
+     */
     @ResponseBody
     @PostMapping({"", "/"})
-    @ApiOperation(value = "新增发票和修改发票")
     @Authorization
     public Result create(@RequestAttribute("ACCOUNT") Account account, @RequestParam("orderNo") String orderNo, Invoice invoice) {
         invoiceService.create(account, orderNo, invoice);

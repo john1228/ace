@@ -16,10 +16,11 @@ import javax.annotation.Resource;
 import java.sql.Timestamp;
 
 /**
+ * 用户优惠券
+ *
  * @author john
  * @date 19-6-5 上午11:52
  */
-@Api(tags = "优惠券")
 @RestController
 @RequestMapping("/api/coupons")
 public class CouponsController {
@@ -27,10 +28,20 @@ public class CouponsController {
     @Resource
     CouponService couponService;
 
+    /**
+     * 查看可用的优惠券
+     * <br/>
+     * account - 用户 {@link Account}
+     * <br/>
+     * roomId - 会议室编号
+     * <br/>
+     * appointStartTime - 预订开始时间
+     * <br/>
+     * appointEndTime - 预定结束时间
+     */
     @GetMapping("")
     @Authorization
     @JsonView(ApiView.Base.class)
-    @ApiOperation(value = "查询可用的优惠券")
     public Result list(
             @ApiParam(hidden = true)
             @RequestAttribute("ACCOUNT") Account account,

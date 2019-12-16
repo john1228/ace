@@ -28,7 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+/**
+ * 优惠券管理
+ */
 @Controller("admin_coupons_controller")
 @RequestMapping("/admin/system_coupons")
 public class SystemCouponsController extends BaseController {
@@ -67,6 +69,9 @@ public class SystemCouponsController extends BaseController {
     }
 
 
+    /**
+     * 添加
+     **/
     @PostMapping(value = {"", "/"})
     @Recordable
     public String create(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid SystemCoupon systemCoupon, BindingResult result, Model model) {
@@ -106,24 +111,32 @@ public class SystemCouponsController extends BaseController {
         return viewPath + "edit";
     }
 
+    /**
+     * 更新
+     **/
     @PutMapping("/{id}")
     @Recordable
-    public String update(@PathVariable("id") int id, @Valid SystemCoupon coupon, BindingResult result, Model model) {
+    public String update(@SessionAttribute(CURRENT_OPERATOR) Staff staff, @Valid SystemCoupon coupon, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("errors", result.getAllErrors());
+            model.addAttribute("coupon", coupon);
+            model.addAttribute("couponType", CollectionUtil.toCollection(CouponStatus.class));
+            model.addAttribute("weeks", Week.toOptions());
+            model.addAttribute("rooms", roomService.roomList(staff).stream().collect(Collectors.toMap(room -> String.valueOf(room.getId()), Room::getName)));
             return viewPath + "edit";
         } else {
             couponService.update(coupon);
-            model.addAttribute("coupon", coupon);
             return "redirect:" + viewPath;
         }
 
     }
 
+    /**
+     * 发放
+     **/
     @PostMapping("/{id}/grant")
     @Recordable
     public String grant(@PathVariable("id") int id, Grant grant, Model model) {
-        logger.info("发放优惠券");
         SystemCoupon coupon = couponService.findById(id);
         couponService.grant(coupon, grant);
         model.addAttribute("coupon", coupon);
@@ -131,6 +144,9 @@ public class SystemCouponsController extends BaseController {
         return viewPath + "show";
     }
 
+    /**
+     * 删除
+     **/
     @DeleteMapping("/{id}")
     @Recordable
     public String destroy(@PathVariable("id") int id) {

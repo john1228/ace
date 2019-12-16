@@ -47,9 +47,10 @@
 
     <update id="update">
         UPDATE bb_alipay
-        SET seller      = #{seller},
-            private_key = #{privateKey},
-            public_key  = #{publicKey}
+        SET project_name = #{projectName},
+            seller       = #{seller},
+            private_key  = #{privateKey},
+            public_key   = #{publicKey}
         WHERE project_id = #{projectId}
     </update>
 

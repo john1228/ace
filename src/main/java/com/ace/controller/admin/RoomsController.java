@@ -33,7 +33,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-
+/**
+ * 会议室管理
+ */
 @Controller
 @RequestMapping("/admin/rooms")
 @Log4j2
@@ -48,7 +50,7 @@ public class RoomsController extends BaseController {
     @GetMapping({"", "/"})
     public String index(Authentication authentication, Model model) {
         Account account = (Account) authentication.getCredentials();
-        model.addAttribute("current_project", DataUtils.proList(account.getAccountId()));
+        model.addAttribute("current_project", DataUtils.proList(account.getToken()));
         return viewPath + "index";
     }
 
@@ -73,6 +75,9 @@ public class RoomsController extends BaseController {
     }
 
 
+    /**
+     * 添加
+     **/
     @PostMapping("")
     @Recordable
     public String create(
@@ -83,6 +88,9 @@ public class RoomsController extends BaseController {
             BindingResult result,
             Model model
     ) {
+        if (roomService.isExists(staff, room.getSerialNo(), 0L)) {
+            result.addError(new ObjectError("serialNO", "该编号会议室已经存在"));
+        }
         try {
             String fileName = Aliyun.Instance.upload(avatar);
             room.setCover(fileName);
@@ -131,6 +139,9 @@ public class RoomsController extends BaseController {
         return viewPath + "edit";
     }
 
+    /**
+     * 更新
+     */
     @PutMapping("/{id}/edit")
     @Recordable
     public String update(
@@ -143,6 +154,9 @@ public class RoomsController extends BaseController {
             Model model
     ) {
         Room old = roomService.findById(id);
+        if (roomService.isExists(staff, room.getSerialNo(), room.getId())) {
+            result.addError(new ObjectError("serialNO", "该编号会议室已经存在"));
+        }
         if (!cover.isEmpty()) {
             try {
                 room.setCover(Aliyun.Instance.upload(cover));
@@ -165,7 +179,11 @@ public class RoomsController extends BaseController {
             } else {
                 try {
                     String imgPath = Aliyun.Instance.upload(file);
-                    nImgList.add(i, imgPath);
+                    if (nImgList.size() >= i)
+                        nImgList.add(i, imgPath);
+                    else {
+                        nImgList.add(imgPath);
+                    }
                 } catch (Exception exp) {
                     log.info("错误：" + exp.getMessage());
                     result.addError(new FieldError("会议室", "图片" + i, "更新场地图失败"));
@@ -188,6 +206,9 @@ public class RoomsController extends BaseController {
         }
     }
 
+    /**
+     * 启用
+     **/
     @PostMapping("/{id}/enable")
     @Recordable
     @ResponseBody
@@ -197,6 +218,9 @@ public class RoomsController extends BaseController {
     }
 
 
+    /**
+     * 下线
+     **/
     @PostMapping("/{id}/disable")
     @Recordable
     @ResponseBody
@@ -205,6 +229,9 @@ public class RoomsController extends BaseController {
         return "SUCCESS";
     }
 
+    /**
+     * 添加会议室服务
+     **/
     @ResponseBody
     @JsonView(AdminView.Table.class)
     @PostMapping("/supportList")

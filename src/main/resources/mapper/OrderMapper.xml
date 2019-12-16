@@ -77,6 +77,9 @@
             <if test="criteria.payAmount!=null">
                 AND bb_orders.pay_amount = #{criteria.payAmount}
             </if>
+            <if test="criteria.status!=null">
+                AND bb_orders.status = #{criteria.status.code}
+            </if>
             <if test="criteria.from!=null">
                 AND bb_orders.created_at >= #{criteria.from}
             </if>
@@ -92,8 +95,8 @@
     <select id="dataList" resultType="com.ace.entity.Order">
         SELECT bb_orders.id,
         CONCAT(DATE_FORMAT(bb_orders.created_at, '%Y%m%d'), LPAD(bb_orders.id, 6, 0)) AS orderNo,
-        bb_orders.account_id AS accountId,
-        bb_orders.account_name AS accountName,
+        bb_order_appointments.contact_mobile AS accountId,
+        bb_order_appointments.contact_name AS accountName,
         bb_orders.total,
         bb_orders.pay_amount AS payAmount,
         bb_orders.coupon,
@@ -126,6 +129,9 @@
             </if>
             <if test="criteria.payAmount!=null">
                 AND bb_orders.pay_amount = #{criteria.payAmount}
+            </if>
+            <if test="criteria.status!=null">
+                AND bb_orders.status = #{criteria.status.code}
             </if>
             <if test="criteria.from!=null">
                 AND bb_orders.created_at >= #{criteria.from}
@@ -164,7 +170,7 @@
         bb_order_appointments.end_time AS appointed_end_time,
         bb_order_appointments.contact_name AS appointed_contact_name,
         bb_order_appointments.contact_mobile AS appointed_contact_mobile,
-        CONCAT(bb_rooms.project_name,bb_rooms.building_no,bb_rooms.floor_no,bb_rooms.room_no) AS
+        CONCAT(bb_rooms.project_name,bb_rooms.building_no,'幢',bb_rooms.floor_no,'层',bb_rooms.room_no,'号') AS
         appointed_room_address
         FROM bb_orders
         LEFT JOIN bb_invoices ON bb_orders.id = bb_invoices.order_id
@@ -200,7 +206,8 @@
         bb_order_appointments.end_time AS appointed_end_time,
         bb_order_appointments.contact_name AS appointed_contact_name,
         bb_order_appointments.contact_mobile AS appointed_contact_mobile,
-        CONCAT(bb_rooms.project_name,bb_rooms.building_no,bb_rooms.floor_no,bb_rooms.room_no) AS appointed_room_address
+        CONCAT(bb_rooms.project_name,bb_rooms.building_no,'幢',bb_rooms.floor_no,'层',bb_rooms.room_no,'号') AS
+        appointed_room_address
         FROM bb_orders
         LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
         INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id
@@ -209,7 +216,7 @@
         <foreach collection="account.staffList" item="staff" index="index" open="(" separator="," close=")">
             #{staff.projectId}
         </foreach>
-        <if test="status=='uncofirmed'">
+        <if test="status=='unconfirmed'">
             AND bb_orders.status IN (0,2)
         </if>
         <if test="status=='confirmed'">
@@ -220,8 +227,8 @@
     </select>
 
     <insert id="create" useGeneratedKeys="true" keyProperty="id">
-        insert into bb_orders (account_id, account_name, total, coupon, pay_amount, status)
-        values (#{accountId}, #{accountName}, #{total}, #{coupon}, #{payAmount}, #{status})
+        insert into bb_orders (account_id, account_name, total, coupon, pay_amount, status, remark)
+        values (#{accountId}, #{accountName}, #{total}, #{coupon}, #{payAmount}, #{status}, #{remark})
     </insert>
 
     <select id="findByOrderNo" resultMap="dMap">
@@ -241,7 +248,7 @@
                bb_order_appointments.end_time                                                AS appointed_end_time,
                bb_order_appointments.contact_name                                            AS appointed_contact_name,
                bb_order_appointments.contact_mobile                                          AS appointed_contact_mobile,
-               bb_order_appointments.remark
+               bb_order_appointments.remark                                                  AS appointed_remark
         FROM bb_orders
                  LEFT JOIN bb_order_appointments ON bb_orders.id = bb_order_appointments.order_id
                  INNER JOIN bb_rooms ON bb_order_appointments.room_id = bb_rooms.id

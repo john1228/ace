@@ -4,9 +4,7 @@ import com.ace.controller.admin.concerns.AdminView;
 import com.ace.entity.concern.Base;
 import com.ace.entity.concern.enums.RoomRental;
 import com.ace.entity.concern.enums.Week;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +18,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 价格体系
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -43,6 +43,7 @@ public class LongListHandler extends BaseTypeHandler<List<Long>> {
         if (source == null) {
             return new ArrayList<>();
         } else {
+            logger.info("转换:" + source);
             List<Long> results = new ArrayList<>();
             String[] items = source.split(",");
             for (String item : items) {

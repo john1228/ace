@@ -133,9 +133,7 @@
                                             <div class="media-body">
                                                 <div>${service.name}</div>
                                                 <div class="search-actions text-center">
-                                                    <span class="text-info">￥</span>
-                                                    <span class="blue bolder bigger-150">${service.price}</span>
-                                                    x${service.amount}${service.unit}
+                                                    ￥${service.price}x${service.amount}${service.unit}
                                                 </div>
                                             </div>
                                         </#list>
@@ -165,17 +163,17 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header widget-header-custom">
-                    备注
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <#--<div class="col-xs-12 col-sm-12">-->
+            <#--<div class="widget-box">-->
+                <#--<div class="widget-header widget-header-custom">-->
+                    <#--备注-->
+                <#--</div>-->
+                <#--<div class="widget-body">-->
+                    <#--<div class="widget-main">-->
+                    <#--</div>-->
+                <#--</div>-->
+            <#--</div>-->
+        <#--</div>-->
     </div>
     <div class="row">
         <div class="clearfix form-actions">

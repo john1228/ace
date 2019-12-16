@@ -6,6 +6,7 @@ import com.ace.entity.Account;
 import com.ace.entity.Invoice;
 import com.ace.entity.Order;
 import com.ace.entity.concern.enums.OrderStatus;
+import com.ace.entity.concern.invoice.InvoiceStatus;
 import com.ace.service.api.InvoiceService;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +32,9 @@ public class InvoiceServiceImpl extends BaseService implements InvoiceService {
             if (order == null) {
                 account.setErrMsg("无效的订单");
             } else {
-                if (order.getStatus() == OrderStatus.PAIDANDCONFIRM || true) {
+                if (order.getStatus() == OrderStatus.PAIDANDCONFIRM) {
                     invoice.setOrderId(order.getId());
+                    invoice.setStatus(InvoiceStatus.APPLYING);
                     invoiceMapper.create(invoice);
                 } else {
                     account.setErrMsg("当前订单状态:" + order.getStatus().getName() + ";不能开发票");

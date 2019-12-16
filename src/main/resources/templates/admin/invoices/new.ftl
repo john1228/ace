@@ -137,42 +137,60 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="expressContainer">
+                                <div class="form-group row express">
+                                    <label class="col-sm-2 control-label no-padding-right">联系人</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="address[name]" class="col-xs-10 col-sm-5"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row express">
+                                    <label class="col-sm-2 control-label no-padding-right">联系电话</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="address[mobile]" class="col-xs-10 col-sm-5"/>
+                                    </div>
+                                </div>
+                                <div class="form-group row express email">
+                                    <label class="col-sm-2 control-label no-padding-right">联系地址</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="address[address]" class="col-xs-10 col-sm-5"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="emailContainer">
+                                <div class="form-group row express email">
+                                    <label class="col-sm-2 control-label no-padding-right">邮箱地址</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="address[address]" class="col-xs-10 col-sm-5"/>
+                                    </div>
+                                </div>
+                            </div>
                             <script type="text/javascript">
                                 $(function () {
-                                    $("input[name=method]").on("change", function () {
+                                    var $method = $("input[name=method]");
+                                    var $emailCont = $("#emailContainer");
+                                    var $expressCont = $("#expressContainer");
+
+                                    if ($("input[name=method]:checked").val() == "EMAIL") {
+                                        $emailCont.show();
+                                        $expressCont.hide();
+                                    } else {
+                                        $emailCont.hide();
+                                        $expressCont.show();
+                                    }
+
+                                    $method.on("change", function () {
                                         console.log($(this).val());
                                         if ($(this).val() == "EMAIL") {
-                                            $(".express").hide();
-                                            $(".express").find(":input").attr("disabled", false);
-                                            $(".email").show();
-                                            $(".email").find(":input").attr("disabled", false);
+                                            $emailCont.show();
+                                            $expressCont.hide();
                                         } else {
-                                            $(".email").hide();
-                                            $(".email").find(":input").attr("disabled", false);
-                                            $(".express").show();
-                                            $(".express").find(":input").attr("disabled", false);
+                                            $emailCont.hide();
+                                            $expressCont.show();
                                         }
                                     })
                                 })
                             </script>
-                            <div class="form-group row express">
-                                <label class="col-sm-2 control-label no-padding-right">联系人</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="address[name]" class="col-xs-10 col-sm-5"/>
-                                </div>
-                            </div>
-                            <div class="form-group row express">
-                                <label class="col-sm-2 control-label no-padding-right">联系电话</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="address[mobile]" class="col-xs-10 col-sm-5"/>
-                                </div>
-                            </div>
-                            <div class="form-group row express email">
-                                <label class="col-sm-2 control-label no-padding-right">联系地址</label>
-                                <div class="col-sm-10">
-                                    <input type="text" name="address[address]" class="col-xs-10 col-sm-5"/>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

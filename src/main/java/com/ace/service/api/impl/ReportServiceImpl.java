@@ -2,6 +2,7 @@ package com.ace.service.api.impl;
 
 import com.ace.dao.handler.RoomReportMapper;
 import com.ace.entity.Account;
+import com.ace.entity.DataReport;
 import com.ace.entity.RoomReport;
 import com.ace.service.api.ReportService;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class ReportServiceImpl implements ReportService {
     RoomReportMapper reportMapper;
 
     @Override
-    public List<RoomReport> reportList(Account account, Date from, Date to) {
+    public List<DataReport> reportList(Account account, Date from, Date to) {
         return reportMapper.reports(account, from, to);
     }
 }

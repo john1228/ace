@@ -72,6 +72,7 @@
                                 sLast: "末页"
                             }
                         },
+                        bLengthChange: false,
                         searching: false,
                         processing: true,
                         serverSide: true,

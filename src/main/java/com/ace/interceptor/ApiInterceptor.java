@@ -1,14 +1,19 @@
 package com.ace.interceptor;
 
 import com.ace.annotation.Authorization;
+import com.ace.config.AlipayConfig;
+import com.ace.config.WxpayConfig;
 import com.ace.entity.Account;
+import com.ace.entity.Alipay;
 import com.ace.entity.Staff;
 import com.ace.service.concerns.TokenService;
+import com.ace.util.AlipayBuilder;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -42,17 +47,6 @@ public class ApiInterceptor implements HandlerInterceptor {
                 log.info("移动端请求::" + authorization);
                 if (Strings.isEmpty(authorization)) {
                     returnJson(response, "该接口未认证或者未签名或者不存在此资源");
-                } else if (authorization.equals("test-123")) {
-                    Account account = new Account();
-                    account.setAccountId("001");
-                    account.setAccountName("001-NAME");
-                    List<Staff> staffList = new ArrayList<>();
-                    for (int i = 1; i <= 5; i++) {
-                        staffList.add(new Staff(account, "001-P-" + i, "001-PN-" + i, "001-O-" + i, "001-ON" + i, "001-E-" + i, "001-EM-" + i));
-                    }
-                    account.setStaffList(staffList);
-                    request.setAttribute("ACCOUNT", account);
-                    return true;
                 } else {
                     Account account = tokenService.account(authorization);
                     request.setAttribute("ACCOUNT", account);

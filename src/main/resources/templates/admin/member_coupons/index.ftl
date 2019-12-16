@@ -81,6 +81,7 @@
                                         sLast: "末页"
                                     }
                                 },
+                                bLengthChange: false,
                                 processing: true,
                                 serverSide: true,
                                 autoWidth: false,

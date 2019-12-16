@@ -22,6 +22,13 @@ public class AdminController extends BaseController {
         return "redirect:/admin/orders";
     }
 
+    /**
+     * 切换项目
+     *
+     * @param authentication
+     * @param session
+     * @return
+     */
     @PostMapping({"", "/"})
     public String change(Authentication authentication, HttpSession session) {
         Account account = (Account) authentication.getCredentials();
@@ -39,9 +46,15 @@ public class AdminController extends BaseController {
         return LOGIN;
     }
 
+    /**
+     * 用户登出
+     *
+     * @param session
+     * @return
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:" + "http://bpmp.baobanwang.com/page/logout";
+        return "redirect:" + "http://pmp.baobanwang.com/page/logout";
     }
 }

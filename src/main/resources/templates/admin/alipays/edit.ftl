@@ -37,23 +37,13 @@
                         <div class="form-group row">
                             <label class="col-sm-2 control-label no-padding-right"><span style="color: red">*</span>商户号</label>
                             <div class="col-sm-10">
-                                <select class="chosen-select form-control" id="proId" name="projectId" required>
+                                <select class="chosen-select form-control" id="proId" name="projectId" required
+                                        disabled>
                                     <option disabled>---请选择---</option>
                                     <#list current_project as pro>
                                         <option value="${pro.id}" ${(pro.id == alipay.projectId)?string("selected",'')}>${pro.text}</option>
                                     </#list>
                                 </select>
-                                <script type="text/javascript">
-                                    $(function () {
-                                        $("#proId").on("change", function () {
-                                            if ($(this).val()) {
-                                                $("#projectName").val($(this).find("option:selected").text());
-                                            } else {
-                                                $("#projectName").val("");
-                                            }
-                                        })
-                                    })
-                                </script>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -90,6 +80,19 @@
                             </div>
                         </div>
                     </form>
+                    <script type="text/javascript">
+                        $(function () {
+                            $("form").on('submit', function () {
+                                var project = $("#proId");
+                                project.prop("disabled", false);
+                                if (project.val()) {
+                                    $("#projectName").val(project.find("option:selected").text());
+                                } else {
+                                    $("#projectName").val("");
+                                }
+                            })
+                        })
+                    </script>
                 </div>
             </div>
         </div>
